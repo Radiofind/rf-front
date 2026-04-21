@@ -1,8 +1,9 @@
 import { inject, Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { AuthModel } from "../models/auth.model";
-import { Observable } from "rxjs";
+import { AuthModel, AuthResponse } from "../models/auth.model";
+import { Observable, tap } from "rxjs";
+import { AuthStateService } from "./auth-state.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,25 @@ import { Observable } from "rxjs";
 export class AuthService {
   private readonly api = `${environment.apiUrl}/auth`;
   private readonly http = inject(HttpClient);
+  private readonly authStateService = inject(AuthStateService);
 
-  public register(data: AuthModel): Observable<unknown> {
-    return this.http.post(`${this.api}/register`, data);
+  public register(data: AuthModel): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.api}/register`, data).pipe(
+      tap(response => {
+        this.authStateService.setToken(response.token);
+      })
+    );
   }
 
-  public login(data: AuthModel): Observable<unknown> {
-    return this.http.post<{token: string}>(`${this.api}/login`, data);
+  public login(data: AuthModel): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.api}/login`, data).pipe(
+      tap(response => {
+        this.authStateService.setToken(response.token);
+      })
+    );
+  }
+
+  public logout(): void {
+    this.authStateService.clearToken();
   }
 }
