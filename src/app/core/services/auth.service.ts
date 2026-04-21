@@ -32,4 +32,8 @@ export class AuthService {
   public logout(): void {
     this.authStateService.clearToken();
   }
+
+  public test(): Observable<unknown> {
+    return this.http.get(`${environment.apiUrl}/test`);
+  }
 }
