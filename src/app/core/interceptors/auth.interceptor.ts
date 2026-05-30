@@ -1,9 +1,9 @@
-import { HttpInterceptorFn } from "@angular/common/http";
+import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
 import { inject, PLATFORM_ID } from "@angular/core";
 import { AuthStateService } from "../services/auth-state.service";
 import { isPlatformBrowser } from "@angular/common";
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
+export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
 
   const platformId = inject(PLATFORM_ID);
 
@@ -11,8 +11,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
-  const authState = inject(AuthStateService);
-  const token = authState.getToken();
+  const authState: AuthStateService = inject(AuthStateService);
+  const token: string | null | undefined = authState.getToken();
 
   if (!token) {
     return next(req);
@@ -22,7 +22,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
-  const authReq = req.clone({
+  const authReq: HttpRequest<unknown> = req.clone({
     setHeaders: {
       Authorization: `Bearer ${token}`
     }

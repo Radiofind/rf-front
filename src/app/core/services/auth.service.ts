@@ -1,29 +1,31 @@
 import { inject, Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { AuthModel, AuthResponse } from "../models/auth.model";
+import { IAuthEndpoints, IAuthModel, IAuthResponse } from "../models/auth.model";
 import { Observable, tap } from "rxjs";
 import { AuthStateService } from "./auth-state.service";
+import { AUTH_ENDPOINTS } from "../constants/constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly api = `${environment.apiUrl}/auth`;
-  private readonly http = inject(HttpClient);
-  private readonly authStateService = inject(AuthStateService);
+  private readonly authEndpoints: IAuthEndpoints = AUTH_ENDPOINTS;
+  private readonly api: string = `${environment.apiUrl}${this.authEndpoints.auth}`;
+  private readonly http: HttpClient = inject(HttpClient);
+  private readonly authStateService: AuthStateService = inject(AuthStateService);
 
-  public register(data: AuthModel): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.api}/register`, data).pipe(
-      tap(response => {
+  public register(data: IAuthModel): Observable<IAuthResponse> {
+    return this.http.post<IAuthResponse>(`${this.api}${this.authEndpoints.register}`, data).pipe(
+      tap((response: IAuthResponse) => {
         this.authStateService.setToken(response.token);
       })
     );
   }
 
-  public login(data: AuthModel): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.api}/login`, data).pipe(
-      tap(response => {
+  public login(data: IAuthModel): Observable<IAuthResponse> {
+    return this.http.post<IAuthResponse>(`${this.api}${this.authEndpoints.login}`, data).pipe(
+      tap((response: IAuthResponse) => {
         this.authStateService.setToken(response.token);
       })
     );
@@ -31,9 +33,5 @@ export class AuthService {
 
   public logout(): void {
     this.authStateService.clearToken();
-  }
-
-  public test(): Observable<unknown> {
-    return this.http.get(`${environment.apiUrl}/test`);
   }
 }

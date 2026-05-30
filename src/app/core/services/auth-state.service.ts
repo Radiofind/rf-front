@@ -22,7 +22,7 @@ export class AuthStateService {
     return;
   }
 
-  public clearToken() {
+  public clearToken(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem(this.tokenKey);
     }
