@@ -1,0 +1,15 @@
+<div class="description">
+  <h1 class="description-title">{{content().title}} <span>{{content().titleColor}}</span> {{content().smile}}</h1>
+  <div class="description-instructions">{{content().instructions}}</div>
+  @for (content of content().content; track content.id) {
+    <div class="description-content">
+      <div class="description-content__icon">
+        <i [class]="content.iconClass"></i>
+      </div>
+      <div class="description-content__text">
+        <div class="description-content__text--title">{{content.contentTitle}}</div>
+        <div class="description-content__text--overview">{{content.overview}}</div>
+      </div>
+    </div>
+  }
+</div>

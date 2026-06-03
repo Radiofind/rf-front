@@ -1,0 +1,18 @@
+.auth {
+  display: flex;
+  align-items: center;
+  gap: 2%;
+
+  &-description {
+    width: 29%;
+  }
+
+  &-form {
+    width: 69%;
+  }
+}
+
+.rights {
+  font-size: 24px;
+  color: var(--second-text-color);
+}

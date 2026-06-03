@@ -1,0 +1,12 @@
+<app-header />
+
+<div class="auth">
+  <div class="auth-description">
+    <app-auth-description [content]="isLogin() ? authDescriptionContentLogin : authDescriptionContentRegister" />
+  </div>
+  <div class="auth-form">
+    <app-auth-form />
+  </div>
+</div>
+
+<div class="rights">© 2026 RADIOFIND. All rights reserved.</div>
