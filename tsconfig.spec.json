@@ -4,9 +4,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./src/app",
-    "types": [
-      "vitest/globals"
-    ]
   },
   "include": [
     "src/**/*.d.ts",
