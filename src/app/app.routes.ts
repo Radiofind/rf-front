@@ -1,14 +1,11 @@
 import { Routes } from '@angular/router';
-import { EMPTY_STRING } from './core/constants/constants';
 import { authGuard } from './core/guards/auth.guard';
 import { Links } from './core/constants/links';
 
-export const emptyString = EMPTY_STRING;
-
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'my-uploads',
+    path: Links.DEFAULT_PATH,
+    redirectTo: Links.UPLOADS_URL,
     pathMatch: 'full',
   },
   {

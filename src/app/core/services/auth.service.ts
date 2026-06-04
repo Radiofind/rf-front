@@ -4,13 +4,13 @@ import { HttpClient } from "@angular/common/http";
 import { IAuthEndpoints, IAuthModel, IAuthResponse } from "../models/auth.model";
 import { Observable, tap } from "rxjs";
 import { AuthStateService } from "./auth-state.service";
-import { AUTH_ENDPOINTS } from "../constants/constants";
+import { EndpointConstants } from "../constants/endpoints.constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly authEndpoints: IAuthEndpoints = AUTH_ENDPOINTS;
+  private readonly authEndpoints: IAuthEndpoints = EndpointConstants.AUTH_ENDPOINTS;
   private readonly api: string = `${environment.apiUrl}${this.authEndpoints.auth}`;
   private readonly http: HttpClient = inject(HttpClient);
   private readonly authStateService: AuthStateService = inject(AuthStateService);

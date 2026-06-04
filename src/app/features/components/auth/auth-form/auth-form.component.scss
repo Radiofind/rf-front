@@ -6,6 +6,9 @@
   background: linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));
 
   &-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 100%;
     padding: 32px;
     border-radius: 20px;
