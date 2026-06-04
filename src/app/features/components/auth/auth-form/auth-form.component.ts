@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, InputSignal } from '@angular/core';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Constants } from '../../../../core/constants/constants';
 import { birthDateValidator } from '../../../../core/validators/birth-date.validator';
@@ -15,6 +15,8 @@ import { ArtistType } from '../../../../core/types/artist-type.type';
 })
 export class AuthFormComponent {
   private readonly fb: NonNullableFormBuilder = inject(NonNullableFormBuilder);
+
+  public readonly isLogin: InputSignal<boolean> = input<boolean>(true);
 
   public readonly loginForm = this.fb.group({
     email: [Constants.EMPTY_STRING, [Validators.required, Validators.email]],

@@ -2,10 +2,12 @@
 
 <div class="auth">
   <div class="auth-description">
-    <app-auth-description [content]="isLogin() ? authDescriptionContentLogin : authDescriptionContentRegister" />
+    <app-auth-description
+      [content]="isLogin() ? authDescriptionContentLogin : authDescriptionContentRegister"
+    />
   </div>
   <div class="auth-form">
-    <app-auth-form />
+    <app-auth-form [isLogin]="isLogin()" />
   </div>
 </div>
 

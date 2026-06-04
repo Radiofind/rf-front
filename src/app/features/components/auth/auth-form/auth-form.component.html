@@ -1,7 +1,13 @@
 <div class="form">
   <div class="form-content">
-    <h2 class="form-content_title">Log In</h2>
-    <p class="form-content_description">Welcome back! Please enter your details.</p>
-    <form></form>
+    @if (isLogin()) {
+      <h2 class="form-content_title">Log In</h2>
+      <p class="form-content_description">Welcome back! Please enter your details.</p>
+      <form></form>
+    } @else {
+      <h2 class="form-content_title">Create Your Account</h2>
+      <p class="form-content_description">Fill in the details below to get started.</p>
+      <form></form>
+    }
   </div>
 </div>
