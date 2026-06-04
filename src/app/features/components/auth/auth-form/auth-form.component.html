@@ -1,9 +1,45 @@
 <div class="form">
   <div class="form-content">
     @if (isLogin()) {
-      <h2 class="form-content_title">Log In</h2>
-      <p class="form-content_description">Welcome back! Please enter your details.</p>
-      <form></form>
+      <h2 class="form-content__title">Log In</h2>
+      <p class="form-content__description">Welcome back! Please enter your details.</p>
+
+      <form class="form-content__form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
+        <div class="form-content__form--email">
+          <div class="form-content__form--email-label form-label">
+            <span class="label">Email Address</span>
+          </div>
+          <input
+            id="loginEmail"
+            class="email"
+            [class.invalid]="emailLoginForm.touched && emailLoginForm.invalid"
+            type="email"
+            formControlName="email"
+            placeholder="you@example.com"
+          />
+        </div>
+
+        <div class="form-content__form--password">
+          <div class="form-content__form--password-label">
+            <span class="label">Password</span>
+            <span class="label-color">Forgot password?</span>
+          </div>
+          <input
+            id="loginPassword"
+            class="password"
+            [class.invalid]="passwordLoginForm.touched && passwordLoginForm.invalid"
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <button class="form-content__form--login-action" type="submit">
+          <p></p>
+          <p>Log In</p>
+          <i class="bx bx-arrow-right-stroke"></i>
+        </button>
+      </form>
     } @else {
       <h2 class="form-content_title">Create Your Account</h2>
       <p class="form-content_description">Fill in the details below to get started.</p>

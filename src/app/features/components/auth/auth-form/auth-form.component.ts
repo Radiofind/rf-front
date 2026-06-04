@@ -100,4 +100,8 @@ export class AuthFormComponent {
   public get descriptionRegisterForm(): FormControl<string> {
     return this.registerForm.controls.description;
   }
+
+  public onSubmit(event: Event): void {
+    event.preventDefault();
+  }
 }
