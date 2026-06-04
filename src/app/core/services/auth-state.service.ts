@@ -1,6 +1,8 @@
 import { inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { TOKEN_KEY } from "../constants/constants";
 import { isPlatformBrowser } from "@angular/common";
+import { jwtDecode } from 'jwt-decode';
+import { JwtPayload } from "../models/auth.model";
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +32,20 @@ export class AuthStateService {
 
   public isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  public isTokenValid(): boolean {
+    const token: string | null | undefined = this.getToken();
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+      return decoded.exp * 1000 > Date.now();
+    } catch {
+      return false
+    };
   }
 }

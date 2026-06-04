@@ -12,3 +12,7 @@ export interface IAuthEndpoints {
   register: string;
   login: string;
 }
+
+export interface JwtPayload {
+  exp: number;
+}

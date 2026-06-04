@@ -1,0 +1,14 @@
+.form {
+  width: 100%;
+  height: 400px;
+  padding: 1px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));
+
+  &-content {
+    height: 100%;
+    padding: 32px;
+    border-radius: 20px;
+    background: var(--second-bg-color);
+  }
+}

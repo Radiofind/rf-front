@@ -7,3 +7,5 @@ export const AUTH_ENDPOINTS: IAuthEndpoints = {
   register: '/register',
   login: '/login',
 };
+
+export const EMPTY_STRING: string = '';
