@@ -1,14 +1,16 @@
-<app-header />
+<div [class.login-bg]="isLogin()" [class.register-bg]="!isLogin()">
+  <app-header />
 
-<div class="auth">
-  <div class="auth-description">
-    <app-auth-description
-      [content]="isLogin() ? authDescriptionContentLogin : authDescriptionContentRegister"
-    />
+  <div class="auth">
+    <div class="auth-description">
+      <app-auth-description
+        [content]="isLogin() ? authDescriptionContentLogin : authDescriptionContentRegister"
+      />
+    </div>
+    <div class="auth-form">
+      <app-auth-form [isLogin]="isLogin()" />
+    </div>
   </div>
-  <div class="auth-form">
-    <app-auth-form [isLogin]="isLogin()" />
-  </div>
+
+  <div class="rights">© 2026 RADIOFIND. All rights reserved.</div>
 </div>
-
-<div class="rights">© 2026 RADIOFIND. All rights reserved.</div>

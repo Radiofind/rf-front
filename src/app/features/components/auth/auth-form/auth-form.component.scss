@@ -1,6 +1,6 @@
 .form {
   width: 100%;
-  height: 400px;
+  height: auto;
   padding: 1px;
   border-radius: 20px;
   background: linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));
@@ -10,8 +10,119 @@
     flex-direction: column;
     align-items: center;
     height: 100%;
-    padding: 32px;
+    padding: 52px;
     border-radius: 20px;
     background: var(--second-bg-color);
+
+    &__title {
+      margin-bottom: 20px;
+      font-size: 32px;
+      font-weight: 500;
+    }
+
+    &__description {
+      margin-bottom: 40px;
+      font-size: 20px;
+      color: var(--second-text-color);
+    }
+
+    &__form {
+      width: 100%;
+      margin-bottom: 40px;
+
+      &--email,
+      &--password {
+        position: relative;
+
+        i {
+          position: absolute;
+          top: 60px;
+          left: 20px;
+          font-size: 32px;
+          color: var(--main-color);
+        }
+      }
+
+      .form-label {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .email,
+      .password {
+        width: 100%;
+        height: 56px;
+        margin-bottom: 40px;
+        padding: 0 60px;
+        background: transparent;
+        border: 1px solid var(--second-gradient-bg);
+        border-radius: 12px;
+        font-size: 16px;
+        color: var(--text-color);
+      }
+
+      &--password-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+
+        .label-color {
+          color: var(--main-color);
+          cursor: pointer;
+          transition: all 300ms ease;
+        }
+
+        .label-color:hover {
+          opacity: 0.7;
+        }
+      }
+
+      &--login-action {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        height: 52px;
+        background: linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));;
+        color: var(--text-color);
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: 0.4px;
+        cursor: pointer;
+        transition: all 300ms;
+
+        i {
+          font-size: 28px;
+        }
+      }
+
+      &--login-action:hover {
+        opacity: 0.7;
+      }
+    }
+
+    &__sign-up {
+      font-size: 20px;
+
+      button {
+        border: none;
+        background: transparent;
+        color: var(--main-color);
+        cursor: pointer;
+        transition: all 300ms ease;
+      }
+
+      button:hover {
+        opacity: 0.7;
+      }
+    }
   }
+}
+
+.invalid {
+  border-color: var(--invalid-border);
 }

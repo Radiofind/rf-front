@@ -5,6 +5,8 @@ import { birthDateValidator } from '../../../../core/validators/birth-date.valid
 import { passwordValidator } from '../../../../core/validators/password.validator';
 import { passwordMatchValidator } from '../../../../core/validators/password-match.validator';
 import { ArtistType } from '../../../../core/types/artist-type.type';
+import { Router } from '@angular/router';
+import { Links } from '../../../../core/constants/links';
 
 @Component({
   selector: 'app-auth-form',
@@ -15,6 +17,8 @@ import { ArtistType } from '../../../../core/types/artist-type.type';
 })
 export class AuthFormComponent {
   private readonly fb: NonNullableFormBuilder = inject(NonNullableFormBuilder);
+
+  private readonly router: Router = inject(Router);
 
   public readonly isLogin: InputSignal<boolean> = input<boolean>(true);
 
@@ -103,5 +107,9 @@ export class AuthFormComponent {
 
   public onSubmit(event: Event): void {
     event.preventDefault();
+  }
+
+  public onSignUp(): void {
+    this.router.navigate([Links.REGISTER_URL]);
   }
 }

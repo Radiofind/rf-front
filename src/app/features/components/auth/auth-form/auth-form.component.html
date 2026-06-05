@@ -9,6 +9,7 @@
           <div class="form-content__form--email-label form-label">
             <span class="label">Email Address</span>
           </div>
+          <i class="bx bx-envelope-alt"></i>
           <input
             id="loginEmail"
             class="email"
@@ -24,6 +25,7 @@
             <span class="label">Password</span>
             <span class="label-color">Forgot password?</span>
           </div>
+          <i class="bx bx-lock"></i>
           <input
             id="loginPassword"
             class="password"
@@ -35,11 +37,13 @@
         </div>
 
         <button class="form-content__form--login-action" type="submit">
-          <p></p>
           <p>Log In</p>
           <i class="bx bx-arrow-right-stroke"></i>
         </button>
       </form>
+      <div class="form-content__sign-up">
+        <p>Don't have an account? <button (click)="onSignUp()">&nbsp;&nbsp;Sign up</button></p>
+      </div>
     } @else {
       <h2 class="form-content_title">Create Your Account</h2>
       <p class="form-content_description">Fill in the details below to get started.</p>
