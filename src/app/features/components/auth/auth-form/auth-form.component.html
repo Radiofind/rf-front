@@ -9,7 +9,7 @@
           <div class="form-content__form--email-label form-label">
             <span class="label">Email Address</span>
           </div>
-          <i class="bx bx-envelope-alt"></i>
+          <i class="default bx bx-envelope-alt"></i>
           <input
             id="loginEmail"
             class="email"
@@ -25,15 +25,18 @@
             <span class="label">Password</span>
             <span class="label-color">Forgot password?</span>
           </div>
-          <i class="bx bx-lock"></i>
+          <i class="default bx bx-lock"></i>
           <input
             id="loginPassword"
             class="password"
             [class.invalid]="passwordLoginForm.touched && passwordLoginForm.invalid"
-            type="password"
+            [type]="showPassword() ? 'text' : 'password'"
             formControlName="password"
             placeholder="Enter your password"
           />
+          <button class="visibility-action" (click)="togglePasswordVisibility()">
+            <i [class]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
+          </button>
         </div>
 
         <button class="form-content__form--login-action" type="submit">

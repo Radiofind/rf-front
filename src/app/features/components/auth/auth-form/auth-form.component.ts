@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, InputSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Constants } from '../../../../core/constants/constants';
 import { birthDateValidator } from '../../../../core/validators/birth-date.validator';
@@ -22,6 +22,8 @@ export class AuthFormComponent {
   private readonly router: Router = inject(Router);
 
   public readonly authType: InputSignal<AuthType> = input<AuthType>('login');
+
+  public showPassword: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly loginForm = this.fb.group({
     email: [Constants.EMPTY_STRING, [Validators.required, Validators.email]],
@@ -104,6 +106,10 @@ export class AuthFormComponent {
 
   public get descriptionRegisterForm(): FormControl<string> {
     return this.registerForm.controls.description;
+  }
+
+  public togglePasswordVisibility(): void {
+    this.showPassword.update(visibility => !visibility);
   }
 
   public onSubmit(event: Event): void {
