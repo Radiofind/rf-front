@@ -1,4 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { Constants } from "../constants/constants";
+import { transformStringToDate } from "../../shared/helpers/date.helpers";
 
 export const birthDateValidator = (): ValidatorFn => {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -6,7 +8,7 @@ export const birthDateValidator = (): ValidatorFn => {
       return null;
     };
 
-    const date: Date = new Date(control.value);
+    const date: Date = transformStringToDate(control.value);
 
     if (isNaN(date.getTime())) {
       return { invalidDate: true };
@@ -14,6 +16,18 @@ export const birthDateValidator = (): ValidatorFn => {
 
     if (date > new Date()) {
       return { futureDate: true };
+    };
+
+    const minDate: Date = new Date();
+    minDate.setFullYear(minDate.getFullYear() - Constants.MIN_BIRTH_DATE);
+
+    if (date < minDate) {
+      return {
+        maxAgeHundredYears: {
+          minAllowedDate: minDate,
+          actualDate: date,
+        },
+      };
     };
 
     return null;

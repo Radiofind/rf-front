@@ -20,6 +20,8 @@ import { ArtistType } from '../../../../core/types/artist-type.type';
 import { Links } from '../../../../core/constants/links';
 import { AuthType } from '../../../../core/types/auth.type';
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
+import { ILoginData, IRegisterData } from '../../../models/auth-content.model';
+import { transformStringToDate } from '../../../../shared/helpers/date.helpers';
 
 @Component({
   selector: 'app-auth-form',
@@ -68,7 +70,7 @@ export class AuthFormComponent {
     surname: [Constants.EMPTY_STRING, [Validators.required, Validators.pattern(Constants.NAME_VALIDATOR_PATTERN)]],
     email: [Constants.EMPTY_STRING, [Validators.required, Validators.email]],
     recoveryEmail: [Constants.EMPTY_STRING, [Validators.email]],
-    dateOfBirth: [new Date, [Validators.required, birthDateValidator()]],
+    dateOfBirth: [Constants.EMPTY_STRING, [Validators.required, birthDateValidator()]],
     password: [Constants.EMPTY_STRING, [
       Validators.required,
       Validators.minLength(Constants.MIN_LINGTS_FORM_VALIDATION_PASSWORD),
@@ -101,7 +103,7 @@ export class AuthFormComponent {
     return this.registerForm.controls.recoveryEmail;
   }
 
-  public get dateOfBirthRegisterForm(): FormControl<Date> {
+  public get dateOfBirthRegisterForm(): FormControl<string> {
     return this.registerForm.controls.dateOfBirth;
   }
 
@@ -140,9 +142,36 @@ export class AuthFormComponent {
 
   public onSubmit(event: Event): void {
     event.preventDefault();
+    const data: ILoginData | IRegisterData = this.prepareFormData();
+    console.log(data);
   }
 
   public onSwitchAuthType(): void {
     this.router.navigate(this.authType() === 'login' ? [Links.REGISTER_URL] : [Links.LOGIN_URL]);
+  }
+
+  private prepareFormData(): ILoginData | IRegisterData {
+    if (this.authType() === 'login') {
+      return {
+        email: this.emailLoginForm.value,
+        password: this.passwordLoginForm.value,
+      };
+    };
+
+    const dateOfBirth: Date = transformStringToDate(this.dateOfBirthRegisterForm.value);
+
+    return {
+      name: this.nameRegisterForm.value,
+      surname: this.surnameRegisterForm.value,
+      email: this.emailRegisterForm.value,
+      recoveryEmail: this.recoveryEmailRegisterForm.value ?? null,
+      dateOfBirth: dateOfBirth,
+      password: this.passwordRegisterForm.value,
+      artistInformation: {
+        typeOfArtist: this.typeOfArtistRegisterForm.value ?? null,
+        artistName: this.artistOrBandNameRegisterForm.value ?? null,
+        description: this.descriptionRegisterForm.value ?? null,
+      }
+    }
   }
 }

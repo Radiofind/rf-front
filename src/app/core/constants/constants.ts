@@ -23,6 +23,8 @@ export class Constants {
 
   public static readonly SPLIT_DATE_BY_T: string = 'T';
 
+  public static readonly DASH: string = '-';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
@@ -36,6 +38,8 @@ export class Constants {
   public static readonly MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME: number = 20;
 
   public static readonly MIN_BIRTH_DATE: number = 100;
+
+  public static readonly ONE: number = 1;
 
   // others
 
