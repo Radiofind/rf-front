@@ -8,10 +8,11 @@ import { ArtistType } from '../../../../core/types/artist-type.type';
 import { Router } from '@angular/router';
 import { Links } from '../../../../core/constants/links';
 import { AuthType } from '../../../../core/types/auth.type';
+import { ButtonComponent } from "../../../../shared/components/button/button.component";
 
 @Component({
   selector: 'app-auth-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ButtonComponent],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

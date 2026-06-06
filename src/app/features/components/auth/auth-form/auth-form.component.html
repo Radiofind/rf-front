@@ -11,7 +11,6 @@
           </div>
           <i class="default bx bx-envelope-alt"></i>
           <input
-            id="loginEmail"
             class="email"
             [class.invalid]="emailLoginForm.touched && emailLoginForm.invalid"
             type="email"
@@ -27,7 +26,6 @@
           </div>
           <i class="default bx bx-lock"></i>
           <input
-            id="loginPassword"
             class="password"
             [class.invalid]="passwordLoginForm.touched && passwordLoginForm.invalid"
             [type]="showPassword() ? 'text' : 'password'"
@@ -39,10 +37,11 @@
           </button>
         </div>
 
-        <button class="form-content__form--login-action" type="submit">
-          <p>Log In</p>
-          <i class="bx bx-arrow-right-stroke"></i>
-        </button>
+        <app-button
+          [contentText]="'Log In'"
+          [contentIconClass]="'bx bx-arrow-right-stroke'"
+          [buttonType]="'submit'"
+        />
       </form>
       <div class="form-content__sign-up">
         <p>
