@@ -7,6 +7,7 @@ import { passwordMatchValidator } from '../../../../core/validators/password-mat
 import { ArtistType } from '../../../../core/types/artist-type.type';
 import { Router } from '@angular/router';
 import { Links } from '../../../../core/constants/links';
+import { AuthType } from '../../../../core/types/auth.type';
 
 @Component({
   selector: 'app-auth-form',
@@ -20,7 +21,7 @@ export class AuthFormComponent {
 
   private readonly router: Router = inject(Router);
 
-  public readonly isLogin: InputSignal<boolean> = input<boolean>(true);
+  public readonly authType: InputSignal<AuthType> = input<AuthType>('login');
 
   public readonly loginForm = this.fb.group({
     email: [Constants.EMPTY_STRING, [Validators.required, Validators.email]],
@@ -109,7 +110,7 @@ export class AuthFormComponent {
     event.preventDefault();
   }
 
-  public onSignUp(): void {
-    this.router.navigate([Links.REGISTER_URL]);
+  public onSwitchAuthType(): void {
+    this.router.navigate(this.authType() === 'login' ? [Links.REGISTER_URL] : [Links.LOGIN_URL]);
   }
 }

@@ -1,14 +1,16 @@
-<div [class.login-bg]="isLogin()" [class.register-bg]="!isLogin()">
+<div [class.login-bg]="authType() === 'login'" [class.register-bg]="authType() === 'register'">
   <app-header />
 
   <div class="auth">
     <div class="auth-description">
       <app-auth-description
-        [content]="isLogin() ? authDescriptionContentLogin : authDescriptionContentRegister"
+        [content]="
+          authType() === 'login' ? authDescriptionContentLogin : authDescriptionContentRegister
+        "
       />
     </div>
     <div class="auth-form">
-      <app-auth-form [isLogin]="isLogin()" />
+      <app-auth-form [authType]="authType()" />
     </div>
   </div>
 

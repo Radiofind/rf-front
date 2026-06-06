@@ -1,6 +1,6 @@
 <div class="form">
   <div class="form-content">
-    @if (isLogin()) {
+    @if (authType() === 'login') {
       <h2 class="form-content__title">Log In</h2>
       <p class="form-content__description">Welcome back! Please enter your details.</p>
 
@@ -42,7 +42,9 @@
         </button>
       </form>
       <div class="form-content__sign-up">
-        <p>Don't have an account? <button (click)="onSignUp()">&nbsp;&nbsp;Sign up</button></p>
+        <p>
+          Don't have an account? <button (click)="onSwitchAuthType()">&nbsp;&nbsp;Sign up</button>
+        </p>
       </div>
     } @else {
       <h2 class="form-content_title">Create Your Account</h2>

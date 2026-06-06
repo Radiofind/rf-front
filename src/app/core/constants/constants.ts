@@ -15,6 +15,12 @@ export class Constants {
 
   public static readonly SPACES_PROPERTY: string = 'spaces';
 
+  public static readonly LOGIN: string = 'login';
+
+  public static readonly REGISTER: string = 'register';
+
+  public static readonly AUTH_TYPE_PROP: string = 'authType';
+
   // magic numbers
 
   public static readonly MIN_LINGTH_FORM_VALIDATION_NAME: number = 2;

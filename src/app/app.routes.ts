@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { Links } from './core/constants/links';
+import { Constants } from './core/constants/constants';
 
 export const routes: Routes = [
   {
@@ -11,10 +12,12 @@ export const routes: Routes = [
   {
     path: Links.LOGIN_URL,
     loadComponent: () => import('./pages/auth-page/auth-page.component').then(c => c.AuthPageComponent),
+    data: { authType: Constants.LOGIN }
   },
   {
     path: Links.REGISTER_URL,
     loadComponent: () => import('./pages/auth-page/auth-page.component').then(c => c.AuthPageComponent),
+    data: { authType: Constants.REGISTER }
   },
   {
     path: Links.UPLOADS_URL,
