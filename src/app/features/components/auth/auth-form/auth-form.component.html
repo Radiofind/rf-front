@@ -32,7 +32,7 @@
             formControlName="password"
             placeholder="Enter your password"
           />
-          <button class="visibility-action" (click)="togglePasswordVisibility()">
+          <button class="visibility-action" (click)="togglePasswordVisibility(0)">
             <i [class]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
           </button>
         </div>
@@ -58,6 +58,7 @@
             <div class="form-content__form--name-surname-name-label form-label">
               <span>Name</span>
             </div>
+            <i class="default bx bx-user"></i>
             <input
               class="name"
               [class.invalid]="nameRegisterForm.touched && nameRegisterForm.invalid"
@@ -70,6 +71,7 @@
             <div class="form-content__form--name-surname-surname-label form-label">
               <span>Surname</span>
             </div>
+            <i class="default bx bx-user"></i>
             <input
               class="surname"
               [class.invalid]="surnameRegisterForm.touched && surnameRegisterForm.invalid"
@@ -84,6 +86,7 @@
           <div class="form-content__form--email-label form-label">
             <span>Email</span>
           </div>
+          <i class="default bx bx-envelope-alt"></i>
           <input
             class="email"
             [class.invalid]="emailRegisterForm.touched && emailRegisterForm.invalid"
@@ -97,6 +100,7 @@
           <div class="form-content__form-recovery-label form-label">
             <span>Recovery Email <span class="optional">(optional)</span></span>
           </div>
+          <i class="default bx bx-envelope-alt"></i>
           <input
             class="recovery"
             [class.invalid]="recoveryEmailRegisterForm.touched && recoveryEmailRegisterForm.invalid"
@@ -110,12 +114,13 @@
           <div class="form-content__form-birthday-label form-label">
             <span>Date of Birth</span>
           </div>
+          <i class="default bx bx-calendar"></i>
           <input
             class="birthday"
             [class.invalid]="dateOfBirthRegisterForm.touched && dateOfBirthRegisterForm.invalid"
             type="date"
-            [min]="minDate()"
-            [max]="currentDate"
+            min="{{ minDate() | date: 'yyyy-MM-dd' }}"
+            max="{{ currentDate | date: 'yyyy-MM-dd' }}"
             formControlName="dateOfBirth"
             placeholder="Select your date of birth"
           />
@@ -126,87 +131,107 @@
             <div class="form-content__form-passwords-password-label form-label">
               <span>Password</span>
             </div>
+            <i class="default bx bx-lock"></i>
             <input
               class="password"
               [class.invalid]="passwordRegisterForm.touched && passwordRegisterForm.invalid"
-              type="password"
+              [type]="showPassword() ? 'text' : 'password'"
               formControlName="password"
               placeholder="Enter your password"
             />
+            <button class="visibility-action" (click)="togglePasswordVisibility(0)">
+              <i [class]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
+            </button>
           </div>
           <div class="form-content__form-passwords-confirm">
             <div class="form-content__form-passwords-confirm-label form-label">
               <span>Confirm Password</span>
             </div>
+            <i class="default bx bx-lock"></i>
             <input
               class="confirm"
               [class.invalid]="
                 confirmPasswordRegisterForm.touched && confirmPasswordRegisterForm.invalid
               "
-              type="password"
+              [type]="showConfirmPassword() ? 'text' : 'password'"
               formControlName="confirmPassword"
               placeholder="Repeat your password"
             />
+            <button class="visibility-action" (click)="togglePasswordVisibility(1)">
+              <i [class]="showConfirmPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
+            </button>
           </div>
         </div>
 
         <div class="form-content__form-add">
-          <input class="add" type="checkbox" formControlName="addInformation" />
-          <span>I want to add information about my artist / band</span>
-        </div>
-
-        <div class="form-content__form-type">
-          <div class="form-content__form-type-label form-label">
-            <span>1 am a <i class="bx bx-help-circle"></i></span>
-          </div>
-          <label>
-            <input
-              class="type"
-              type="radio"
-              name="typeOfArtist"
-              value="artist"
-              formControlName="typeOfArtist"
-            />
-            Artist
-          </label>
-          <label>
-            <input
-              class="type"
-              type="radio"
-              name="typeOfArtist"
-              value="band"
-              formControlName="typeOfArtist"
-            />
-            Band
+          <label class="add">
+            <input type="checkbox" formControlName="addInformation" />
+            <span></span>
+            I want to add information about my artist / band
           </label>
         </div>
 
-        <div class="form-content__form-artist-name">
-          <div class="form-content__form-artist-name-label form-label">
-            <span>Artist / Band Name <span class="optional">(optional)</span></span>
+        @if (addInformationRegisterForm.value) {
+          <div class="form-content__form-type">
+            <div class="form-content__form-type-label form-label">
+              <span>Who are you?</span>
+            </div>
+            <div class="type-flex">
+              <label class="type">
+                <input
+                  type="radio"
+                  name="typeOfArtist"
+                  value="Artist"
+                  formControlName="typeOfArtist"
+                />
+                <span></span>
+                Artist
+              </label>
+              <label class="type">
+                <input
+                  type="radio"
+                  name="typeOfArtist"
+                  value="Band"
+                  formControlName="typeOfArtist"
+                />
+                <span></span>
+                Band
+              </label>
+            </div>
           </div>
-          <input
-            class="artist-name"
-            [class.invalid]="
-              artistOrBandNameRegisterForm.touched && artistOrBandNameRegisterForm.invalid
-            "
-            type="text"
-            formControlName="artistOrBandName"
-            placeholder="Enter artist or band name"
-          />
-        </div>
 
-        <div class="form-content__form-description">
-          <div class="form-content__form-description-label form-label">
-            <span>Description <span class="optional">(optional)</span></span>
+          <div class="form-content__form-artist-name">
+            <div class="form-content__form-artist-name-label form-label">
+              <span
+                >{{ typeOfArtistRegisterForm.value }} Name
+                <span class="optional">(optional)</span></span
+              >
+            </div>
+            <i class="default bx bx-user"></i>
+            <input
+              class="artist-name"
+              [class.invalid]="
+                artistOrBandNameRegisterForm.touched && artistOrBandNameRegisterForm.invalid
+              "
+              type="text"
+              formControlName="artistOrBandName"
+              placeholder="Enter {{ typeOfArtistRegisterForm.value | lowercase }} name"
+            />
           </div>
-          <textarea
-            class="description"
-            rows="10"
-            formControlName="description"
-            placeholder="Tell us about your music, style, influences..."
-          ></textarea>
-        </div>
+
+          <div class="form-content__form-description">
+            <div class="form-content__form-description-label form-label">
+              <span>Description <span class="optional">(optional)</span></span>
+            </div>
+            <i class="default bx bx-note-book"></i>
+            <textarea
+              class="description"
+              rows="10"
+              formControlName="description"
+              placeholder="Tell us about your music, style, influences..."
+            ></textarea>
+          </div>
+        }
 
         <app-button
           [contentText]="'Create Account'"

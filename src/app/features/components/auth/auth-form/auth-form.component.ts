@@ -9,20 +9,21 @@ import {
   signal,
   WritableSignal
 } from '@angular/core';
+import { DatePipe, LowerCasePipe } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Constants } from '../../../../core/constants/constants';
 import { birthDateValidator } from '../../../../core/validators/birth-date.validator';
 import { passwordValidator } from '../../../../core/validators/password.validator';
 import { passwordMatchValidator } from '../../../../core/validators/password-match.validator';
 import { ArtistType } from '../../../../core/types/artist-type.type';
-import { Router } from '@angular/router';
 import { Links } from '../../../../core/constants/links';
 import { AuthType } from '../../../../core/types/auth.type';
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
 
 @Component({
   selector: 'app-auth-form',
-  imports: [ReactiveFormsModule, ButtonComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, DatePipe, LowerCasePipe],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,13 +37,13 @@ export class AuthFormComponent {
 
   public showPassword: WritableSignal<boolean> = signal<boolean>(false);
 
-  public readonly currentDate: string = new Date().toISOString().split(Constants.SPLIT_DATE_BY_T)[Constants.ZERO];
+  public showConfirmPassword: WritableSignal<boolean> = signal<boolean>(false);
 
-  public readonly minDate: Signal<string> = computed(() => {
-    const minDate: Date = new Date();
-    minDate.setFullYear(minDate.getFullYear() - Constants.MIN_BIRTH_DATE);
+  public readonly currentDate: Date = new Date();
 
-    return minDate.toISOString().split(Constants.SPLIT_DATE_BY_T)[Constants.ZERO];
+  public readonly minDate: Signal<Date> = computed(() => {
+    const minusHundredYears: number = new Date().getFullYear() - 100;
+    return new Date(minusHundredYears, this.currentDate.getMonth(), this.currentDate.getDate());
   })
 
   public readonly loginForm = this.fb.group({
@@ -76,7 +77,7 @@ export class AuthFormComponent {
     ]],
     confirmPassword: [Constants.EMPTY_STRING, [Validators.required]],
     addInformation: [false],
-    typeOfArtist: this.fb.control<ArtistType>('artist'),
+    typeOfArtist: this.fb.control<ArtistType>('Artist'),
     artistOrBandName: [Constants.EMPTY_STRING, [Validators.maxLength(Constants.MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME)]],
     description: [Constants.EMPTY_STRING]
   },
@@ -128,18 +129,17 @@ export class AuthFormComponent {
     return this.registerForm.controls.description;
   }
 
-  public togglePasswordVisibility(): void {
-    this.showPassword.update(visibility => !visibility);
+  public togglePasswordVisibility(index: number): void {
+    if (index === Constants.ZERO) {
+      this.showPassword.update(visibility => !visibility);
+    } else {
+      this.showConfirmPassword.update(visibility => !visibility);
+    }
+    
   }
 
   public onSubmit(event: Event): void {
     event.preventDefault();
-
-    if (this.authType() === 'login') {
-      alert('Login')
-    } else {
-      alert('Register');
-    }
   }
 
   public onSwitchAuthType(): void {

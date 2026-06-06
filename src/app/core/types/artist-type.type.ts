@@ -1,1 +1,1 @@
-export type ArtistType = 'artist' | 'band';
+export type ArtistType = 'Artist' | 'Band';
