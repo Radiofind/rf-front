@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
+import { 
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  InputSignal,
+  Signal,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Constants } from '../../../../core/constants/constants';
 import { birthDateValidator } from '../../../../core/validators/birth-date.validator';
@@ -25,6 +35,15 @@ export class AuthFormComponent {
   public readonly authType: InputSignal<AuthType> = input<AuthType>('login');
 
   public showPassword: WritableSignal<boolean> = signal<boolean>(false);
+
+  public readonly currentDate: string = new Date().toISOString().split(Constants.SPLIT_DATE_BY_T)[Constants.ZERO];
+
+  public readonly minDate: Signal<string> = computed(() => {
+    const minDate: Date = new Date();
+    minDate.setFullYear(minDate.getFullYear() - Constants.MIN_BIRTH_DATE);
+
+    return minDate.toISOString().split(Constants.SPLIT_DATE_BY_T)[Constants.ZERO];
+  })
 
   public readonly loginForm = this.fb.group({
     email: [Constants.EMPTY_STRING, [Validators.required, Validators.email]],
@@ -115,6 +134,12 @@ export class AuthFormComponent {
 
   public onSubmit(event: Event): void {
     event.preventDefault();
+
+    if (this.authType() === 'login') {
+      alert('Login')
+    } else {
+      alert('Register');
+    }
   }
 
   public onSwitchAuthType(): void {

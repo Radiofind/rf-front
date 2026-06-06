@@ -43,6 +43,7 @@
           [buttonType]="'submit'"
         />
       </form>
+
       <div class="form-content__sign-up">
         <p>
           Don't have an account? <button (click)="onSwitchAuthType()">&nbsp;&nbsp;Sign up</button>
@@ -51,7 +52,174 @@
     } @else {
       <h2 class="form-content__title">Create Your Account</h2>
       <p class="form-content__description">Fill in the details below to get started.</p>
-      <form></form>
+      <form class="form-content__form" [formGroup]="registerForm" (ngSubmit)="onSubmit($event)">
+        <div class="form-content__form--name-surname">
+          <div class="form-content__form--name-surname-name">
+            <div class="form-content__form--name-surname-name-label form-label">
+              <span>Name</span>
+            </div>
+            <input
+              class="name"
+              [class.invalid]="nameRegisterForm.touched && nameRegisterForm.invalid"
+              type="text"
+              formControlName="name"
+              placeholder="Enter your name"
+            />
+          </div>
+          <div class="form-content__form--name-surname-surname">
+            <div class="form-content__form--name-surname-surname-label form-label">
+              <span>Surname</span>
+            </div>
+            <input
+              class="surname"
+              [class.invalid]="surnameRegisterForm.touched && surnameRegisterForm.invalid"
+              type="text"
+              formControlName="surname"
+              placeholder="Enter your surname"
+            />
+          </div>
+        </div>
+
+        <div class="form-content__form--email">
+          <div class="form-content__form--email-label form-label">
+            <span>Email</span>
+          </div>
+          <input
+            class="email"
+            [class.invalid]="emailRegisterForm.touched && emailRegisterForm.invalid"
+            type="email"
+            formControlName="email"
+            placeholder="you@example.com"
+          />
+        </div>
+
+        <div class="form-content__form-recovery">
+          <div class="form-content__form-recovery-label form-label">
+            <span>Recovery Email <span class="optional">(optional)</span></span>
+          </div>
+          <input
+            class="recovery"
+            [class.invalid]="recoveryEmailRegisterForm.touched && recoveryEmailRegisterForm.invalid"
+            type="email"
+            formControlName="recoveryEmail"
+            placeholder="recovery@example.com"
+          />
+        </div>
+
+        <div class="form-content__form-birthday">
+          <div class="form-content__form-birthday-label form-label">
+            <span>Date of Birth</span>
+          </div>
+          <input
+            class="birthday"
+            [class.invalid]="dateOfBirthRegisterForm.touched && dateOfBirthRegisterForm.invalid"
+            type="date"
+            [min]="minDate()"
+            [max]="currentDate"
+            formControlName="dateOfBirth"
+            placeholder="Select your date of birth"
+          />
+        </div>
+
+        <div class="form-content__form-passwords">
+          <div class="form-content__form-passwords-password">
+            <div class="form-content__form-passwords-password-label form-label">
+              <span>Password</span>
+            </div>
+            <input
+              class="password"
+              [class.invalid]="passwordRegisterForm.touched && passwordRegisterForm.invalid"
+              type="password"
+              formControlName="password"
+              placeholder="Enter your password"
+            />
+          </div>
+          <div class="form-content__form-passwords-confirm">
+            <div class="form-content__form-passwords-confirm-label form-label">
+              <span>Confirm Password</span>
+            </div>
+            <input
+              class="confirm"
+              [class.invalid]="
+                confirmPasswordRegisterForm.touched && confirmPasswordRegisterForm.invalid
+              "
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="Repeat your password"
+            />
+          </div>
+        </div>
+
+        <div class="form-content__form-add">
+          <input class="add" type="checkbox" formControlName="addInformation" />
+          <span>I want to add information about my artist / band</span>
+        </div>
+
+        <div class="form-content__form-type">
+          <div class="form-content__form-type-label form-label">
+            <span>1 am a <i class="bx bx-help-circle"></i></span>
+          </div>
+          <label>
+            <input
+              class="type"
+              type="radio"
+              name="typeOfArtist"
+              value="artist"
+              formControlName="typeOfArtist"
+            />
+            Artist
+          </label>
+          <label>
+            <input
+              class="type"
+              type="radio"
+              name="typeOfArtist"
+              value="band"
+              formControlName="typeOfArtist"
+            />
+            Band
+          </label>
+        </div>
+
+        <div class="form-content__form-artist-name">
+          <div class="form-content__form-artist-name-label form-label">
+            <span>Artist / Band Name <span class="optional">(optional)</span></span>
+          </div>
+          <input
+            class="artist-name"
+            [class.invalid]="
+              artistOrBandNameRegisterForm.touched && artistOrBandNameRegisterForm.invalid
+            "
+            type="text"
+            formControlName="artistOrBandName"
+            placeholder="Enter artist or band name"
+          />
+        </div>
+
+        <div class="form-content__form-description">
+          <div class="form-content__form-description-label form-label">
+            <span>Description <span class="optional">(optional)</span></span>
+          </div>
+          <textarea
+            class="description"
+            rows="10"
+            formControlName="description"
+            placeholder="Tell us about your music, style, influences..."
+          ></textarea>
+        </div>
+
+        <app-button
+          [contentText]="'Create Account'"
+          [contentIconClass]="'bx bx-arrow-right-stroke'"
+          [buttonType]="'submit'"
+        />
+      </form>
+
+      <div class="form-content__sign-in">
+        <p>
+          Already have an account? <button (click)="onSwitchAuthType()">&nbsp;&nbsp;Log in</button>
+        </p>
+      </div>
     }
   </div>
 </div>

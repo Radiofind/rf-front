@@ -77,6 +77,10 @@
         color: var(--text-color);
       }
 
+      .invalid {
+        border-color: var(--invalid-border);
+      }
+
       &--password-label {
         display: flex;
         justify-content: space-between;
@@ -112,8 +116,4 @@
       }
     }
   }
-}
-
-.invalid {
-  border-color: var(--invalid-border);
 }

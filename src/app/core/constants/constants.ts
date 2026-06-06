@@ -21,7 +21,11 @@ export class Constants {
 
   public static readonly AUTH_TYPE_PROP: string = 'authType';
 
+  public static readonly SPLIT_DATE_BY_T: string = 'T';
+
   // magic numbers
+
+  public static readonly ZERO: number = 0;
 
   public static readonly MIN_LINGTH_FORM_VALIDATION_NAME: number = 2;
 
@@ -30,6 +34,8 @@ export class Constants {
   public static readonly MAX_LENGTH_FORM_VALIDATION_PASSWORD: number = 50;
 
   public static readonly MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME: number = 20;
+
+  public static readonly MIN_BIRTH_DATE: number = 100;
 
   // others
 
