@@ -19,6 +19,15 @@
           />
         </div>
 
+        <div class="error-message">
+          @if (emailLoginForm.touched && emailLoginForm.hasError('required')) {
+            <div>Field is required</div>
+          }
+          @if (emailLoginForm.touched && emailLoginForm.hasError('email')) {
+            <div>Invalid email</div>
+          }
+        </div>
+
         <div class="form-content__form--password">
           <div class="form-content__form--password-label">
             <span class="label">Password</span>
@@ -35,6 +44,12 @@
           <button class="visibility-action" (click)="togglePasswordVisibility(0)">
             <i [class]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
           </button>
+        </div>
+
+        <div class="error-message">
+          @if (passwordLoginForm.touched && passwordLoginForm.hasError('required')) {
+            <div>Field is required</div>
+          }
         </div>
 
         <app-button
