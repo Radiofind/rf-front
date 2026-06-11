@@ -137,8 +137,7 @@ export class AuthFormComponent {
       this.showPassword.update(visibility => !visibility);
     } else {
       this.showConfirmPassword.update(visibility => !visibility);
-    }
-    
+    } 
   }
 
   public onSubmit(event: Event): void {
