@@ -41,6 +41,7 @@
           [contentText]="'Log In'"
           [contentIconClass]="'bx bx-arrow-right-stroke'"
           [buttonType]="'submit'"
+          [disabled]="loginForm.invalid"
         />
       </form>
 
@@ -237,6 +238,7 @@
           [contentText]="'Create Account'"
           [contentIconClass]="'bx bx-arrow-right-stroke'"
           [buttonType]="'submit'"
+          [disabled]="registerForm.invalid"
         />
       </form>
 

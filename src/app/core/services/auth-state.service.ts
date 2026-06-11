@@ -7,6 +7,7 @@ import { JwtPayload } from "../models/auth.model";
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthStateService {
   private readonly tokenKey = Constants.TOKEN_KEY;
   private platformId = inject(PLATFORM_ID);

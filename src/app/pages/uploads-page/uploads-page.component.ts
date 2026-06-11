@@ -7,4 +7,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './uploads-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class UploadsPageComponent {}

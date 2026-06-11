@@ -6,4 +6,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class HeaderComponent {}

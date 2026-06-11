@@ -30,6 +30,7 @@ import { transformStringToDate } from '../../../../shared/helpers/date.helpers';
   styleUrl: './auth-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class AuthFormComponent {
   private readonly fb: NonNullableFormBuilder = inject(NonNullableFormBuilder);
 

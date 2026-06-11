@@ -17,6 +17,7 @@ import { Constants } from '../../core/constants/constants';
   styleUrl: './auth-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class AuthPageComponent {
   private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 

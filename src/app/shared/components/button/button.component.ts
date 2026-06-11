@@ -7,6 +7,7 @@ import { ButtonType } from '../../../core/types/button-type.type';
   styleUrl: './button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class ButtonComponent {
   public readonly buttonType: InputSignal<ButtonType> = input<ButtonType>('button');
 
@@ -16,7 +17,9 @@ export class ButtonComponent {
 
   public readonly additionalClass: InputSignal<string> = input<string>('');
 
-  public clickAction: OutputEmitterRef<void> = output<void>();
+  public readonly disabled: InputSignal<boolean> = input<boolean>(false);
+
+  public readonly clickAction: OutputEmitterRef<void> = output<void>();
 
   public onClick(): void {
     this.clickAction.emit();

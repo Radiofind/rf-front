@@ -9,6 +9,7 @@ import { EndpointConstants } from "../constants/endpoints.constants";
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
   private readonly authEndpoints: IAuthEndpoints = EndpointConstants.AUTH_ENDPOINTS;
   private readonly api: string = `${environment.apiUrl}${this.authEndpoints.auth}`;
