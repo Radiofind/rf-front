@@ -45,7 +45,7 @@ export class AuthFormComponent {
   public readonly currentDate: Date = new Date();
 
   public readonly minDate: Signal<Date> = computed(() => {
-    const minusHundredYears: number = new Date().getFullYear() - 100;
+    const minusHundredYears: number = new Date().getFullYear() - Constants.MIN_BIRTH_DATE;
     return new Date(minusHundredYears, this.currentDate.getMonth(), this.currentDate.getDate());
   })
 
