@@ -21,6 +21,8 @@ export class Constants {
 
   public static readonly AUTH_TYPE_PROP: string = 'authType';
 
+  public static readonly INVALID_LOGIN_PASSWORD: string = 'Invalid login or password';
+
   public static readonly SPLIT_DATE_BY_T: string = 'T';
 
   public static readonly DASH: string = '-';

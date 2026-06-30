@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   input,
   InputSignal,
@@ -11,7 +12,9 @@ import {
 } from '@angular/core';
 import { DatePipe, LowerCasePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { catchError, of } from 'rxjs';
 import { Constants } from '../../../../core/constants/constants';
 import { birthDateValidator } from '../../../../core/validators/birth-date.validator';
 import { passwordValidator } from '../../../../core/validators/password.validator';
@@ -22,6 +25,7 @@ import { AuthType } from '../../../../core/types/auth.type';
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
 import { ILoginData, IRegisterData } from '../../../models/auth-content.model';
 import { transformStringToDate } from '../../../../shared/helpers/date.helpers';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-auth-form',
@@ -34,13 +38,19 @@ import { transformStringToDate } from '../../../../shared/helpers/date.helpers';
 export class AuthFormComponent {
   private readonly fb: NonNullableFormBuilder = inject(NonNullableFormBuilder);
 
+  private readonly authService: AuthService = inject(AuthService);
+
   private readonly router: Router = inject(Router);
+
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   public readonly authType: InputSignal<AuthType> = input<AuthType>('login');
 
   public showPassword: WritableSignal<boolean> = signal<boolean>(false);
 
   public showConfirmPassword: WritableSignal<boolean> = signal<boolean>(false);
+
+  public loginError: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
 
   public readonly currentDate: Date = new Date();
 
@@ -143,7 +153,25 @@ export class AuthFormComponent {
   public onSubmit(event: Event): void {
     event.preventDefault();
     const data: ILoginData | IRegisterData = this.prepareFormData();
-    console.log(data);
+    
+    if (this.authType() === 'login') {
+      this.authService.login(data as ILoginData).pipe(
+        takeUntilDestroyed(this.destroyRef), 
+        catchError(() => {
+          this.loginError.set(Constants.INVALID_LOGIN_PASSWORD);
+          return of(null);
+      })
+    ).subscribe(() => {
+        this.loginError.set(Constants.EMPTY_STRING);
+        this.router.navigate([Links.UPLOADS_URL]);
+      });
+    } else {
+      this.authService.register(data as IRegisterData).pipe(
+        takeUntilDestroyed(this.destroyRef),
+      ).subscribe(() => {
+        this.router.navigate([Links.UPLOADS_URL]);
+      });
+    };
   }
 
   public onSwitchAuthType(): void {
@@ -168,7 +196,7 @@ export class AuthFormComponent {
       dateOfBirth: dateOfBirth,
       password: this.passwordRegisterForm.value,
       artistInformation: {
-        typeOfArtist: this.typeOfArtistRegisterForm.value ?? null,
+        typeOfArtist: this.typeOfArtistRegisterForm.value.toUpperCase() ?? null,
         artistName: this.artistOrBandNameRegisterForm.value ?? null,
         description: this.descriptionRegisterForm.value ?? null,
       }

@@ -40,7 +40,7 @@
             formControlName="password"
             placeholder="Enter your password"
           />
-          <button class="visibility-action" (click)="togglePasswordVisibility(0)">
+          <button class="visibility-action" type="button" (click)="togglePasswordVisibility(0)">
             <i [class]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
           </button>
           <div class="error-message">
@@ -207,7 +207,7 @@
               formControlName="password"
               placeholder="Enter your password"
             />
-            <button class="visibility-action" (click)="togglePasswordVisibility(0)">
+            <button class="visibility-action" type="button" (click)="togglePasswordVisibility(0)">
               <i [class]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
             </button>
             <div class="error-message">
@@ -255,7 +255,7 @@
               formControlName="confirmPassword"
               placeholder="Repeat your password"
             />
-            <button class="visibility-action" (click)="togglePasswordVisibility(1)">
+            <button class="visibility-action" type="button" (click)="togglePasswordVisibility(1)">
               <i [class]="showConfirmPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
             </button>
             <div class="error-message">

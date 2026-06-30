@@ -1,5 +1,3 @@
-import { ArtistType } from "../../core/types/artist-type.type";
-
 export interface IAuthContent {
   title: string;
   titleColor: string;
@@ -31,7 +29,7 @@ export interface IRegisterData {
 }
 
 export interface IArtistInformation {
-  typeOfArtist?: ArtistType | null;
+  typeOfArtist?: string;
   artistName?: string | null;
   description?: string | null;
 }
