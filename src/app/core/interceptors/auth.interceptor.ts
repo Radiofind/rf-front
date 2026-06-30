@@ -1,6 +1,6 @@
 import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
 import { inject, PLATFORM_ID } from "@angular/core";
-import { AuthStateService } from "../services/auth-state.service";
+import { AuthStateService } from "../../features/services/auth-state-service/auth-state.service";
 import { isPlatformBrowser } from "@angular/common";
 
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {

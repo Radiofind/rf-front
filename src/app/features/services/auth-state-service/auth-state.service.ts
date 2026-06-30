@@ -1,8 +1,8 @@
 import { inject, Injectable, PLATFORM_ID } from "@angular/core";
-import { Constants } from "../constants/constants";
+import { Constants } from "../../../core/constants/constants";
 import { isPlatformBrowser } from "@angular/common";
 import { jwtDecode } from 'jwt-decode';
-import { JwtPayload } from "../models/auth.model";
+import { JwtPayload } from "../../../core/models/auth.model";
 
 @Injectable({
   providedIn: 'root'

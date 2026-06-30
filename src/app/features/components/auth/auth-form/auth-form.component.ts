@@ -25,7 +25,7 @@ import { AuthType } from '../../../../core/types/auth.type';
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
 import { ILoginData, IRegisterData } from '../../../models/auth-content.model';
 import { transformStringToDate } from '../../../../shared/helpers/date.helpers';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../services/auth-service/auth.service';
 
 @Component({
   selector: 'app-auth-form',

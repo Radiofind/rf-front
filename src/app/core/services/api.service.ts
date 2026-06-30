@@ -3,7 +3,7 @@ import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { IAuthEndpoints, IAuthResponse, ILoginData } from "../models/auth.model";
 import { Observable, tap } from "rxjs";
-import { AuthStateService } from "./auth-state.service";
+import { AuthStateService } from "../../features/services/auth-state-service/auth-state.service";
 import { EndpointConstants } from "../constants/endpoints.constants";
 import { IRegisterData } from "../../features/models/auth-content.model";
 
@@ -11,10 +11,13 @@ import { IRegisterData } from "../../features/models/auth-content.model";
   providedIn: 'root'
 })
 
-export class AuthService {
+export class ApiService {
   private readonly authEndpoints: IAuthEndpoints = EndpointConstants.AUTH_ENDPOINTS;
+  
   private readonly api: string = `${environment.apiUrl}${this.authEndpoints.auth}`;
+
   private readonly http: HttpClient = inject(HttpClient);
+
   private readonly authStateService: AuthStateService = inject(AuthStateService);
 
   public register(data: IRegisterData): Observable<IAuthResponse> {
@@ -31,9 +34,5 @@ export class AuthService {
         this.authStateService.setToken(response.token);
       })
     );
-  }
-
-  public logout(): void {
-    this.authStateService.clearToken();
   }
 }
