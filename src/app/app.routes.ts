@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { Links } from './core/constants/links';
 import { Constants } from './core/constants/constants';
+import { noLoginGuard } from './core/guards/auto-login.guard';
 
 export const routes: Routes = [
   {
@@ -11,6 +12,7 @@ export const routes: Routes = [
   },
   {
     path: Links.LOGIN_URL,
+    canActivate: [noLoginGuard],
     loadComponent: () => import('./pages/auth-page/auth-page.component').then(c => c.AuthPageComponent),
     data: { authType: Constants.LOGIN }
   },

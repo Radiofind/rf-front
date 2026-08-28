@@ -14,7 +14,6 @@ import { DatePipe, LowerCasePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { catchError, of } from 'rxjs';
 import { Constants } from '../../../../core/constants/constants';
 import { birthDateValidator } from '../../../../core/validators/birth-date.validator';
 import { passwordValidator } from '../../../../core/validators/password.validator';
@@ -156,20 +155,24 @@ export class AuthFormComponent {
     
     if (this.authType() === 'login') {
       this.authService.login(data as ILoginData).pipe(
-        takeUntilDestroyed(this.destroyRef), 
-        catchError(() => {
+        takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+        next: () => {
+          this.loginError.set(Constants.EMPTY_STRING);
+          this.router.navigate([Links.UPLOADS_URL]);
+        },
+        error: () => {
           this.loginError.set(Constants.INVALID_LOGIN_PASSWORD);
-          return of(null);
-      })
-    ).subscribe(() => {
-        this.loginError.set(Constants.EMPTY_STRING);
-        this.router.navigate([Links.UPLOADS_URL]);
+          this.loginForm.reset();
+        }
       });
     } else {
       this.authService.register(data as IRegisterData).pipe(
-        takeUntilDestroyed(this.destroyRef),
-      ).subscribe(() => {
-        this.router.navigate([Links.UPLOADS_URL]);
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe({
+        next: () => {
+          this.router.navigate([Links.UPLOADS_URL]);
+        }
       });
     };
   }

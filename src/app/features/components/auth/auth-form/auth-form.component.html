@@ -3,6 +3,9 @@
     @if (authType() === 'login') {
       <h2 class="form-content__title">Log In</h2>
       <p class="form-content__description">Welcome back! Please enter your details.</p>
+      @if (loginError()) {
+        <p class="form-content__error">{{loginError()}}</p>
+      }
 
       <form class="form-content__form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
         <div class="form-content__form--email">

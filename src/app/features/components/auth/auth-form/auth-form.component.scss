@@ -21,9 +21,15 @@
     }
 
     &__description {
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       font-size: 20px;
       color: var(--second-text-color);
+    }
+
+    &__error {
+      margin-bottom: 40px;
+      font-size: 20px;
+      color: var(--invalid-border);
     }
 
     &__form {
