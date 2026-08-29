@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { ButtonType } from '../../../core/types/button-type.type';
 import { Constants } from '../../../core/constants/constants';
+import { ButtonTypeEnum } from '../../../core/enums/button-type.enum';
 
 @Component({
   selector: 'app-button',
@@ -10,7 +11,7 @@ import { Constants } from '../../../core/constants/constants';
 })
 
 export class ButtonComponent {
-  public readonly buttonType: InputSignal<ButtonType> = input<ButtonType>(Constants.BUTTON_DEFAULT_TYPE);
+  public readonly buttonType: InputSignal<ButtonType> = input<ButtonType>(ButtonTypeEnum.BUTTON);
 
   public readonly contentText: InputSignal<string | null> = input<string | null>(null);
 

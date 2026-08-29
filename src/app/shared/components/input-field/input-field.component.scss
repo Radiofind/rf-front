@@ -39,6 +39,52 @@
   }
 }
 
+.radio-field {
+  &__label {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 40px;
+
+    &--option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 24px;
+      cursor: pointer;
+
+      input {
+        display: none;
+      }
+
+      span {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--second-gradient-bg);
+        border-radius: 50%;
+        position: relative;
+      }
+
+      input:checked + span::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background: var(--main-color);
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
+
 .field {
   position: relative;
 

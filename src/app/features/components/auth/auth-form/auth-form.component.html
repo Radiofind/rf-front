@@ -10,7 +10,6 @@
       <form class="form-content__form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
         <app-input-field
           formControlName="email"
-          [additionalClass]="'form-label'"
           [fieldLabel]="'Email Address'"
           [iconClass]="'bx bx-envelope-alt'"
           [inputType]="'email'"
@@ -52,7 +51,6 @@
         <div class="form-content__form--name-surname">
           <app-input-field
             formControlName="name"
-            [additionalClass]="'form-label'"
             [fieldLabel]="'Name'"
             [iconClass]="'bx bx-user'"
             [inputClass]="'input-custom__width'"
@@ -62,7 +60,6 @@
 
           <app-input-field
             formControlName="surname"
-            [additionalClass]="'form-label'"
             [fieldLabel]="'Surname'"
             [iconClass]="'bx bx-user'"
             [inputClass]="'input-custom__width'"
@@ -73,7 +70,6 @@
 
         <app-input-field
           formControlName="email"
-          [additionalClass]="'form-label'"
           [fieldLabel]="'Email'"
           [iconClass]="'bx bx-envelope-alt'"
           [inputType]="'email'"
@@ -83,7 +79,6 @@
 
         <app-input-field
           formControlName="recoveryEmail"
-          [additionalClass]="'form-label'"
           [fieldLabel]="'Recovery Email'"
           [hasOptionalLabel]="true"
           [iconClass]="'bx bx-envelope-alt'"
@@ -94,7 +89,6 @@
 
         <app-input-field
           formControlName="dateOfBirth"
-          [additionalClass]="'form-label'"
           [fieldLabel]="'Date of Birth'"
           [iconClass]="'bx bx-calendar'"
           [inputType]="'date'"
@@ -107,7 +101,6 @@
         <div class="form-content__form-passwords">
           <app-input-field
             formControlName="password"
-            [additionalClass]="'form-label'"
             [fieldLabel]="'Password'"
             [inputClass]="'input-custom__width'"
             [iconClass]="'bx bx-lock'"
@@ -121,7 +114,6 @@
 
           <app-input-field
             formControlName="confirmPassword"
-            [additionalClass]="'form-label'"
             [fieldLabel]="'Confirm Password'"
             [inputClass]="'input-custom__width'"
             [iconClass]="'bx bx-lock'"
@@ -143,37 +135,16 @@
         />
 
         @if (addInformationRegisterForm.value) {
-          <div class="form-content__form-type">
-            <div class="form-content__form-type-label form-label">
-              <span>Who are you?</span>
-            </div>
-            <div class="type-flex">
-              <label class="type">
-                <input
-                  type="radio"
-                  name="typeOfArtist"
-                  value="Artist"
-                  formControlName="typeOfArtist"
-                />
-                <span></span>
-                Artist
-              </label>
-              <label class="type">
-                <input
-                  type="radio"
-                  name="typeOfArtist"
-                  value="Band"
-                  formControlName="typeOfArtist"
-                />
-                <span></span>
-                Band
-              </label>
-            </div>
-          </div>
+          <app-input-field
+            formControlName="typeOfArtist"
+            [fieldLabel]="'Who are you?'"
+            [inputType]="'radio'"
+            [radioOptions]="['Artist', 'Band']"
+            [inputControl]="typeOfArtistRegisterForm"
+          />
 
           <app-input-field
             formControlName="artistOrBandName"
-            [additionalClass]="'form-label'"
             [fieldLabel]="typeOfArtistRegisterForm.value + ' Name'"
             [hasOptionalLabel]="true"
             [iconClass]="'bx bx-user'"

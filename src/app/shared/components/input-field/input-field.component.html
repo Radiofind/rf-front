@@ -7,6 +7,25 @@
     </label>
   </div>
 } @else if (inputType() === 'radio') {
+  <div class="radio-field">
+    <div class="radio-field__label">
+      <span>{{ fieldLabel() }}</span>
+    </div>
+    <div class="radio-field__buttons">
+      @for (option of radioOptions(); track option) {
+        <label class="radio-field__buttons--option">
+          <input
+            type="radio"
+            [value]="option"
+            [checked]="radioValue() === option"
+            (change)="onInput($event)"
+          />
+          <span></span>
+          {{ option }}
+        </label>
+      }
+    </div>
+  </div>
 } @else {
   <div class="field">
     <div class="field-label" [class]="additionalClass()">

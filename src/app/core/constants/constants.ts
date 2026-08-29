@@ -1,6 +1,3 @@
-import { ButtonType } from "../types/button-type.type";
-import { InputType } from "../types/input-type.type";
-
 export class Constants {
   // inline strings
 
@@ -29,10 +26,6 @@ export class Constants {
   public static readonly SPLIT_DATE_BY_T: string = 'T';
 
   public static readonly DASH: string = '-';
-
-  public static readonly BUTTON_DEFAULT_TYPE: ButtonType = 'button';
-
-  public static readonly INPUT_DEFAULT_TYPE: InputType = 'text';
 
   // magic numbers
 

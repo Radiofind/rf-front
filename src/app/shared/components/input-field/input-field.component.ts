@@ -19,6 +19,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Constants } from '../../../core/constants/constants';
 import { InputType } from '../../../core/types/input-type.type';
 import { AUTH_ERROR_MESSAGES } from '../../../features/constants/auth-error-messages.constant';
+import { InputTypeEnum } from '../../../core/enums/input-type.enum';
 
 @Component({
   selector: 'app-input-field',
@@ -52,7 +53,7 @@ export class InputFieldComponent implements ControlValueAccessor {
 
   public inputClass: InputSignal<string | null> = input<string | null>(null);
 
-  public inputType: InputSignal<InputType> = input<InputType>(Constants.INPUT_DEFAULT_TYPE);
+  public inputType: InputSignal<InputType> = input<InputType>(InputTypeEnum.TEXT);
 
   public inputPlaceholder: InputSignal<string | null> = input<string | null>(null);
 
@@ -66,11 +67,15 @@ export class InputFieldComponent implements ControlValueAccessor {
 
   public checkboxText: InputSignal<string | null> = input<string | null>(null);
 
+  public radioOptions: InputSignal<string[]> = input<string[]>([]);
+
   public inputActionEmiter: OutputEmitterRef<void> = output<void>();
 
   public inputValue: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
 
   public checkboxValue: WritableSignal<boolean> = signal<boolean>(false);
+
+  public radioValue: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
 
   public isInputTouched: WritableSignal<boolean> = signal<boolean>(false);
 
@@ -117,10 +122,15 @@ export class InputFieldComponent implements ControlValueAccessor {
   private onTouched: () => void = () => {};
 
   public writeValue(value: string | boolean): void {
-    if (this.inputType() === 'checkbox') {
+    if (this.inputType() === InputTypeEnum.CHECKBOX) {
       this.checkboxValue.set(Boolean(value))
       return;
     }
+
+    if (this.inputType() === InputTypeEnum.RADIO) {
+      this.radioValue.set(value as string ?? Constants.EMPTY_STRING);
+      return;
+    };
     this.inputValue.set(value as string ?? Constants.EMPTY_STRING);
   }
 
@@ -135,11 +145,15 @@ export class InputFieldComponent implements ControlValueAccessor {
   public onInput(event: Event): void {
     const input: HTMLInputElement = event.target as HTMLInputElement;
 
-    if (this.inputType() === 'checkbox') {
+    if (this.inputType() === InputTypeEnum.CHECKBOX) {
       this.checkboxValue.set(input.checked);
       this.onChange(input.checked);
     } else {
-      this.inputValue.set(input.value);
+      if (this.inputType() === InputTypeEnum.RADIO) {
+        this.radioValue.set(input.value)
+      } else {
+        this.inputValue.set(input.value);
+      }
       this.onChange(input.value);
     }
     this.onTouched();
