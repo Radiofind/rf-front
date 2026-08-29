@@ -1,0 +1,25 @@
+<div class="field">
+  <div class="field-label" [class]="additionalClass()">
+    <span class="label">{{ fieldLabel() }}</span>
+  </div>
+  <i class="default" [class]="iconClass()"></i>
+  <input
+    class="field-input"
+    [class.invalid]="isInputInvalid()"
+    [type]="inputType()"
+    [placeholder]="inputPlaceholder()"
+    [value]="inputValue()"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+  />
+  @if (hasInputAction()) {
+    <button class="action-icon" type="button" (click)="onHandleInputAction()">
+      <i [class]="inputActionIconClass()"></i>
+    </button>
+  }
+  <div class="error-message">
+    @for (message of inputErrorMessages(); track message) {
+      <div>{{ message }}</div>
+    }
+  </div>
+</div>

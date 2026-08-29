@@ -13,6 +13,6 @@ export interface IAuthEndpoints {
   login: string;
 }
 
-export interface JwtPayload {
+export interface IJwtPayload {
   exp: number;
 }

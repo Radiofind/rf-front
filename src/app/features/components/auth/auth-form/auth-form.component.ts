@@ -25,10 +25,12 @@ import { ButtonComponent } from "../../../../shared/components/button/button.com
 import { ILoginData, IRegisterData } from '../../../models/auth-content.model';
 import { transformStringToDate } from '../../../../shared/helpers/date.helpers';
 import { AuthService } from '../../../services/auth-service/auth.service';
+import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-auth-form',
-  imports: [ReactiveFormsModule, ButtonComponent, DatePipe, LowerCasePipe],
+  imports: [ReactiveFormsModule, ButtonComponent, DatePipe, LowerCasePipe, InputFieldComponent],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -84,7 +86,6 @@ export class AuthFormComponent {
     password: [Constants.EMPTY_STRING, [
       Validators.required,
       Validators.minLength(Constants.MIN_LINGTS_FORM_VALIDATION_PASSWORD),
-      Validators.maxLength(Constants.MAX_LENGTH_FORM_VALIDATION_PASSWORD),
       passwordValidator()
     ]],
     confirmPassword: [Constants.EMPTY_STRING, [Validators.required]],
@@ -163,6 +164,11 @@ export class AuthFormComponent {
         },
         error: () => {
           this.loginError.set(Constants.INVALID_LOGIN_PASSWORD);
+          timer(Constants.INVALID_DATA_MESSAGE_TIME)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => {
+              this.loginError.set(Constants.EMPTY_STRING);
+            });
           this.loginForm.reset();
         }
       });

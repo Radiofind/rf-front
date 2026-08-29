@@ -4,31 +4,19 @@
       <h2 class="form-content__title">Log In</h2>
       <p class="form-content__description">Welcome back! Please enter your details.</p>
       @if (loginError()) {
-        <p class="form-content__error">{{loginError()}}</p>
+        <p class="form-content__error">{{ loginError() }}</p>
       }
 
       <form class="form-content__form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
-        <div class="form-content__form--email">
-          <div class="form-content__form--email-label form-label">
-            <span class="label">Email Address</span>
-          </div>
-          <i class="default bx bx-envelope-alt"></i>
-          <input
-            class="email"
-            [class.invalid]="emailLoginForm.touched && emailLoginForm.invalid"
-            type="email"
-            formControlName="email"
-            placeholder="you@example.com"
-          />
-          <div class="error-message">
-            @if (emailLoginForm.touched && emailLoginForm.hasError('required')) {
-              <div>Field is required</div>
-            }
-            @if (emailLoginForm.touched && emailLoginForm.hasError('email')) {
-              <div>Invalid email</div>
-            }
-          </div>
-        </div>
+        <app-input-field
+          formControlName="email"
+          [additionalClass]="'form-label'"
+          [fieldLabel]="'Email Address'"
+          [iconClass]="'bx bx-envelope-alt'"
+          [inputType]="'email'"
+          [inputPlaceholder]="'you@example.com'"
+          [inputControl]="emailLoginForm"
+        />
 
         <div class="form-content__form--password">
           <div class="form-content__form--password-label">
@@ -63,7 +51,7 @@
 
       <div class="form-content__sign-up">
         <p>
-          Don't have an account? <button (click)="onSwitchAuthType()">&nbsp;&nbsp;Sign up</button>
+          Don't have an account?<button (click)="onSwitchAuthType()">&nbsp;&nbsp;Sign up</button>
         </p>
       </div>
     } @else {
@@ -220,9 +208,6 @@
               @if (passwordRegisterForm.touched && passwordRegisterForm.hasError('minlength')) {
                 <div>Must be at least 8 character long</div>
               }
-              @if (passwordRegisterForm.touched && passwordRegisterForm.hasError('maxlength')) {
-                <div>Must not exceed 50 characters</div>
-              }
               @if (passwordRegisterForm.touched && passwordRegisterForm.hasError('uppercase')) {
                 <div>Must contain at least one uppercase letter</div>
               }
@@ -365,7 +350,7 @@
 
       <div class="form-content__sign-in">
         <p>
-          Already have an account? <button (click)="onSwitchAuthType()">&nbsp;&nbsp;Log in</button>
+          Already have an account?<button (click)="onSwitchAuthType()">&nbsp;&nbsp;Log in</button>
         </p>
       </div>
     }

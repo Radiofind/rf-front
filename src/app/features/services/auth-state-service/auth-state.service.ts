@@ -2,7 +2,7 @@ import { inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { Constants } from "../../../core/constants/constants";
 import { isPlatformBrowser } from "@angular/common";
 import { jwtDecode } from 'jwt-decode';
-import { JwtPayload } from "../../../core/models/auth.model";
+import { IJwtPayload } from "../../../core/models/auth.model";
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +43,7 @@ export class AuthStateService {
     }
 
     try {
-      const decoded = jwtDecode<JwtPayload>(token);
+      const decoded = jwtDecode<IJwtPayload>(token);
       return decoded.exp * 1000 > Date.now();
     } catch {
       return false

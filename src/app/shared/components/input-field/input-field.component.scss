@@ -1,0 +1,59 @@
+.field {
+  position: relative;
+
+  &-label {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .default {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    font-size: 32px;
+    color: var(--main-color);
+  }
+
+  .action-icon {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    border: none;
+    background: transparent;
+    font-size: 32px;
+    color: var(--second-text-color);
+    cursor: pointer;
+    transition: all 300ms ease;
+  }
+
+  .action-icon:hover {
+    opacity: 0.7;
+  }
+
+  &-input {
+    width: 100%;
+    height: 56px;
+    padding: 0 60px;
+    background: transparent;
+    border: 1px solid var(--second-gradient-bg);
+    border-radius: 12px;
+    font-size: 16px;
+    color: var(--text-color);
+  }
+
+  .invalid {
+    border-color: var(--invalid-border);
+  }
+
+  .error-message {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 32px;
+    font-size: 16px;
+    color: var(--invalid-border);
+  }
+
+  
+}

@@ -1,3 +1,6 @@
+import { ButtonType } from "../types/button-type.type";
+import { InputType } from "../types/input-type.type";
+
 export class Constants {
   // inline strings
 
@@ -27,6 +30,10 @@ export class Constants {
 
   public static readonly DASH: string = '-';
 
+  public static readonly BUTTON_DEFAULT_TYPE: ButtonType = 'button';
+
+  public static readonly INPUT_DEFAULT_TYPE: InputType = 'text';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
@@ -35,13 +42,13 @@ export class Constants {
 
   public static readonly MIN_LINGTS_FORM_VALIDATION_PASSWORD: number = 8;
 
-  public static readonly MAX_LENGTH_FORM_VALIDATION_PASSWORD: number = 50;
-
   public static readonly MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME: number = 20;
 
   public static readonly MIN_BIRTH_DATE: number = 100;
 
   public static readonly ONE: number = 1;
+
+  public static readonly INVALID_DATA_MESSAGE_TIME: number = 3000;
 
   // others
 
