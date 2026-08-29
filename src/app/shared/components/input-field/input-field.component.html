@@ -18,6 +18,8 @@
     [type]="inputType()"
     [placeholder]="inputPlaceholder()"
     [value]="inputValue()"
+    [min]="minDateValue()"
+    [max]="maxDateValue()"
     (input)="onInput($event)"
     (blur)="onBlur()"
   />

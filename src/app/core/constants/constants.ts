@@ -42,7 +42,7 @@ export class Constants {
 
   public static readonly MIN_LINGTS_FORM_VALIDATION_PASSWORD: number = 8;
 
-  public static readonly MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME: number = 20;
+  public static readonly MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME: number = 50;
 
   public static readonly MIN_BIRTH_DATE: number = 100;
 

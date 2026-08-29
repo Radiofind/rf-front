@@ -56,7 +56,6 @@
             [fieldLabel]="'Name'"
             [iconClass]="'bx bx-user'"
             [inputClass]="'input-custom__width'"
-            [inputType]="'text'"
             [inputPlaceholder]="'Enter your name'"
             [inputControl]="nameRegisterForm"
           />
@@ -67,7 +66,6 @@
             [fieldLabel]="'Surname'"
             [iconClass]="'bx bx-user'"
             [inputClass]="'input-custom__width'"
-            [inputType]="'text'"
             [inputPlaceholder]="'Enter your surname'"
             [inputControl]="surnameRegisterForm"
           />
@@ -94,118 +92,47 @@
           [inputControl]="recoveryEmailRegisterForm"
         />
 
-        <div class="form-content__form-birthday">
-          <div class="form-content__form-birthday-label form-label">
-            <span>Date of Birth</span>
-          </div>
-          <i class="default bx bx-calendar"></i>
-          <input
-            class="birthday"
-            [class.invalid]="dateOfBirthRegisterForm.touched && dateOfBirthRegisterForm.invalid"
-            type="date"
-            min="{{ minDate() | date: 'yyyy-MM-dd' }}"
-            max="{{ currentDate | date: 'yyyy-MM-dd' }}"
-            formControlName="dateOfBirth"
-            placeholder="Select your date of birth"
-          />
-          <div class="error-message">
-            @if (dateOfBirthRegisterForm.touched && dateOfBirthRegisterForm.hasError('required')) {
-              <div>Field is required</div>
-            }
-            @if (
-              dateOfBirthRegisterForm.touched && dateOfBirthRegisterForm.hasError('invalidDate')
-            ) {
-              <div>Invalid date</div>
-            }
-            @if (
-              dateOfBirthRegisterForm.touched && dateOfBirthRegisterForm.hasError('futureDate')
-            ) {
-              <div>Date of birth cannot be in the future</div>
-            }
-            @if (
-              dateOfBirthRegisterForm.touched &&
-              dateOfBirthRegisterForm.hasError('maxAgeHundredYears')
-            ) {
-              <div>Age cannot exceed 100 years</div>
-            }
-          </div>
-        </div>
+        <app-input-field
+          formControlName="dateOfBirth"
+          [additionalClass]="'form-label'"
+          [fieldLabel]="'Date of Birth'"
+          [iconClass]="'bx bx-calendar'"
+          [inputType]="'date'"
+          [minDateValue]="minDate() | date: 'yyyy-MM-dd'"
+          [maxDateValue]="currentDate | date: 'yyyy-MM-dd'"
+          [inputPlaceholder]="'Select your date of birth'"
+          [inputControl]="dateOfBirthRegisterForm"
+        />
 
         <div class="form-content__form-passwords">
-          <div class="form-content__form-passwords-password">
-            <div class="form-content__form-passwords-password-label form-label">
-              <span>Password</span>
-            </div>
-            <i class="default bx bx-lock"></i>
-            <input
-              class="password"
-              [class.invalid]="passwordRegisterForm.touched && passwordRegisterForm.invalid"
-              [type]="showPassword() ? 'text' : 'password'"
-              formControlName="password"
-              placeholder="Enter your password"
-            />
-            <button class="visibility-action" type="button" (click)="togglePasswordVisibility(0)">
-              <i [class]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
-            </button>
-            <div class="error-message">
-              @if (passwordRegisterForm.touched && passwordRegisterForm.hasError('required')) {
-                <div>Field is required</div>
-              }
-              @if (passwordRegisterForm.touched && passwordRegisterForm.hasError('minlength')) {
-                <div>Must be at least 8 character long</div>
-              }
-              @if (passwordRegisterForm.touched && passwordRegisterForm.hasError('uppercase')) {
-                <div>Must contain at least one uppercase letter</div>
-              }
-              @if (passwordRegisterForm.touched && passwordRegisterForm.hasError('lowercase')) {
-                <div>Must contain at least one lowercase letter</div>
-              }
-              @if (passwordRegisterForm.touched && passwordRegisterForm.hasError('number')) {
-                <div>Must contain at least one number</div>
-              }
-              @if (
-                passwordRegisterForm.touched && passwordRegisterForm.hasError('specialCharacter')
-              ) {
-                <div>Must contain at least one special character</div>
-              }
-              @if (passwordRegisterForm.touched && passwordRegisterForm.hasError('spaces')) {
-                <div>Must not contain spaces</div>
-              }
-            </div>
-          </div>
+          <app-input-field
+            formControlName="password"
+            [additionalClass]="'form-label'"
+            [fieldLabel]="'Password'"
+            [inputClass]="'input-custom__width'"
+            [iconClass]="'bx bx-lock'"
+            [inputType]="showPassword() ? 'text' : 'password'"
+            [inputPlaceholder]="'Enter your password'"
+            [inputControl]="passwordRegisterForm"
+            [hasInputAction]="true"
+            [inputActionIconClass]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
+            (inputActionEmiter)="togglePasswordVisibility(0)"
+          />
 
-          <div class="form-content__form-passwords-confirm">
-            <div class="form-content__form-passwords-confirm-label form-label">
-              <span>Confirm Password</span>
-            </div>
-            <i class="default bx bx-lock"></i>
-            <input
-              class="confirm"
-              [class.invalid]="
-                (confirmPasswordRegisterForm.touched && confirmPasswordRegisterForm.invalid) ||
-                (confirmPasswordRegisterForm.touched && registerForm.hasError('passwordMismatch'))
-              "
-              [type]="showConfirmPassword() ? 'text' : 'password'"
-              formControlName="confirmPassword"
-              placeholder="Repeat your password"
-            />
-            <button class="visibility-action" type="button" (click)="togglePasswordVisibility(1)">
-              <i [class]="showConfirmPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
-            </button>
-            <div class="error-message">
-              @if (
-                confirmPasswordRegisterForm.touched &&
-                confirmPasswordRegisterForm.hasError('required')
-              ) {
-                <div>Field is required</div>
-              }
-              @if (
-                confirmPasswordRegisterForm.touched && registerForm.hasError('passwordMismatch')
-              ) {
-                <div>Invalid password</div>
-              }
-            </div>
-          </div>
+          <app-input-field
+            formControlName="confirmPassword"
+            [additionalClass]="'form-label'"
+            [fieldLabel]="'Confirm Password'"
+            [inputClass]="'input-custom__width'"
+            [iconClass]="'bx bx-lock'"
+            [inputType]="showPassword() ? 'text' : 'password'"
+            [inputPlaceholder]="'Repeat your password'"
+            [inputControl]="confirmPasswordRegisterForm"
+            [errorFormControl]="registerForm"
+            [hasInputAction]="true"
+            [inputActionIconClass]="showConfirmPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
+            (inputActionEmiter)="togglePasswordVisibility(1)"
+          />
         </div>
 
         <div class="form-content__form-add">
@@ -245,32 +172,15 @@
             </div>
           </div>
 
-          <div class="form-content__form-artist-name">
-            <div class="form-content__form-artist-name-label form-label">
-              <span
-                >{{ typeOfArtistRegisterForm.value }} Name
-                <span class="optional">(optional)</span></span
-              >
-            </div>
-            <i class="default bx bx-user"></i>
-            <input
-              class="artist-name"
-              [class.invalid]="
-                artistOrBandNameRegisterForm.touched && artistOrBandNameRegisterForm.invalid
-              "
-              type="text"
-              formControlName="artistOrBandName"
-              placeholder="Enter {{ typeOfArtistRegisterForm.value | lowercase }} name"
-            />
-            <div class="error-message">
-              @if (
-                artistOrBandNameRegisterForm.touched &&
-                artistOrBandNameRegisterForm.hasError('maxlength')
-              ) {
-                <div>Must not exceed 20 characters</div>
-              }
-            </div>
-          </div>
+          <app-input-field
+            formControlName="artistOrBandName"
+            [additionalClass]="'form-label'"
+            [fieldLabel]="typeOfArtistRegisterForm.value + ' Name'"
+            [hasOptionalLabel]="true"
+            [iconClass]="'bx bx-user'"
+            [inputPlaceholder]="'Enter ' + (typeOfArtistRegisterForm.value | lowercase) + ' name'"
+            [inputControl]="artistOrBandNameRegisterForm"
+          />
 
           <div class="form-content__form-description">
             <div class="form-content__form-description-label form-label">
