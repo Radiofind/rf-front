@@ -18,28 +18,19 @@
           [inputControl]="emailLoginForm"
         />
 
-        <div class="form-content__form--password">
-          <div class="form-content__form--password-label">
-            <span class="label">Password</span>
-            <span class="label-color">Forgot password?</span>
-          </div>
-          <i class="default bx bx-lock"></i>
-          <input
-            class="password"
-            [class.invalid]="passwordLoginForm.touched && passwordLoginForm.invalid"
-            [type]="showPassword() ? 'text' : 'password'"
-            formControlName="password"
-            placeholder="Enter your password"
-          />
-          <button class="visibility-action" type="button" (click)="togglePasswordVisibility(0)">
-            <i [class]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"></i>
-          </button>
-          <div class="error-message">
-            @if (passwordLoginForm.touched && passwordLoginForm.hasError('required')) {
-              <div>Field is required</div>
-            }
-          </div>
-        </div>
+        <app-input-field
+          formControlName="password"
+          [additionalClass]="'field-label__password'"
+          [fieldLabel]="'Password'"
+          [additionalFieldLabel]="'Forgot password?'"
+          [iconClass]="'bx bx-lock'"
+          [inputType]="showPassword() ? 'text' : 'password'"
+          [inputPlaceholder]="'Enter your password'"
+          [inputControl]="passwordLoginForm"
+          [hasInputAction]="true"
+          [inputActionIconClass]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
+          (inputActionEmiter)="togglePasswordVisibility(0)"
+        />
 
         <app-button
           [contentText]="'Log In'"
@@ -59,94 +50,49 @@
       <p class="form-content__description">Fill in the details below to get started.</p>
       <form class="form-content__form" [formGroup]="registerForm" (ngSubmit)="onSubmit($event)">
         <div class="form-content__form--name-surname">
-          <div class="form-content__form--name-surname-name">
-            <div class="form-content__form--name-surname-name-label form-label">
-              <span>Name</span>
-            </div>
-            <i class="default bx bx-user"></i>
-            <input
-              class="name"
-              [class.invalid]="nameRegisterForm.touched && nameRegisterForm.invalid"
-              type="text"
-              formControlName="name"
-              placeholder="Enter your name"
-            />
-            <div class="error-message">
-              @if (nameRegisterForm.touched && nameRegisterForm.hasError('required')) {
-                <div>Field is required</div>
-              }
-              @if (nameRegisterForm.touched && nameRegisterForm.hasError('minlength')) {
-                <div>Must be at least 2 character long</div>
-              }
-              @if (nameRegisterForm.touched && nameRegisterForm.hasError('pattern')) {
-                <div>Only English letters are allowed (without spaces)</div>
-              }
-            </div>
-          </div>
-
-          <div class="form-content__form--name-surname-surname">
-            <div class="form-content__form--name-surname-surname-label form-label">
-              <span>Surname</span>
-            </div>
-            <i class="default bx bx-user"></i>
-            <input
-              class="surname"
-              [class.invalid]="surnameRegisterForm.touched && surnameRegisterForm.invalid"
-              type="text"
-              formControlName="surname"
-              placeholder="Enter your surname"
-            />
-            <div class="error-message">
-              @if (surnameRegisterForm.touched && surnameRegisterForm.hasError('required')) {
-                <div>Field is required</div>
-              }
-              @if (surnameRegisterForm.touched && surnameRegisterForm.hasError('pattern')) {
-                <div>Only English letters are allowed (without spaces)</div>
-              }
-            </div>
-          </div>
-        </div>
-
-        <div class="form-content__form--email">
-          <div class="form-content__form--email-label form-label">
-            <span>Email</span>
-          </div>
-          <i class="default bx bx-envelope-alt"></i>
-          <input
-            class="email"
-            [class.invalid]="emailRegisterForm.touched && emailRegisterForm.invalid"
-            type="email"
-            formControlName="email"
-            placeholder="you@example.com"
+          <app-input-field
+            formControlName="name"
+            [additionalClass]="'form-label'"
+            [fieldLabel]="'Name'"
+            [iconClass]="'bx bx-user'"
+            [inputClass]="'input-custom__width'"
+            [inputType]="'text'"
+            [inputPlaceholder]="'Enter your name'"
+            [inputControl]="nameRegisterForm"
           />
-          <div class="error-message">
-            @if (emailRegisterForm.touched && emailRegisterForm.hasError('required')) {
-              <div>Field is required</div>
-            }
-            @if (emailRegisterForm.touched && emailRegisterForm.hasError('email')) {
-              <div>Invalid email</div>
-            }
-          </div>
+
+          <app-input-field
+            formControlName="surname"
+            [additionalClass]="'form-label'"
+            [fieldLabel]="'Surname'"
+            [iconClass]="'bx bx-user'"
+            [inputClass]="'input-custom__width'"
+            [inputType]="'text'"
+            [inputPlaceholder]="'Enter your surname'"
+            [inputControl]="surnameRegisterForm"
+          />
         </div>
 
-        <div class="form-content__form-recovery">
-          <div class="form-content__form-recovery-label form-label">
-            <span>Recovery Email <span class="optional">(optional)</span></span>
-          </div>
-          <i class="default bx bx-envelope-alt"></i>
-          <input
-            class="recovery"
-            [class.invalid]="recoveryEmailRegisterForm.touched && recoveryEmailRegisterForm.invalid"
-            type="email"
-            formControlName="recoveryEmail"
-            placeholder="recovery@example.com"
-          />
-          <div class="error-message">
-            @if (recoveryEmailRegisterForm.touched && recoveryEmailRegisterForm.hasError('email')) {
-              <div>Invalid email</div>
-            }
-          </div>
-        </div>
+        <app-input-field
+          formControlName="email"
+          [additionalClass]="'form-label'"
+          [fieldLabel]="'Email'"
+          [iconClass]="'bx bx-envelope-alt'"
+          [inputType]="'email'"
+          [inputPlaceholder]="'you@example.com'"
+          [inputControl]="emailRegisterForm"
+        />
+
+        <app-input-field
+          formControlName="recoveryEmail"
+          [additionalClass]="'form-label'"
+          [fieldLabel]="'Recovery Email'"
+          [hasOptionalLabel]="true"
+          [iconClass]="'bx bx-envelope-alt'"
+          [inputType]="'email'"
+          [inputPlaceholder]="'recovery@example.com'"
+          [inputControl]="recoveryEmailRegisterForm"
+        />
 
         <div class="form-content__form-birthday">
           <div class="form-content__form-birthday-label form-label">

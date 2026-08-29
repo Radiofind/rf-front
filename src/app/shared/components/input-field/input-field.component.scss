@@ -6,6 +6,28 @@
     margin-bottom: 20px;
   }
 
+  &-label__password {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .label-color {
+      color: var(--main-color);
+      cursor: pointer;
+      transition: all 300ms ease;
+    }
+
+    .label-color:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .optional {
+    font-size: 16px;
+    color: var(--second-text-color);
+  }
+
   .default {
     position: absolute;
     top: 60px;
@@ -39,6 +61,10 @@
     border-radius: 12px;
     font-size: 16px;
     color: var(--text-color);
+  }
+
+  .input-custom__width {
+    width: 400px;
   }
 
   .invalid {

@@ -40,7 +40,13 @@ export class InputFieldComponent implements ControlValueAccessor {
 
   public fieldLabel: InputSignal<string | null> = input<string | null>(null);
 
+  public additionalFieldLabel: InputSignal<string | null> = input<string | null>(null);
+
+  public hasOptionalLabel: InputSignal<boolean> = input<boolean>(false);
+
   public iconClass: InputSignal<string | null> = input<string | null>(null);
+
+  public inputClass: InputSignal<string | null> = input<string | null>(null);
 
   public inputType: InputSignal<InputType> = input<InputType>(Constants.INPUT_DEFAULT_TYPE);
 

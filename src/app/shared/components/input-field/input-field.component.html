@@ -1,10 +1,19 @@
 <div class="field">
   <div class="field-label" [class]="additionalClass()">
-    <span class="label">{{ fieldLabel() }}</span>
+    <span class="label">
+      {{ fieldLabel() }}
+      @if (hasOptionalLabel()) {
+        <span class="optional"> (optional)</span>
+      }
+    </span>
+    @if (additionalFieldLabel()) {
+      <span class="label-color">{{ additionalFieldLabel() }}</span>
+    }
   </div>
   <i class="default" [class]="iconClass()"></i>
   <input
     class="field-input"
+    [class]="inputClass()"
     [class.invalid]="isInputInvalid()"
     [type]="inputType()"
     [placeholder]="inputPlaceholder()"
