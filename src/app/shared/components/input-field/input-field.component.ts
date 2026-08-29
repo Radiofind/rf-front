@@ -14,7 +14,12 @@ import {
   Signal,
   WritableSignal
 } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
+import { 
+  AbstractControl,
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors 
+} from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Constants } from '../../../core/constants/constants';
 import { InputType } from '../../../core/types/input-type.type';
@@ -68,6 +73,10 @@ export class InputFieldComponent implements ControlValueAccessor {
   public checkboxText: InputSignal<string | null> = input<string | null>(null);
 
   public radioOptions: InputSignal<string[]> = input<string[]>([]);
+
+  public isTextareaField: InputSignal<boolean> = input<boolean>(false);
+
+  public textareaRows: InputSignal<number> = input<number>(Constants.DEFAULT_TEXTAREA_ROWS);
 
   public inputActionEmiter: OutputEmitterRef<void> = output<void>();
 
@@ -143,11 +152,12 @@ export class InputFieldComponent implements ControlValueAccessor {
   }
 
   public onInput(event: Event): void {
-    const input: HTMLInputElement = event.target as HTMLInputElement;
+    const input: HTMLInputElement | HTMLTextAreaElement = event.target as HTMLInputElement | HTMLTextAreaElement;
 
     if (this.inputType() === InputTypeEnum.CHECKBOX) {
-      this.checkboxValue.set(input.checked);
-      this.onChange(input.checked);
+      const checkboxInput: HTMLInputElement = input as HTMLInputElement;
+      this.checkboxValue.set(checkboxInput.checked);
+      this.onChange(checkboxInput.checked);
     } else {
       if (this.inputType() === InputTypeEnum.RADIO) {
         this.radioValue.set(input.value)

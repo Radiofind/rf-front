@@ -152,18 +152,15 @@
             [inputControl]="artistOrBandNameRegisterForm"
           />
 
-          <div class="form-content__form-description">
-            <div class="form-content__form-description-label form-label">
-              <span>Description <span class="optional">(optional)</span></span>
-            </div>
-            <i class="default bx bx-note-book"></i>
-            <textarea
-              class="description"
-              rows="10"
-              formControlName="description"
-              placeholder="Tell us about your music, style, influences..."
-            ></textarea>
-          </div>
+          <app-input-field
+            formControlName="description"
+            [isTextareaField]="true"
+            [fieldLabel]="'Description'"
+            [hasOptionalLabel]="true"
+            [iconClass]="'bx bx-note-book'"
+            [inputPlaceholder]="'Tell us about your music, style, influences...'"
+            [inputControl]="descriptionRegisterForm"
+          />
         }
 
         <app-button

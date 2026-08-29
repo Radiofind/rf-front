@@ -26,7 +26,7 @@
       }
     </div>
   </div>
-} @else {
+} @else if (!isTextareaField()) {
   <div class="field">
     <div class="field-label" [class]="additionalClass()">
       <span class="label">
@@ -62,5 +62,24 @@
         <div>{{ message }}</div>
       }
     </div>
+  </div>
+} @else {
+  <div class="field">
+    <div class="field-label">
+      <span
+        >{{ fieldLabel() }}
+        @if (hasOptionalLabel()) {
+          <span class="optional"> (optional)</span>
+        }
+      </span>
+    </div>
+    <i class="default" [class]="iconClass()"></i>
+    <textarea
+      class="field-textarea"
+      [rows]="textareaRows()"
+      [placeholder]="inputPlaceholder()"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+    ></textarea>
   </div>
 }

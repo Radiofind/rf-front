@@ -43,6 +43,8 @@ export class Constants {
 
   public static readonly INVALID_DATA_MESSAGE_TIME: number = 3000;
 
+  public static readonly DEFAULT_TEXTAREA_ROWS: number = 10;
+
   // others
 
   public static readonly NAME_VALIDATOR_PATTERN: RegExp = /^[A-Za-z]+$/;
