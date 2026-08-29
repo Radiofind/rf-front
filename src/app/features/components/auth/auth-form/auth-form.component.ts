@@ -13,7 +13,8 @@ import {
 import { DatePipe, LowerCasePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { timer } from 'rxjs';
 import { Constants } from '../../../../core/constants/constants';
 import { birthDateValidator } from '../../../../core/validators/birth-date.validator';
 import { passwordValidator } from '../../../../core/validators/password.validator';
@@ -26,7 +27,6 @@ import { ILoginData, IRegisterData } from '../../../models/auth-content.model';
 import { transformStringToDate } from '../../../../shared/helpers/date.helpers';
 import { AuthService } from '../../../services/auth-service/auth.service';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
-import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-auth-form',
