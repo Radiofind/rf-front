@@ -64,9 +64,13 @@ export class InputFieldComponent implements ControlValueAccessor {
 
   public errorFormControl: InputSignal<AbstractControl | null> = input<AbstractControl | null>(null);
 
+  public checkboxText: InputSignal<string | null> = input<string | null>(null);
+
   public inputActionEmiter: OutputEmitterRef<void> = output<void>();
 
   public inputValue: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+
+  public checkboxValue: WritableSignal<boolean> = signal<boolean>(false);
 
   public isInputTouched: WritableSignal<boolean> = signal<boolean>(false);
 
@@ -107,16 +111,20 @@ export class InputFieldComponent implements ControlValueAccessor {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  private onChange: (value: string) => void = (value: string) => {};
+  private onChange: (value: string | boolean) => void = (value: string | boolean) => {};
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private onTouched: () => void = () => {};
 
-  public writeValue(value: string): void {
-    this.inputValue.set(value ?? Constants.EMPTY_STRING);
+  public writeValue(value: string | boolean): void {
+    if (this.inputType() === 'checkbox') {
+      this.checkboxValue.set(Boolean(value))
+      return;
+    }
+    this.inputValue.set(value as string ?? Constants.EMPTY_STRING);
   }
 
-  public registerOnChange(fn: (value: string) => void): void {
+  public registerOnChange(fn: (value: string | boolean) => void): void {
     this.onChange = fn;
   }
 
@@ -125,10 +133,16 @@ export class InputFieldComponent implements ControlValueAccessor {
   }
 
   public onInput(event: Event): void {
-    const value: string = (event.target as HTMLInputElement).value;
+    const input: HTMLInputElement = event.target as HTMLInputElement;
 
-    this.inputValue.set(value);
-    this.onChange(value);
+    if (this.inputType() === 'checkbox') {
+      this.checkboxValue.set(input.checked);
+      this.onChange(input.checked);
+    } else {
+      this.inputValue.set(input.value);
+      this.onChange(input.value);
+    }
+    this.onTouched();
   }
 
   public onBlur(): void {

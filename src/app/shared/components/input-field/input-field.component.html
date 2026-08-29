@@ -1,36 +1,47 @@
-<div class="field">
-  <div class="field-label" [class]="additionalClass()">
-    <span class="label">
-      {{ fieldLabel() }}
-      @if (hasOptionalLabel()) {
-        <span class="optional"> (optional)</span>
+@if (inputType() === 'checkbox') {
+  <div class="checkbox-field">
+    <label class="checkbox-field__label">
+      <input type="checkbox" [checked]="checkboxValue()" (change)="onInput($event)" />
+      <span></span>
+      {{ checkboxText() }}
+    </label>
+  </div>
+} @else if (inputType() === 'radio') {
+} @else {
+  <div class="field">
+    <div class="field-label" [class]="additionalClass()">
+      <span class="label">
+        {{ fieldLabel() }}
+        @if (hasOptionalLabel()) {
+          <span class="optional"> (optional)</span>
+        }
+      </span>
+      @if (additionalFieldLabel()) {
+        <span class="label-color">{{ additionalFieldLabel() }}</span>
       }
-    </span>
-    @if (additionalFieldLabel()) {
-      <span class="label-color">{{ additionalFieldLabel() }}</span>
+    </div>
+    <i class="default" [class]="iconClass()"></i>
+    <input
+      class="field-input"
+      [class]="inputClass()"
+      [class.invalid]="isInputInvalid()"
+      [type]="inputType()"
+      [placeholder]="inputPlaceholder()"
+      [value]="inputValue()"
+      [min]="minDateValue()"
+      [max]="maxDateValue()"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+    />
+    @if (hasInputAction()) {
+      <button class="action-icon" type="button" (click)="onHandleInputAction()">
+        <i [class]="inputActionIconClass()"></i>
+      </button>
     }
+    <div class="error-message">
+      @for (message of inputErrorMessages(); track message) {
+        <div>{{ message }}</div>
+      }
+    </div>
   </div>
-  <i class="default" [class]="iconClass()"></i>
-  <input
-    class="field-input"
-    [class]="inputClass()"
-    [class.invalid]="isInputInvalid()"
-    [type]="inputType()"
-    [placeholder]="inputPlaceholder()"
-    [value]="inputValue()"
-    [min]="minDateValue()"
-    [max]="maxDateValue()"
-    (input)="onInput($event)"
-    (blur)="onBlur()"
-  />
-  @if (hasInputAction()) {
-    <button class="action-icon" type="button" (click)="onHandleInputAction()">
-      <i [class]="inputActionIconClass()"></i>
-    </button>
-  }
-  <div class="error-message">
-    @for (message of inputErrorMessages(); track message) {
-      <div>{{ message }}</div>
-    }
-  </div>
-</div>
+}

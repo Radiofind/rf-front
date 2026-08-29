@@ -135,13 +135,12 @@
           />
         </div>
 
-        <div class="form-content__form-add">
-          <label class="add">
-            <input type="checkbox" formControlName="addInformation" />
-            <span></span>
-            I want to add information about my artist / band
-          </label>
-        </div>
+        <app-input-field
+          formControlName="addInformation"
+          [inputType]="'checkbox'"
+          [checkboxText]="'I want to add information about my artist / band'"
+          [inputControl]="addInformationRegisterForm"
+        />
 
         @if (addInformationRegisterForm.value) {
           <div class="form-content__form-type">
