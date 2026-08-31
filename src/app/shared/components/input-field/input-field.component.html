@@ -78,8 +78,14 @@
       class="field-textarea"
       [rows]="textareaRows()"
       [placeholder]="inputPlaceholder()"
+      [value]="inputValue()"
       (input)="onInput($event)"
       (blur)="onBlur()"
     ></textarea>
+    <div class="error-message">
+      @for (message of inputErrorMessages(); track message) {
+        <div>{{ message }}</div>
+      }
+    </div>
   </div>
 }

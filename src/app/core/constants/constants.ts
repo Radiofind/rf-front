@@ -47,7 +47,7 @@ export class Constants {
 
   // others
 
-  public static readonly NAME_VALIDATOR_PATTERN: RegExp = /^[A-Za-z]+$/;
+  public static readonly EN_VALIDATOR_PATTERN: RegExp = /^[A-Za-z]+$/;
 
   public static readonly UPPERCASE_VALIDATOR_PATTERN: RegExp = /[A-Z]/;
 

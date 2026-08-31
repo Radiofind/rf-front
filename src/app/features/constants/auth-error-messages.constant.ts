@@ -1,7 +1,7 @@
 export const AUTH_ERROR_MESSAGES: Record<string, string> = {
   required: 'Field is required',
   email: 'Invalid email',
-  minlength: 'Must be at least 2 character long',
+  minlength: 'Must be at least 8 character long',
   maxlength: 'Must not exceed 50 characters',
   pattern: 'Only English letters are allowed (without spaces)',
   invalidDate: 'Invalid date',

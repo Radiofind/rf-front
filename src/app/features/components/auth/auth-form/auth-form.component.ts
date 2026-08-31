@@ -76,10 +76,9 @@ export class AuthFormComponent {
   public readonly registerForm = this.fb.group({
     name: [Constants.EMPTY_STRING, [
       Validators.required,
-      Validators.minLength(Constants.MIN_LINGTH_FORM_VALIDATION_NAME),
-      Validators.pattern(Constants.NAME_VALIDATOR_PATTERN)
+      Validators.pattern(Constants.EN_VALIDATOR_PATTERN)
     ]],
-    surname: [Constants.EMPTY_STRING, [Validators.required, Validators.pattern(Constants.NAME_VALIDATOR_PATTERN)]],
+    surname: [Constants.EMPTY_STRING, [Validators.required, Validators.pattern(Constants.EN_VALIDATOR_PATTERN)]],
     email: [Constants.EMPTY_STRING, [Validators.required, Validators.email]],
     recoveryEmail: [Constants.EMPTY_STRING, [Validators.email]],
     dateOfBirth: [Constants.EMPTY_STRING, [Validators.required, birthDateValidator()]],
@@ -91,8 +90,11 @@ export class AuthFormComponent {
     confirmPassword: [Constants.EMPTY_STRING, [Validators.required]],
     addInformation: [false],
     typeOfArtist: this.fb.control<ArtistType>('Artist'),
-    artistOrBandName: [Constants.EMPTY_STRING, [Validators.maxLength(Constants.MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME)]],
-    description: [Constants.EMPTY_STRING]
+    artistOrBandName: [Constants.EMPTY_STRING, [
+      Validators.maxLength(Constants.MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME),
+      Validators.pattern(Constants.EN_VALIDATOR_PATTERN)
+    ]],
+    description: [Constants.EMPTY_STRING, [Validators.pattern(Constants.EN_VALIDATOR_PATTERN)]],
   },
   {
     validators: passwordMatchValidator(),

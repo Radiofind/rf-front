@@ -84,32 +84,43 @@ export class InputFieldComponent implements ControlValueAccessor {
 
   public checkboxValue: WritableSignal<boolean> = signal<boolean>(false);
 
+  public validationState: WritableSignal<number> = signal<number>(Constants.ZERO);
+
   public radioValue: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
 
-  public isInputTouched: WritableSignal<boolean> = signal<boolean>(false);
-
-  public inputControlStatus: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+  public isInputInteracted: WritableSignal<boolean> = signal<boolean>(false);
 
   public inputErrorsMapper: Record<string, string> = AUTH_ERROR_MESSAGES;
 
   public isInputInvalid: Signal<boolean | undefined> = computed(() => {
+    this.validationState();
+
     const control: AbstractControl = this.inputControl();
     const errorFormControl: AbstractControl | null = this.errorFormControl();
-    this.inputControlStatus();
-    return (this.isInputTouched() && control.invalid) || (this.isInputTouched() && errorFormControl?.invalid);
+
+    if (!this.isInputInteracted()) {
+      return false;
+    }
+
+    return control.invalid || !!errorFormControl?.invalid;
   })
 
   public inputErrorMessages: Signal<string[]> = computed(() => {
+    this.validationState();
+
     const control: AbstractControl = this.inputControl();
     const errorFormControl: AbstractControl | null = this.errorFormControl();
-    this.inputControlStatus();
+
+    if (!this.isInputInteracted()) {
+      return [];
+    }
 
     const errors: ValidationErrors = {
       ...control.errors,
       ...errorFormControl?.errors,
     };
 
-    if (!this.isInputTouched() || !Object.keys(errors).length) {
+    if (!this.isInputInteracted() || !Object.keys(errors).length) {
       return [];
     }
     return Object.keys(errors).map(error => this.inputErrorsMapper[error]).filter(Boolean);
@@ -118,9 +129,25 @@ export class InputFieldComponent implements ControlValueAccessor {
   constructor() {
     effect(() => {
       const control: AbstractControl = this.inputControl();
-      control.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-        this.inputControlStatus.set(control.status);
+      const errorFormControl: AbstractControl | null = this.errorFormControl();
+
+      control.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+        this.validationState.update(value => value + 1);
       });
+
+      control.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+        this.validationState.update(value => value + 1);
+      });
+
+      if (errorFormControl) {
+        errorFormControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+          this.validationState.update(value => value + 1);
+        });
+
+        errorFormControl.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+          this.validationState.update(value => value + 1);
+        });
+      }
     });
   }
 
@@ -152,6 +179,8 @@ export class InputFieldComponent implements ControlValueAccessor {
   }
 
   public onInput(event: Event): void {
+    this.isInputInteracted.set(true);
+
     const input: HTMLInputElement | HTMLTextAreaElement = event.target as HTMLInputElement | HTMLTextAreaElement;
 
     if (this.inputType() === InputTypeEnum.CHECKBOX) {
@@ -170,7 +199,6 @@ export class InputFieldComponent implements ControlValueAccessor {
   }
 
   public onBlur(): void {
-    this.isInputTouched.set(true);
     this.onTouched();
   }
 
