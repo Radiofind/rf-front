@@ -1,0 +1,29 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 52px;
+  background: linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));;
+  color: var(--text-color);
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: all 300ms;
+
+  i {
+    font-size: 28px;
+  }
+}
+
+.button:hover {
+  opacity: 0.7;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

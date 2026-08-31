@@ -1,0 +1,18 @@
+<div [class.login-bg]="authType() === 'login'" [class.register-bg]="authType() === 'register'">
+  <app-header />
+
+  <div class="auth">
+    <div class="auth-description">
+      <app-auth-description
+        [content]="
+          authType() === 'login' ? authDescriptionContentLogin : authDescriptionContentRegister
+        "
+      />
+    </div>
+    <div class="auth-form" [class.register-width]="authType() === 'register'">
+      <app-auth-form [authType]="authType()" />
+    </div>
+  </div>
+
+  <div class="rights">© 2026 RADIOFIND. All rights reserved.</div>
+</div>

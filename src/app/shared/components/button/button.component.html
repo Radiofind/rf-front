@@ -1,0 +1,9 @@
+<button
+  class="button {{ additionalClass() }}"
+  type="{{ buttonType() }}"
+  [disabled]="disabled()"
+  (click)="onClick()"
+>
+  <p>{{ contentText() }}</p>
+  <i [class]="contentIconClass()"></i>
+</button>

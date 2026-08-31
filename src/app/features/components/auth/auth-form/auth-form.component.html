@@ -1,0 +1,181 @@
+<div class="form">
+  <div class="form-content">
+    @if (authType() === 'login') {
+      <h2 class="form-content__title">Log In</h2>
+      <p class="form-content__description">Welcome back! Please enter your details.</p>
+      @if (loginError()) {
+        <p class="form-content__error">{{ loginError() }}</p>
+      }
+
+      <form class="form-content__form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
+        <app-input-field
+          formControlName="email"
+          [fieldLabel]="'Email Address'"
+          [iconClass]="'bx bx-envelope-alt'"
+          [inputType]="'email'"
+          [inputPlaceholder]="'you@example.com'"
+          [inputControl]="emailLoginForm"
+        />
+
+        <app-input-field
+          formControlName="password"
+          [additionalClass]="'field-label__password'"
+          [fieldLabel]="'Password'"
+          [additionalFieldLabel]="'Forgot password?'"
+          [iconClass]="'bx bx-lock'"
+          [inputType]="showPassword() ? 'text' : 'password'"
+          [inputPlaceholder]="'Enter your password'"
+          [inputControl]="passwordLoginForm"
+          [hasInputAction]="true"
+          [inputActionIconClass]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
+          (inputActionEmiter)="togglePasswordVisibility(0)"
+        />
+
+        <app-button
+          [contentText]="'Log In'"
+          [contentIconClass]="'bx bx-arrow-right-stroke'"
+          [buttonType]="'submit'"
+          [disabled]="loginForm.invalid"
+        />
+      </form>
+
+      <div class="form-content__sign-up">
+        <p>
+          Don't have an account?<button (click)="onSwitchAuthType()">&nbsp;&nbsp;Sign up</button>
+        </p>
+      </div>
+    } @else {
+      <h2 class="form-content__title">Create Your Account</h2>
+      <p class="form-content__description">Fill in the details below to get started.</p>
+      <form class="form-content__form" [formGroup]="registerForm" (ngSubmit)="onSubmit($event)">
+        <div class="form-content__form--name-surname">
+          <app-input-field
+            formControlName="name"
+            [fieldLabel]="'Name'"
+            [iconClass]="'bx bx-user'"
+            [inputClass]="'input-custom__width'"
+            [inputPlaceholder]="'Enter your name'"
+            [inputControl]="nameRegisterForm"
+          />
+
+          <app-input-field
+            formControlName="surname"
+            [fieldLabel]="'Surname'"
+            [iconClass]="'bx bx-user'"
+            [inputClass]="'input-custom__width'"
+            [inputPlaceholder]="'Enter your surname'"
+            [inputControl]="surnameRegisterForm"
+          />
+        </div>
+
+        <app-input-field
+          formControlName="email"
+          [fieldLabel]="'Email'"
+          [iconClass]="'bx bx-envelope-alt'"
+          [inputType]="'email'"
+          [inputPlaceholder]="'you@example.com'"
+          [inputControl]="emailRegisterForm"
+        />
+
+        <app-input-field
+          formControlName="recoveryEmail"
+          [fieldLabel]="'Recovery Email'"
+          [hasOptionalLabel]="true"
+          [iconClass]="'bx bx-envelope-alt'"
+          [inputType]="'email'"
+          [inputPlaceholder]="'recovery@example.com'"
+          [inputControl]="recoveryEmailRegisterForm"
+        />
+
+        <app-input-field
+          formControlName="dateOfBirth"
+          [fieldLabel]="'Date of Birth'"
+          [iconClass]="'bx bx-calendar'"
+          [inputType]="'date'"
+          [minDateValue]="minDate() | date: 'yyyy-MM-dd'"
+          [maxDateValue]="currentDate | date: 'yyyy-MM-dd'"
+          [inputPlaceholder]="'Select your date of birth'"
+          [inputControl]="dateOfBirthRegisterForm"
+        />
+
+        <div class="form-content__form-passwords">
+          <app-input-field
+            formControlName="password"
+            [fieldLabel]="'Password'"
+            [inputClass]="'input-custom__width'"
+            [iconClass]="'bx bx-lock'"
+            [inputType]="showPassword() ? 'text' : 'password'"
+            [inputPlaceholder]="'Enter your password'"
+            [inputControl]="passwordRegisterForm"
+            [hasInputAction]="true"
+            [inputActionIconClass]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
+            (inputActionEmiter)="togglePasswordVisibility(0)"
+          />
+
+          <app-input-field
+            formControlName="confirmPassword"
+            [fieldLabel]="'Confirm Password'"
+            [inputClass]="'input-custom__width'"
+            [iconClass]="'bx bx-lock'"
+            [inputType]="showPassword() ? 'text' : 'password'"
+            [inputPlaceholder]="'Repeat your password'"
+            [inputControl]="confirmPasswordRegisterForm"
+            [errorFormControl]="registerForm"
+            [hasInputAction]="true"
+            [inputActionIconClass]="showConfirmPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
+            (inputActionEmiter)="togglePasswordVisibility(1)"
+          />
+        </div>
+
+        <app-input-field
+          formControlName="addInformation"
+          [inputType]="'checkbox'"
+          [checkboxText]="'I want to add information about my artist / band'"
+          [inputControl]="addInformationRegisterForm"
+        />
+
+        @if (addInformationRegisterForm.value) {
+          <app-input-field
+            formControlName="typeOfArtist"
+            [fieldLabel]="'Who are you?'"
+            [inputType]="'radio'"
+            [radioOptions]="['Artist', 'Band']"
+            [inputControl]="typeOfArtistRegisterForm"
+          />
+
+          <app-input-field
+            formControlName="artistOrBandName"
+            [fieldLabel]="typeOfArtistRegisterForm.value + ' Name'"
+            [hasOptionalLabel]="true"
+            [iconClass]="'bx bx-user'"
+            [inputPlaceholder]="'Enter ' + (typeOfArtistRegisterForm.value | lowercase) + ' name'"
+            [inputControl]="artistOrBandNameRegisterForm"
+          />
+
+          <app-input-field
+            formControlName="description"
+            [isTextareaField]="true"
+            [fieldLabel]="'Description'"
+            [hasOptionalLabel]="true"
+            [iconClass]="'bx bx-note-book'"
+            [inputPlaceholder]="'Tell us about your music, style, influences...'"
+            [inputControl]="descriptionRegisterForm"
+          />
+        }
+
+        <app-button
+          [contentText]="'Create Account'"
+          [contentIconClass]="'bx bx-arrow-right-stroke'"
+          [buttonType]="'submit'"
+          [disabled]="registerForm.invalid"
+        />
+      </form>
+
+      <div class="form-content__sign-in">
+        <p>
+          Already have an account?<button (click)="onSwitchAuthType()">&nbsp;&nbsp;Log in</button>
+        </p>
+      </div>
+    }
+  </div>
+</div>

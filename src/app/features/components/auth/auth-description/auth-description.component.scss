@@ -1,0 +1,35 @@
+.description {
+  &-title {
+    font-size: 48px;
+    font-weight: 500;
+
+    span {
+      color: var(--main-color);
+    }
+  }
+
+  &-instructions {
+    margin-bottom: 100px;
+    font-size: 20px;
+    color: var(--second-text-color);
+  }
+
+  &-content {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 32px;
+
+    &__text {
+      &--title {
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+
+      &--overview {
+        font-size: 20px;
+        color: var(--second-text-color);
+      }
+    }
+  }
+}

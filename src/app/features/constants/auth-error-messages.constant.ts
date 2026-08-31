@@ -1,0 +1,16 @@
+export const AUTH_ERROR_MESSAGES: Record<string, string> = {
+  required: 'Field is required',
+  email: 'Invalid email',
+  minlength: 'Must be at least 8 character long',
+  maxlength: 'Must not exceed 50 characters',
+  pattern: 'Only English letters are allowed (without spaces)',
+  invalidDate: 'Invalid date',
+  futureDate: 'Date of birth cannot be in the future',
+  maxAgeHundredYears: 'Age cannot exceed 100 years',
+  uppercase: 'Must contain at least one uppercase letter',
+  lowercase: 'Must contain at least one lowercase letter',
+  number: 'Must contain at least one number',
+  specialCharacter: 'Must contain at least one special character',
+  spaces: 'Must not contain spaces',
+  passwordMismatch: 'Invalid password',
+}
