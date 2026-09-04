@@ -1,12 +1,10 @@
-import { inject, Injectable, PLATFORM_ID } from "@angular/core";
+import { inject, PLATFORM_ID, Service } from "@angular/core";
 import { Constants } from "../../../core/constants/constants";
 import { isPlatformBrowser } from "@angular/common";
 import { jwtDecode } from 'jwt-decode';
 import { IJwtPayload } from "../../../core/models/auth.model";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 
 export class AuthStateService {
   private readonly tokenKey = Constants.TOKEN_KEY;
