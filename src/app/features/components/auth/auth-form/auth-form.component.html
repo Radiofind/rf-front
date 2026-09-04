@@ -7,25 +7,23 @@
         <p class="form-content__error">{{ loginError() }}</p>
       }
 
-      <form class="form-content__form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
+      <form class="form-content__form" [formRoot]="loginForm">
         <app-input-field
-          formControlName="email"
+          [formField]="loginForm.email"
           [fieldLabel]="'Email Address'"
           [iconClass]="'bx bx-envelope-alt'"
           [inputType]="'email'"
           [inputPlaceholder]="'you@example.com'"
-          [inputControl]="emailLoginForm"
         />
 
         <app-input-field
-          formControlName="password"
+          [formField]="loginForm.password"
           [additionalClass]="'field-label__password'"
           [fieldLabel]="'Password'"
           [additionalFieldLabel]="'Forgot password?'"
           [iconClass]="'bx bx-lock'"
           [inputType]="showPassword() ? 'text' : 'password'"
           [inputPlaceholder]="'Enter your password'"
-          [inputControl]="passwordLoginForm"
           [hasInputAction]="true"
           [inputActionIconClass]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
           (inputActionEmiter)="togglePasswordVisibility(0)"
@@ -35,7 +33,7 @@
           [contentText]="'Log In'"
           [contentIconClass]="'bx bx-arrow-right-stroke'"
           [buttonType]="'submit'"
-          [disabled]="loginForm.invalid"
+          [disabled]="loginForm().invalid() || loginForm().submitting()"
         />
       </form>
 
@@ -47,119 +45,108 @@
     } @else {
       <h2 class="form-content__title">Create Your Account</h2>
       <p class="form-content__description">Fill in the details below to get started.</p>
-      <form class="form-content__form" [formGroup]="registerForm" (ngSubmit)="onSubmit($event)">
+      @if (registerError()) {
+        <p class="form-content__error">{{ registerError() }}</p>
+      }
+
+      <form class="form-content__form" [formRoot]="registerForm">
         <div class="form-content__form--name-surname">
           <app-input-field
-            formControlName="name"
+            [formField]="registerForm.name"
             [fieldLabel]="'Name'"
             [iconClass]="'bx bx-user'"
             [inputClass]="'input-custom__width'"
             [inputPlaceholder]="'Enter your name'"
-            [inputControl]="nameRegisterForm"
           />
 
           <app-input-field
-            formControlName="surname"
+            [formField]="registerForm.surname"
             [fieldLabel]="'Surname'"
             [iconClass]="'bx bx-user'"
             [inputClass]="'input-custom__width'"
             [inputPlaceholder]="'Enter your surname'"
-            [inputControl]="surnameRegisterForm"
           />
         </div>
 
         <app-input-field
-          formControlName="email"
+          [formField]="registerForm.email"
           [fieldLabel]="'Email'"
           [iconClass]="'bx bx-envelope-alt'"
           [inputType]="'email'"
           [inputPlaceholder]="'you@example.com'"
-          [inputControl]="emailRegisterForm"
         />
 
         <app-input-field
-          formControlName="recoveryEmail"
+          [formField]="registerForm.recoveryEmail"
           [fieldLabel]="'Recovery Email'"
           [hasOptionalLabel]="true"
           [iconClass]="'bx bx-envelope-alt'"
           [inputType]="'email'"
           [inputPlaceholder]="'recovery@example.com'"
-          [inputControl]="recoveryEmailRegisterForm"
         />
 
-        <app-input-field
-          formControlName="dateOfBirth"
+        <app-date-field
+          [formField]="registerForm.dateOfBirth"
           [fieldLabel]="'Date of Birth'"
           [iconClass]="'bx bx-calendar'"
-          [inputType]="'date'"
-          [minDateValue]="minDate() | date: 'yyyy-MM-dd'"
-          [maxDateValue]="currentDate | date: 'yyyy-MM-dd'"
           [inputPlaceholder]="'Select your date of birth'"
-          [inputControl]="dateOfBirthRegisterForm"
         />
 
         <div class="form-content__form-passwords">
           <app-input-field
-            formControlName="password"
+            [formField]="registerForm.password"
             [fieldLabel]="'Password'"
             [inputClass]="'input-custom__width'"
             [iconClass]="'bx bx-lock'"
             [inputType]="showPassword() ? 'text' : 'password'"
             [inputPlaceholder]="'Enter your password'"
-            [inputControl]="passwordRegisterForm"
             [hasInputAction]="true"
             [inputActionIconClass]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
             (inputActionEmiter)="togglePasswordVisibility(0)"
           />
 
           <app-input-field
-            formControlName="confirmPassword"
+            [formField]="registerForm.confirmPassword"
             [fieldLabel]="'Confirm Password'"
             [inputClass]="'input-custom__width'"
             [iconClass]="'bx bx-lock'"
-            [inputType]="showPassword() ? 'text' : 'password'"
+            [inputType]="showConfirmPassword() ? 'text' : 'password'"
             [inputPlaceholder]="'Repeat your password'"
-            [inputControl]="confirmPasswordRegisterForm"
-            [errorFormControl]="registerForm"
             [hasInputAction]="true"
             [inputActionIconClass]="showConfirmPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
             (inputActionEmiter)="togglePasswordVisibility(1)"
           />
         </div>
 
-        <app-input-field
-          formControlName="addInformation"
-          [inputType]="'checkbox'"
+        <app-checkbox-field
+          [formField]="registerForm.addInformation"
           [checkboxText]="'I want to add information about my artist / band'"
-          [inputControl]="addInformationRegisterForm"
         />
 
-        @if (addInformationRegisterForm.value) {
-          <app-input-field
-            formControlName="typeOfArtist"
+        @if (registerForm.addInformation().value()) {
+          <app-radio-field
+            [formField]="registerForm.typeOfArtist"
             [fieldLabel]="'Who are you?'"
-            [inputType]="'radio'"
-            [radioOptions]="['Artist', 'Band']"
-            [inputControl]="typeOfArtistRegisterForm"
+            [options]="artistTypes"
           />
 
           <app-input-field
-            formControlName="artistOrBandName"
-            [fieldLabel]="typeOfArtistRegisterForm.value + ' Name'"
+            [formField]="registerForm.artistOrBandName"
+            [fieldLabel]="registerForm.typeOfArtist().value() + ' Name'"
             [hasOptionalLabel]="true"
             [iconClass]="'bx bx-user'"
-            [inputPlaceholder]="'Enter ' + (typeOfArtistRegisterForm.value | lowercase) + ' name'"
-            [inputControl]="artistOrBandNameRegisterForm"
+            [inputPlaceholder]="
+              'Enter ' + (registerForm.typeOfArtist().value() | lowercase) + ' name'
+            "
           />
 
           <app-input-field
-            formControlName="description"
+            [formField]="registerForm.description"
             [isTextareaField]="true"
             [fieldLabel]="'Description'"
             [hasOptionalLabel]="true"
             [iconClass]="'bx bx-note-book'"
             [inputPlaceholder]="'Tell us about your music, style, influences...'"
-            [inputControl]="descriptionRegisterForm"
           />
         }
 
@@ -167,7 +154,7 @@
           [contentText]="'Create Account'"
           [contentIconClass]="'bx bx-arrow-right-stroke'"
           [buttonType]="'submit'"
-          [disabled]="registerForm.invalid"
+          [disabled]="registerForm().invalid() || registerForm().submitting()"
         />
       </form>
 

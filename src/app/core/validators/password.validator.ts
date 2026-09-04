@@ -1,32 +1,29 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { ValidationError } from "@angular/forms/signals";
 import { Constants } from "../constants/constants";
+import { AuthValidationMessages } from "../../features/constants/auth-error-messages.constant";
 
-export const passwordValidator = (): ValidatorFn => {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const password: string = control.value as string;
+export const passwordRuleErrors = (password: string): ValidationError[] => {
+  const errors: ValidationError[] = [];
 
-    const errors: ValidationErrors = {};
-
-    if (!Constants.UPPERCASE_VALIDATOR_PATTERN.test(password)) {
-      errors[Constants.UPPERCASE] = true;
-    };
-
-    if (!Constants.LOWERCASE_VALIDATOR_PATTERN.test(password)) {
-      errors[Constants.LOWERCASE] = true;
-    };
-
-    if (!Constants.DECIMAL_VALIDATOR_PATTERN.test(password)) {
-      errors[Constants.NUMBER_PROPERTY] = true;
-    }
-
-    if (!Constants.SPECIAL_CHARACTER_VALIDATOR_PATTERN.test(password)) {
-      errors[Constants.SPECIAL_CHARACTER] = true;
-    }
-
-    if (Constants.SPACES_VALIDATOR_PATTERN.test(password)) {
-      errors[Constants.SPACES_PROPERTY] = true;
-    }
-
-    return Object.keys(errors).length ? errors : null;
+  if (!Constants.UPPERCASE_VALIDATOR_PATTERN.test(password)) {
+    errors.push({ kind: Constants.UPPERCASE, message: AuthValidationMessages.UPPERCASE });
   };
+
+  if (!Constants.LOWERCASE_VALIDATOR_PATTERN.test(password)) {
+    errors.push({ kind: Constants.LOWERCASE, message: AuthValidationMessages.LOWERCASE });
+  };
+
+  if (!Constants.DECIMAL_VALIDATOR_PATTERN.test(password)) {
+    errors.push({ kind: Constants.NUMBER_PROPERTY, message: AuthValidationMessages.NUMBER });
+  };
+
+  if (!Constants.SPECIAL_CHARACTER_VALIDATOR_PATTERN.test(password)) {
+    errors.push({ kind: Constants.SPECIAL_CHARACTER, message: AuthValidationMessages.SPECIAL_CHARACTER });
+  };
+
+  if (Constants.SPACES_VALIDATOR_PATTERN.test(password)) {
+    errors.push({ kind: Constants.SPACES_PROPERTY, message: AuthValidationMessages.SPACES });
+  };
+
+  return errors;
 }

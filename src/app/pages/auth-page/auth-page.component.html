@@ -1,5 +1,7 @@
 <div [class.login-bg]="authType() === 'login'" [class.register-bg]="authType() === 'register'">
-  <app-header />
+  @defer (hydrate never) {
+    <app-header />
+  }
 
   <div class="auth">
     <div class="auth-description">

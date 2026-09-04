@@ -1,205 +1,75 @@
-import { 
-  ChangeDetectionStrategy,
+import {
   Component,
   computed,
-  DestroyRef,
-  effect,
-  forwardRef,
-  inject,
   input,
   InputSignal,
+  model,
+  ModelSignal,
   output,
   OutputEmitterRef,
-  signal,
   Signal,
-  WritableSignal
 } from '@angular/core';
-import { 
-  AbstractControl,
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  ValidationErrors 
-} from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormValueControl, ValidationError } from '@angular/forms/signals';
 import { Constants } from '../../../core/constants/constants';
 import { InputType } from '../../../core/types/input-type.type';
-import { AUTH_ERROR_MESSAGES } from '../../../features/constants/auth-error-messages.constant';
 import { InputTypeEnum } from '../../../core/enums/input-type.enum';
 
 @Component({
   selector: 'app-input-field',
   templateUrl: './input-field.component.html',
   styleUrl: './input-field.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => InputFieldComponent),
-      multi: true,
-    }
-  ],
 })
-export class InputFieldComponent implements ControlValueAccessor {
-  private readonly destroyRef: DestroyRef = inject(DestroyRef);
+export class InputFieldComponent implements FormValueControl<string> {
+  public readonly value: ModelSignal<string> = model<string>(Constants.EMPTY_STRING);
 
-  public additionalClass: InputSignal<string | null> = input<string | null>(null);
+  public readonly errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]> =
+    input<readonly ValidationError.WithOptionalFieldTree[]>([]);
 
-  public fieldLabel: InputSignal<string | null> = input<string | null>(null);
+  public readonly touched: InputSignal<boolean> = input<boolean>(false);
 
-  public additionalFieldLabel: InputSignal<string | null> = input<string | null>(null);
+  public readonly dirty: InputSignal<boolean> = input<boolean>(false);
 
-  public hasOptionalLabel: InputSignal<boolean> = input<boolean>(false);
+  public readonly disabled: InputSignal<boolean> = input<boolean>(false);
 
-  public minDateValue: InputSignal<string | null> = input<string | null>(null);
+  public readonly required: InputSignal<boolean> = input<boolean>(false);
 
-  public maxDateValue: InputSignal<string | null> = input<string | null>(null);
+  public readonly touch: OutputEmitterRef<void> = output<void>();
 
-  public iconClass: InputSignal<string | null> = input<string | null>(null);
+  public readonly additionalClass: InputSignal<string | null> = input<string | null>(null);
 
-  public inputClass: InputSignal<string | null> = input<string | null>(null);
+  public readonly fieldLabel: InputSignal<string | null> = input<string | null>(null);
 
-  public inputType: InputSignal<InputType> = input<InputType>(InputTypeEnum.TEXT);
+  public readonly additionalFieldLabel: InputSignal<string | null> = input<string | null>(null);
 
-  public inputPlaceholder: InputSignal<string | null> = input<string | null>(null);
+  public readonly hasOptionalLabel: InputSignal<boolean> = input<boolean>(false);
 
-  public hasInputAction: InputSignal<boolean> = input<boolean>(false);
+  public readonly iconClass: InputSignal<string | null> = input<string | null>(null);
 
-  public inputActionIconClass: InputSignal<string | null> = input<string | null>(null);
+  public readonly inputClass: InputSignal<string | null> = input<string | null>(null);
 
-  public inputControl: InputSignal<AbstractControl> = input.required<AbstractControl>();
+  public readonly inputType: InputSignal<InputType> = input<InputType>(InputTypeEnum.TEXT);
 
-  public errorFormControl: InputSignal<AbstractControl | null> = input<AbstractControl | null>(null);
+  public readonly inputPlaceholder: InputSignal<string | null> = input<string | null>(null);
 
-  public checkboxText: InputSignal<string | null> = input<string | null>(null);
+  public readonly hasInputAction: InputSignal<boolean> = input<boolean>(false);
 
-  public radioOptions: InputSignal<string[]> = input<string[]>([]);
+  public readonly inputActionIconClass: InputSignal<string | null> = input<string | null>(null);
 
-  public isTextareaField: InputSignal<boolean> = input<boolean>(false);
+  public readonly isTextareaField: InputSignal<boolean> = input<boolean>(false);
 
-  public textareaRows: InputSignal<number> = input<number>(Constants.DEFAULT_TEXTAREA_ROWS);
+  public readonly textareaRows: InputSignal<number> = input<number>(Constants.DEFAULT_TEXTAREA_ROWS);
 
-  public inputActionEmiter: OutputEmitterRef<void> = output<void>();
+  public readonly inputActionEmiter: OutputEmitterRef<void> = output<void>();
 
-  public inputValue: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+  public readonly visibleErrors: Signal<readonly ValidationError.WithOptionalFieldTree[]> = computed(() =>
+    this.touched() || this.dirty() ? this.errors() : []
+  );
 
-  public checkboxValue: WritableSignal<boolean> = signal<boolean>(false);
-
-  public validationState: WritableSignal<number> = signal<number>(Constants.ZERO);
-
-  public radioValue: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
-
-  public isInputInteracted: WritableSignal<boolean> = signal<boolean>(false);
-
-  public inputErrorsMapper: Record<string, string> = AUTH_ERROR_MESSAGES;
-
-  public isInputInvalid: Signal<boolean | undefined> = computed(() => {
-    this.validationState();
-
-    const control: AbstractControl = this.inputControl();
-    const errorFormControl: AbstractControl | null = this.errorFormControl();
-
-    if (!this.isInputInteracted()) {
-      return false;
-    }
-
-    return control.invalid || !!errorFormControl?.invalid;
-  })
-
-  public inputErrorMessages: Signal<string[]> = computed(() => {
-    this.validationState();
-
-    const control: AbstractControl = this.inputControl();
-    const errorFormControl: AbstractControl | null = this.errorFormControl();
-
-    if (!this.isInputInteracted()) {
-      return [];
-    }
-
-    const errors: ValidationErrors = {
-      ...control.errors,
-      ...errorFormControl?.errors,
-    };
-
-    if (!this.isInputInteracted() || !Object.keys(errors).length) {
-      return [];
-    }
-    return Object.keys(errors).map(error => this.inputErrorsMapper[error]).filter(Boolean);
-  });
-
-  constructor() {
-    effect(() => {
-      const control: AbstractControl = this.inputControl();
-      const errorFormControl: AbstractControl | null = this.errorFormControl();
-
-      control.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-        this.validationState.update(value => value + 1);
-      });
-
-      control.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-        this.validationState.update(value => value + 1);
-      });
-
-      if (errorFormControl) {
-        errorFormControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-          this.validationState.update(value => value + 1);
-        });
-
-        errorFormControl.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-          this.validationState.update(value => value + 1);
-        });
-      }
-    });
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  private onChange: (value: string | boolean) => void = (value: string | boolean) => {};
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private onTouched: () => void = () => {};
-
-  public writeValue(value: string | boolean): void {
-    if (this.inputType() === InputTypeEnum.CHECKBOX) {
-      this.checkboxValue.set(Boolean(value))
-      return;
-    }
-
-    if (this.inputType() === InputTypeEnum.RADIO) {
-      this.radioValue.set(value as string ?? Constants.EMPTY_STRING);
-      return;
-    };
-    this.inputValue.set(value as string ?? Constants.EMPTY_STRING);
-  }
-
-  public registerOnChange(fn: (value: string | boolean) => void): void {
-    this.onChange = fn;
-  }
-
-  public registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
+  public readonly isInputInvalid: Signal<boolean> = computed(() => this.visibleErrors().length > Constants.ZERO);
 
   public onInput(event: Event): void {
-    this.isInputInteracted.set(true);
-
     const input: HTMLInputElement | HTMLTextAreaElement = event.target as HTMLInputElement | HTMLTextAreaElement;
-
-    if (this.inputType() === InputTypeEnum.CHECKBOX) {
-      const checkboxInput: HTMLInputElement = input as HTMLInputElement;
-      this.checkboxValue.set(checkboxInput.checked);
-      this.onChange(checkboxInput.checked);
-    } else {
-      if (this.inputType() === InputTypeEnum.RADIO) {
-        this.radioValue.set(input.value)
-      } else {
-        this.inputValue.set(input.value);
-      }
-      this.onChange(input.value);
-    }
-    this.onTouched();
-  }
-
-  public onBlur(): void {
-    this.onTouched();
+    this.value.set(input.value);
   }
 
   public onHandleInputAction(): void {
