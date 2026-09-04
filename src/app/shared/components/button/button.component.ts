@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
+import { Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { ButtonType } from '../../../core/types/button-type.type';
 import { Constants } from '../../../core/constants/constants';
 import { ButtonTypeEnum } from '../../../core/enums/button-type.enum';
@@ -7,7 +7,6 @@ import { ButtonTypeEnum } from '../../../core/enums/button-type.enum';
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class ButtonComponent {

@@ -15,6 +15,12 @@ export class Constants {
 
   public static readonly SPACES_PROPERTY: string = 'spaces';
 
+  public static readonly PASSWORD_MISMATCH: string = 'passwordMismatch';
+
+  public static readonly INVALID_DATE: string = 'invalidDate';
+
+  public static readonly SERVER_ERROR: string = 'server';
+
   public static readonly LOGIN: string = 'login';
 
   public static readonly REGISTER: string = 'register';
@@ -23,9 +29,15 @@ export class Constants {
 
   public static readonly INVALID_LOGIN_PASSWORD: string = 'Invalid login or password';
 
+  public static readonly REGISTRATION_FAILED: string = 'Registration failed, please try again';
+
+  public static readonly REQUIRED_PROPERTY: string = 'required';
+
   public static readonly SPLIT_DATE_BY_T: string = 'T';
 
   public static readonly DASH: string = '-';
+
+  public static readonly ZERO_STRING: string = '0';
 
   // magic numbers
 
@@ -44,6 +56,8 @@ export class Constants {
   public static readonly INVALID_DATA_MESSAGE_TIME: number = 3000;
 
   public static readonly DEFAULT_TEXTAREA_ROWS: number = 10;
+
+  public static readonly DATE_PAD_LENGTH: number = 2;
 
   // others
 

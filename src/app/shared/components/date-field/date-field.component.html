@@ -1,0 +1,24 @@
+<div class="field">
+  <div class="field-label">
+    <span class="label">{{ fieldLabel() }}</span>
+  </div>
+  <i class="default" [class]="iconClass()"></i>
+  <input
+    class="field-input"
+    type="date"
+    [class.invalid]="isInputInvalid()"
+    [placeholder]="inputPlaceholder()"
+    [value]="rawValue()"
+    [min]="minValue()"
+    [max]="maxValue()"
+    [disabled]="disabled()"
+    [required]="required()"
+    (input)="onInput($event)"
+    (blur)="touch.emit()"
+  />
+  <div class="error-message">
+    @for (error of visibleErrors(); track error.kind) {
+      <div>{{ error.message }}</div>
+    }
+  </div>
+</div>

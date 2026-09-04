@@ -1,91 +1,50 @@
-@if (inputType() === 'checkbox') {
-  <div class="checkbox-field">
-    <label class="checkbox-field__label">
-      <input type="checkbox" [checked]="checkboxValue()" (change)="onInput($event)" />
-      <span></span>
-      {{ checkboxText() }}
-    </label>
-  </div>
-} @else if (inputType() === 'radio') {
-  <div class="radio-field">
-    <div class="radio-field__label">
-      <span>{{ fieldLabel() }}</span>
-    </div>
-    <div class="radio-field__buttons">
-      @for (option of radioOptions(); track option) {
-        <label class="radio-field__buttons--option">
-          <input
-            type="radio"
-            [value]="option"
-            [checked]="radioValue() === option"
-            (change)="onInput($event)"
-          />
-          <span></span>
-          {{ option }}
-        </label>
+<div class="field">
+  <div class="field-label" [class]="additionalClass()">
+    <span class="label">
+      {{ fieldLabel() }}
+      @if (hasOptionalLabel()) {
+        <span class="optional"> (optional)</span>
       }
-    </div>
+    </span>
+    @if (additionalFieldLabel()) {
+      <span class="label-color">{{ additionalFieldLabel() }}</span>
+    }
   </div>
-} @else if (!isTextareaField()) {
-  <div class="field">
-    <div class="field-label" [class]="additionalClass()">
-      <span class="label">
-        {{ fieldLabel() }}
-        @if (hasOptionalLabel()) {
-          <span class="optional"> (optional)</span>
-        }
-      </span>
-      @if (additionalFieldLabel()) {
-        <span class="label-color">{{ additionalFieldLabel() }}</span>
-      }
-    </div>
-    <i class="default" [class]="iconClass()"></i>
+  <i class="default" [class]="iconClass()"></i>
+  @if (isTextareaField()) {
+    <textarea
+      class="field-textarea"
+      [class.invalid]="isInputInvalid()"
+      [rows]="textareaRows()"
+      [placeholder]="inputPlaceholder()"
+      [value]="value()"
+      [disabled]="disabled()"
+      [required]="required()"
+      (input)="onInput($event)"
+      (blur)="touch.emit()"
+    ></textarea>
+  } @else {
     <input
       class="field-input"
       [class]="inputClass()"
       [class.invalid]="isInputInvalid()"
       [type]="inputType()"
       [placeholder]="inputPlaceholder()"
-      [value]="inputValue()"
-      [min]="minDateValue()"
-      [max]="maxDateValue()"
+      [value]="value()"
+      [disabled]="disabled()"
+      [required]="required()"
       (input)="onInput($event)"
-      (blur)="onBlur()"
+      (blur)="touch.emit()"
     />
-    @if (hasInputAction()) {
-      <button class="action-icon" type="button" (click)="onHandleInputAction()">
-        <i [class]="inputActionIconClass()"></i>
-      </button>
+  }
+  @if (hasInputAction()) {
+    <button class="action-icon" type="button" (click)="onHandleInputAction()">
+      <i [class]="inputActionIconClass()"></i>
+    </button>
+  }
+  <div class="error-message">
+    @for (error of visibleErrors(); track error.kind) {
+      <div>{{ error.message }}</div>
     }
-    <div class="error-message">
-      @for (message of inputErrorMessages(); track message) {
-        <div>{{ message }}</div>
-      }
-    </div>
   </div>
-} @else {
-  <div class="field">
-    <div class="field-label">
-      <span
-        >{{ fieldLabel() }}
-        @if (hasOptionalLabel()) {
-          <span class="optional"> (optional)</span>
-        }
-      </span>
-    </div>
-    <i class="default" [class]="iconClass()"></i>
-    <textarea
-      class="field-textarea"
-      [rows]="textareaRows()"
-      [placeholder]="inputPlaceholder()"
-      [value]="inputValue()"
-      (input)="onInput($event)"
-      (blur)="onBlur()"
-    ></textarea>
-    <div class="error-message">
-      @for (message of inputErrorMessages(); track message) {
-        <div>{{ message }}</div>
-      }
-    </div>
-  </div>
-}
+</div>

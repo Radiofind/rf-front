@@ -1,4 +1,4 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Service } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { IAuthEndpoints, IAuthResponse, ILoginData } from "../models/auth.model";
@@ -7,9 +7,7 @@ import { AuthStateService } from "../../features/services/auth-state-service/aut
 import { EndpointConstants } from "../constants/endpoints.constants";
 import { IRegisterData } from "../../features/models/auth-content.model";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 
 export class ApiService {
   private readonly authEndpoints: IAuthEndpoints = EndpointConstants.AUTH_ENDPOINTS;

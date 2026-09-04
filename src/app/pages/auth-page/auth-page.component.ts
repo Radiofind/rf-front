@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -15,7 +15,6 @@ import { Constants } from '../../core/constants/constants';
   imports: [HeaderComponent, AuthDescriptionComponent, AuthFormComponent],
   templateUrl: './auth-page.component.html',
   styleUrl: './auth-page.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class AuthPageComponent {

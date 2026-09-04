@@ -1,13 +1,11 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Service } from "@angular/core";
 import { IAuthResponse, ILoginData } from "../../../core/models/auth.model";
 import { Observable } from "rxjs";
 import { AuthStateService } from "../auth-state-service/auth-state.service";
 import { IRegisterData } from "../../models/auth-content.model";
 import { ApiService } from "../../../core/services/api.service";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 
 export class AuthService {
   private readonly apiService: ApiService = inject(ApiService);

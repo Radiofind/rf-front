@@ -1,0 +1,7 @@
+<div class="checkbox-field">
+  <label class="checkbox-field__label">
+    <input type="checkbox" [checked]="checked()" [disabled]="disabled()" (change)="onChange($event)" />
+    <span></span>
+    {{ checkboxText() }}
+  </label>
+</div>
