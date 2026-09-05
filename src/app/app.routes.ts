@@ -1,8 +1,9 @@
-import type { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { Links } from './core/constants/links';
 import { Constants } from './core/constants/constants';
 import { noLoginGuard } from './core/guards/auto-login.guard';
+
+import type { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {

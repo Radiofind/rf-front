@@ -1,4 +1,6 @@
-import { Component, input, type InputSignal } from '@angular/core';
+import { Component, input } from '@angular/core';
+
+import type { InputSignal } from '@angular/core';
 
 @Component({
   selector: 'app-icon',

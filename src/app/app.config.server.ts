@@ -1,8 +1,10 @@
-import { mergeApplicationConfig, type ApplicationConfig } from '@angular/core';
+import { mergeApplicationConfig } from '@angular/core';
 import { provideServerRendering, withRoutes } from '@angular/ssr';
 import { appConfig } from './app.config';
 import { serverRoutes } from './app.routes.server';
 import { APP_BASE_HREF } from '@angular/common';
+
+import type { ApplicationConfig } from '@angular/core';
 
 const serverConfig: ApplicationConfig = {
   providers: [

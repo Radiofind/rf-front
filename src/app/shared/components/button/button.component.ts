@@ -1,8 +1,9 @@
-import type { OutputEmitterRef } from '@angular/core';
-import { Component, input, type InputSignal, output } from '@angular/core';
-import type { ButtonType } from '../../../core/types/button-type.type';
+import { Component, input, output } from '@angular/core';
 import { Constants } from '../../../core/constants/constants';
 import { ButtonTypeEnum } from '../../../core/enums/button-type.enum';
+
+import type { OutputEmitterRef, InputSignal } from '@angular/core';
+import type { ButtonType } from '../../../core/types/button-type.type';
 
 @Component({
   selector: 'app-button',

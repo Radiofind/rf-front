@@ -1,23 +1,11 @@
-import type { OutputEmitterRef } from '@angular/core';
-import {
-  Component,
-  computed,
-  input,
-  type InputSignal,
-  model,
-  type ModelSignal,
-  output,
-  type Signal,
-} from '@angular/core';
-import {
-  type FormValueControl,
-  transformedValue,
-  type TransformedValueSignal,
-  type ValidationError
-} from '@angular/forms/signals';
+import { Component, computed, input, model, output } from '@angular/core';
+import { transformedValue } from '@angular/forms/signals';
 import { Constants } from '../../../core/constants/constants';
 import { AuthValidationMessages } from '../../../features/constants/auth-error-messages.constant';
 import { transformDateToString, transformStringToDate } from '../../helpers/date.helpers';
+
+import type { OutputEmitterRef, InputSignal, ModelSignal, Signal } from '@angular/core';
+import type { FormValueControl, TransformedValueSignal, ValidationError } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-date-field',

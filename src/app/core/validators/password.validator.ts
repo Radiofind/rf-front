@@ -1,6 +1,7 @@
-import type { ValidationError } from "@angular/forms/signals";
 import { Constants } from "../constants/constants";
 import { AuthValidationMessages } from "../../features/constants/auth-error-messages.constant";
+
+import type { ValidationError } from "@angular/forms/signals";
 
 export const passwordRuleErrors = (password: string): ValidationError[] => {
   const errors: ValidationError[] = [];

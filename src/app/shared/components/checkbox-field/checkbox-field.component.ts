@@ -1,12 +1,6 @@
-import type { OutputEmitterRef } from '@angular/core';
-import {
-  Component,
-  input,
-  type InputSignal,
-  model,
-  type ModelSignal,
-  output
-} from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
+
+import type { OutputEmitterRef, InputSignal, ModelSignal } from '@angular/core';
 import type { FormCheckboxControl } from '@angular/forms/signals';
 
 @Component({

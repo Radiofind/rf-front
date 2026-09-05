@@ -1,19 +1,10 @@
-import type {
-  OutputEmitterRef} from '@angular/core';
-import {
-  Component,
-  computed,
-  input,
-  type InputSignal,
-  model,
-  type ModelSignal,
-  output,
-  type Signal,
-} from '@angular/core';
-import type { FormValueControl, ValidationError } from '@angular/forms/signals';
+import { Component, computed, input, model, output } from '@angular/core';
 import { Constants } from '../../../core/constants/constants';
-import type { InputType } from '../../../core/types/input-type.type';
 import { InputTypeEnum } from '../../../core/enums/input-type.enum';
+
+import type { OutputEmitterRef, InputSignal, ModelSignal, Signal } from '@angular/core';
+import type { FormValueControl, ValidationError } from '@angular/forms/signals';
+import type { InputType } from '../../../core/types/input-type.type';
 
 @Component({
   selector: 'app-input-field',

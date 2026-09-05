@@ -1,14 +1,17 @@
-import { Component, inject, type Signal } from '@angular/core';
-import { ActivatedRoute, type Data } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { HeaderComponent } from "../../shared/components/header/header.component";
 import { AuthDescriptionComponent } from "../../features/components/auth/auth-description/auth-description.component";
 import { AuthFormComponent } from "../../features/components/auth/auth-form/auth-form.component";
-import type { IAuthContent } from '../../features/models/auth-content.model';
 import { AUTH_DESCRIPTION_CONTENT_LOGIN, AUTH_DESCRIPTION_CONTENT_REGISTER } from '../../features/constants/auth-content.constant';
-import type { AuthType } from '../../core/types/auth.type';
 import { Constants } from '../../core/constants/constants';
+
+import type { Signal } from '@angular/core';
+import type { Data } from '@angular/router';
+import type { IAuthContent } from '../../features/models/auth-content.model';
+import type { AuthType } from '../../core/types/auth.type';
 
 @Component({
   selector: 'app-auth-page',
