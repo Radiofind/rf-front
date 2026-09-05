@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AuthValidationMessages {
   public static readonly REQUIRED: string = 'Field is required';
 

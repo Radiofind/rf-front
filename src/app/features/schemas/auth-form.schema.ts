@@ -56,8 +56,8 @@ export const registerFormSchema: Schema<IRegisterForm> = schema<IRegisterForm>(f
 
   required(form.confirmPassword, { message: AuthValidationMessages.REQUIRED });
 
-  validate(form.confirmPassword, ({ value, valueOf }) =>
-    value() === valueOf(form.password)
+  validate(form.confirmPassword, ctx =>
+    ctx.value() === ctx.valueOf(form.password)
       ? undefined
       : { kind: Constants.PASSWORD_MISMATCH, message: AuthValidationMessages.PASSWORD_MISMATCH }
   );

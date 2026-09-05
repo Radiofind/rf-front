@@ -1,5 +1,5 @@
 import { Component, inject, type Signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, type Data } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { HeaderComponent } from "../../shared/components/header/header.component";
@@ -26,10 +26,10 @@ export class AuthPageComponent {
 
   public readonly authType: Signal<AuthType> = toSignal(
     this.activatedRoute.data.pipe(
-      map(data => data[Constants.AUTH_TYPE_PROP])
+      map((data: Data): AuthType => data[Constants.AUTH_TYPE_PROP] as AuthType)
     ),
     {
-      initialValue: Constants.LOGIN,
+      initialValue: Constants.LOGIN as AuthType,
     }
   )
 }

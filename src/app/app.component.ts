@@ -8,4 +8,5 @@ import { RouterOutlet } from "@angular/router";
   styleUrl: './app.component.scss',
 })
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AppComponent {}

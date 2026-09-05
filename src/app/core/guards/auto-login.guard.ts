@@ -8,7 +8,7 @@ export const noLoginGuard: CanActivateFn = () => {
   const router: Router = inject(Router);
 
   if (authState.isTokenValid()) {
-    router.navigate([Links.UPLOADS_URL]);
+    void router.navigate([Links.UPLOADS_URL]);
     return false;
   }
   return true;

@@ -1,3 +1,4 @@
+import type { OutputEmitterRef } from '@angular/core';
 import {
   Component,
   computed,
@@ -6,7 +7,6 @@ import {
   model,
   type ModelSignal,
   output,
-  OutputEmitterRef,
   type Signal,
 } from '@angular/core';
 import {
@@ -42,7 +42,7 @@ export class DateFieldComponent implements FormValueControl<Date | null> {
 
   public readonly max: InputSignal<Date | undefined> = input<Date | undefined>(undefined);
 
-  public readonly touch: OutputEmitterRef<void> = output<void>();
+  public readonly touch: OutputEmitterRef<void> = output();
 
   public readonly fieldLabel: InputSignal<string | null> = input<string | null>(null);
 

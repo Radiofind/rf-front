@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './uploads-page.component.scss',
 })
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class UploadsPageComponent {}

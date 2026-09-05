@@ -6,12 +6,12 @@ export function transformStringToDate(stringDate: string): Date {
 }
 
 export function transformDateToString(date: Date): string {
-  const year: string = `${date.getFullYear()}`;
-  const month: string = `${date.getMonth() + Constants.ONE}`.padStart(
+  const year: string = String(date.getFullYear());
+  const month: string = String(date.getMonth() + Constants.ONE).padStart(
     Constants.DATE_PAD_LENGTH,
     Constants.ZERO_STRING
   );
-  const day: string = `${date.getDate()}`.padStart(Constants.DATE_PAD_LENGTH, Constants.ZERO_STRING);
+  const day: string = String(date.getDate()).padStart(Constants.DATE_PAD_LENGTH, Constants.ZERO_STRING);
 
   return [year, month, day].join(Constants.DASH);
 }

@@ -1,11 +1,11 @@
+import type { OutputEmitterRef } from '@angular/core';
 import {
   Component,
   input,
   type InputSignal,
   model,
   type ModelSignal,
-  output,
-  OutputEmitterRef
+  output
 } from '@angular/core';
 import type { FormCheckboxControl } from '@angular/forms/signals';
 
@@ -19,7 +19,7 @@ export class CheckboxFieldComponent implements FormCheckboxControl {
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
 
-  public readonly touch: OutputEmitterRef<void> = output<void>();
+  public readonly touch: OutputEmitterRef<void> = output();
 
   public readonly checkboxText: InputSignal<string | null> = input<string | null>(null);
 

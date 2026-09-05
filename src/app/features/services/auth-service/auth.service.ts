@@ -1,6 +1,6 @@
 import { inject, Service } from "@angular/core";
 import type { IAuthResponse, ILoginData } from "../../../core/models/auth.model";
-import { Observable } from "rxjs";
+import type { Observable } from "rxjs";
 import { AuthStateService } from "../auth-state-service/auth-state.service";
 import type { IRegisterData } from "../../models/auth-content.model";
 import { ApiService } from "../../../core/services/api.service";

@@ -2,7 +2,7 @@ import { inject, Service } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import type { IAuthEndpoints, IAuthResponse, ILoginData } from "../models/auth.model";
-import { Observable, tap } from "rxjs";
+import { type Observable, tap } from "rxjs";
 import { AuthStateService } from "../../features/services/auth-state-service/auth-state.service";
 import { EndpointConstants } from "../constants/endpoints.constants";
 import type { IRegisterData } from "../../features/models/auth-content.model";

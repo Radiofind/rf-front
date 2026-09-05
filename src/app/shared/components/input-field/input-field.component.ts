@@ -1,3 +1,5 @@
+import type {
+  OutputEmitterRef} from '@angular/core';
 import {
   Component,
   computed,
@@ -6,7 +8,6 @@ import {
   model,
   type ModelSignal,
   output,
-  OutputEmitterRef,
   type Signal,
 } from '@angular/core';
 import type { FormValueControl, ValidationError } from '@angular/forms/signals';
@@ -33,7 +34,7 @@ export class InputFieldComponent implements FormValueControl<string> {
 
   public readonly required: InputSignal<boolean> = input<boolean>(false);
 
-  public readonly touch: OutputEmitterRef<void> = output<void>();
+  public readonly touch: OutputEmitterRef<void> = output();
 
   public readonly additionalClass: InputSignal<string | null> = input<string | null>(null);
 
@@ -59,7 +60,7 @@ export class InputFieldComponent implements FormValueControl<string> {
 
   public readonly textareaRows: InputSignal<number> = input<number>(Constants.DEFAULT_TEXTAREA_ROWS);
 
-  public readonly inputActionEmiter: OutputEmitterRef<void> = output<void>();
+  public readonly inputActionEmiter: OutputEmitterRef<void> = output();
 
   public readonly visibleErrors: Signal<readonly ValidationError.WithOptionalFieldTree[]> = computed(() =>
     this.touched() || this.dirty() ? this.errors() : []

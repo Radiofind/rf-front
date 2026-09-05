@@ -1,13 +1,13 @@
+import type { OutputEmitterRef } from '@angular/core';
 import {
   Component,
   input,
   type InputSignal,
   model,
   type ModelSignal,
-  output,
-  OutputEmitterRef
+  output
 } from '@angular/core';
-import { type FormValueControl } from '@angular/forms/signals';
+import type { FormValueControl } from '@angular/forms/signals';
 
 
 @Component({
@@ -20,7 +20,7 @@ export class RadioFieldComponent<T extends string> implements FormValueControl<T
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
 
-  public readonly touch: OutputEmitterRef<void> = output<void>();
+  public readonly touch: OutputEmitterRef<void> = output();
 
   public readonly fieldLabel: InputSignal<string | null> = input<string | null>(null);
 

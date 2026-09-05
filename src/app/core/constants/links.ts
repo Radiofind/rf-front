@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Links {
   public static readonly DEFAULT_PATH: string = '';
 

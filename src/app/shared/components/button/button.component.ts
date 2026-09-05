@@ -1,4 +1,5 @@
-import { Component, input, type InputSignal, output, OutputEmitterRef } from '@angular/core';
+import type { OutputEmitterRef } from '@angular/core';
+import { Component, input, type InputSignal, output } from '@angular/core';
 import type { ButtonType } from '../../../core/types/button-type.type';
 import { Constants } from '../../../core/constants/constants';
 import { ButtonTypeEnum } from '../../../core/enums/button-type.enum';
@@ -20,7 +21,7 @@ export class ButtonComponent {
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
 
-  public readonly clickAction: OutputEmitterRef<void> = output<void>();
+  public readonly clickAction: OutputEmitterRef<void> = output();
 
   public onClick(): void {
     this.clickAction.emit();

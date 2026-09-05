@@ -97,7 +97,8 @@ export class AuthFormComponent {
   }
 
   public onSwitchAuthType(): void {
-    this.router.navigate(this.authType() === AUTH_TYPE.LOGIN ? [Links.REGISTER_URL] : [Links.LOGIN_URL]);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+    void this.router.navigate(this.authType() === AUTH_TYPE.LOGIN ? [Links.REGISTER_URL] : [Links.LOGIN_URL]);
   }
 
   private serverErrorOf(fieldTree: FieldTree<ILoginForm | IRegisterForm>): string | undefined {
@@ -140,7 +141,7 @@ export class AuthFormComponent {
       dateOfBirth: dateOfBirth,
       password: model.password,
       artistInformation: {
-        typeOfArtist: model.typeOfArtist?.toUpperCase(),
+        typeOfArtist: model.typeOfArtist.toUpperCase(),
         artistName: model.artistOrBandName || null,
         description: model.description || null,
       },
