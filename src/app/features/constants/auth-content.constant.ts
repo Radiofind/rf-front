@@ -1,3 +1,4 @@
+import { ArtistType } from "../../core/types/artist-type.type";
 import { IAuthContent } from "../models/auth-content.model";
 
 export const AUTH_DESCRIPTION_CONTENT_LOGIN: IAuthContent = {
@@ -52,3 +53,5 @@ export const AUTH_DESCRIPTION_CONTENT_REGISTER: IAuthContent = {
     },
   ],
 };
+
+export const ARTIST_TYPES: ArtistType[] = ['Artist', 'Band']; 

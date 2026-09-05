@@ -25,6 +25,8 @@ import { ILoginForm, IRegisterForm } from '../../../models/auth-form.model';
 import { AuthValidationMessages } from '../../../constants/auth-error-messages.constant';
 import { loginFormSchema, registerFormSchema } from '../../../schemas/auth-form.schema';
 import { AuthService } from '../../../services/auth-service/auth.service';
+import { ARTIST_TYPES } from '../../../constants/auth-content.constant';
+import { AUTH_TYPE } from '../../../enums/auth-type.enum';
 
 @Component({
   selector: 'app-auth-form',
@@ -47,13 +49,13 @@ export class AuthFormComponent {
 
   private readonly router: Router = inject(Router);
 
-  public readonly authType: InputSignal<AuthType> = input<AuthType>('login');
+  public readonly authType: InputSignal<AuthType> = input<AuthType>(AUTH_TYPE.LOGIN);
 
   public readonly showPassword: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly showConfirmPassword: WritableSignal<boolean> = signal<boolean>(false);
 
-  public readonly artistTypes: readonly ArtistType[] = ['Artist', 'Band'];
+  public readonly artistTypes: readonly ArtistType[] = ARTIST_TYPES;
 
   private readonly loginModel: WritableSignal<ILoginForm> = signal<ILoginForm>({
     email: Constants.EMPTY_STRING,
@@ -73,7 +75,7 @@ export class AuthFormComponent {
     password: Constants.EMPTY_STRING,
     confirmPassword: Constants.EMPTY_STRING,
     addInformation: false,
-    typeOfArtist: 'Artist',
+    typeOfArtist: this.artistTypes[Constants.ZERO],
     artistOrBandName: Constants.EMPTY_STRING,
     description: Constants.EMPTY_STRING,
   });
@@ -95,7 +97,7 @@ export class AuthFormComponent {
   }
 
   public onSwitchAuthType(): void {
-    this.router.navigate(this.authType() === 'login' ? [Links.REGISTER_URL] : [Links.LOGIN_URL]);
+    this.router.navigate(this.authType() === AUTH_TYPE.LOGIN ? [Links.REGISTER_URL] : [Links.LOGIN_URL]);
   }
 
   private serverErrorOf(fieldTree: FieldTree<ILoginForm | IRegisterForm>): string | undefined {

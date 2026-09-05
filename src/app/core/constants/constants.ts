@@ -39,6 +39,10 @@ export class Constants {
 
   public static readonly ZERO_STRING: string = '0';
 
+  public static readonly AUTH_PART_PATH: string = '/auth';
+
+  public static readonly BEARER: string = 'Bearer';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
