@@ -1,4 +1,4 @@
-import { ValidationError } from "@angular/forms/signals";
+import type { ValidationError } from "@angular/forms/signals";
 import { Constants } from "../constants/constants";
 import { AuthValidationMessages } from "../../features/constants/auth-error-messages.constant";
 

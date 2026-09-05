@@ -1,5 +1,5 @@
-import { Component, input, InputSignal } from '@angular/core';
-import { IAuthContent } from '../../../models/auth-content.model';
+import { Component, input, type InputSignal } from '@angular/core';
+import type { IAuthContent } from '../../../models/auth-content.model';
 import { AUTH_DESCRIPTION_CONTENT_LOGIN } from '../../../constants/auth-content.constant';
 import { IconComponent } from "../../../../shared/components/icon/icon.component";
 

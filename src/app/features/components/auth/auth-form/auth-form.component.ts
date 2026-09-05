@@ -1,31 +1,31 @@
-import { 
+import {
   Component,
   computed,
   inject, input,
-  InputSignal,
+  type InputSignal,
   signal,
-  Signal,
-  WritableSignal
+  type Signal,
+  type WritableSignal
 } from '@angular/core';
 import { LowerCasePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { FieldTree, form, FormField, FormRoot, ValidationError } from '@angular/forms/signals';
+import { type FieldTree, form, FormField, FormRoot, type ValidationError } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { Constants } from '../../../../core/constants/constants';
-import { ArtistType } from '../../../../core/types/artist-type.type';
+import type { ArtistType } from '../../../../core/types/artist-type.type';
 import { Links } from '../../../../core/constants/links';
-import { AuthType } from '../../../../core/types/auth.type';
+import type { AuthType } from '../../../../core/types/auth.type';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CheckboxFieldComponent } from '../../../../shared/components/checkbox-field/checkbox-field.component';
 import { DateFieldComponent } from '../../../../shared/components/date-field/date-field.component';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { RadioFieldComponent } from '../../../../shared/components/radio-field/radio-field.component';
-import { IRegisterData } from '../../../models/auth-content.model';
-import { ILoginForm, IRegisterForm } from '../../../models/auth-form.model';
+import type { IRegisterData } from '../../../models/auth-content.model';
+import type { ILoginForm, IRegisterForm } from '../../../models/auth-form.model';
 import { AuthValidationMessages } from '../../../constants/auth-error-messages.constant';
 import { loginFormSchema, registerFormSchema } from '../../../schemas/auth-form.schema';
 import { AuthService } from '../../../services/auth-service/auth.service';
-import { ARTIST_TYPES } from '../../../constants/auth-content.constant';
+import { ARTIST_TYPES, DEFAULT_ARTIST_TYPE } from '../../../constants/auth-content.constant';
 import { AUTH_TYPE } from '../../../enums/auth-type.enum';
 
 @Component({
@@ -75,7 +75,7 @@ export class AuthFormComponent {
     password: Constants.EMPTY_STRING,
     confirmPassword: Constants.EMPTY_STRING,
     addInformation: false,
-    typeOfArtist: this.artistTypes[Constants.ZERO],
+    typeOfArtist: DEFAULT_ARTIST_TYPE,
     artistOrBandName: Constants.EMPTY_STRING,
     description: Constants.EMPTY_STRING,
   });
@@ -140,7 +140,7 @@ export class AuthFormComponent {
       dateOfBirth: dateOfBirth,
       password: model.password,
       artistInformation: {
-        typeOfArtist: model.typeOfArtist.toUpperCase(),
+        typeOfArtist: model.typeOfArtist?.toUpperCase(),
         artistName: model.artistOrBandName || null,
         description: model.description || null,
       },

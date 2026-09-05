@@ -1,5 +1,13 @@
-import { Component, input, InputSignal, model, ModelSignal, output, OutputEmitterRef } from '@angular/core';
-import { FormCheckboxControl } from '@angular/forms/signals';
+import {
+  Component,
+  input,
+  type InputSignal,
+  model,
+  type ModelSignal,
+  output,
+  OutputEmitterRef
+} from '@angular/core';
+import type { FormCheckboxControl } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-checkbox-field',

@@ -1,4 +1,4 @@
-import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
+import { type HttpHandlerFn, type HttpInterceptorFn, HttpRequest } from "@angular/common/http";
 import { inject, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from "@angular/common";
 import { AuthStateService } from "../../features/services/auth-state-service/auth-state.service";

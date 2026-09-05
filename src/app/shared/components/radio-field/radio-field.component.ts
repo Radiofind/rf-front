@@ -1,13 +1,13 @@
 import {
   Component,
   input,
-  InputSignal,
+  type InputSignal,
   model,
-  ModelSignal,
+  type ModelSignal,
   output,
   OutputEmitterRef
 } from '@angular/core';
-import { FormValueControl } from '@angular/forms/signals';
+import { type FormValueControl } from '@angular/forms/signals';
 
 
 @Component({

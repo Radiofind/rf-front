@@ -2,16 +2,16 @@ import {
   Component,
   computed,
   input,
-  InputSignal,
+  type InputSignal,
   model,
-  ModelSignal,
+  type ModelSignal,
   output,
   OutputEmitterRef,
-  Signal,
+  type Signal,
 } from '@angular/core';
-import { FormValueControl, ValidationError } from '@angular/forms/signals';
+import type { FormValueControl, ValidationError } from '@angular/forms/signals';
 import { Constants } from '../../../core/constants/constants';
-import { InputType } from '../../../core/types/input-type.type';
+import type { InputType } from '../../../core/types/input-type.type';
 import { InputTypeEnum } from '../../../core/enums/input-type.enum';
 
 @Component({

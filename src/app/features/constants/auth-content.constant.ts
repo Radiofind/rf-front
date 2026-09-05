@@ -1,5 +1,5 @@
-import { ArtistType } from "../../core/types/artist-type.type";
-import { IAuthContent } from "../models/auth-content.model";
+import type { ArtistType } from "../../core/types/artist-type.type";
+import type { IAuthContent } from "../models/auth-content.model";
 
 export const AUTH_DESCRIPTION_CONTENT_LOGIN: IAuthContent = {
   title: 'Welcome Back ',
@@ -54,4 +54,6 @@ export const AUTH_DESCRIPTION_CONTENT_REGISTER: IAuthContent = {
   ],
 };
 
-export const ARTIST_TYPES: ArtistType[] = ['Artist', 'Band']; 
+export const ARTIST_TYPES = ['Artist', 'Band'] as const satisfies readonly ArtistType[];
+
+export const DEFAULT_ARTIST_TYPE: ArtistType = ARTIST_TYPES[0];

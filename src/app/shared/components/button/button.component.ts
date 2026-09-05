@@ -1,5 +1,5 @@
-import { Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
-import { ButtonType } from '../../../core/types/button-type.type';
+import { Component, input, type InputSignal, output, OutputEmitterRef } from '@angular/core';
+import type { ButtonType } from '../../../core/types/button-type.type';
 import { Constants } from '../../../core/constants/constants';
 import { ButtonTypeEnum } from '../../../core/enums/button-type.enum';
 

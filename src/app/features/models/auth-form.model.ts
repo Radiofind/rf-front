@@ -1,4 +1,4 @@
-import { ArtistType } from '../../core/types/artist-type.type';
+import type { ArtistType } from '../../core/types/artist-type.type';
 
 export interface ILoginForm {
   email: string;

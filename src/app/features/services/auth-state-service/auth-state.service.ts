@@ -2,7 +2,7 @@ import { inject, PLATFORM_ID, Service } from "@angular/core";
 import { Constants } from "../../../core/constants/constants";
 import { isPlatformBrowser } from "@angular/common";
 import { jwtDecode } from 'jwt-decode';
-import { IJwtPayload } from "../../../core/models/auth.model";
+import type { IJwtPayload } from "../../../core/models/auth.model";
 
 @Service()
 

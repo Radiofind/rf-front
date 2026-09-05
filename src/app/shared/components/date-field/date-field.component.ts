@@ -2,18 +2,18 @@ import {
   Component,
   computed,
   input,
-  InputSignal,
+  type InputSignal,
   model,
-  ModelSignal,
+  type ModelSignal,
   output,
   OutputEmitterRef,
-  Signal,
+  type Signal,
 } from '@angular/core';
-import { 
-  FormValueControl,
+import {
+  type FormValueControl,
   transformedValue,
-  TransformedValueSignal,
-  ValidationError
+  type TransformedValueSignal,
+  type ValidationError
 } from '@angular/forms/signals';
 import { Constants } from '../../../core/constants/constants';
 import { AuthValidationMessages } from '../../../features/constants/auth-error-messages.constant';
