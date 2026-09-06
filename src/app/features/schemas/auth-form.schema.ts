@@ -71,8 +71,8 @@ export const registerFormSchema: Schema<IRegisterForm> = schema<IRegisterForm>(f
       message: AuthValidationMessages.PATTERN_WITH_SPACES_AND_SYMBOLS,
       when: ({ value }) => !!value(),
     });
-    pattern(artist.description, Constants.EN_VALIDATOR_PATTERN, {
-      message: AuthValidationMessages.PATTERN,
+    pattern(artist.description, Constants.EN_PLUS_SPACES_AND_SYMBOLS, {
+      message: AuthValidationMessages.PATTERN_WITH_SPACES_AND_SYMBOLS,
       when: ({ value }) => !!value(),
     });
   });
