@@ -66,7 +66,7 @@ export class Constants {
 
   // others
 
-  public static readonly EN_VALIDATOR_PATTERN: RegExp = /^[A-Za-z]+$/;
+  public static readonly EN_VALIDATOR_PATTERN: RegExp = /^[A-Za-z-]+$/;
 
   public static readonly UPPERCASE_VALIDATOR_PATTERN: RegExp = /[A-Z]/;
 
@@ -75,6 +75,8 @@ export class Constants {
   public static readonly DECIMAL_VALIDATOR_PATTERN: RegExp = /\d/;
 
   public static readonly SPECIAL_CHARACTER_VALIDATOR_PATTERN: RegExp = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+
+  public static readonly EN_PLUS_SPACES_AND_SYMBOLS: RegExp = /^[A-Za-z\s!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
 
   public static readonly SPACES_VALIDATOR_PATTERN: RegExp = /\s/;
 }

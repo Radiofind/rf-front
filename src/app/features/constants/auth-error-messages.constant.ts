@@ -10,6 +10,8 @@ export class AuthValidationMessages {
 
   public static readonly PATTERN: string = 'Only English letters are allowed (without spaces)';
 
+  public static readonly PATTERN_WITH_SPACES_AND_SYMBOLS: string = 'Only English letters are allowed';
+
   public static readonly INVALID_DATE: string = 'Invalid date';
 
   public static readonly FUTURE_DATE: string = 'Date of birth cannot be in the future';

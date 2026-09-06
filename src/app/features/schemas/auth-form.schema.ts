@@ -67,8 +67,8 @@ export const registerFormSchema: Schema<IRegisterForm> = schema<IRegisterForm>(f
     maxLength(artist.artistOrBandName, Constants.MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME, {
       message: AuthValidationMessages.MAX_LENGTH,
     });
-    pattern(artist.artistOrBandName, Constants.EN_VALIDATOR_PATTERN, {
-      message: AuthValidationMessages.PATTERN,
+    pattern(artist.artistOrBandName, Constants.EN_PLUS_SPACES_AND_SYMBOLS, {
+      message: AuthValidationMessages.PATTERN_WITH_SPACES_AND_SYMBOLS,
       when: ({ value }) => !!value(),
     });
     pattern(artist.description, Constants.EN_VALIDATOR_PATTERN, {
