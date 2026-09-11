@@ -1,4 +1,8 @@
+import { ModalSizeEnum } from "../../core/enums/modal-size.enum";
+
 import type { ArtistType } from "../../core/types/artist-type.type";
+import type { IModalOptions } from "../../shared/models/modal.model";
+import type { ITwoFactorModalData } from "../models/two-factor.model";
 import type { IAuthContent } from "../models/auth-content.model";
 
 export const AUTH_DESCRIPTION_CONTENT_LOGIN: IAuthContent = {
@@ -57,3 +61,9 @@ export const AUTH_DESCRIPTION_CONTENT_REGISTER: IAuthContent = {
 export const ARTIST_TYPES = ['Artist', 'Band'] as const satisfies readonly ArtistType[];
 
 export const DEFAULT_ARTIST_TYPE: ArtistType = ARTIST_TYPES[0];
+
+export const TWO_FACTOR_MODAL_OPTIONS: IModalOptions<ITwoFactorModalData> = {
+  size: ModalSizeEnum.MEDIUM,
+  hasHeader: false,
+  ariaLabel: 'Two-Factor Authentication',
+};

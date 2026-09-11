@@ -1,0 +1,33 @@
+<div class="code-field">
+  <div class="code-field__cells">
+    @for (cell of cells(); track $index) {
+      <input
+        #cell
+        class="code-field__cell"
+        [class.invalid]="isCodeInvalid()"
+        type="text"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        maxlength="1"
+        [value]="cell"
+        [placeholder]="cellPlaceholder()"
+        [disabled]="disabled()"
+        [required]="required()"
+        [attr.aria-label]="cellAriaLabel() + ' ' + ($index + 1)"
+        (input)="onInput($event, $index)"
+        (keydown)="onKeydown($event, $index)"
+        (paste)="onPaste($event, $index)"
+        (focus)="onFocus($event, $index)"
+        (blur)="touch.emit()"
+      />
+    }
+  </div>
+
+  @if (isCodeInvalid()) {
+    <div class="code-field__errors">
+      @for (error of visibleErrors(); track error.kind) {
+        <div>{{ error.message }}</div>
+      }
+    </div>
+  }
+</div>

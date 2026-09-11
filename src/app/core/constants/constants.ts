@@ -44,6 +44,58 @@ export class Constants {
 
   public static readonly BEARER: string = 'Bearer';
 
+  public static readonly CODE_FIELD_PLACEHOLDER: string = '0';
+
+  public static readonly CODE_FIELD_CELL_AREA_LABEL: string = 'Digit';
+
+  public static readonly BACKSPACE_KEY: string = 'Backspace';
+
+  public static readonly ARROW_LEFT_KEY: string = 'ArrowLeft';
+
+  public static readonly ARROW_RIGHT_KEY: string = 'ArrowRight';
+
+  public static readonly CLIPBOARD_FORMAT: string = 'text';
+
+  public static readonly MODAL_DEFAULT_CONFIRM_TEXT: string = 'Confirm';
+
+  public static readonly MODAL_DEFAULT_CANCEL_TEXT: string = 'Cancel';
+
+  public static readonly MODAL_PANEL_CLASS: string = 'modal-panel';
+
+  public static readonly MODAL_CONTAINER_CLASS: string = 'modal-container';
+
+  public static readonly MODAL_BACKDROP_CLASS: string = 'modal-backdrop';
+
+  public static readonly MODAL_TITLE_ID_SUFFIX: string = '-title';
+
+  public static readonly MODAL_CLOSE_ARIA_LABEL: string = 'Close modal';
+
+  public static readonly MODAL_CLOSE_ICON_CLASS: string = 'bx bx-x';
+
+  public static readonly MODAL_TAB_INDEX: string = '-1';
+
+  public static readonly MODAL_MAX_WIDTH: string = 'calc(100vw - 32px)';
+
+  public static readonly MODAL_MAX_HEIGHT: string = 'calc(100vh - 32px)';
+
+  public static readonly MODAL_AUTO_FOCUS_TARGET: string = 'first-tabbable';
+
+  public static readonly MODAL_SIZE_SMALL: string = '440px';
+
+  public static readonly MODAL_SIZE_MEDIUM: string = '600px';
+
+  public static readonly MODAL_SIZE_LARGE: string = '840px';
+
+  public static readonly SHIELD_ICON_CLASS: string = 'bx bx-shield';
+
+  public static readonly LOCK_ICON_CLASS: string = 'bx bx-lock-keyhole';
+
+  public static readonly SUBMIT_ICON_CLASS: string = 'bx bx-arrow-right-stroke';
+
+  public static readonly TIME_SEPARATOR: string = ':';
+
+  public static readonly CELL_FIELD: string = 'cell';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
@@ -64,6 +116,18 @@ export class Constants {
 
   public static readonly DATE_PAD_LENGTH: number = 2;
 
+  public static readonly CODE_FIELD_DEFAULT_LENGTH: number = 6;
+
+  public static readonly NOT_FOUND_INDEX: number = -1;
+
+  public static readonly RESEND_TIMEOUT_SECONDS: number = 45;
+
+  public static readonly TIMER_INTERVAL_MS: number = 1000;
+
+  public static readonly SECONDS_IN_MINUTE: number = 60;
+
+  public static readonly TIME_PAD_LENGTH: number = 2;
+
   // others
 
   public static readonly EN_VALIDATOR_PATTERN: RegExp = /^[A-Za-z-]+$/;
@@ -79,4 +143,6 @@ export class Constants {
   public static readonly EN_PLUS_SPACES_AND_SYMBOLS: RegExp = /^[A-Za-z\s!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
 
   public static readonly SPACES_VALIDATOR_PATTERN: RegExp = /\s/;
+
+  public static readonly NOT_DIGIT_PATTERN: RegExp = /\D/g;
 }
