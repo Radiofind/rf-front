@@ -1,0 +1,23 @@
+.confirm {
+  &__message {
+    font-size: 22px;
+    color: var(--text-color);
+  }
+
+  &__description {
+    margin-top: 12px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--second-text-color);
+  }
+
+  &__actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 28px;
+
+    app-button {
+      flex: 1;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<div class="confirm">
+  <p class="confirm__message">{{ data.message }}</p>
+
+  @if (data.description) {
+    <p class="confirm__description">{{ data.description }}</p>
+  }
+
+  <div class="confirm__actions">
+    <app-button
+      [contentText]="cancelText"
+      [additionalClass]="'button--secondary'"
+      (clickAction)="onCancel()"
+    />
+
+    <app-button [contentText]="confirmText" (clickAction)="onConfirm()" />
+  </div>
+</div>

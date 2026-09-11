@@ -13,15 +13,24 @@ import { RadioFieldComponent } from '../../../../shared/components/radio-field/r
 import { AuthValidationMessages } from '../../../constants/auth-error-messages.constant';
 import { loginFormSchema, registerFormSchema } from '../../../schemas/auth-form.schema';
 import { AuthService } from '../../../services/auth-service/auth.service';
-import { ARTIST_TYPES, DEFAULT_ARTIST_TYPE } from '../../../constants/auth-content.constant';
+import { ModalService } from '../../../../shared/services/modal-service/modal.service';
+import { TwoFactorModalComponent } from '../two-factor-modal/two-factor-modal.component';
+import {
+  ARTIST_TYPES,
+  DEFAULT_ARTIST_TYPE,
+  TWO_FACTOR_MODAL_OPTIONS,
+} from '../../../constants/auth-content.constant';
 import { AUTH_TYPE } from '../../../enums/auth-type.enum';
 
 import type { InputSignal, Signal, WritableSignal } from '@angular/core';
+import type { DialogRef } from '@angular/cdk/dialog';
 import type { FieldTree, ValidationError } from '@angular/forms/signals';
 import type { ArtistType } from '../../../../core/types/artist-type.type';
 import type { AuthType } from '../../../../core/types/auth.type';
 import type { IRegisterData } from '../../../models/auth-content.model';
 import type { ILoginForm, IRegisterForm } from '../../../models/auth-form.model';
+import type { ITwoFactorModalData } from '../../../models/two-factor.model';
+import type { IAuthResponse } from '../../../../core/models/auth.model';
 
 @Component({
   selector: 'app-auth-form',
@@ -44,11 +53,15 @@ export class AuthFormComponent {
 
   private readonly router: Router = inject(Router);
 
+  private readonly modalService: ModalService = inject(ModalService);
+
   public readonly authType: InputSignal<AuthType> = input<AuthType>(AUTH_TYPE.LOGIN);
 
   public readonly showPassword: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly showConfirmPassword: WritableSignal<boolean> = signal<boolean>(false);
+
+  private readonly challengeId: WritableSignal<string | null> = signal<string | null>(null);
 
   public readonly artistTypes: readonly ArtistType[] = ARTIST_TYPES;
 
@@ -96,13 +109,22 @@ export class AuthFormComponent {
     void this.router.navigate(this.authType() === AUTH_TYPE.LOGIN ? [Links.REGISTER_URL] : [Links.LOGIN_URL]);
   }
 
+  private openTwoFactorModal(): DialogRef<string, TwoFactorModalComponent> {
+    return this.modalService.open<string, ITwoFactorModalData, TwoFactorModalComponent>(
+      TwoFactorModalComponent,
+      { ...TWO_FACTOR_MODAL_OPTIONS, data: { email: this.loginModel().email, challengeId: this.challengeId() } },
+    );
+  }
+
   private serverErrorOf(fieldTree: FieldTree<ILoginForm | IRegisterForm>): string | undefined {
     return fieldTree().errors().find(error => error.kind === Constants.SERVER_ERROR)?.message;
   }
 
   private async login(): Promise<ValidationError | undefined> {
     try {
-      await firstValueFrom(this.authService.login(this.loginModel()));
+      const loginData: IAuthResponse = await firstValueFrom(this.authService.login(this.loginModel()));
+      this.challengeId.set(loginData.challengeId);
+      await firstValueFrom(this.openTwoFactorModal().closed);
       await this.router.navigate([Links.UPLOADS_URL]);
       return undefined;
     } catch {

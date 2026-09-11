@@ -27,3 +27,15 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.button--secondary {
+  background: transparent;
+  color: var(--second-text-color);
+  border: 1px solid var(--bg-round-color);
+}
+
+.button--secondary:hover {
+  background: var(--bg-round-color);
+  color: var(--text-color);
+  opacity: 1;
+}

@@ -1,0 +1,47 @@
+<div class="two-factor">
+  <div class="two-factor__badge">
+    <span class="two-factor__ring"></span>
+    <span class="two-factor__ring two-factor__ring--outer"></span>
+    <i class="two-factor__shield" [class]="shieldIconClass"></i>
+    <i class="two-factor__lock" [class]="lockIconClass"></i>
+  </div>
+
+  <h2 class="two-factor__title">Two-Factor Authentication</h2>
+
+  <p class="two-factor__description">
+    We've sent a {{ codeLength }}-digit code to your email address
+    <span class="two-factor__email">{{ data.email }}</span
+    >. Please enter the code below to continue.
+  </p>
+
+  <app-code-field
+    class="two-factor__code"
+    [value]="code()"
+    [codeLength]="codeLength"
+    [errors]="codeErrors()"
+    [touched]="hasCodeError()"
+    (valueChange)="onCodeChange($event)"
+  />
+
+  <app-button
+    [contentText]="'Verify Code'"
+    [contentIconClass]="submitIconClass"
+    [disabled]="!isCodeComplete()"
+    (clickAction)="onVerify()"
+  />
+
+  <p class="two-factor__resend">
+    Didn't receive the code?
+    <button
+      class="two-factor__resend-action"
+      type="button"
+      [disabled]="!canResend()"
+      (click)="onResend()"
+    >
+      Resend
+      @if (!canResend()) {
+        ({{ resendTimer() }})
+      }
+    </button>
+  </p>
+</div>

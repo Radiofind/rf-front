@@ -1,0 +1,46 @@
+<div class="modal modal--{{ size }}" [class.modal--headless]="!hasHeader">
+  @if (hasHeader) {
+    <header class="modal__header">
+      @if (iconClass) {
+        <app-icon
+          [iconClass]="iconClass"
+          [iconMinWidth]="'44px'"
+          [iconHeight]="'44px'"
+          [iconBorderRadius]="'12px'"
+          [iconFontSize]="'24px'"
+        />
+      }
+
+      <div class="modal__heading">
+        <h2 class="modal__title" [id]="titleId">{{ title }}</h2>
+        @if (subtitle) {
+          <p class="modal__subtitle">{{ subtitle }}</p>
+        }
+      </div>
+
+      @if (hasCloseButton) {
+        <button
+          class="modal__close"
+          type="button"
+          [attr.aria-label]="closeAriaLabel"
+          (click)="onClose()"
+        >
+          <i [class]="closeIconClass"></i>
+        </button>
+      }
+    </header>
+  } @else if (hasCloseButton) {
+    <button
+      class="modal__close modal__close--floating"
+      type="button"
+      [attr.aria-label]="closeAriaLabel"
+      (click)="onClose()"
+    >
+      <i [class]="closeIconClass"></i>
+    </button>
+  }
+
+  <div class="modal__content">
+    <ng-template cdkPortalOutlet />
+  </div>
+</div>
