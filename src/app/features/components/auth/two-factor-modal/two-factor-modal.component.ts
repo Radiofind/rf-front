@@ -5,6 +5,7 @@ import { firstValueFrom, interval, map, takeWhile } from 'rxjs';
 import { Constants } from '../../../../core/constants/constants';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CodeFieldComponent } from '../../../../shared/components/code-field/code-field.component';
+import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { Subscription } from 'rxjs';
@@ -15,7 +16,7 @@ import type { ITwoFactorData } from '../../../../core/models/auth.model';
 
 @Component({
   selector: 'app-two-factor-modal',
-  imports: [ButtonComponent, CodeFieldComponent],
+  imports: [ButtonComponent, CodeFieldComponent, SpinnerComponent],
   templateUrl: './two-factor-modal.component.html',
   styleUrl: './two-factor-modal.component.scss',
 })
@@ -38,7 +39,13 @@ export class TwoFactorModalComponent {
 
   public readonly submitIconClass: string = Constants.SUBMIT_ICON_CLASS;
 
+  public readonly resendSpinnerSize: string = Constants.RESEND_SPINNER_SIZE;
+
+  public readonly resendSpinnerThickness: string = Constants.RESEND_SPINNER_THICKNESS;
+
   public readonly code: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+
+  public readonly isResending: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly resendSeconds: WritableSignal<number> = signal<number>(
     Constants.RESEND_TIMEOUT_SECONDS,
@@ -89,12 +96,26 @@ export class TwoFactorModalComponent {
   }
 
   public async onResend(): Promise<void> {
+    if (this.isResending()) {
+      return;
+    };
+
+    this.isResending.set(true);
     this.code.set(Constants.EMPTY_STRING);
     this.codeErrors.set([]);
-    await firstValueFrom(this.authService.resendTwoFactorAuth({
-      challengeId: this.data.challengeId,
-    }));
-    this.startCountdown();
+
+    try {
+      await firstValueFrom(this.authService.resendTwoFactorAuth({
+        challengeId: this.data.challengeId,
+      }));
+      this.startCountdown();
+    } catch {
+      this.codeErrors.set([
+        { kind: Constants.SERVER_ERROR, message: Constants.RESEND_TWO_FACTOR_CODE_FAILED },
+      ]);
+    } finally {
+      this.isResending.set(false);
+    };
   }
 
   private startCountdown(): void {

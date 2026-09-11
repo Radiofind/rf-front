@@ -34,6 +34,9 @@ export class Constants {
 
   public static readonly INVALID_TWO_FACTOR_CODE: string = 'Invalid verification code, please try again';
 
+  public static readonly RESEND_TWO_FACTOR_CODE_FAILED: string =
+    'Failed to resend the code, please try again';
+
   public static readonly REQUIRED_PROPERTY: string = 'required';
 
   public static readonly SPLIT_DATE_BY_T: string = 'T';
@@ -98,6 +101,24 @@ export class Constants {
 
   public static readonly CELL_FIELD: string = 'cell';
 
+  public static readonly SPINNER_DEFAULT_SIZE: string = '24px';
+
+  public static readonly SPINNER_DEFAULT_THICKNESS: string = '3px';
+
+  public static readonly SPINNER_ARIA_LABEL: string = 'Loading';
+
+  public static readonly LOADER_SPINNER_SIZE: string = '64px';
+
+  public static readonly LOADER_SPINNER_THICKNESS: string = '5px';
+
+  public static readonly LOADER_TEXT: string = 'Loading...';
+
+  public static readonly LOADER_BODY_CLASS: string = 'is-loading';
+
+  public static readonly RESEND_SPINNER_SIZE: string = '20px';
+
+  public static readonly RESEND_SPINNER_THICKNESS: string = '2px';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
@@ -131,6 +152,14 @@ export class Constants {
   public static readonly TIME_PAD_LENGTH: number = 2;
 
   // others
+
+  public static readonly LOADER_BLOCKED_EVENTS: readonly string[] = [
+    'keydown',
+    'keypress',
+    'keyup',
+    'wheel',
+    'touchmove',
+  ];
 
   public static readonly EN_VALIDATOR_PATTERN: RegExp = /^[A-Za-z-]+$/;
 

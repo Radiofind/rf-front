@@ -1,0 +1,40 @@
+:host {
+  display: contents;
+}
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 3, 14, 0.72);
+  backdrop-filter: blur(6px);
+  cursor: progress;
+  user-select: none;
+  animation: loader-appearance 200ms ease;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__text {
+    font-size: 18px;
+    letter-spacing: 0.4px;
+    color: var(--second-text-color);
+  }
+}
+
+@keyframes loader-appearance {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
