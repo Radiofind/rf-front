@@ -14,7 +14,14 @@
     >. Please enter the code below to continue.
   </p>
 
-  <app-code-field class="two-factor__code" [(value)]="code" [codeLength]="codeLength" />
+  <app-code-field
+    class="two-factor__code"
+    [value]="code()"
+    [codeLength]="codeLength"
+    [errors]="codeErrors()"
+    [touched]="hasCodeError()"
+    (valueChange)="onCodeChange($event)"
+  />
 
   <app-button
     [contentText]="'Verify Code'"

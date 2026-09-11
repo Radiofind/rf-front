@@ -8,6 +8,7 @@ import { CodeFieldComponent } from '../../../../shared/components/code-field/cod
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { Subscription } from 'rxjs';
+import type { ValidationError } from '@angular/forms/signals';
 import type { ITwoFactorModalData } from '../../../models/two-factor.model';
 import { AuthService } from '../../../services/auth-service/auth.service';
 import type { ITwoFactorData } from '../../../../core/models/auth.model';
@@ -43,6 +44,11 @@ export class TwoFactorModalComponent {
     Constants.RESEND_TIMEOUT_SECONDS,
   );
 
+  public readonly codeErrors: WritableSignal<readonly ValidationError.WithOptionalFieldTree[]> =
+    signal<readonly ValidationError.WithOptionalFieldTree[]>([]);
+
+  public readonly hasCodeError: Signal<boolean> = computed(() => this.codeErrors().length > Constants.ZERO);
+
   public readonly isCodeComplete: Signal<boolean> = computed(() => this.code().length === this.codeLength);
 
   public readonly canResend: Signal<boolean> = computed(() => this.resendSeconds() === Constants.ZERO);
@@ -63,17 +69,28 @@ export class TwoFactorModalComponent {
     this.startCountdown();
   }
 
+  public onCodeChange(code: string): void {
+    this.code.set(code);
+    this.codeErrors.set([]);
+  }
+
   public async onVerify(): Promise<void> {
     const twoFactorData: ITwoFactorData = {
       challengeId: this.data.challengeId,
       code: this.code(),
     };
-    await firstValueFrom(this.authService.twoFactorAuth(twoFactorData));
-    this.dialogRef.close(this.code());
+
+    try {
+      await firstValueFrom(this.authService.twoFactorAuth(twoFactorData));
+      this.dialogRef.close(this.code());
+    } catch {
+      this.codeErrors.set([{ kind: Constants.SERVER_ERROR, message: Constants.INVALID_TWO_FACTOR_CODE }]);
+    }
   }
 
   public onResend(): void {
     this.code.set(Constants.EMPTY_STRING);
+    this.codeErrors.set([]);
     this.startCountdown();
   }
 

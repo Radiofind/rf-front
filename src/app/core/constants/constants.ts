@@ -32,6 +32,8 @@ export class Constants {
 
   public static readonly REGISTRATION_FAILED: string = 'Registration failed, please try again';
 
+  public static readonly INVALID_TWO_FACTOR_CODE: string = 'Invalid verification code, please try again';
+
   public static readonly REQUIRED_PROPERTY: string = 'required';
 
   public static readonly SPLIT_DATE_BY_T: string = 'T';
