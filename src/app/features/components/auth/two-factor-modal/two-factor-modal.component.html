@@ -32,16 +32,24 @@
 
   <p class="two-factor__resend">
     Didn't receive the code?
-    <button
-      class="two-factor__resend-action"
-      type="button"
-      [disabled]="!canResend()"
-      (click)="onResend()"
-    >
-      Resend
-      @if (!canResend()) {
-        ({{ resendTimer() }})
-      }
-    </button>
+    @if (isResending()) {
+      <app-spinner
+        class="two-factor__resend-spinner"
+        [size]="resendSpinnerSize"
+        [thickness]="resendSpinnerThickness"
+      />
+    } @else {
+      <button
+        class="two-factor__resend-action"
+        type="button"
+        [disabled]="!canResend()"
+        (click)="onResend()"
+      >
+        Resend
+        @if (!canResend()) {
+          ({{ resendTimer() }})
+        }
+      </button>
+    }
   </p>
 </div>

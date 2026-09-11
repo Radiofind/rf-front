@@ -65,6 +65,10 @@ body {
   backdrop-filter: blur(6px);
 }
 
+body.is-loading {
+  overflow: hidden;
+}
+
 .modal-panel {
   display: flex;
   max-width: calc(100vw - 32px);

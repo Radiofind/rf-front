@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { tap } from "rxjs";
 import { AuthStateService } from "../../features/services/auth-state-service/auth-state.service";
 import { EndpointConstants } from "../constants/endpoints.constants";
+import { skipGlobalLoader } from "../tokens/loader.token";
 
 import type { Observable } from "rxjs";
 import type {
@@ -48,6 +49,10 @@ export class ApiService {
   }
 
   public resendTwoFactorAuth(data: IResendTwoFactorData): Observable<IAuthResponse> {
-    return this.http.post<IAuthResponse>(`${this.api}${this.authEndpoints.resendTwoFactorAuth}`, data);
+    return this.http.post<IAuthResponse>(
+      `${this.api}${this.authEndpoints.resendTwoFactorAuth}`,
+      data,
+      { context: skipGlobalLoader() },
+    );
   }
 }
