@@ -10,6 +10,7 @@ import type {
   IAuthEndpoints,
   IAuthResponse,
   ILoginData,
+  IResendTwoFactorData,
   ITwoFactorData,
   ITwoFactorResponse
 } from "../models/auth.model";
@@ -44,5 +45,9 @@ export class ApiService {
         this.authStateService.setToken(response.token);
       })
     );
+  }
+
+  public resendTwoFactorAuth(data: IResendTwoFactorData): Observable<IAuthResponse> {
+    return this.http.post<IAuthResponse>(`${this.api}${this.authEndpoints.resendTwoFactorAuth}`, data);
   }
 }

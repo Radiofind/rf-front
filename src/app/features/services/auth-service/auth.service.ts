@@ -3,7 +3,12 @@ import { AuthStateService } from "../auth-state-service/auth-state.service";
 import { ApiService } from "../../../core/services/api.service";
 
 import type { Observable } from "rxjs";
-import type { IAuthResponse, ILoginData, ITwoFactorData } from "../../../core/models/auth.model";
+import type {
+  IAuthResponse,
+  ILoginData,
+  IResendTwoFactorData,
+  ITwoFactorData
+} from "../../../core/models/auth.model";
 import type { IRegisterData } from "../../models/auth-content.model";
 
 @Service()
@@ -23,6 +28,10 @@ export class AuthService {
 
   public twoFactorAuth(data: ITwoFactorData): Observable<IAuthResponse> {
     return this.apiService.twoFactorAuth(data);
+  }
+
+  public resendTwoFactorAuth(data: IResendTwoFactorData): Observable<IAuthResponse> {
+    return this.apiService.resendTwoFactorAuth(data);
   }
 
   public logout(): void {

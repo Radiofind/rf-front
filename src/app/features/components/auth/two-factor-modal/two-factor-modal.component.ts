@@ -88,9 +88,12 @@ export class TwoFactorModalComponent {
     }
   }
 
-  public onResend(): void {
+  public async onResend(): Promise<void> {
     this.code.set(Constants.EMPTY_STRING);
     this.codeErrors.set([]);
+    await firstValueFrom(this.authService.resendTwoFactorAuth({
+      challengeId: this.data.challengeId,
+    }));
     this.startCountdown();
   }
 

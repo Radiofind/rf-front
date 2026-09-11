@@ -14,6 +14,7 @@ export interface IAuthEndpoints {
   register: string;
   login: string;
   twoFactorAuth: string;
+  resendTwoFactorAuth: string;
 }
 
 export interface IJwtPayload {
@@ -29,4 +30,8 @@ export interface ITwoFactorResponse {
   token: string;
   requiresTwoFactor: boolean;
   challengeId: null;
+}
+
+export interface IResendTwoFactorData {
+  challengeId: string | null;
 }
