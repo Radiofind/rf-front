@@ -1,7 +1,7 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { interval, map, takeWhile } from 'rxjs';
+import { firstValueFrom, interval, map, takeWhile } from 'rxjs';
 import { Constants } from '../../../../core/constants/constants';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CodeFieldComponent } from '../../../../shared/components/code-field/code-field.component';
@@ -9,6 +9,8 @@ import { CodeFieldComponent } from '../../../../shared/components/code-field/cod
 import type { Signal, WritableSignal } from '@angular/core';
 import type { Subscription } from 'rxjs';
 import type { ITwoFactorModalData } from '../../../models/two-factor.model';
+import { AuthService } from '../../../services/auth-service/auth.service';
+import type { ITwoFactorData } from '../../../../core/models/auth.model';
 
 @Component({
   selector: 'app-two-factor-modal',
@@ -22,6 +24,8 @@ export class TwoFactorModalComponent {
     inject<DialogRef<string, TwoFactorModalComponent>>(DialogRef);
 
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
+
+  private readonly authService: AuthService = inject(AuthService);
 
   public readonly data: ITwoFactorModalData = inject<ITwoFactorModalData>(DIALOG_DATA);
 
@@ -59,11 +63,12 @@ export class TwoFactorModalComponent {
     this.startCountdown();
   }
 
-  public onVerify(): void {
-    if (!this.isCodeComplete()) {
-      return;
+  public async onVerify(): Promise<void> {
+    const twoFactorData: ITwoFactorData = {
+      challengeId: this.data.challengeId,
+      code: this.code(),
     };
-
+    await firstValueFrom(this.authService.twoFactorAuth(twoFactorData));
     this.dialogRef.close(this.code());
   }
 

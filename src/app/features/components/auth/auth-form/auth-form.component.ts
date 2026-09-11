@@ -30,6 +30,7 @@ import type { AuthType } from '../../../../core/types/auth.type';
 import type { IRegisterData } from '../../../models/auth-content.model';
 import type { ILoginForm, IRegisterForm } from '../../../models/auth-form.model';
 import type { ITwoFactorModalData } from '../../../models/two-factor.model';
+import type { IAuthResponse } from '../../../../core/models/auth.model';
 
 @Component({
   selector: 'app-auth-form',
@@ -59,6 +60,8 @@ export class AuthFormComponent {
   public readonly showPassword: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly showConfirmPassword: WritableSignal<boolean> = signal<boolean>(false);
+
+  private readonly challengeId: WritableSignal<string | null> = signal<string | null>(null);
 
   public readonly artistTypes: readonly ArtistType[] = ARTIST_TYPES;
 
@@ -109,7 +112,7 @@ export class AuthFormComponent {
   private openTwoFactorModal(): DialogRef<string, TwoFactorModalComponent> {
     return this.modalService.open<string, ITwoFactorModalData, TwoFactorModalComponent>(
       TwoFactorModalComponent,
-      { ...TWO_FACTOR_MODAL_OPTIONS, data: { email: this.loginModel().email } },
+      { ...TWO_FACTOR_MODAL_OPTIONS, data: { email: this.loginModel().email, challengeId: this.challengeId() } },
     );
   }
 
@@ -119,14 +122,10 @@ export class AuthFormComponent {
 
   private async login(): Promise<ValidationError | undefined> {
     try {
-      const verificationCode: string | undefined = await firstValueFrom(this.openTwoFactorModal().closed);
-
-      if (!verificationCode) {
-        return undefined;
-      };
-
-      //await firstValueFrom(this.authService.login(this.loginModel()));
-      //await this.router.navigate([Links.UPLOADS_URL]);
+      const loginData: IAuthResponse = await firstValueFrom(this.authService.login(this.loginModel()));
+      this.challengeId.set(loginData.challengeId);
+      await firstValueFrom(this.openTwoFactorModal().closed);
+      await this.router.navigate([Links.UPLOADS_URL]);
       return undefined;
     } catch {
       return { kind: Constants.SERVER_ERROR, message: Constants.INVALID_LOGIN_PASSWORD };

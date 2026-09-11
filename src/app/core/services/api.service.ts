@@ -6,7 +6,13 @@ import { AuthStateService } from "../../features/services/auth-state-service/aut
 import { EndpointConstants } from "../constants/endpoints.constants";
 
 import type { Observable } from "rxjs";
-import type { IAuthEndpoints, IAuthResponse, ILoginData } from "../models/auth.model";
+import type {
+  IAuthEndpoints,
+  IAuthResponse,
+  ILoginData,
+  ITwoFactorData,
+  ITwoFactorResponse
+} from "../models/auth.model";
 import type { IRegisterData } from "../../features/models/auth-content.model";
 
 @Service()
@@ -23,14 +29,18 @@ export class ApiService {
   public register(data: IRegisterData): Observable<IAuthResponse> {
     return this.http.post<IAuthResponse>(`${this.api}${this.authEndpoints.register}`, data).pipe(
       tap((response: IAuthResponse) => {
-        this.authStateService.setToken(response.token);
+        this.authStateService.setToken(String(response.token));
       })
     );
   }
 
   public login(data: ILoginData): Observable<IAuthResponse> {
-    return this.http.post<IAuthResponse>(`${this.api}${this.authEndpoints.login}`, data).pipe(
-      tap((response: IAuthResponse) => {
+    return this.http.post<IAuthResponse>(`${this.api}${this.authEndpoints.login}`, data);
+  }
+
+  public twoFactorAuth(data: ITwoFactorData): Observable<IAuthResponse> {
+    return this.http.post<ITwoFactorResponse>(`${this.api}${this.authEndpoints.twoFactorAuth}`, data).pipe(
+      tap((response: ITwoFactorResponse) => {
         this.authStateService.setToken(response.token);
       })
     );

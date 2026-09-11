@@ -6,5 +6,6 @@ export class EndpointConstants {
     auth: '/auth',
     register: '/register',
     login: '/login',
+    twoFactorAuth: '/verify-2fa',
   };
 }
