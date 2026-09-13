@@ -171,7 +171,7 @@ export class Constants {
 
   public static readonly SPECIAL_CHARACTER_VALIDATOR_PATTERN: RegExp = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
 
-  public static readonly EN_PLUS_SPACES_AND_SYMBOLS: RegExp = /^[1-9A-Za-z\s!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
+  public static readonly EN_PLUS_SPACES_AND_SYMBOLS: RegExp = /^[0-9A-Za-z\s!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
 
   public static readonly SPACES_VALIDATOR_PATTERN: RegExp = /\s/;
 
