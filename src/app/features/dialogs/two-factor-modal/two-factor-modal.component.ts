@@ -2,17 +2,17 @@ import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { firstValueFrom, interval, map, takeWhile } from 'rxjs';
-import { Constants } from '../../../../core/constants/constants';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { CodeFieldComponent } from '../../../../shared/components/code-field/code-field.component';
-import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { Constants } from '../../../core/constants/constants';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { CodeFieldComponent } from '../../../shared/components/code-field/code-field.component';
+import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { Subscription } from 'rxjs';
 import type { ValidationError } from '@angular/forms/signals';
-import type { ITwoFactorModalData } from '../../../models/two-factor.model';
-import { AuthService } from '../../../services/auth-service/auth.service';
-import type { ITwoFactorData } from '../../../../core/models/auth.model';
+import type { ITwoFactorModalData } from '../../models/two-factor.model';
+import { AuthService } from '../../services/auth-service/auth.service';
+import type { ITwoFactorData } from '../../../core/models/auth.model';
 
 @Component({
   selector: 'app-two-factor-modal',

@@ -14,13 +14,15 @@ import { AuthValidationMessages } from '../../../constants/auth-error-messages.c
 import { loginFormSchema, registerFormSchema } from '../../../schemas/auth-form.schema';
 import { AuthService } from '../../../services/auth-service/auth.service';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
-import { TwoFactorModalComponent } from '../two-factor-modal/two-factor-modal.component';
+import { TwoFactorModalComponent } from '../../../dialogs/two-factor-modal/two-factor-modal.component';
 import {
   ARTIST_TYPES,
   DEFAULT_ARTIST_TYPE,
+  FORGET_PASSWORD_MODAL_OPTIONS,
   TWO_FACTOR_MODAL_OPTIONS,
 } from '../../../constants/auth-content.constant';
 import { AUTH_TYPE } from '../../../enums/auth-type.enum';
+import { ForgetPasswordModalComponent } from '../../../dialogs/forget-password-modal/forget-password-modal.component';
 
 import type { InputSignal, Signal, WritableSignal } from '@angular/core';
 import type { DialogRef } from '@angular/cdk/dialog';
@@ -95,6 +97,13 @@ export class AuthFormComponent {
   public readonly loginError: Signal<string | undefined> = computed(() => this.serverErrorOf(this.loginForm));
 
   public readonly registerError: Signal<string | undefined> = computed(() => this.serverErrorOf(this.registerForm));
+
+  public onForgetPassword(): DialogRef<string> {
+    return this.modalService.open<string>(
+      ForgetPasswordModalComponent,
+      { ...FORGET_PASSWORD_MODAL_OPTIONS},
+    )
+  }
 
   public togglePasswordVisibility(index: number): void {
     if (index === Constants.ZERO) {

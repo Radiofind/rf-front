@@ -97,6 +97,8 @@ export class Constants {
 
   public static readonly SUBMIT_ICON_CLASS: string = 'bx bx-arrow-right-stroke';
 
+  public static readonly MAIL_ICON_CLASS: string = 'bx bx-envelope-alt';
+
   public static readonly TIME_SEPARATOR: string = ':';
 
   public static readonly CELL_FIELD: string = 'cell';
