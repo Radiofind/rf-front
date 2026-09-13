@@ -7,7 +7,13 @@
       }
     </span>
     @if (additionalFieldLabel()) {
-      <span class="label-color">{{ additionalFieldLabel() }}</span>
+      <!--eslint-disable-next-line @angular-eslint/template/interactive-supports-focus-->
+      <span
+        class="label-color"
+        (click)="onAdditionalFieldAction()"
+        (keydown)="onAdditionalFieldAction()"
+        >{{ additionalFieldLabel() }}</span
+      >
     }
   </div>
   <i class="default" [class]="iconClass()"></i>
