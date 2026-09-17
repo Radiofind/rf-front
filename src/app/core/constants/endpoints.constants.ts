@@ -10,5 +10,6 @@ export class EndpointConstants {
     resendTwoFactorAuth: '/resend-2fa',
     forgotPassword: '/forgot-password',
     resetPassword: '/reset-password',
+    validateResetToken: '/validate-reset-token',
   };
 }

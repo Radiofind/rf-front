@@ -9,6 +9,8 @@ import type {
   ILoginData,
   IResendTwoFactorData,
   IResetPasswordData,
+  IResetTokenValidData,
+  IResetTokenValidResponse,
   ITwoFactorData
 } from "../../../core/models/auth.model";
 import type { IRegisterData } from "../../models/auth-content.model";
@@ -38,6 +40,10 @@ export class AuthService {
 
   public forgetPassword(data: IForgotPasswordData): Observable<unknown> {
     return this.apiService.forgetPassword(data);
+  }
+
+  public resetTokenValidation(data: IResetTokenValidData): Observable<IResetTokenValidResponse> {
+    return this.apiService.resetTokenValidation(data);
   }
 
   public resetPassword(data: IResetPasswordData): Observable<unknown> {

@@ -17,6 +17,7 @@ export interface IAuthEndpoints {
   resendTwoFactorAuth: string;
   forgotPassword: string;
   resetPassword: string;
+  validateResetToken: string;
 }
 
 export interface IJwtPayload {
@@ -45,4 +46,12 @@ export interface IForgotPasswordData {
 export interface IResetPasswordData {
   token: string;
   newPassword: string;
+}
+
+export interface IResetTokenValidData {
+  token: string | null;
+}
+
+export interface IResetTokenValidResponse {
+  valid: boolean;
 }

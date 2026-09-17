@@ -14,6 +14,8 @@ import type {
   ILoginData,
   IResendTwoFactorData,
   IResetPasswordData,
+  IResetTokenValidResponse,
+  IResetTokenValidData,
   ITwoFactorData,
   ITwoFactorResponse
 } from "../models/auth.model";
@@ -60,6 +62,10 @@ export class ApiService {
 
   public forgetPassword(data: IForgotPasswordData): Observable<unknown> {
     return this.http.post(`${this.api}${this.authEndpoints.forgotPassword}`, data);
+  }
+
+  public resetTokenValidation(data: IResetTokenValidData): Observable<IResetTokenValidResponse> {
+    return this.http.post<IResetTokenValidResponse>(`${this.api}${this.authEndpoints.validateResetToken}`, data);
   }
 
   public resetPassword(data: IResetPasswordData): Observable<unknown> {

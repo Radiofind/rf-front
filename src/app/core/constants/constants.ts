@@ -131,6 +131,8 @@ export class Constants {
 
   public static readonly SNACKBAR_CONTAINER_ARIA_LABEL: string = 'Notifications';
 
+  public static readonly TOKEN: string = 'token';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
