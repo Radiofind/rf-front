@@ -4,3 +4,6 @@ dist
 .claude
 coverage
 out-tsc
+e2e/.results
+playwright-report
+test-results

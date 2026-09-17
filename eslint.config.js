@@ -148,5 +148,13 @@ module.exports = tseslint.config(
     },
   },
 
+  {
+    files: ['e2e/**/*.ts'],
+
+    rules: {
+      'no-empty-pattern': 'off',
+    },
+  },
+
   prettier,
 );

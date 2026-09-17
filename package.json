@@ -9,6 +9,10 @@
     "test": "ng test",
     "test:watch": "ng test --watch",
     "test:coverage": "ng test --no-watch --coverage",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:headed": "playwright test --headed",
+    "e2e:report": "playwright show-report",
     "serve:ssr:front": "node dist/front/server/server.mjs",
     "lint": "ng lint"
   },
@@ -38,6 +42,7 @@
     "@angular/cli": "^22.1.7",
     "@angular/compiler-cli": "^22.1.5",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
     "@vitest/coverage-v8": "^4.1.11",
