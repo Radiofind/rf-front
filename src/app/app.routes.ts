@@ -23,6 +23,10 @@ export const routes: Routes = [
     data: { authType: Constants.REGISTER }
   },
   {
+    path: Links.RESET_PASSWORD_URL,
+    loadComponent: () => import('./pages/reset-password-page/reset-password-page.component').then(c => c.ResetPasswordPageComponent),
+  },
+  {
     path: Links.UPLOADS_URL,
     canActivate: [authGuard],
     loadComponent: () => import('./pages/uploads-page/uploads-page.component').then(c => c.UploadsPageComponent),
