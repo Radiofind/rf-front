@@ -1,0 +1,48 @@
+:host {
+  display: block;
+}
+
+.snackbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));
+  color: var(--text-color);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  pointer-events: auto;
+  animation: snackbar-in 300ms ease;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    font-size: 32px;
+  }
+
+  &__text {
+    margin: 0;
+  }
+
+  &--success &__icon {
+    color: var(--success-color);
+  }
+
+  &--error &__icon {
+    color: var(--error-color);
+  }
+
+  &--warning &__icon {
+    color: var(--warning-color);
+  }
+
+  &--info &__icon {
+    color: var(--info-color);
+  }
+}
+
+@keyframes snackbar-in {
+  from { opacity: 0; transform: translateX(calc(100% + 24px)); }
+  to { opacity: 1; transform: translateX(0); }
+}

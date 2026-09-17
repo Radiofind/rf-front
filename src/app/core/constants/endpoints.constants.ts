@@ -8,5 +8,7 @@ export class EndpointConstants {
     login: '/login',
     twoFactorAuth: '/verify-2fa',
     resendTwoFactorAuth: '/resend-2fa',
+    forgotPassword: '/forgot-password',
+    resetPassword: '/reset-password',
   };
 }

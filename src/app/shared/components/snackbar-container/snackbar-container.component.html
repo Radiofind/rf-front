@@ -1,0 +1,15 @@
+<div
+  class="snackbar-container"
+  role="status"
+  aria-live="polite"
+  aria-atomic="false"
+  [attr.aria-label]="containerAriaLabel"
+>
+  @for (message of messages(); track message.id) {
+    <app-snackbar
+      [snackbarContent]="message.content"
+      [snackbarType]="message.type"
+      [snackbarIconClass]="message.iconClass"
+    />
+  }
+</div>

@@ -121,6 +121,16 @@ export class Constants {
 
   public static readonly RESEND_SPINNER_THICKNESS: string = '2px';
 
+  public static readonly SNACKBAR_SUCCESS_ICON_CLASS: string = 'bx bx-badge-check';
+
+  public static readonly SNACKBAR_ERROR_ICON_CLASS: string = 'bx bx-x-circle';
+
+  public static readonly SNACKBAR_WARNING_ICON_CLASS: string = 'bx bx-error';
+
+  public static readonly SNACKBAR_INFO_ICON_CLASS: string = 'bx bx-info-circle';
+
+  public static readonly SNACKBAR_CONTAINER_ARIA_LABEL: string = 'Notifications';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
@@ -152,6 +162,10 @@ export class Constants {
   public static readonly SECONDS_IN_MINUTE: number = 60;
 
   public static readonly TIME_PAD_LENGTH: number = 2;
+
+  public static readonly SNACKBAR_DURATION_MS: number = 2000;
+
+  public static readonly SNACKBAR_MAX_STACK: number = 3;
 
   // others
 

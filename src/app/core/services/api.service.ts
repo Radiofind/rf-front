@@ -10,8 +10,10 @@ import type { Observable } from "rxjs";
 import type {
   IAuthEndpoints,
   IAuthResponse,
+  IForgotPasswordData,
   ILoginData,
   IResendTwoFactorData,
+  IResetPasswordData,
   ITwoFactorData,
   ITwoFactorResponse
 } from "../models/auth.model";
@@ -54,5 +56,13 @@ export class ApiService {
       data,
       { context: skipGlobalLoader() },
     );
+  }
+
+  public forgetPassword(data: IForgotPasswordData): Observable<unknown> {
+    return this.http.post(`${this.api}${this.authEndpoints.forgotPassword}`, data);
+  }
+
+  public resetPassword(data: IResetPasswordData): Observable<unknown> {
+    return this.http.post(`${this.api}${this.authEndpoints.resetPassword}`, data);
   }
 }
