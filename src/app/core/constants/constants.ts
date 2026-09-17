@@ -99,6 +99,10 @@ export class Constants {
 
   public static readonly MAIL_ICON_CLASS: string = 'bx bx-envelope-alt';
 
+  public static readonly EYE_ICON_CLASS: string = 'bx bx-eye';
+
+  public static readonly EYE_SLASH_ICON_CLASS: string = 'bx bx-eye-slash';
+
   public static readonly TIME_SEPARATOR: string = ':';
 
   public static readonly CELL_FIELD: string = 'cell';
