@@ -133,6 +133,18 @@ export class Constants {
 
   public static readonly TOKEN: string = 'token';
 
+  public static readonly ERROR_TYPE_PROP: string = 'errorType';
+
+  public static readonly ERROR_HOME_BUTTON_TEXT: string = 'Back to Home';
+
+  public static readonly ERROR_BACK_BUTTON_TEXT: string = 'Go Back';
+
+  public static readonly ERROR_SECONDARY_BUTTON_CLASS: string = 'button--secondary';
+
+  public static readonly HOME_ICON_CLASS: string = 'bx bx-home';
+
+  public static readonly BACK_ICON_CLASS: string = 'bx bx-arrow-left-stroke';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
