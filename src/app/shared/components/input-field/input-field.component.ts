@@ -53,6 +53,8 @@ export class InputFieldComponent implements FormValueControl<string> {
 
   public readonly inputActionEmiter: OutputEmitterRef<void> = output();
 
+  public readonly additionalFieldAction: OutputEmitterRef<void> = output();
+
   public readonly visibleErrors: Signal<readonly ValidationError.WithOptionalFieldTree[]> = computed(() =>
     this.touched() || this.dirty() ? this.errors() : []
   );
@@ -66,5 +68,9 @@ export class InputFieldComponent implements FormValueControl<string> {
 
   public onHandleInputAction(): void {
     this.inputActionEmiter.emit();
+  }
+
+  public onAdditionalFieldAction(): void {
+    this.additionalFieldAction.emit();
   }
 }

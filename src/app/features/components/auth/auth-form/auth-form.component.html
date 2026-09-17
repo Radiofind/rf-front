@@ -27,6 +27,7 @@
           [hasInputAction]="true"
           [inputActionIconClass]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
           (inputActionEmiter)="togglePasswordVisibility(0)"
+          (additionalFieldAction)="onForgetPassword()"
         />
 
         <app-button

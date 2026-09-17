@@ -97,6 +97,12 @@ export class Constants {
 
   public static readonly SUBMIT_ICON_CLASS: string = 'bx bx-arrow-right-stroke';
 
+  public static readonly MAIL_ICON_CLASS: string = 'bx bx-envelope-alt';
+
+  public static readonly EYE_ICON_CLASS: string = 'bx bx-eye';
+
+  public static readonly EYE_SLASH_ICON_CLASS: string = 'bx bx-eye-slash';
+
   public static readonly TIME_SEPARATOR: string = ':';
 
   public static readonly CELL_FIELD: string = 'cell';
@@ -118,6 +124,32 @@ export class Constants {
   public static readonly RESEND_SPINNER_SIZE: string = '20px';
 
   public static readonly RESEND_SPINNER_THICKNESS: string = '2px';
+
+  public static readonly SNACKBAR_SUCCESS_ICON_CLASS: string = 'bx bx-badge-check';
+
+  public static readonly SNACKBAR_ERROR_ICON_CLASS: string = 'bx bx-x-circle';
+
+  public static readonly SNACKBAR_WARNING_ICON_CLASS: string = 'bx bx-error';
+
+  public static readonly SNACKBAR_INFO_ICON_CLASS: string = 'bx bx-info-circle';
+
+  public static readonly SNACKBAR_CONTAINER_ARIA_LABEL: string = 'Notifications';
+
+  public static readonly TOKEN: string = 'token';
+
+  public static readonly ERROR_TYPE_PROP: string = 'errorType';
+
+  public static readonly ERROR_HOME_BUTTON_TEXT: string = 'Back to Home';
+
+  public static readonly ERROR_BACK_BUTTON_TEXT: string = 'Go Back';
+
+  public static readonly ERROR_SECONDARY_BUTTON_CLASS: string = 'button--secondary';
+
+  public static readonly HOME_ICON_CLASS: string = 'bx bx-home';
+
+  public static readonly BACK_ICON_CLASS: string = 'bx bx-arrow-left-stroke';
+
+  public static readonly PASSWORD_RESET_SUCCESSFULLY: string = 'Password reset successfully';
 
   // magic numbers
 
@@ -150,6 +182,10 @@ export class Constants {
   public static readonly SECONDS_IN_MINUTE: number = 60;
 
   public static readonly TIME_PAD_LENGTH: number = 2;
+
+  public static readonly SNACKBAR_DURATION_MS: number = 2000;
+
+  public static readonly SNACKBAR_MAX_STACK: number = 3;
 
   // others
 

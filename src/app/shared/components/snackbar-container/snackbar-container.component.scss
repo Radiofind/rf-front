@@ -1,0 +1,11 @@
+.snackbar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  position: fixed;
+  top: 32px;
+  right: 24px;
+  z-index: 1000;
+  pointer-events: none;
+}

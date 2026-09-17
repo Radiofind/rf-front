@@ -67,3 +67,9 @@ export const TWO_FACTOR_MODAL_OPTIONS: IModalOptions<ITwoFactorModalData> = {
   hasHeader: false,
   ariaLabel: 'Two-Factor Authentication',
 };
+
+export const FORGET_PASSWORD_MODAL_OPTIONS: IModalOptions = {
+  size: ModalSizeEnum.MEDIUM,
+  hasHeader: false,
+  ariaLabel: 'Reset Password',
+}
