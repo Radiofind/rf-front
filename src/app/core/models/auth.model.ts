@@ -44,7 +44,7 @@ export interface IForgotPasswordData {
 }
 
 export interface IResetPasswordData {
-  token: string;
+  token: string | null;
   newPassword: string;
 }
 

@@ -149,6 +149,8 @@ export class Constants {
 
   public static readonly BACK_ICON_CLASS: string = 'bx bx-arrow-left-stroke';
 
+  public static readonly PASSWORD_RESET_SUCCESSFULLY: string = 'Password reset successfully';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
