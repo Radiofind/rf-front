@@ -29,6 +29,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
               }
             ],
             "styles": ["src/styles.scss"],
@@ -78,12 +83,28 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "runner": "vitest",
+            "buildTarget": "front:build:development",
+            "tsConfig": "tsconfig.spec.json",
+            "providersFile": "src/test-providers.ts",
+            "setupFiles": ["src/test-setup.ts"],
+            "exclude": ["e2e/**"],
+            "coverageExclude": [
+              "src/main.ts",
+              "src/main.server.ts",
+              "src/server.ts",
+              "src/**/*.model.ts",
+              "src/**/*.type.ts",
+              "src/**/*.enum.ts"
+            ]
+          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html", "e2e/**/*.ts", "playwright.config.ts"]
           }
         }
       }
