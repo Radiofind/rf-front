@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+
+import type { InputSignal } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -6,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.scss',
 })
 
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
-export class HeaderComponent {}
+export class HeaderComponent {
+  public readonly isMainApplication: InputSignal<boolean> = input<boolean>(false);
+}

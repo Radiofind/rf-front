@@ -9,8 +9,8 @@ import type { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: Links.DEFAULT_PATH,
-    redirectTo: Links.UPLOADS_URL,
-    pathMatch: 'full',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/main/main-container/main-container.component').then(c => c.MainContainerComponent),
   },
   {
     path: Links.LOGIN_URL,
@@ -26,11 +26,6 @@ export const routes: Routes = [
   {
     path: Links.RESET_PASSWORD_URL,
     loadComponent: () => import('./pages/reset-password-page/reset-password-page.component').then(c => c.ResetPasswordPageComponent),
-  },
-  {
-    path: Links.UPLOADS_URL,
-    canActivate: [authGuard],
-    loadComponent: () => import('./pages/uploads-page/uploads-page.component').then(c => c.UploadsPageComponent),
   },
   {
     path: Links.FORBIDDEN_URL,

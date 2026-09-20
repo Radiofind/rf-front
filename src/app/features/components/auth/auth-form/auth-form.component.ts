@@ -134,7 +134,7 @@ export class AuthFormComponent {
       const loginData: IAuthResponse = await firstValueFrom(this.authService.login(this.loginModel()));
       this.challengeId.set(loginData.challengeId);
       await firstValueFrom(this.openTwoFactorModal().closed);
-      await this.router.navigate([Links.UPLOADS_URL]);
+      await this.router.navigate([Links.DEFAULT_PATH]);
       return undefined;
     } catch {
       return { kind: Constants.SERVER_ERROR, message: Constants.INVALID_LOGIN_PASSWORD };
@@ -151,7 +151,7 @@ export class AuthFormComponent {
 
     try {
       await firstValueFrom(this.authService.register(this.toRegisterData(model, dateOfBirth)));
-      await this.router.navigate([Links.UPLOADS_URL]);
+      await this.router.navigate([Links.DEFAULT_PATH]);
       return undefined;
     } catch {
       return { kind: Constants.SERVER_ERROR, message: Constants.REGISTRATION_FAILED };
