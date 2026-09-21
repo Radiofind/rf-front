@@ -1,15 +1,22 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
+import { provideLocationMocks } from '@angular/common/testing';
 import { SidebarMenuComponent } from './sidebar-menu.component';
-import { SidebarMenuItemEnum } from '../../../core/enums/sidebar-menu-item.enum';
 import { SIDEBAR_MENU_ITEMS } from '../../../features/constants/sidebar-menu.constant';
 import { Constants } from '../../../core/constants/constants';
 
 import type { ComponentFixture } from '@angular/core/testing';
+import type { Routes } from '@angular/router';
 
 describe('SidebarMenuComponent', () => {
+  const routes: Routes = SIDEBAR_MENU_ITEMS.map(item => ({ path: item.link, children: [] }));
+
   const createFixture = async (): Promise<ComponentFixture<SidebarMenuComponent>> => {
-    await TestBed.configureTestingModule({ imports: [SidebarMenuComponent] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [SidebarMenuComponent],
+      providers: [provideRouter(routes), provideLocationMocks()],
+    }).compileComponents();
 
     const fixture: ComponentFixture<SidebarMenuComponent> =
       TestBed.createComponent(SidebarMenuComponent);
@@ -18,8 +25,20 @@ describe('SidebarMenuComponent', () => {
     return fixture;
   };
 
-  const items = (fixture: ComponentFixture<SidebarMenuComponent>): HTMLButtonElement[] =>
+  const items = (fixture: ComponentFixture<SidebarMenuComponent>): HTMLAnchorElement[] =>
     Array.from(fixture.nativeElement.querySelectorAll('.sidebar__item'));
+
+  const navigateTo = async (
+    fixture: ComponentFixture<SidebarMenuComponent>,
+    url: string,
+  ): Promise<void> => {
+    await TestBed.inject(Router).navigateByUrl(url);
+    await fixture.whenStable();
+  };
+
+  beforeEach(() => {
+    TestBed.resetTestingModule();
+  });
 
   it('renders every menu item', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
@@ -29,24 +48,36 @@ describe('SidebarMenuComponent', () => {
     );
   });
 
-  it('marks the media library as the active item by default', async () => {
+  it('points every item at its route', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
 
-    const activeItem: HTMLButtonElement = items(fixture)[0]!;
-
-    expect(activeItem.classList.contains('sidebar__item--active')).toBe(true);
-    expect(activeItem.getAttribute('aria-current')).toBe(Constants.PAGE_ARIA_CURRENT);
+    expect(items(fixture).map(item => item.getAttribute('href'))).toEqual(
+      SIDEBAR_MENU_ITEMS.map(item => `/${item.link}`),
+    );
   });
 
-  it('moves the active state to the clicked item', async () => {
+  it('marks nothing as active before navigating', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
 
-    items(fixture)[1]!.click();
-    await fixture.whenStable();
+    expect(items(fixture).some(item => item.classList.contains('sidebar__item--active'))).toBe(
+      false,
+    );
+  });
 
-    expect(fixture.componentInstance.activeItemId()).toBe(SidebarMenuItemEnum.UPLOAD_TRACK);
-    expect(items(fixture)[1]!.classList.contains('sidebar__item--active')).toBe(true);
+  it('follows the current url with the active state', async () => {
+    const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
+
+    await navigateTo(fixture, `/${SIDEBAR_MENU_ITEMS[0]!.link}`);
+
+    expect(items(fixture)[0]!.classList.contains('sidebar__item--active')).toBe(true);
+    expect(items(fixture)[0]!.getAttribute('aria-current')).toBe(Constants.PAGE_ARIA_CURRENT);
+
+    await navigateTo(fixture, `/${SIDEBAR_MENU_ITEMS[3]!.link}`);
+
     expect(items(fixture)[0]!.classList.contains('sidebar__item--active')).toBe(false);
+    expect(items(fixture)[0]!.getAttribute('aria-current')).toBeNull();
+    expect(items(fixture)[3]!.classList.contains('sidebar__item--active')).toBe(true);
+    expect(items(fixture)[3]!.getAttribute('aria-current')).toBe(Constants.PAGE_ARIA_CURRENT);
   });
 
   it('toggles the collapsed state with the chevron', async () => {

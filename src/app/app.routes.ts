@@ -11,6 +11,7 @@ export const routes: Routes = [
     path: Links.DEFAULT_PATH,
     canActivate: [authGuard],
     loadComponent: () => import('./pages/main/main-container/main-container.component').then(c => c.MainContainerComponent),
+    loadChildren: () => import('./pages/main/main.routes').then(m => m.MAIN_ROUTES),
   },
   {
     path: Links.LOGIN_URL,

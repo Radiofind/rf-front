@@ -1,25 +1,21 @@
 import { Component, computed, input, model, output } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Constants } from '../../../core/constants/constants';
-import { SidebarMenuItemEnum } from '../../../core/enums/sidebar-menu-item.enum';
 import { SIDEBAR_MENU_ITEMS } from '../../../features/constants/sidebar-menu.constant';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef, Signal } from '@angular/core';
-import type { SidebarMenuItemType } from '../../../core/types/sidebar-menu-item.type';
 import type { ISidebarMenuItem } from '../../../features/models/sidebar-menu-item.model';
 
 @Component({
   selector: 'app-sidebar-menu',
   templateUrl: './sidebar-menu.component.html',
   styleUrl: './sidebar-menu.component.scss',
+  imports: [RouterLink, RouterLinkActive],
 })
 
 export class SidebarMenuComponent {
   public readonly menuItems: InputSignal<readonly ISidebarMenuItem[]> =
     input<readonly ISidebarMenuItem[]>(SIDEBAR_MENU_ITEMS);
-
-  public readonly activeItemId: ModelSignal<SidebarMenuItemType> = model<SidebarMenuItemType>(
-    SidebarMenuItemEnum.MEDIA_LIBRARY,
-  );
 
   public readonly isCollapsed: ModelSignal<boolean> = model<boolean>(false);
 
@@ -30,8 +26,6 @@ export class SidebarMenuComponent {
   public readonly userAvatarUrl: InputSignal<string | null> = input<string | null>(null);
 
   public readonly isUserOnline: InputSignal<boolean> = input<boolean>(false);
-
-  public readonly itemAction: OutputEmitterRef<SidebarMenuItemType> = output<SidebarMenuItemType>();
 
   public readonly profileAction: OutputEmitterRef<void> = output();
 
@@ -61,11 +55,6 @@ export class SidebarMenuComponent {
 
   public onToggleCollapsed(): void {
     this.isCollapsed.update((isCollapsed: boolean) => !isCollapsed);
-  }
-
-  public onSelectItem(itemId: SidebarMenuItemType): void {
-    this.activeItemId.set(itemId);
-    this.itemAction.emit(itemId);
   }
 
   public onProfile(): void {

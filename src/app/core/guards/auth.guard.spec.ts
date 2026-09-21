@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { authGuard } from './auth.guard';
 import { AuthStateService } from '../../features/services/auth-state-service/auth-state.service';
@@ -41,5 +42,14 @@ describe('authGuard', () => {
 
     expect(runGuard()).toBe(false);
     expect(navigate).toHaveBeenCalledWith([Links.LOGIN_URL]);
+  });
+
+  it('defers the decision to the browser when rendering on the server', () => {
+    TestBed.overrideProvider(PLATFORM_ID, { useValue: 'server' });
+    isTokenValid.mockReturnValue(false);
+
+    expect(runGuard()).toBe(true);
+    expect(isTokenValid).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
   });
 });

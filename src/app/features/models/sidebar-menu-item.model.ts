@@ -4,4 +4,5 @@ export interface ISidebarMenuItem {
   id: SidebarMenuItemType;
   label: string;
   iconClass: string;
+  link: SidebarMenuItemType;
 }

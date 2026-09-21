@@ -17,17 +17,17 @@
     <ul class="sidebar__list">
       @for (item of menuItems(); track item.id) {
         <li>
-          <button
+          <a
+            #itemLink="routerLinkActive"
             class="sidebar__item"
-            type="button"
-            [class.sidebar__item--active]="item.id === activeItemId()"
-            [attr.aria-current]="item.id === activeItemId() ? pageAriaCurrent : null"
+            routerLinkActive="sidebar__item--active"
+            [routerLink]="item.link"
+            [attr.aria-current]="itemLink.isActive ? pageAriaCurrent : null"
             [title]="item.label"
-            (click)="onSelectItem(item.id)"
           >
             <i class="sidebar__item-icon" [class]="item.iconClass"></i>
             <span class="sidebar__item-label">{{ item.label }}</span>
-          </button>
+          </a>
         </li>
       }
     </ul>
