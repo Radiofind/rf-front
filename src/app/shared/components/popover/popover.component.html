@@ -1,0 +1,31 @@
+<ng-content />
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="hostElement"
+  [cdkConnectedOverlayOpen]="isOpen()"
+  [cdkConnectedOverlayPositions]="positions()"
+  [cdkConnectedOverlayWidth]="panelWidth()"
+  [cdkConnectedOverlayPush]="true"
+  [cdkConnectedOverlayViewportMargin]="viewportMargin"
+  (overlayOutsideClick)="close()"
+  (detach)="close()"
+>
+  <div class="popover {{ panelClass() }}" role="dialog" [attr.aria-label]="popoverTitle()">
+    @if (popoverTitle() || popoverActionText()) {
+      <header class="popover__header">
+        <h3 class="popover__title">{{ popoverTitle() }}</h3>
+
+        @if (popoverActionText()) {
+          <button class="popover__action" type="button" (click)="onAction()">
+            {{ popoverActionText() }}
+          </button>
+        }
+      </header>
+    }
+
+    <div class="popover__content">
+      <ng-container [ngTemplateOutlet]="content()?.templateRef ?? null" />
+    </div>
+  </div>
+</ng-template>

@@ -38,29 +38,59 @@
           />
         </div>
 
-        <button
-          class="header-action"
-          type="button"
-          [attr.aria-label]="messagesAriaLabel"
-          (click)="onMessages()"
+        <app-popover
+          #messagesPopover="appPopover"
+          [popoverTitle]="messagesTitle"
+          (opened)="onMessages()"
         >
-          <i [class]="mailIconClass"></i>
-          @if (hasUnreadMessages()) {
-            <span class="header-action-badge"></span>
-          }
-        </button>
+          <button
+            class="header-action"
+            type="button"
+            [attr.aria-label]="messagesAriaLabel"
+            [attr.aria-haspopup]="dialogRole"
+            [attr.aria-expanded]="messagesPopover.isOpen()"
+          >
+            <i [class]="mailIconClass"></i>
+            @if (hasUnreadMessages()) {
+              <span class="header-action-badge"></span>
+            }
+          </button>
 
-        <button
-          class="header-action"
-          type="button"
-          [attr.aria-label]="notificationsAriaLabel"
-          (click)="onNotifications()"
+          <ng-template appPopoverContent>
+            <app-empty-state
+              [emptyIconClass]="inboxIconClass"
+              [emptyTitle]="messagesEmptyTitle"
+              [emptyDescription]="messagesEmptyDescription"
+            />
+          </ng-template>
+        </app-popover>
+
+        <app-popover
+          #notificationsPopover="appPopover"
+          [popoverTitle]="notificationsTitle"
+          (opened)="onNotifications()"
         >
-          <i [class]="bellIconClass"></i>
-          @if (hasUnreadNotifications()) {
-            <span class="header-action-badge"></span>
-          }
-        </button>
+          <button
+            class="header-action"
+            type="button"
+            [attr.aria-label]="notificationsAriaLabel"
+            [attr.aria-haspopup]="dialogRole"
+            [attr.aria-expanded]="notificationsPopover.isOpen()"
+          >
+            <i [class]="bellIconClass"></i>
+            @if (hasUnreadNotifications()) {
+              <span class="header-action-badge"></span>
+            }
+          </button>
+
+          <ng-template appPopoverContent>
+            <app-empty-state
+              [emptyIconClass]="bellIconClass"
+              [emptyTitle]="notificationsEmptyTitle"
+              [emptyDescription]="notificationsEmptyDescription"
+            />
+          </ng-template>
+        </app-popover>
 
         <button
           class="header-profile"

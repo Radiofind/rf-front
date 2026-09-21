@@ -1,5 +1,8 @@
 import { Component, input, model, output } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
+import { EmptyStateComponent } from '../empty-state/empty-state.component';
+import { PopoverComponent } from '../popover/popover.component';
+import { PopoverContentDirective } from '../../directives/popover-content.directive';
 import { Constants } from '../../../core/constants/constants';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
@@ -8,7 +11,7 @@ import type { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, PopoverComponent, PopoverContentDirective, EmptyStateComponent],
 })
 
 export class HeaderComponent {
@@ -65,6 +68,23 @@ export class HeaderComponent {
   public readonly bellIconClass: string = Constants.BELL_ICON_CLASS;
 
   public readonly userIconClass: string = Constants.USER_ICON_CLASS;
+
+  public readonly inboxIconClass: string = Constants.INBOX_ICON_CLASS;
+
+  public readonly messagesTitle: string = Constants.HEADER_MESSAGES_TITLE;
+
+  public readonly notificationsTitle: string = Constants.HEADER_NOTIFICATIONS_TITLE;
+
+  public readonly messagesEmptyTitle: string = Constants.HEADER_MESSAGES_EMPTY_TITLE;
+
+  public readonly messagesEmptyDescription: string = Constants.HEADER_MESSAGES_EMPTY_DESCRIPTION;
+
+  public readonly notificationsEmptyTitle: string = Constants.HEADER_NOTIFICATIONS_EMPTY_TITLE;
+
+  public readonly notificationsEmptyDescription: string =
+    Constants.HEADER_NOTIFICATIONS_EMPTY_DESCRIPTION;
+
+  public readonly dialogRole: string = Constants.DIALOG_ROLE;
 
   public onSearchInput(event: Event): void {
     const input: HTMLInputElement = event.target as HTMLInputElement;
