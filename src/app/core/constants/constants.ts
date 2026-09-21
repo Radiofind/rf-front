@@ -151,6 +151,38 @@ export class Constants {
 
   public static readonly PASSWORD_RESET_SUCCESSFULLY: string = 'Password reset successfully';
 
+  public static readonly HEADER_LOGO_ALT: string = 'Logo';
+
+  public static readonly HEADER_BRAND_TITLE: string = 'RADIOFIND';
+
+  public static readonly HEADER_SEARCH_PLACEHOLDER: string = 'Search artists, songs, genres...';
+
+  public static readonly HEADER_SEARCH_ARIA_LABEL: string = 'Search artists, songs, genres';
+
+  public static readonly HEADER_CLEAR_SEARCH_ARIA_LABEL: string = 'Clear search';
+
+  public static readonly HEADER_MESSAGES_ARIA_LABEL: string = 'Messages';
+
+  public static readonly HEADER_NOTIFICATIONS_ARIA_LABEL: string = 'Notifications';
+
+  public static readonly HEADER_PROFILE_ARIA_LABEL: string = 'Profile';
+
+  public static readonly HEADER_AVATAR_ALT: string = 'User avatar';
+
+  public static readonly HEADER_UPGRADE_BUTTON_TEXT: string = 'Upgrade to Premium';
+
+  public static readonly HEADER_PREMIUM_BUTTON_CLASS: string = 'button--premium';
+
+  public static readonly SEARCH_ICON_CLASS: string = 'bx bx-search';
+
+  public static readonly CLEAR_ICON_CLASS: string = 'bx bx-x';
+
+  public static readonly STAR_ICON_CLASS: string = 'bxf bx-star';
+
+  public static readonly BELL_ICON_CLASS: string = 'bx bx-bell';
+
+  public static readonly USER_ICON_CLASS: string = 'bxf bx-user';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;

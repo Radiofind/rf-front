@@ -1,8 +1,83 @@
-<header class="header">
-  <img class="header-logo" src="/assets/images/audiowave.png" alt="Logo" />
-  <span class="header-title">RADIOFIND</span>
+<header class="header" [class.header--extended]="isMainApplication()">
+  <div class="header-brand">
+    <img class="header-logo" src="/assets/images/audiowave.png" [alt]="logoAlt" />
+    <span class="header-title">{{ brandTitle }}</span>
+  </div>
 
   @if (isMainApplication()) {
-    <div class="header-main"></div>
+    <div class="header-main">
+      <div class="header-search">
+        <i class="header-search-icon" [class]="searchIconClass"></i>
+        <input
+          class="header-search-input"
+          type="text"
+          [attr.aria-label]="searchAriaLabel"
+          [placeholder]="searchPlaceholder"
+          [value]="searchValue()"
+          (input)="onSearchInput($event)"
+        />
+        @if (searchValue()) {
+          <button
+            class="header-search-clear"
+            type="button"
+            [attr.aria-label]="clearSearchAriaLabel"
+            (click)="onClearSearch()"
+          >
+            <i [class]="clearIconClass"></i>
+          </button>
+        }
+      </div>
+
+      <div class="header-actions">
+        <div class="header-premium">
+          <app-button
+            [additionalClass]="premiumButtonClass"
+            [contentText]="upgradeButtonText"
+            [contentIconClass]="starIconClass"
+            (clickAction)="onUpgrade()"
+          />
+        </div>
+
+        <button
+          class="header-action"
+          type="button"
+          [attr.aria-label]="messagesAriaLabel"
+          (click)="onMessages()"
+        >
+          <i [class]="mailIconClass"></i>
+          @if (hasUnreadMessages()) {
+            <span class="header-action-badge"></span>
+          }
+        </button>
+
+        <button
+          class="header-action"
+          type="button"
+          [attr.aria-label]="notificationsAriaLabel"
+          (click)="onNotifications()"
+        >
+          <i [class]="bellIconClass"></i>
+          @if (hasUnreadNotifications()) {
+            <span class="header-action-badge"></span>
+          }
+        </button>
+
+        <button
+          class="header-profile"
+          type="button"
+          [attr.aria-label]="profileAriaLabel"
+          (click)="onProfile()"
+        >
+          @if (userAvatarUrl()) {
+            <img class="header-profile-image" [src]="userAvatarUrl()" [alt]="avatarAlt" />
+          } @else {
+            <i [class]="userIconClass"></i>
+          }
+          @if (isUserOnline()) {
+            <span class="header-profile-status"></span>
+          }
+        </button>
+      </div>
+    </div>
   }
 </header>
