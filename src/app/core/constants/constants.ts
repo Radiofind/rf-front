@@ -4,6 +4,8 @@ export class Constants {
 
   public static readonly EMPTY_STRING: string = '';
 
+  public static readonly EMPTY_SPACE_STRING: string = ' ';
+
   public static readonly TOKEN_KEY: string = 'radiofind_token';
 
   public static readonly UPPERCASE: string = 'uppercase';
@@ -214,10 +216,6 @@ export class Constants {
   public static readonly SIDEBAR_PROFILE_ARIA_LABEL: string = 'Open account settings';
 
   public static readonly SIDEBAR_AVATAR_ALT: string = 'User avatar';
-
-  public static readonly SIDEBAR_USER_NAME: string = 'John Doe';
-
-  public static readonly SIDEBAR_USER_EMAIL: string = 'johndoe@example.com';
 
   public static readonly SIDEBAR_COLLAPSE_ARIA_LABEL: string = 'Collapse menu';
 
