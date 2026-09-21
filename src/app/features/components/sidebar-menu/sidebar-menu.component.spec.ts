@@ -1,21 +1,36 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
+import { Observable, of } from 'rxjs';
 import { SidebarMenuComponent } from './sidebar-menu.component';
+import { UserService } from '../../services/user-service/user.service';
 import { SIDEBAR_MENU_ITEMS } from '../../../features/constants/sidebar-menu.constant';
 import { Constants } from '../../../core/constants/constants';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { Routes } from '@angular/router';
+import type { ICurrentUser } from '../../../core/models/user.model';
 
 describe('SidebarMenuComponent', () => {
   const routes: Routes = SIDEBAR_MENU_ITEMS.map(item => ({ path: item.link, children: [] }));
 
+  const currentUser: ICurrentUser = {
+    name: 'Ada',
+    surname: 'Lovelace',
+    email: 'ada@example.com',
+  };
+
+  let getCurrentUserData: ReturnType<typeof vi.fn>;
+
   const createFixture = async (): Promise<ComponentFixture<SidebarMenuComponent>> => {
     await TestBed.configureTestingModule({
       imports: [SidebarMenuComponent],
-      providers: [provideRouter(routes), provideLocationMocks()],
+      providers: [
+        provideRouter(routes),
+        provideLocationMocks(),
+        { provide: UserService, useValue: { getCurrentUserData: getCurrentUserData } },
+      ],
     }).compileComponents();
 
     const fixture: ComponentFixture<SidebarMenuComponent> =
@@ -38,6 +53,7 @@ describe('SidebarMenuComponent', () => {
 
   beforeEach(() => {
     TestBed.resetTestingModule();
+    getCurrentUserData = vi.fn().mockReturnValue(of(currentUser));
   });
 
   it('renders every menu item', async () => {
@@ -108,17 +124,53 @@ describe('SidebarMenuComponent', () => {
   it('renders the user card and its online status', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
 
-    expect(fixture.nativeElement.querySelector('.sidebar__user-name').textContent).toBe(
-      Constants.SIDEBAR_USER_NAME,
-    );
-    expect(fixture.nativeElement.querySelector('.sidebar__user-email').textContent).toBe(
-      Constants.SIDEBAR_USER_EMAIL,
-    );
     expect(fixture.nativeElement.querySelector('.sidebar__user-status')).toBeNull();
 
     fixture.componentRef.setInput('isUserOnline', true);
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.sidebar__user-status')).not.toBeNull();
+  });
+
+  it('asks the user service for the signed-in user once on init', async () => {
+    await createFixture();
+
+    expect(getCurrentUserData).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows the full name and the email of the signed-in user', async () => {
+    const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
+
+    expect(fixture.componentInstance.userName()).toBe('Ada Lovelace');
+    expect(fixture.componentInstance.userEmail()).toBe(currentUser.email);
+    expect(fixture.nativeElement.querySelector('.sidebar__user-name').textContent).toBe(
+      'Ada Lovelace',
+    );
+    expect(fixture.nativeElement.querySelector('.sidebar__user-email').textContent).toBe(
+      currentUser.email,
+    );
+  });
+
+  it('leaves the user card empty until the request resolves', async () => {
+    let resolveUser: (user: ICurrentUser) => void = () => undefined;
+
+    getCurrentUserData = vi.fn().mockReturnValue(
+      new Observable<ICurrentUser>(subscriber => {
+        resolveUser = (user: ICurrentUser): void => {
+          subscriber.next(user);
+          subscriber.complete();
+        };
+      }),
+    );
+
+    const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
+
+    expect(fixture.componentInstance.userName()).toBe(Constants.EMPTY_STRING);
+    expect(fixture.componentInstance.userEmail()).toBe(Constants.EMPTY_STRING);
+
+    resolveUser(currentUser);
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.userName()).toBe('Ada Lovelace');
   });
 });

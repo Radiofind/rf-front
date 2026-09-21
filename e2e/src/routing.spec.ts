@@ -30,10 +30,20 @@ test.describe('routing and guards', () => {
     await expect(authenticatedPage).toHaveURL(/\/my-uploads$/);
   });
 
-  test('sends a signed-in user away from the login page', async ({ authenticatedPage }) => {
+  test('sends a signed-in user from the login page to the media library', async ({
+    authenticatedPage,
+  }) => {
     await authenticatedPage.goto('/auth/login');
 
-    await expect(authenticatedPage).toHaveURL(/\/my-uploads$/);
+    await expect(authenticatedPage).toHaveURL(/\/media-library$/);
+  });
+
+  test('sends a signed-in user from the root to the media library', async ({
+    authenticatedPage,
+  }) => {
+    await authenticatedPage.goto('/');
+
+    await expect(authenticatedPage).toHaveURL(/\/media-library$/);
   });
 
   test('keeps the register page reachable while signed in', async ({ authenticatedPage }) => {
