@@ -1,4 +1,5 @@
 import { inject, Service } from "@angular/core";
+import { Router } from "@angular/router";
 import { AuthStateService } from "../auth-state-service/auth-state.service";
 import { ApiService } from "../../../core/services/api.service";
 
@@ -14,10 +15,13 @@ import type {
   ITwoFactorData
 } from "../../../core/models/auth.model";
 import type { IRegisterData } from "../../models/auth-content.model";
+import { Links } from "../../../core/constants/links";
 
 @Service()
 
 export class AuthService {
+  private readonly router: Router = inject(Router);
+
   private readonly apiService: ApiService = inject(ApiService);
 
   private readonly authStateService: AuthStateService = inject(AuthStateService);
@@ -52,5 +56,6 @@ export class AuthService {
 
   public logout(): void {
     this.authStateService.clearToken();
+    void this.router.navigate([Links.LOGIN_URL]);
   }
 }

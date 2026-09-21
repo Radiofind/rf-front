@@ -48,6 +48,12 @@
     padding: 20px;
     overflow-y: auto;
   }
+
+  &--menu {
+    .popover__content {
+      padding: 8px;
+    }
+  }
 }
 
 @keyframes popover-appearance {

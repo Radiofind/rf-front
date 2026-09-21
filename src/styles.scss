@@ -54,18 +54,6 @@ body {
   color: var(--text-color);
 }
 
-@media (max-width: 1200px) {
-  html {
-    font-size: 55%;
-  }
-}
-
-@media (max-width: 540px) {
-  html {
-    font-size: 50%;
-  }
-}
-
 @include cdk.overlay();
 
 .modal-backdrop {
@@ -81,4 +69,20 @@ body.is-loading {
   display: flex;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 32px);
+}
+
+.cdk-overlay-pane {
+  display: block !important;
+}
+
+@media (max-width: 1200px) {
+  html {
+    font-size: 55%;
+  }
+}
+
+@media (max-width: 540px) {
+  html {
+    font-size: 50%;
+  }
 }

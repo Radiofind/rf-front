@@ -92,21 +92,48 @@
           </ng-template>
         </app-popover>
 
-        <button
-          class="header-profile"
-          type="button"
-          [attr.aria-label]="profileAriaLabel"
-          (click)="onProfile()"
+        <app-popover
+          #profilePopover="appPopover"
+          [popoverPosition]="profileMenuPosition"
+          [panelWidth]="profileMenuWidth"
+          [panelClass]="profileMenuPanelClass"
+          (opened)="onProfile()"
         >
-          @if (userAvatarUrl()) {
-            <img class="header-profile-image" [src]="userAvatarUrl()" [alt]="avatarAlt" />
-          } @else {
-            <i [class]="userIconClass"></i>
-          }
-          @if (isUserOnline()) {
-            <span class="header-profile-status"></span>
-          }
-        </button>
+          <button
+            class="header-profile"
+            type="button"
+            [attr.aria-label]="profileAriaLabel"
+            [attr.aria-haspopup]="menuRole"
+            [attr.aria-expanded]="profilePopover.isOpen()"
+          >
+            @if (userAvatarUrl()) {
+              <img class="header-profile-image" [src]="userAvatarUrl()" [alt]="avatarAlt" />
+            } @else {
+              <i [class]="userIconClass"></i>
+            }
+            @if (isUserOnline()) {
+              <span class="header-profile-status"></span>
+            }
+          </button>
+
+          <ng-template appPopoverContent>
+            <ul class="header-menu" [attr.role]="menuRole" [attr.aria-label]="profileMenuAriaLabel">
+              @for (item of profileMenuItems; track item.id) {
+                <li>
+                  <button
+                    class="header-menu-item {{ item.additionalClass }}"
+                    type="button"
+                    [attr.role]="menuItemRole"
+                    (click)="onProfileMenuItemSelect(item.id); profilePopover.close()"
+                  >
+                    <i class="header-menu-item-icon" [class]="item.iconClass"></i>
+                    <span class="header-menu-item-label">{{ item.label }}</span>
+                  </button>
+                </li>
+              }
+            </ul>
+          </ng-template>
+        </app-popover>
       </div>
     </div>
   }

@@ -189,6 +189,10 @@ export class Constants {
 
   public static readonly DIALOG_ROLE: string = 'dialog';
 
+  public static readonly MENU_ROLE: string = 'menu';
+
+  public static readonly MENU_ITEM_ROLE: string = 'menuitem';
+
   public static readonly HEADER_MESSAGES_TITLE: string = 'Messages';
 
   public static readonly HEADER_NOTIFICATIONS_TITLE: string = 'Notifications';
@@ -203,7 +207,13 @@ export class Constants {
   public static readonly HEADER_NOTIFICATIONS_EMPTY_DESCRIPTION: string =
     'Track reviews, radio picks and account updates will appear here.';
 
+  public static readonly HEADER_PROFILE_MENU_ARIA_LABEL: string = 'Account menu';
+
   public static readonly POPOVER_DEFAULT_WIDTH: string = '360px';
+
+  public static readonly POPOVER_MENU_WIDTH: string = '224px';
+
+  public static readonly POPOVER_MENU_PANEL_CLASS: string = 'popover--menu';
 
   public static readonly EMPTY_STATE_ICON_SIZE: string = '64px';
 

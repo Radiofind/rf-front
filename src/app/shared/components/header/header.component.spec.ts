@@ -63,7 +63,7 @@ describe('HeaderComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.header-search-input')).not.toBeNull();
-    expect(fixture.nativeElement.querySelectorAll('app-popover').length).toBe(2);
+    expect(fixture.nativeElement.querySelectorAll('app-popover').length).toBe(3);
   });
 
   it('clears the search value with the clear action', async () => {
