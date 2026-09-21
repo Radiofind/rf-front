@@ -8,4 +8,5 @@ import { SidebarMenuComponent } from '../sidebar-menu/sidebar-menu.component';
   styleUrl: './main-container.component.scss',
   imports: [HeaderComponent, SidebarMenuComponent],
 })
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class MainContainerComponent {}

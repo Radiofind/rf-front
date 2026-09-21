@@ -209,6 +209,20 @@ export class Constants {
 
   public static readonly EMPTY_STATE_ICON_BORDER_RADIUS: string = '50%';
 
+  public static readonly SIDEBAR_NAVIGATION_ARIA_LABEL: string = 'Main navigation';
+
+  public static readonly SIDEBAR_PROFILE_ARIA_LABEL: string = 'Open account settings';
+
+  public static readonly SIDEBAR_AVATAR_ALT: string = 'User avatar';
+
+  public static readonly SIDEBAR_USER_NAME: string = 'John Doe';
+
+  public static readonly SIDEBAR_USER_EMAIL: string = 'johndoe@example.com';
+
+  public static readonly CHEVRON_RIGHT_ICON_CLASS: string = 'bx bx-chevron-right';
+
+  public static readonly PAGE_ARIA_CURRENT: string = 'page';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;

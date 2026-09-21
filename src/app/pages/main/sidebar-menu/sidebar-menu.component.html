@@ -1,1 +1,46 @@
-<p>sidebar-menu works!</p>
+<aside class="sidebar">
+  <nav class="sidebar__nav" [attr.aria-label]="navigationAriaLabel">
+    <ul class="sidebar__list">
+      @for (item of menuItems(); track item.id) {
+        <li>
+          <button
+            class="sidebar__item"
+            type="button"
+            [class.sidebar__item--active]="item.id === activeItemId()"
+            [attr.aria-current]="item.id === activeItemId() ? pageAriaCurrent : null"
+            [title]="item.label"
+            (click)="onSelectItem(item.id)"
+          >
+            <i class="sidebar__item-icon" [class]="item.iconClass"></i>
+            <span class="sidebar__item-label">{{ item.label }}</span>
+          </button>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <button
+    class="sidebar__user"
+    type="button"
+    [attr.aria-label]="profileAriaLabel"
+    (click)="onProfile()"
+  >
+    <span class="sidebar__user-avatar">
+      @if (userAvatarUrl()) {
+        <img class="sidebar__user-image" [src]="userAvatarUrl()" [alt]="avatarAlt" />
+      } @else {
+        <i [class]="userIconClass"></i>
+      }
+      @if (isUserOnline()) {
+        <span class="sidebar__user-status"></span>
+      }
+    </span>
+
+    <span class="sidebar__user-info">
+      <span class="sidebar__user-name">{{ userName() }}</span>
+      <span class="sidebar__user-email">{{ userEmail() }}</span>
+    </span>
+
+    <i class="sidebar__user-arrow" [class]="chevronIconClass"></i>
+  </button>
+</aside>

@@ -1,4 +1,9 @@
 <div class="main">
   <app-header [isMainApplication]="true" [hasUnreadNotifications]="false" [isUserOnline]="true" />
-  <app-sidebar-menu />
+
+  <div class="main__body">
+    <app-sidebar-menu [isUserOnline]="true" />
+
+    <section class="main__content"></section>
+  </div>
 </div>
