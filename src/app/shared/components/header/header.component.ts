@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, inject, input, model, output } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { EmptyStateComponent } from '../empty-state/empty-state.component';
 import { PopoverComponent } from '../popover/popover.component';
@@ -7,6 +7,7 @@ import { Constants } from '../../../core/constants/constants';
 import { PopoverPositionEnum } from '../../../core/enums/popover-position.enum';
 import { ProfileMenuItemEnum } from '../../../core/enums/profile-menu-item.enum';
 import { PROFILE_MENU_ITEMS } from '../../constants/profile-menu.constant';
+import { AuthService } from '../../../features/services/auth-service/auth.service';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
 import type { IProfileMenuItem } from '../../models/profile-menu-item.model';
@@ -21,6 +22,8 @@ import type { ProfileMenuItemType } from '../../../core/types/profile-menu-item.
 })
 
 export class HeaderComponent {
+  private readonly authService: AuthService = inject(AuthService);
+
   public readonly isMainApplication: InputSignal<boolean> = input<boolean>(false);
 
   public readonly searchValue: ModelSignal<string> = model<string>(Constants.EMPTY_STRING);
@@ -44,8 +47,6 @@ export class HeaderComponent {
   public readonly openProfileAction: OutputEmitterRef<void> = output();
 
   public readonly openSettingsAction: OutputEmitterRef<void> = output();
-
-  public readonly logOutAction: OutputEmitterRef<void> = output();
 
   public readonly logoAlt: string = Constants.HEADER_LOGO_ALT;
 
@@ -162,6 +163,6 @@ export class HeaderComponent {
   }
 
   public onLogOut(): void {
-    this.logOutAction.emit();
+    this.authService.logout();
   }
 }
