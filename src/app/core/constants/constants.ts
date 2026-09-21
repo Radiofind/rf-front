@@ -219,6 +219,14 @@ export class Constants {
 
   public static readonly SIDEBAR_USER_EMAIL: string = 'johndoe@example.com';
 
+  public static readonly SIDEBAR_COLLAPSE_ARIA_LABEL: string = 'Collapse menu';
+
+  public static readonly SIDEBAR_EXPAND_ARIA_LABEL: string = 'Expand menu';
+
+  public static readonly SIDEBAR_NAVIGATION_ID: string = 'sidebar-navigation';
+
+  public static readonly CHEVRON_LEFT_ICON_CLASS: string = 'bx bx-chevron-left';
+
   public static readonly CHEVRON_RIGHT_ICON_CLASS: string = 'bx bx-chevron-right';
 
   public static readonly PAGE_ARIA_CURRENT: string = 'page';

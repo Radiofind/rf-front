@@ -49,6 +49,31 @@ describe('SidebarMenuComponent', () => {
     expect(items(fixture)[0]!.classList.contains('sidebar__item--active')).toBe(false);
   });
 
+  it('toggles the collapsed state with the chevron', async () => {
+    const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
+
+    const sidebar: HTMLElement = fixture.nativeElement.querySelector('.sidebar');
+    const toggle: HTMLButtonElement = fixture.nativeElement.querySelector('.sidebar__toggle');
+
+    expect(sidebar.classList.contains('sidebar--collapsed')).toBe(false);
+    expect(toggle.getAttribute('aria-label')).toBe(Constants.SIDEBAR_COLLAPSE_ARIA_LABEL);
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+
+    toggle.click();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.isCollapsed()).toBe(true);
+    expect(sidebar.classList.contains('sidebar--collapsed')).toBe(true);
+    expect(toggle.getAttribute('aria-label')).toBe(Constants.SIDEBAR_EXPAND_ARIA_LABEL);
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+
+    toggle.click();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.isCollapsed()).toBe(false);
+    expect(sidebar.classList.contains('sidebar--collapsed')).toBe(false);
+  });
+
   it('renders the user card and its online status', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
 

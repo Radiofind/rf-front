@@ -1,5 +1,19 @@
-<aside class="sidebar">
-  <nav class="sidebar__nav" [attr.aria-label]="navigationAriaLabel">
+<aside class="sidebar" [class.sidebar--collapsed]="isCollapsed()">
+  <div class="sidebar__head">
+    <button
+      class="sidebar__toggle"
+      type="button"
+      [attr.aria-label]="toggleAriaLabel()"
+      [attr.aria-expanded]="!isCollapsed()"
+      [attr.aria-controls]="navigationId"
+      [title]="toggleAriaLabel()"
+      (click)="onToggleCollapsed()"
+    >
+      <i [class]="toggleIconClass()"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar__nav" [id]="navigationId" [attr.aria-label]="navigationAriaLabel">
     <ul class="sidebar__list">
       @for (item of menuItems(); track item.id) {
         <li>

@@ -1,9 +1,9 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, computed, input, model, output } from '@angular/core';
 import { Constants } from '../../../core/constants/constants';
 import { SidebarMenuItemEnum } from '../../../core/enums/sidebar-menu-item.enum';
 import { SIDEBAR_MENU_ITEMS } from '../../../features/constants/sidebar-menu.constant';
 
-import type { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
+import type { InputSignal, ModelSignal, OutputEmitterRef, Signal } from '@angular/core';
 import type { SidebarMenuItemType } from '../../../core/types/sidebar-menu-item.type';
 import type { ISidebarMenuItem } from '../../../features/models/sidebar-menu-item.model';
 
@@ -20,6 +20,8 @@ export class SidebarMenuComponent {
   public readonly activeItemId: ModelSignal<SidebarMenuItemType> = model<SidebarMenuItemType>(
     SidebarMenuItemEnum.MEDIA_LIBRARY,
   );
+
+  public readonly isCollapsed: ModelSignal<boolean> = model<boolean>(false);
 
   public readonly userName: InputSignal<string> = input<string>(Constants.SIDEBAR_USER_NAME);
 
@@ -44,6 +46,22 @@ export class SidebarMenuComponent {
   public readonly chevronIconClass: string = Constants.CHEVRON_RIGHT_ICON_CLASS;
 
   public readonly pageAriaCurrent: string = Constants.PAGE_ARIA_CURRENT;
+
+  public readonly navigationId: string = Constants.SIDEBAR_NAVIGATION_ID;
+
+  public readonly toggleIconClass: Signal<string> = computed<string>(() =>
+    this.isCollapsed() ? Constants.CHEVRON_RIGHT_ICON_CLASS : Constants.CHEVRON_LEFT_ICON_CLASS,
+  );
+
+  public readonly toggleAriaLabel: Signal<string> = computed<string>(() =>
+    this.isCollapsed()
+      ? Constants.SIDEBAR_EXPAND_ARIA_LABEL
+      : Constants.SIDEBAR_COLLAPSE_ARIA_LABEL,
+  );
+
+  public onToggleCollapsed(): void {
+    this.isCollapsed.update((isCollapsed: boolean) => !isCollapsed);
+  }
 
   public onSelectItem(itemId: SidebarMenuItemType): void {
     this.activeItemId.set(itemId);
