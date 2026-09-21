@@ -10,7 +10,7 @@ export const noLoginGuard: CanActivateFn = () => {
   const router: Router = inject(Router);
 
   if (authState.isTokenValid()) {
-    void router.navigate([Links.UPLOADS_URL]);
+    void router.navigate([Links.DEFAULT_PATH]);
     return false;
   }
   return true;

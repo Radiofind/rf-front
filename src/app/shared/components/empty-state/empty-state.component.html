@@ -1,0 +1,17 @@
+<div class="empty">
+  @if (emptyIconClass()) {
+    <app-icon
+      [iconClass]="emptyIconClass()"
+      [iconMinWidth]="iconSize"
+      [iconHeight]="iconSize"
+      [iconBorderRadius]="iconBorderRadius"
+      [iconFontSize]="iconFontSize"
+    />
+  }
+
+  <p class="empty__title">{{ emptyTitle() }}</p>
+
+  @if (emptyDescription()) {
+    <p class="empty__description">{{ emptyDescription() }}</p>
+  }
+</div>

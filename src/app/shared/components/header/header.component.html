@@ -1,4 +1,113 @@
 <header class="header">
-  <img class="header-logo" src="/assets/images/audiowave.png" alt="Logo" />
-  <span class="header-title">RADIOFIND</span>
+  <div class="header-brand">
+    <img class="header-logo" src="/assets/images/audiowave.png" [alt]="logoAlt" />
+    <span class="header-title">{{ brandTitle }}</span>
+  </div>
+
+  @if (isMainApplication()) {
+    <div class="header-main">
+      <div class="header-search">
+        <i class="header-search-icon" [class]="searchIconClass"></i>
+        <input
+          class="header-search-input"
+          type="text"
+          [attr.aria-label]="searchAriaLabel"
+          [placeholder]="searchPlaceholder"
+          [value]="searchValue()"
+          (input)="onSearchInput($event)"
+        />
+        @if (searchValue()) {
+          <button
+            class="header-search-clear"
+            type="button"
+            [attr.aria-label]="clearSearchAriaLabel"
+            (click)="onClearSearch()"
+          >
+            <i [class]="clearIconClass"></i>
+          </button>
+        }
+      </div>
+
+      <div class="header-actions">
+        <div class="header-premium">
+          <app-button
+            [additionalClass]="premiumButtonClass"
+            [contentText]="upgradeButtonText"
+            [contentIconClass]="starIconClass"
+            (clickAction)="onUpgrade()"
+          />
+        </div>
+
+        <app-popover
+          #messagesPopover="appPopover"
+          [popoverTitle]="messagesTitle"
+          (opened)="onMessages()"
+        >
+          <button
+            class="header-action"
+            type="button"
+            [attr.aria-label]="messagesAriaLabel"
+            [attr.aria-haspopup]="dialogRole"
+            [attr.aria-expanded]="messagesPopover.isOpen()"
+          >
+            <i [class]="mailIconClass"></i>
+            @if (hasUnreadMessages()) {
+              <span class="header-action-badge"></span>
+            }
+          </button>
+
+          <ng-template appPopoverContent>
+            <app-empty-state
+              [emptyIconClass]="inboxIconClass"
+              [emptyTitle]="messagesEmptyTitle"
+              [emptyDescription]="messagesEmptyDescription"
+            />
+          </ng-template>
+        </app-popover>
+
+        <app-popover
+          #notificationsPopover="appPopover"
+          [popoverTitle]="notificationsTitle"
+          (opened)="onNotifications()"
+        >
+          <button
+            class="header-action"
+            type="button"
+            [attr.aria-label]="notificationsAriaLabel"
+            [attr.aria-haspopup]="dialogRole"
+            [attr.aria-expanded]="notificationsPopover.isOpen()"
+          >
+            <i [class]="bellIconClass"></i>
+            @if (hasUnreadNotifications()) {
+              <span class="header-action-badge"></span>
+            }
+          </button>
+
+          <ng-template appPopoverContent>
+            <app-empty-state
+              [emptyIconClass]="bellIconClass"
+              [emptyTitle]="notificationsEmptyTitle"
+              [emptyDescription]="notificationsEmptyDescription"
+            />
+          </ng-template>
+        </app-popover>
+
+        <button
+          class="header-profile"
+          type="button"
+          [attr.aria-label]="profileAriaLabel"
+          (click)="onProfile()"
+        >
+          @if (userAvatarUrl()) {
+            <img class="header-profile-image" [src]="userAvatarUrl()" [alt]="avatarAlt" />
+          } @else {
+            <i [class]="userIconClass"></i>
+          }
+          @if (isUserOnline()) {
+            <span class="header-profile-status"></span>
+          }
+        </button>
+      </div>
+    </div>
+  }
 </header>
