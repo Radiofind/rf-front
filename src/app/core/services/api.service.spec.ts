@@ -12,9 +12,12 @@ import { environment } from '../../../environments/environment';
 import type { TestRequest } from '@angular/common/http/testing';
 import type { IAuthResponse, ITwoFactorResponse } from '../models/auth.model';
 import type { IRegisterData } from '../../features/models/auth-content.model';
+import type { ICurrentUser } from '../models/user.model';
 
 describe('ApiService', () => {
   const api: string = `${environment.apiUrl}${EndpointConstants.AUTH_ENDPOINTS.auth}`;
+
+  const userApi: string = `${environment.apiUrl}${EndpointConstants.USER_ENDPOINTS.users}`;
 
   const registerData: IRegisterData = {
     name: 'Ada',
@@ -148,6 +151,48 @@ describe('ApiService', () => {
     expect(request.request.body).toEqual({ token: 'reset-token', newPassword: 'Passw0rd!' });
 
     request.flush({});
+  });
+
+  it('reads the current user from the users endpoint', () => {
+    const currentUser: ICurrentUser = {
+      name: 'Ada',
+      surname: 'Lovelace',
+      email: 'ada@example.com',
+    };
+
+    let received: ICurrentUser | undefined;
+
+    service.getCurrentUserData().subscribe(value => {
+      received = value;
+    });
+
+    const request: TestRequest = httpMock.expectOne(
+      `${userApi}${EndpointConstants.USER_ENDPOINTS.me}`,
+    );
+
+    expect(request.request.method).toBe('GET');
+    expect(request.request.body).toBeNull();
+    expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(false);
+
+    request.flush(currentUser);
+
+    expect(received).toEqual(currentUser);
+  });
+
+  it('surfaces an unauthorised current user request to the caller', () => {
+    let errorStatus: number | undefined;
+
+    service.getCurrentUserData().subscribe({
+      error: (error: { status: number }) => {
+        errorStatus = error.status;
+      },
+    });
+
+    httpMock
+      .expectOne(`${userApi}${EndpointConstants.USER_ENDPOINTS.me}`)
+      .flush({ message: 'Unauthorized' }, { status: 401, statusText: 'Unauthorized' });
+
+    expect(errorStatus).toBe(401);
   });
 
   it('surfaces server errors to the caller', () => {

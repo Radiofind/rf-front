@@ -1,3 +1,11 @@
 <div class="main">
   <app-header [isMainApplication]="true" [hasUnreadNotifications]="false" [isUserOnline]="true" />
+
+  <div class="main__body">
+    <app-sidebar-menu [isUserOnline]="true" />
+
+    <section class="main__content">
+      <router-outlet></router-outlet>
+    </section>
+  </div>
 </div>

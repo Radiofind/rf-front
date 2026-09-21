@@ -1,0 +1,94 @@
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  model,
+  output,
+  signal
+} from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { Constants } from '../../../core/constants/constants';
+import { SIDEBAR_MENU_ITEMS } from '../../constants/sidebar-menu.constant';
+import { UserService } from '../../services/user-service/user.service';
+
+import type {
+  InputSignal,
+  ModelSignal,
+  OnInit,
+  OutputEmitterRef,
+  Signal,
+  WritableSignal
+} from '@angular/core';
+import type { ISidebarMenuItem } from '../../models/sidebar-menu-item.model';
+import type { ICurrentUser } from '../../../core/models/user.model';
+
+@Component({
+  selector: 'app-sidebar-menu',
+  templateUrl: './sidebar-menu.component.html',
+  styleUrl: './sidebar-menu.component.scss',
+  imports: [RouterLink, RouterLinkActive],
+})
+
+export class SidebarMenuComponent implements OnInit {
+  private readonly userService: UserService = inject(UserService);
+
+  public readonly menuItems: InputSignal<readonly ISidebarMenuItem[]> =
+    input<readonly ISidebarMenuItem[]>(SIDEBAR_MENU_ITEMS);
+
+  public readonly isCollapsed: ModelSignal<boolean> = model<boolean>(false);
+
+  public readonly userAvatarUrl: InputSignal<string | null> = input<string | null>(null);
+
+  public readonly isUserOnline: InputSignal<boolean> = input<boolean>(false);
+
+  public readonly profileAction: OutputEmitterRef<void> = output();
+
+  public readonly userName: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+
+  public readonly userEmail: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+
+  public readonly navigationAriaLabel: string = Constants.SIDEBAR_NAVIGATION_ARIA_LABEL;
+
+  public readonly profileAriaLabel: string = Constants.SIDEBAR_PROFILE_ARIA_LABEL;
+
+  public readonly avatarAlt: string = Constants.SIDEBAR_AVATAR_ALT;
+
+  public readonly userIconClass: string = Constants.USER_ICON_CLASS;
+
+  public readonly chevronIconClass: string = Constants.CHEVRON_RIGHT_ICON_CLASS;
+
+  public readonly pageAriaCurrent: string = Constants.PAGE_ARIA_CURRENT;
+
+  public readonly navigationId: string = Constants.SIDEBAR_NAVIGATION_ID;
+
+  public readonly toggleIconClass: Signal<string> = computed<string>(() =>
+    this.isCollapsed() ? Constants.CHEVRON_RIGHT_ICON_CLASS : Constants.CHEVRON_LEFT_ICON_CLASS,
+  );
+
+  public readonly toggleAriaLabel: Signal<string> = computed<string>(() =>
+    this.isCollapsed()
+      ? Constants.SIDEBAR_EXPAND_ARIA_LABEL
+      : Constants.SIDEBAR_COLLAPSE_ARIA_LABEL,
+  );
+
+  public ngOnInit(): void {
+    void this.getCurrentUserData();
+  }
+
+  public onToggleCollapsed(): void {
+    this.isCollapsed.update((isCollapsed: boolean) => !isCollapsed);
+  }
+
+  public onProfile(): void {
+    this.profileAction.emit();
+  }
+
+  private async getCurrentUserData(): Promise<void> {
+    const currentUserData: ICurrentUser = await firstValueFrom(this.userService.getCurrentUserData());
+    const currentUserName: string = currentUserData.name + Constants.EMPTY_SPACE_STRING + currentUserData.surname;
+    this.userName.set(currentUserName);
+    this.userEmail.set(currentUserData.email);
+  }
+}

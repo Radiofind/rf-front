@@ -17,11 +17,13 @@ describe('routes', () => {
     return route!;
   };
 
-  it('redirects the root to the uploads page', () => {
+  it('protects the main shell and lazy loads its children', async () => {
     const route: Route = routeFor(Links.DEFAULT_PATH);
 
-    expect(route.redirectTo).toBe(Links.UPLOADS_URL);
-    expect(route.pathMatch).toBe('full');
+    expect(route.canActivate).toEqual([authGuard]);
+    expect(route.loadComponent).toBeTypeOf('function');
+    await expect(route.loadComponent?.()).resolves.toBeTypeOf('function');
+    expect(route.loadChildren).toBeTypeOf('function');
   });
 
   it('keeps authenticated users away from the login page', () => {
@@ -30,10 +32,6 @@ describe('routes', () => {
 
   it('leaves the register page open', () => {
     expect(routeFor(Links.REGISTER_URL).canActivate).toBeUndefined();
-  });
-
-  it('protects the uploads page', () => {
-    expect(routeFor(Links.UPLOADS_URL).canActivate).toEqual([authGuard]);
   });
 
   it.each([
@@ -60,7 +58,6 @@ describe('routes', () => {
     Links.LOGIN_URL,
     Links.REGISTER_URL,
     Links.RESET_PASSWORD_URL,
-    Links.UPLOADS_URL,
     Links.FORBIDDEN_URL,
     Links.SERVER_ERROR_URL,
     Links.NOT_FOUND_URL,

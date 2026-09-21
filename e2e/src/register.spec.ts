@@ -186,13 +186,13 @@ test.describe('registration', () => {
     });
   });
 
-  test('creates the account and lands on the uploads page', async ({ page }) => {
+  test('creates the account and lands on the media library', async ({ page }) => {
     const input: IRegisterInput = validInput();
 
     await registerPage.fillRequired(input);
     await registerPage.submit.click();
 
-    await expect(page).toHaveURL(/\/my-uploads$/);
+    await expect(page).toHaveURL(/\/media-library$/);
 
     const token: string | null = await page.evaluate(
       key => window.localStorage.getItem(key),

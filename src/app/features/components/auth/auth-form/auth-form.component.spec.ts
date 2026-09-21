@@ -111,7 +111,7 @@ describe('AuthFormComponent', () => {
       expect((open.mock.calls[0]?.[1] as IModalOptions).hasHeader).toBe(false);
     });
 
-    it('verifies through the two-factor modal and lands on the uploads page', async () => {
+    it('verifies through the two-factor modal and lands on the main shell', async () => {
       fillLogin();
 
       await submit(component.loginForm);
@@ -122,7 +122,7 @@ describe('AuthFormComponent', () => {
         email: 'ada@example.com',
         challengeId: 'challenge',
       });
-      expect(navigate).toHaveBeenCalledWith([Links.UPLOADS_URL]);
+      expect(navigate).toHaveBeenCalledWith([Links.DEFAULT_PATH]);
       expect(component.loginError()).toBeUndefined();
     });
 
@@ -175,7 +175,7 @@ describe('AuthFormComponent', () => {
       expect(navigate).toHaveBeenCalledWith([Links.LOGIN_URL]);
     });
 
-    it('sends the mapped payload and lands on the uploads page', async () => {
+    it('sends the mapped payload and lands on the main shell', async () => {
       fillRegister();
 
       await submit(component.registerForm);
@@ -193,7 +193,7 @@ describe('AuthFormComponent', () => {
           description: null,
         },
       });
-      expect(navigate).toHaveBeenCalledWith([Links.UPLOADS_URL]);
+      expect(navigate).toHaveBeenCalledWith([Links.DEFAULT_PATH]);
     });
 
     it('forwards the optional artist details when they are filled in', async () => {
