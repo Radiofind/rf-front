@@ -44,8 +44,8 @@ describe('LoaderComponent', () => {
 
       expect(overlay).not.toBeNull();
       expect(overlay.getAttribute('aria-busy')).toBe('true');
-      expect(overlay.getAttribute('aria-label')).toBe(Constants.SPINNER_ARIA_LABEL);
-      expect(overlay.querySelector('.loader__text')?.textContent).toBe(Constants.LOADER_TEXT);
+      expect(overlay.getAttribute('aria-label')).toBe('Loading');
+      expect(overlay.querySelector('.loader__text')?.textContent).toBe('Loading...');
       expect(overlay.querySelector('app-spinner')).not.toBeNull();
     });
 

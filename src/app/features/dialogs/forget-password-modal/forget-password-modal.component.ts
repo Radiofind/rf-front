@@ -27,12 +27,6 @@ export class ForgetPasswordModalComponent {
 
   private readonly snackbarService: SnackbarService = inject(SnackbarService);
 
-  public readonly shieldIconClass: string = Constants.SHIELD_ICON_CLASS;
-
-  public readonly mailIconClass: string = Constants.MAIL_ICON_CLASS;
-
-  public readonly submitIconClass: string = Constants.SUBMIT_ICON_CLASS;
-
   private readonly forgetPasswordModel: WritableSignal<IForgetPasswordForm> = signal<IForgetPasswordForm>({
     email: Constants.EMPTY_STRING,
   })
@@ -50,6 +44,6 @@ export class ForgetPasswordModalComponent {
     await firstValueFrom(this.authService.forgetPassword({
       email: this.forgetPasswordForm.email().value(),
     }));
-    this.snackbarService.success('Email sent successfully');
+    this.snackbarService.success(Constants.EMAIL_SENT_SUCCESSFULLY);
   }
 }

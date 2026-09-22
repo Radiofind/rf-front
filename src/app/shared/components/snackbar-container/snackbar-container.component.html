@@ -3,7 +3,7 @@
   role="status"
   aria-live="polite"
   aria-atomic="false"
-  [attr.aria-label]="containerAriaLabel"
+  aria-label="Notifications"
 >
   @for (message of messages(); track message.id) {
     <app-snackbar

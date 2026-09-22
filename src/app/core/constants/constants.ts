@@ -30,15 +30,6 @@ export class Constants {
 
   public static readonly AUTH_TYPE_PROP: string = 'authType';
 
-  public static readonly INVALID_LOGIN_PASSWORD: string = 'Invalid login or password';
-
-  public static readonly REGISTRATION_FAILED: string = 'Registration failed, please try again';
-
-  public static readonly INVALID_TWO_FACTOR_CODE: string = 'Invalid verification code, please try again';
-
-  public static readonly RESEND_TWO_FACTOR_CODE_FAILED: string =
-    'Failed to resend the code, please try again';
-
   public static readonly REQUIRED_PROPERTY: string = 'required';
 
   public static readonly SPLIT_DATE_BY_T: string = 'T';
@@ -75,10 +66,6 @@ export class Constants {
 
   public static readonly MODAL_TITLE_ID_SUFFIX: string = '-title';
 
-  public static readonly MODAL_CLOSE_ARIA_LABEL: string = 'Close modal';
-
-  public static readonly MODAL_CLOSE_ICON_CLASS: string = 'bx bx-x';
-
   public static readonly MODAL_TAB_INDEX: string = '-1';
 
   public static readonly MODAL_MAX_WIDTH: string = 'calc(100vw - 32px)';
@@ -93,18 +80,6 @@ export class Constants {
 
   public static readonly MODAL_SIZE_LARGE: string = '840px';
 
-  public static readonly SHIELD_ICON_CLASS: string = 'bx bx-shield';
-
-  public static readonly LOCK_ICON_CLASS: string = 'bx bx-lock-keyhole';
-
-  public static readonly SUBMIT_ICON_CLASS: string = 'bx bx-arrow-right-stroke';
-
-  public static readonly MAIL_ICON_CLASS: string = 'bx bx-envelope-alt';
-
-  public static readonly EYE_ICON_CLASS: string = 'bx bx-eye';
-
-  public static readonly EYE_SLASH_ICON_CLASS: string = 'bx bx-eye-slash';
-
   public static readonly TIME_SEPARATOR: string = ':';
 
   public static readonly CELL_FIELD: string = 'cell';
@@ -115,17 +90,7 @@ export class Constants {
 
   public static readonly SPINNER_ARIA_LABEL: string = 'Loading';
 
-  public static readonly LOADER_SPINNER_SIZE: string = '64px';
-
-  public static readonly LOADER_SPINNER_THICKNESS: string = '5px';
-
-  public static readonly LOADER_TEXT: string = 'Loading...';
-
   public static readonly LOADER_BODY_CLASS: string = 'is-loading';
-
-  public static readonly RESEND_SPINNER_SIZE: string = '20px';
-
-  public static readonly RESEND_SPINNER_THICKNESS: string = '2px';
 
   public static readonly SNACKBAR_SUCCESS_ICON_CLASS: string = 'bx bx-badge-check';
 
@@ -135,109 +100,23 @@ export class Constants {
 
   public static readonly SNACKBAR_INFO_ICON_CLASS: string = 'bx bx-info-circle';
 
-  public static readonly SNACKBAR_CONTAINER_ARIA_LABEL: string = 'Notifications';
-
   public static readonly TOKEN: string = 'token';
 
   public static readonly ERROR_TYPE_PROP: string = 'errorType';
 
-  public static readonly ERROR_HOME_BUTTON_TEXT: string = 'Back to Home';
-
-  public static readonly ERROR_BACK_BUTTON_TEXT: string = 'Go Back';
-
-  public static readonly ERROR_SECONDARY_BUTTON_CLASS: string = 'button--secondary';
-
-  public static readonly HOME_ICON_CLASS: string = 'bx bx-home';
-
-  public static readonly BACK_ICON_CLASS: string = 'bx bx-arrow-left-stroke';
+  public static readonly EMAIL_SENT_SUCCESSFULLY: string = 'Email sent successfully';
 
   public static readonly PASSWORD_RESET_SUCCESSFULLY: string = 'Password reset successfully';
 
-  public static readonly HEADER_LOGO_ALT: string = 'Logo';
-
-  public static readonly HEADER_BRAND_TITLE: string = 'RADIOFIND';
-
-  public static readonly HEADER_SEARCH_PLACEHOLDER: string = 'Search artists, songs, genres...';
-
-  public static readonly HEADER_SEARCH_ARIA_LABEL: string = 'Search artists, songs, genres';
-
-  public static readonly HEADER_CLEAR_SEARCH_ARIA_LABEL: string = 'Clear search';
-
-  public static readonly HEADER_MESSAGES_ARIA_LABEL: string = 'Messages';
-
-  public static readonly HEADER_NOTIFICATIONS_ARIA_LABEL: string = 'Notifications';
-
-  public static readonly HEADER_PROFILE_ARIA_LABEL: string = 'Profile';
-
-  public static readonly HEADER_AVATAR_ALT: string = 'User avatar';
-
-  public static readonly HEADER_UPGRADE_BUTTON_TEXT: string = 'Upgrade to Premium';
-
-  public static readonly HEADER_PREMIUM_BUTTON_CLASS: string = 'button--premium';
-
-  public static readonly SEARCH_ICON_CLASS: string = 'bx bx-search';
-
-  public static readonly CLEAR_ICON_CLASS: string = 'bx bx-x';
-
-  public static readonly STAR_ICON_CLASS: string = 'bxf bx-star';
-
-  public static readonly BELL_ICON_CLASS: string = 'bx bx-bell';
-
-  public static readonly USER_ICON_CLASS: string = 'bxf bx-user';
-
-  public static readonly INBOX_ICON_CLASS: string = 'bx bx-inbox';
-
-  public static readonly DIALOG_ROLE: string = 'dialog';
-
-  public static readonly MENU_ROLE: string = 'menu';
-
-  public static readonly MENU_ITEM_ROLE: string = 'menuitem';
-
-  public static readonly HEADER_MESSAGES_TITLE: string = 'Messages';
-
-  public static readonly HEADER_NOTIFICATIONS_TITLE: string = 'Notifications';
-
-  public static readonly HEADER_MESSAGES_EMPTY_TITLE: string = 'No messages yet';
-
-  public static readonly HEADER_MESSAGES_EMPTY_DESCRIPTION: string =
-    'Messages from listeners, labels and radio stations will show up here.';
-
-  public static readonly HEADER_NOTIFICATIONS_EMPTY_TITLE: string = 'You are all caught up';
-
-  public static readonly HEADER_NOTIFICATIONS_EMPTY_DESCRIPTION: string =
-    'Track reviews, radio picks and account updates will appear here.';
-
-  public static readonly HEADER_PROFILE_MENU_ARIA_LABEL: string = 'Account menu';
-
   public static readonly POPOVER_DEFAULT_WIDTH: string = '360px';
-
-  public static readonly POPOVER_MENU_WIDTH: string = '224px';
-
-  public static readonly POPOVER_MENU_PANEL_CLASS: string = 'popover--menu';
-
-  public static readonly EMPTY_STATE_ICON_SIZE: string = '64px';
-
-  public static readonly EMPTY_STATE_ICON_FONT_SIZE: string = '32px';
-
-  public static readonly EMPTY_STATE_ICON_BORDER_RADIUS: string = '50%';
-
-  public static readonly SIDEBAR_NAVIGATION_ARIA_LABEL: string = 'Main navigation';
-
-  public static readonly SIDEBAR_PROFILE_ARIA_LABEL: string = 'Open account settings';
-
-  public static readonly SIDEBAR_AVATAR_ALT: string = 'User avatar';
 
   public static readonly SIDEBAR_COLLAPSE_ARIA_LABEL: string = 'Collapse menu';
 
   public static readonly SIDEBAR_EXPAND_ARIA_LABEL: string = 'Expand menu';
 
-  public static readonly SIDEBAR_NAVIGATION_ID: string = 'sidebar-navigation';
-
   public static readonly CHEVRON_LEFT_ICON_CLASS: string = 'bx bx-chevron-left';
 
   public static readonly CHEVRON_RIGHT_ICON_CLASS: string = 'bx bx-chevron-right';
-
-  public static readonly PAGE_ARIA_CURRENT: string = 'page';
 
   // magic numbers
 
@@ -277,7 +156,7 @@ export class Constants {
 
   public static readonly POPOVER_OFFSET: number = 12;
 
-  public static readonly POPOVER_VIEWPORT_MARGIN: number = 16;
+  public static readonly MILLISECONDS_IN_ONE_SECOND: number = 1000;
 
   // others
 

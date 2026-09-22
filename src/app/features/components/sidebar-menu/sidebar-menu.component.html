@@ -5,7 +5,7 @@
       type="button"
       [attr.aria-label]="toggleAriaLabel()"
       [attr.aria-expanded]="!isCollapsed()"
-      [attr.aria-controls]="navigationId"
+      aria-controls="sidebar-navigation"
       [title]="toggleAriaLabel()"
       (click)="onToggleCollapsed()"
     >
@@ -13,7 +13,7 @@
     </button>
   </div>
 
-  <nav class="sidebar__nav" [id]="navigationId" [attr.aria-label]="navigationAriaLabel">
+  <nav class="sidebar__nav" id="sidebar-navigation" aria-label="Main navigation">
     <ul class="sidebar__list">
       @for (item of menuItems(); track item.id) {
         <li>
@@ -22,7 +22,7 @@
             class="sidebar__item"
             routerLinkActive="sidebar__item--active"
             [routerLink]="item.link"
-            [attr.aria-current]="itemLink.isActive ? pageAriaCurrent : null"
+            [attr.aria-current]="itemLink.isActive ? 'page' : null"
             [title]="item.label"
           >
             <i class="sidebar__item-icon" [class]="item.iconClass"></i>
@@ -36,14 +36,14 @@
   <button
     class="sidebar__user"
     type="button"
-    [attr.aria-label]="profileAriaLabel"
+    aria-label="Open account settings"
     (click)="onProfile()"
   >
     <span class="sidebar__user-avatar">
       @if (userAvatarUrl()) {
-        <img class="sidebar__user-image" [src]="userAvatarUrl()" [alt]="avatarAlt" />
+        <img class="sidebar__user-image" [src]="userAvatarUrl()" alt="User avatar" />
       } @else {
-        <i [class]="userIconClass"></i>
+        <i class="bxf bx-user"></i>
       }
       @if (isUserOnline()) {
         <span class="sidebar__user-status"></span>
@@ -55,6 +55,6 @@
       <span class="sidebar__user-email">{{ userEmail() }}</span>
     </span>
 
-    <i class="sidebar__user-arrow" [class]="chevronIconClass"></i>
+    <i class="sidebar__user-arrow bx bx-chevron-right"></i>
   </button>
 </aside>

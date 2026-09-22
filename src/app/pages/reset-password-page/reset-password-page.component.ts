@@ -35,16 +35,6 @@ export class ResetPasswordPageComponent implements OnInit {
 
   private readonly snackbarService: SnackbarService = inject(SnackbarService);
 
-  public readonly lockIconClass: string = Constants.LOCK_ICON_CLASS;
-
-  public readonly eyeIconClass: string = Constants.EYE_ICON_CLASS;
-
-  public readonly eyeSlashIconClass: string = Constants.EYE_SLASH_ICON_CLASS;
-
-  public readonly submitIconClass: string = Constants.SUBMIT_ICON_CLASS;
-
-  public readonly backIconClass: string = Constants.BACK_ICON_CLASS;
-
   public readonly showPassword: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly showConfirmPassword: WritableSignal<boolean> = signal<boolean>(false);

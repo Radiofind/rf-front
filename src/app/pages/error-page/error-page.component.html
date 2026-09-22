@@ -8,11 +8,11 @@
       <span class="error-badge__ring"></span>
       <span class="error-badge__ring error-badge__ring--outer"></span>
       <app-icon
+        iconMinWidth="104px"
+        iconHeight="104px"
+        iconBorderRadius="50%"
+        iconFontSize="56px"
         [iconClass]="content().iconClass"
-        [iconMinWidth]="'104px'"
-        [iconHeight]="'104px'"
-        [iconBorderRadius]="'50%'"
-        [iconFontSize]="'56px'"
       />
     </div>
 
@@ -26,8 +26,8 @@
 
     <div class="error-actions">
       <app-button
-        [contentText]="homeButtonText"
-        [contentIconClass]="homeIconClass"
+        contentText="Back to Home"
+        contentIconClass="bx bx-home"
         (clickAction)="goHome()"
       />
     </div>

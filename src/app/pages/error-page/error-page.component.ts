@@ -1,6 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { HeaderComponent } from '../../shared/components/header/header.component';
@@ -27,18 +26,6 @@ export class ErrorPageComponent {
   private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
   private readonly router: Router = inject(Router);
-
-  private readonly location: Location = inject(Location);
-
-  public readonly homeButtonText: string = Constants.ERROR_HOME_BUTTON_TEXT;
-
-  public readonly backButtonText: string = Constants.ERROR_BACK_BUTTON_TEXT;
-
-  public readonly secondaryButtonClass: string = Constants.ERROR_SECONDARY_BUTTON_CLASS;
-
-  public readonly homeIconClass: string = Constants.HOME_ICON_CLASS;
-
-  public readonly backIconClass: string = Constants.BACK_ICON_CLASS;
 
   public readonly errorType: Signal<ErrorType> = toSignal(
     this.activatedRoute.data.pipe(

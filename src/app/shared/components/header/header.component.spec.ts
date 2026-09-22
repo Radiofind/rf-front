@@ -88,18 +88,14 @@ describe('HeaderComponent', () => {
     const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
 
     const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-      `[aria-label="${Constants.HEADER_MESSAGES_ARIA_LABEL}"]`,
+      `[aria-label="Messages"]`,
     );
 
     trigger.click();
     await fixture.whenStable();
 
-    expect(popoverPanel()?.querySelector('.popover__title')?.textContent).toBe(
-      Constants.HEADER_MESSAGES_TITLE,
-    );
-    expect(popoverPanel()?.querySelector('.empty__title')?.textContent).toBe(
-      Constants.HEADER_MESSAGES_EMPTY_TITLE,
-    );
+    expect(popoverPanel()?.querySelector('.popover__title')?.textContent).toBe('Messages');
+    expect(popoverPanel()?.querySelector('.empty__title')?.textContent).toBe('No messages yet');
     expect(trigger.getAttribute('aria-expanded')).toBe('true');
   });
 
@@ -107,15 +103,11 @@ describe('HeaderComponent', () => {
     const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
 
     fixture.nativeElement
-      .querySelector(`[aria-label="${Constants.HEADER_NOTIFICATIONS_ARIA_LABEL}"]`)
+      .querySelector(`[aria-label="Notifications"]`)
       .click();
     await fixture.whenStable();
 
-    expect(popoverPanel()?.querySelector('.popover__title')?.textContent).toBe(
-      Constants.HEADER_NOTIFICATIONS_TITLE,
-    );
-    expect(popoverPanel()?.querySelector('.empty__title')?.textContent).toBe(
-      Constants.HEADER_NOTIFICATIONS_EMPTY_TITLE,
-    );
+    expect(popoverPanel()?.querySelector('.popover__title')?.textContent).toBe('Notifications');
+    expect(popoverPanel()?.querySelector('.empty__title')?.textContent).toBe('You are all caught up');
   });
 });

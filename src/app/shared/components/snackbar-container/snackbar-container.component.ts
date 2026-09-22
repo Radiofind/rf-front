@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { Constants } from '../../../core/constants/constants';
 import { SnackbarComponent } from '../snackbar/snackbar.component';
 import { SnackbarService } from '../../services/snackbar-service/snackbar.service';
 
@@ -17,6 +16,4 @@ export class SnackbarContainerComponent {
   private readonly snackbarService: SnackbarService = inject(SnackbarService);
 
   public readonly messages: Signal<readonly ISnackbarMessage[]> = this.snackbarService.messages;
-
-  public readonly containerAriaLabel: string = Constants.SNACKBAR_CONTAINER_ARIA_LABEL;
 }

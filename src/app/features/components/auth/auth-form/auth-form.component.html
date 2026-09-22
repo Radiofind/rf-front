@@ -9,21 +9,21 @@
 
       <form class="form-content__form" [formRoot]="loginForm">
         <app-input-field
+          fieldLabel="Email Address"
+          iconClass="bx bx-envelope-alt"
+          inputType="email"
+          inputPlaceholder="you@example.com"
           [formField]="loginForm.email"
-          [fieldLabel]="'Email Address'"
-          [iconClass]="'bx bx-envelope-alt'"
-          [inputType]="'email'"
-          [inputPlaceholder]="'you@example.com'"
         />
 
         <app-input-field
+          additionalClass="field-label__password"
+          fieldLabel="Password"
+          additionalFieldLabel="Forgot password?"
+          iconClass="bx bx-lock"
+          inputPlaceholder="Enter your password"
           [formField]="loginForm.password"
-          [additionalClass]="'field-label__password'"
-          [fieldLabel]="'Password'"
-          [additionalFieldLabel]="'Forgot password?'"
-          [iconClass]="'bx bx-lock'"
           [inputType]="showPassword() ? 'text' : 'password'"
-          [inputPlaceholder]="'Enter your password'"
           [hasInputAction]="true"
           [inputActionIconClass]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
           (inputActionEmiter)="togglePasswordVisibility(0)"
@@ -31,9 +31,9 @@
         />
 
         <app-button
-          [contentText]="'Log In'"
-          [contentIconClass]="'bx bx-arrow-right-stroke'"
-          [buttonType]="'submit'"
+          contentText="Log In"
+          contentIconClass="bx bx-arrow-right-stroke"
+          buttonType="submit"
           [disabled]="loginForm().invalid() || loginForm().submitting()"
         />
       </form>
@@ -53,66 +53,66 @@
       <form class="form-content__form" [formRoot]="registerForm">
         <div class="form-content__form--name-surname">
           <app-input-field
+            fieldLabel="Name"
+            iconClass="bx bx-user"
+            inputClass="input-custom__width"
+            inputPlaceholder="Enter your name"
             [formField]="registerForm.name"
-            [fieldLabel]="'Name'"
-            [iconClass]="'bx bx-user'"
-            [inputClass]="'input-custom__width'"
-            [inputPlaceholder]="'Enter your name'"
           />
 
           <app-input-field
+            fieldLabel="Surname"
+            iconClass="bx bx-user"
+            inputClass="input-custom__width"
+            inputPlaceholder="Enter your surname"
             [formField]="registerForm.surname"
-            [fieldLabel]="'Surname'"
-            [iconClass]="'bx bx-user'"
-            [inputClass]="'input-custom__width'"
-            [inputPlaceholder]="'Enter your surname'"
           />
         </div>
 
         <app-input-field
+          fieldLabel="Email"
+          iconClass="bx bx-envelope-alt"
+          inputType="email"
+          inputPlaceholder="you@example.com"
           [formField]="registerForm.email"
-          [fieldLabel]="'Email'"
-          [iconClass]="'bx bx-envelope-alt'"
-          [inputType]="'email'"
-          [inputPlaceholder]="'you@example.com'"
         />
 
         <app-input-field
+          fieldLabel="Recovery Email"
+          iconClass="bx bx-envelope-alt"
+          inputType="email"
+          inputPlaceholder="recovery@example.com"
           [formField]="registerForm.recoveryEmail"
-          [fieldLabel]="'Recovery Email'"
           [hasOptionalLabel]="true"
-          [iconClass]="'bx bx-envelope-alt'"
-          [inputType]="'email'"
-          [inputPlaceholder]="'recovery@example.com'"
         />
 
         <app-date-field
+          fieldLabel="Date of Birth"
+          iconClass="bx bx-calendar"
+          inputPlaceholder="Select your date of birth"
           [formField]="registerForm.dateOfBirth"
-          [fieldLabel]="'Date of Birth'"
-          [iconClass]="'bx bx-calendar'"
-          [inputPlaceholder]="'Select your date of birth'"
         />
 
         <div class="form-content__form-passwords">
           <app-input-field
+            fieldLabel="Password"
+            inputClass="input-custom__width"
+            iconClass="bx bx-lock"
+            inputPlaceholder="Enter your password"
             [formField]="registerForm.password"
-            [fieldLabel]="'Password'"
-            [inputClass]="'input-custom__width'"
-            [iconClass]="'bx bx-lock'"
             [inputType]="showPassword() ? 'text' : 'password'"
-            [inputPlaceholder]="'Enter your password'"
             [hasInputAction]="true"
             [inputActionIconClass]="showPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
             (inputActionEmiter)="togglePasswordVisibility(0)"
           />
 
           <app-input-field
+            fieldLabel="Confirm Password"
+            inputClass="input-custom__width"
+            iconClass="bx bx-lock"
+            inputPlaceholder="Repeat your password"
             [formField]="registerForm.confirmPassword"
-            [fieldLabel]="'Confirm Password'"
-            [inputClass]="'input-custom__width'"
-            [iconClass]="'bx bx-lock'"
             [inputType]="showConfirmPassword() ? 'text' : 'password'"
-            [inputPlaceholder]="'Repeat your password'"
             [hasInputAction]="true"
             [inputActionIconClass]="showConfirmPassword() ? 'bx bx-eye' : 'bx bx-eye-slash'"
             (inputActionEmiter)="togglePasswordVisibility(1)"
@@ -120,41 +120,41 @@
         </div>
 
         <app-checkbox-field
+          checkboxText="I want to add information about my artist / band"
           [formField]="registerForm.addInformation"
-          [checkboxText]="'I want to add information about my artist / band'"
         />
 
         @if (registerForm.addInformation().value()) {
           <app-radio-field
+            fieldLabel="Who are you?"
             [formField]="registerForm.typeOfArtist"
-            [fieldLabel]="'Who are you?'"
             [options]="artistTypes"
           />
 
           <app-input-field
+            iconClass="bx bx-user"
             [formField]="registerForm.artistOrBandName"
             [fieldLabel]="registerForm.typeOfArtist().value() + ' Name'"
             [hasOptionalLabel]="true"
-            [iconClass]="'bx bx-user'"
             [inputPlaceholder]="
               'Enter ' + (registerForm.typeOfArtist().value() | lowercase) + ' name'
             "
           />
 
           <app-input-field
+            fieldLabel="Description"
+            iconClass="bx bx-note-book"
+            inputPlaceholder="Tell us about your music, style, influences..."
             [formField]="registerForm.description"
             [isTextareaField]="true"
-            [fieldLabel]="'Description'"
             [hasOptionalLabel]="true"
-            [iconClass]="'bx bx-note-book'"
-            [inputPlaceholder]="'Tell us about your music, style, influences...'"
           />
         }
 
         <app-button
-          [contentText]="'Create Account'"
-          [contentIconClass]="'bx bx-arrow-right-stroke'"
-          [buttonType]="'submit'"
+          contentText="Create Account"
+          contentIconClass="bx bx-arrow-right-stroke"
+          buttonType="submit"
           [disabled]="registerForm().invalid() || registerForm().submitting()"
         />
       </form>

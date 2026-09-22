@@ -1,18 +1,18 @@
 <header class="header" [class.header--extended]="isMainApplication()">
   <div class="header-brand">
-    <img class="header-logo" src="/assets/images/audiowave.png" [alt]="logoAlt" />
-    <span class="header-title">{{ brandTitle }}</span>
+    <img class="header-logo" src="/assets/images/audiowave.png" alt="Logo" />
+    <span class="header-title">RADIOFIND</span>
   </div>
 
   @if (isMainApplication()) {
     <div class="header-main">
       <div class="header-search">
-        <i class="header-search-icon" [class]="searchIconClass"></i>
+        <i class="header-search-icon bx bx-search"></i>
         <input
           class="header-search-input"
           type="text"
-          [attr.aria-label]="searchAriaLabel"
-          [placeholder]="searchPlaceholder"
+          aria-label="Search artists, songs, genres"
+          placeholder="Search artists, songs, genres..."
           [value]="searchValue()"
           (input)="onSearchInput($event)"
         />
@@ -20,10 +20,10 @@
           <button
             class="header-search-clear"
             type="button"
-            [attr.aria-label]="clearSearchAriaLabel"
+            aria-label="Clear search"
             (click)="onClearSearch()"
           >
-            <i [class]="clearIconClass"></i>
+            <i class="bx bx-x"></i>
           </button>
         }
       </div>
@@ -31,26 +31,22 @@
       <div class="header-actions">
         <div class="header-premium">
           <app-button
-            [additionalClass]="premiumButtonClass"
-            [contentText]="upgradeButtonText"
-            [contentIconClass]="starIconClass"
+            additionalClass="button--premium"
+            contentText="Upgrade to Premium"
+            contentIconClass="bxf bx-star"
             (clickAction)="onUpgrade()"
           />
         </div>
 
-        <app-popover
-          #messagesPopover="appPopover"
-          [popoverTitle]="messagesTitle"
-          (opened)="onMessages()"
-        >
+        <app-popover #messagesPopover="appPopover" popoverTitle="Messages" (opened)="onMessages()">
           <button
             class="header-action"
             type="button"
-            [attr.aria-label]="messagesAriaLabel"
-            [attr.aria-haspopup]="dialogRole"
+            aria-label="Messages"
+            aria-haspopup="dialog"
             [attr.aria-expanded]="messagesPopover.isOpen()"
           >
-            <i [class]="mailIconClass"></i>
+            <i class="bx bx-envelope-alt"></i>
             @if (hasUnreadMessages()) {
               <span class="header-action-badge"></span>
             }
@@ -58,26 +54,26 @@
 
           <ng-template appPopoverContent>
             <app-empty-state
-              [emptyIconClass]="inboxIconClass"
-              [emptyTitle]="messagesEmptyTitle"
-              [emptyDescription]="messagesEmptyDescription"
+              emptyIconClass="bx bx-inbox"
+              emptyTitle="No messages yet"
+              emptyDescription="Messages from listeners, labels and radio stations will show up here."
             />
           </ng-template>
         </app-popover>
 
         <app-popover
           #notificationsPopover="appPopover"
-          [popoverTitle]="notificationsTitle"
+          popoverTitle="Notifications"
           (opened)="onNotifications()"
         >
           <button
             class="header-action"
             type="button"
-            [attr.aria-label]="notificationsAriaLabel"
-            [attr.aria-haspopup]="dialogRole"
+            aria-label="Notifications"
+            aria-haspopup="dialog"
             [attr.aria-expanded]="notificationsPopover.isOpen()"
           >
-            <i [class]="bellIconClass"></i>
+            <i class="bx bx-bell"></i>
             @if (hasUnreadNotifications()) {
               <span class="header-action-badge"></span>
             }
@@ -85,9 +81,9 @@
 
           <ng-template appPopoverContent>
             <app-empty-state
-              [emptyIconClass]="bellIconClass"
-              [emptyTitle]="notificationsEmptyTitle"
-              [emptyDescription]="notificationsEmptyDescription"
+              emptyIconClass="bx bx-bell"
+              emptyTitle="You are all caught up"
+              emptyDescription="Track reviews, radio picks and account updates will appear here."
             />
           </ng-template>
         </app-popover>
@@ -95,21 +91,21 @@
         <app-popover
           #profilePopover="appPopover"
           [popoverPosition]="profileMenuPosition"
-          [panelWidth]="profileMenuWidth"
-          [panelClass]="profileMenuPanelClass"
+          panelWidth="224px"
+          panelClass="popover--menu"
           (opened)="onProfile()"
         >
           <button
             class="header-profile"
             type="button"
-            [attr.aria-label]="profileAriaLabel"
-            [attr.aria-haspopup]="menuRole"
+            aria-label="Profile"
+            aria-haspopup="menu"
             [attr.aria-expanded]="profilePopover.isOpen()"
           >
             @if (userAvatarUrl()) {
-              <img class="header-profile-image" [src]="userAvatarUrl()" [alt]="avatarAlt" />
+              <img class="header-profile-image" [src]="userAvatarUrl()" alt="User avatar" />
             } @else {
-              <i [class]="userIconClass"></i>
+              <i class="bxf bx-user"></i>
             }
             @if (isUserOnline()) {
               <span class="header-profile-status"></span>
@@ -117,13 +113,13 @@
           </button>
 
           <ng-template appPopoverContent>
-            <ul class="header-menu" [attr.role]="menuRole" [attr.aria-label]="profileMenuAriaLabel">
+            <ul class="header-menu" role="menu" aria-label="Account menu">
               @for (item of profileMenuItems; track item.id) {
                 <li>
                   <button
                     class="header-menu-item {{ item.additionalClass }}"
                     type="button"
-                    [attr.role]="menuItemRole"
+                    role="menuitem"
                     (click)="onProfileMenuItemSelect(item.id); profilePopover.close()"
                   >
                     <i class="header-menu-item-icon" [class]="item.iconClass"></i>

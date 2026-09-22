@@ -69,8 +69,8 @@ describe('ErrorPageComponent', () => {
 
     const button: HTMLElement = fixture.nativeElement.querySelector('.error-actions button');
 
-    expect(button.querySelector('p')?.textContent).toBe(Constants.ERROR_HOME_BUTTON_TEXT);
-    expect(button.querySelector('i')?.className).toBe(Constants.HOME_ICON_CLASS);
+    expect(button.querySelector('p')?.textContent).toBe('Back to Home');
+    expect(button.querySelector('i')?.className).toBe('bx bx-home');
   });
 
   it('navigates home from the action button', async () => {

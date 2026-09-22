@@ -29,4 +29,12 @@ export class AuthValidationMessages {
   public static readonly SPACES: string = 'Must not contain spaces';
 
   public static readonly PASSWORD_MISMATCH: string = 'Invalid password';
+
+  public static readonly INVALID_LOGIN_PASSWORD: string = 'Invalid login or password';
+
+  public static readonly REGISTRATION_FAILED: string = 'Registration failed, please try again';
+
+  public static readonly INVALID_TWO_FACTOR_CODE: string = 'Invalid verification code, please try again';
+
+  public static readonly RESEND_TWO_FACTOR_CODE_FAILED: string = 'Failed to resend the code, please try again';
 }

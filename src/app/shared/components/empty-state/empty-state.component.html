@@ -1,11 +1,11 @@
 <div class="empty">
   @if (emptyIconClass()) {
     <app-icon
+      iconMinWidth="64px"
+      iconHeight="64px"
+      iconBorderRadius="50%"
+      iconFontSize="32px"
       [iconClass]="emptyIconClass()"
-      [iconMinWidth]="iconSize"
-      [iconHeight]="iconSize"
-      [iconBorderRadius]="iconBorderRadius"
-      [iconFontSize]="iconFontSize"
     />
   }
 

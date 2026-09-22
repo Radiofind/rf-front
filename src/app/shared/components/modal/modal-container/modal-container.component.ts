@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CdkDialogContainer, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { Constants } from '../../../../core/constants/constants';
 import { IconComponent } from '../../icon/icon.component';
 import { ModalSizeEnum } from '../../../../core/enums/modal-size.enum';
 
+import type { Signal, WritableSignal } from '@angular/core';
 import type { ModalSize } from '../../../../core/types/modal-size.type';
 import type { IModalDialogConfig } from '../../../models/modal.model';
 
@@ -28,24 +29,21 @@ import type { IModalDialogConfig } from '../../../models/modal.model';
 export class ModalContainerComponent extends CdkDialogContainer<IModalDialogConfig> {
   private readonly dialogRef: DialogRef = inject(DialogRef);
 
-  public readonly titleId: string =
-    `${this._config.id ?? Constants.EMPTY_STRING}${Constants.MODAL_TITLE_ID_SUFFIX}`;
+  private readonly hasHeaderByDefault: WritableSignal<boolean> = signal<boolean>(true);
 
-  public readonly closeAriaLabel: string = Constants.MODAL_CLOSE_ARIA_LABEL;
+  private readonly hasCloseButtonByDefault: WritableSignal<boolean> = signal<boolean>(true);
 
-  public readonly closeIconClass: string = Constants.MODAL_CLOSE_ICON_CLASS;
+  public readonly titleId: Signal<string> = computed(() => {
+    return `${this._config.id ?? Constants.EMPTY_STRING}${Constants.MODAL_TITLE_ID_SUFFIX}`;
+  });
 
   private readonly defaultSize: ModalSize = ModalSizeEnum.MEDIUM;
 
-  private readonly hasHeaderByDefault: boolean = true;
-
-  private readonly hasCloseButtonByDefault: boolean = true;
-
-  public constructor() {
+  constructor() {
     super();
 
     if (this.hasHeader && this.title) {
-      this._addAriaLabelledBy(this.titleId);
+      this._addAriaLabelledBy(this.titleId());
     };
   }
 
@@ -66,11 +64,11 @@ export class ModalContainerComponent extends CdkDialogContainer<IModalDialogConf
   }
 
   public get hasHeader(): boolean {
-    return this._config.hasHeader ?? this.hasHeaderByDefault;
+    return this._config.hasHeader ?? this.hasHeaderByDefault();
   }
 
   public get hasCloseButton(): boolean {
-    return this._config.hasCloseButton ?? this.hasCloseButtonByDefault;
+    return this._config.hasCloseButton ?? this.hasCloseButtonByDefault();
   }
 
   public onClose(): void {

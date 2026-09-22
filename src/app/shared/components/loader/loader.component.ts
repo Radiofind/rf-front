@@ -1,4 +1,12 @@
-import { Component, DestroyRef, DOCUMENT, effect, inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  DOCUMENT,
+  effect,
+  inject,
+  PLATFORM_ID
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Constants } from '../../../core/constants/constants';
 import { LoaderService } from '../../services/loader-service/loader.service';
@@ -22,17 +30,11 @@ export class LoaderComponent {
 
   private readonly isBrowser: boolean = isPlatformBrowser(inject(PLATFORM_ID));
 
-  public readonly isLoading: Signal<boolean> = this.loaderService.isLoading;
+  public readonly isLoading: Signal<boolean> = computed(() => {
+    return this.loaderService.isLoading();
+  });
 
-  public readonly spinnerSize: string = Constants.LOADER_SPINNER_SIZE;
-
-  public readonly spinnerThickness: string = Constants.LOADER_SPINNER_THICKNESS;
-
-  public readonly loaderText: string = Constants.LOADER_TEXT;
-
-  public readonly loaderAriaLabel: string = Constants.SPINNER_ARIA_LABEL;
-
-  public constructor() {
+  constructor() {
     if (!this.isBrowser) {
       return;
     };

@@ -6,12 +6,13 @@ import { Constants } from '../../../core/constants/constants';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { CodeFieldComponent } from '../../../shared/components/code-field/code-field.component';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { AuthService } from '../../services/auth-service/auth.service';
+import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { Subscription } from 'rxjs';
 import type { ValidationError } from '@angular/forms/signals';
 import type { ITwoFactorModalData } from '../../models/two-factor.model';
-import { AuthService } from '../../services/auth-service/auth.service';
 import type { ITwoFactorData } from '../../../core/models/auth.model';
 
 @Component({
@@ -31,18 +32,6 @@ export class TwoFactorModalComponent {
 
   public readonly data: ITwoFactorModalData = inject<ITwoFactorModalData>(DIALOG_DATA);
 
-  public readonly codeLength: number = Constants.CODE_FIELD_DEFAULT_LENGTH;
-
-  public readonly shieldIconClass: string = Constants.SHIELD_ICON_CLASS;
-
-  public readonly lockIconClass: string = Constants.LOCK_ICON_CLASS;
-
-  public readonly submitIconClass: string = Constants.SUBMIT_ICON_CLASS;
-
-  public readonly resendSpinnerSize: string = Constants.RESEND_SPINNER_SIZE;
-
-  public readonly resendSpinnerThickness: string = Constants.RESEND_SPINNER_THICKNESS;
-
   public readonly code: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
 
   public readonly isResending: WritableSignal<boolean> = signal<boolean>(false);
@@ -56,7 +45,7 @@ export class TwoFactorModalComponent {
 
   public readonly hasCodeError: Signal<boolean> = computed(() => this.codeErrors().length > Constants.ZERO);
 
-  public readonly isCodeComplete: Signal<boolean> = computed(() => this.code().length === this.codeLength);
+  public readonly isCodeComplete: Signal<boolean> = computed(() => this.code().length === Constants.CODE_FIELD_DEFAULT_LENGTH);
 
   public readonly canResend: Signal<boolean> = computed(() => this.resendSeconds() === Constants.ZERO);
 
@@ -72,7 +61,7 @@ export class TwoFactorModalComponent {
 
   private countdownSubscription?: Subscription;
 
-  public constructor() {
+  constructor() {
     this.startCountdown();
   }
 
@@ -91,7 +80,7 @@ export class TwoFactorModalComponent {
       await firstValueFrom(this.authService.twoFactorAuth(twoFactorData));
       this.dialogRef.close(this.code());
     } catch {
-      this.codeErrors.set([{ kind: Constants.SERVER_ERROR, message: Constants.INVALID_TWO_FACTOR_CODE }]);
+      this.codeErrors.set([{ kind: Constants.SERVER_ERROR, message: AuthValidationMessages.INVALID_TWO_FACTOR_CODE }]);
     }
   }
 
@@ -111,7 +100,7 @@ export class TwoFactorModalComponent {
       this.startCountdown();
     } catch {
       this.codeErrors.set([
-        { kind: Constants.SERVER_ERROR, message: Constants.RESEND_TWO_FACTOR_CODE_FAILED },
+        { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.RESEND_TWO_FACTOR_CODE_FAILED },
       ]);
     } finally {
       this.isResending.set(false);

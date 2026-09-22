@@ -1,8 +1,8 @@
 @if (isLoading()) {
-  <div class="loader" role="status" aria-busy="true" aria-live="polite" [attr.aria-label]="loaderAriaLabel">
+  <div class="loader" role="status" aria-busy="true" aria-live="polite" aria-label="Loading">
     <div class="loader__content">
-      <app-spinner [size]="spinnerSize" [thickness]="spinnerThickness" [ariaLabel]="loaderAriaLabel" />
-      <p class="loader__text">{{ loaderText }}</p>
+      <app-spinner size="64px" thickness="5px" ariaLabel="Loading" />
+      <p class="loader__text">Loading...</p>
     </div>
   </div>
 }

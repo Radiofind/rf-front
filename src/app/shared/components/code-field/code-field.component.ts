@@ -24,13 +24,13 @@ export class CodeFieldComponent implements FormValueControl<string> {
 
   public readonly required: InputSignal<boolean> = input<boolean>(false);
 
-  public readonly touch: OutputEmitterRef<void> = output();
-
   public readonly codeLength: InputSignal<number> = input<number>(Constants.CODE_FIELD_DEFAULT_LENGTH);
 
   public readonly cellPlaceholder: InputSignal<string> = input<string>(Constants.CODE_FIELD_PLACEHOLDER);
 
   public readonly cellAriaLabel: InputSignal<string> = input<string>(Constants.CODE_FIELD_CELL_AREA_LABEL);
+
+  public readonly touch: OutputEmitterRef<void> = output();
 
   public readonly cells: Signal<string[]> = computed(() => {
     const characters: string[] = this.value().split(Constants.EMPTY_STRING);
