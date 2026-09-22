@@ -93,15 +93,7 @@ export class Constants {
 
   public static readonly MODAL_SIZE_LARGE: string = '840px';
 
-  public static readonly LOCK_ICON_CLASS: string = 'bx bx-lock-keyhole';
-
-  public static readonly SUBMIT_ICON_CLASS: string = 'bx bx-arrow-right-stroke';
-
   public static readonly MAIL_ICON_CLASS: string = 'bx bx-envelope-alt';
-
-  public static readonly EYE_ICON_CLASS: string = 'bx bx-eye';
-
-  public static readonly EYE_SLASH_ICON_CLASS: string = 'bx bx-eye-slash';
 
   public static readonly TIME_SEPARATOR: string = ':';
 
@@ -134,8 +126,6 @@ export class Constants {
   public static readonly TOKEN: string = 'token';
 
   public static readonly ERROR_TYPE_PROP: string = 'errorType';
-
-  public static readonly BACK_ICON_CLASS: string = 'bx bx-arrow-left-stroke';
 
   public static readonly PASSWORD_RESET_SUCCESSFULLY: string = 'Password reset successfully';
 
