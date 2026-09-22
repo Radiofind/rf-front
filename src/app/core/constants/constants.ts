@@ -109,8 +109,6 @@ export class Constants {
 
   public static readonly SNACKBAR_INFO_ICON_CLASS: string = 'bx bx-info-circle';
 
-  public static readonly SNACKBAR_CONTAINER_ARIA_LABEL: string = 'Notifications';
-
   public static readonly TOKEN: string = 'token';
 
   public static readonly ERROR_TYPE_PROP: string = 'errorType';

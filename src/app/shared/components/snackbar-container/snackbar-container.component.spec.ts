@@ -30,7 +30,7 @@ describe('SnackbarContainerComponent', () => {
 
     expect(container.getAttribute('role')).toBe('status');
     expect(container.getAttribute('aria-live')).toBe('polite');
-    expect(container.getAttribute('aria-label')).toBe(Constants.SNACKBAR_CONTAINER_ARIA_LABEL);
+    expect(container.getAttribute('aria-label')).toBe('Notifications');
     expect(snackbarsOf()).toHaveLength(0);
   });
 
