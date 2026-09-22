@@ -221,23 +221,13 @@ export class Constants {
 
   public static readonly EMPTY_STATE_ICON_BORDER_RADIUS: string = '50%';
 
-  public static readonly SIDEBAR_NAVIGATION_ARIA_LABEL: string = 'Main navigation';
-
-  public static readonly SIDEBAR_PROFILE_ARIA_LABEL: string = 'Open account settings';
-
-  public static readonly SIDEBAR_AVATAR_ALT: string = 'User avatar';
-
   public static readonly SIDEBAR_COLLAPSE_ARIA_LABEL: string = 'Collapse menu';
 
   public static readonly SIDEBAR_EXPAND_ARIA_LABEL: string = 'Expand menu';
 
-  public static readonly SIDEBAR_NAVIGATION_ID: string = 'sidebar-navigation';
-
   public static readonly CHEVRON_LEFT_ICON_CLASS: string = 'bx bx-chevron-left';
 
   public static readonly CHEVRON_RIGHT_ICON_CLASS: string = 'bx bx-chevron-right';
-
-  public static readonly PAGE_ARIA_CURRENT: string = 'page';
 
   // magic numbers
 

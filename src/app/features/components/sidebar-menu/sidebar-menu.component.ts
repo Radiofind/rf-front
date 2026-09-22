@@ -49,20 +49,6 @@ export class SidebarMenuComponent implements OnInit {
 
   public readonly userEmail: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
 
-  public readonly navigationAriaLabel: string = Constants.SIDEBAR_NAVIGATION_ARIA_LABEL;
-
-  public readonly profileAriaLabel: string = Constants.SIDEBAR_PROFILE_ARIA_LABEL;
-
-  public readonly avatarAlt: string = Constants.SIDEBAR_AVATAR_ALT;
-
-  public readonly userIconClass: string = Constants.USER_ICON_CLASS;
-
-  public readonly chevronIconClass: string = Constants.CHEVRON_RIGHT_ICON_CLASS;
-
-  public readonly pageAriaCurrent: string = Constants.PAGE_ARIA_CURRENT;
-
-  public readonly navigationId: string = Constants.SIDEBAR_NAVIGATION_ID;
-
   public readonly toggleIconClass: Signal<string> = computed<string>(() =>
     this.isCollapsed() ? Constants.CHEVRON_RIGHT_ICON_CLASS : Constants.CHEVRON_LEFT_ICON_CLASS,
   );

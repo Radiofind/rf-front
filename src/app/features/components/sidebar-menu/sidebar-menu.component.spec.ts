@@ -86,14 +86,14 @@ describe('SidebarMenuComponent', () => {
     await navigateTo(fixture, `/${SIDEBAR_MENU_ITEMS[0]!.link}`);
 
     expect(items(fixture)[0]!.classList.contains('sidebar__item--active')).toBe(true);
-    expect(items(fixture)[0]!.getAttribute('aria-current')).toBe(Constants.PAGE_ARIA_CURRENT);
+    expect(items(fixture)[0]!.getAttribute('aria-current')).toBe('page');
 
     await navigateTo(fixture, `/${SIDEBAR_MENU_ITEMS[3]!.link}`);
 
     expect(items(fixture)[0]!.classList.contains('sidebar__item--active')).toBe(false);
     expect(items(fixture)[0]!.getAttribute('aria-current')).toBeNull();
     expect(items(fixture)[3]!.classList.contains('sidebar__item--active')).toBe(true);
-    expect(items(fixture)[3]!.getAttribute('aria-current')).toBe(Constants.PAGE_ARIA_CURRENT);
+    expect(items(fixture)[3]!.getAttribute('aria-current')).toBe('page');
   });
 
   it('toggles the collapsed state with the chevron', async () => {
