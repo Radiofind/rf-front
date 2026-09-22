@@ -167,8 +167,6 @@ export class Constants {
 
   public static readonly POPOVER_OFFSET: number = 12;
 
-  public static readonly POPOVER_VIEWPORT_MARGIN: number = 16;
-
   public static readonly MILLISECONDS_IN_ONE_SECOND: number = 1000;
 
   // others

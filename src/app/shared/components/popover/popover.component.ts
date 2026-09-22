@@ -37,8 +37,6 @@ export class PopoverComponent {
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
 
-  public readonly viewportMargin: number = Constants.POPOVER_VIEWPORT_MARGIN;
-
   public readonly opened: OutputEmitterRef<void> = output();
 
   public readonly closed: OutputEmitterRef<void> = output();
