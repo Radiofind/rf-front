@@ -103,12 +103,6 @@ export class Constants {
 
   public static readonly SPINNER_ARIA_LABEL: string = 'Loading';
 
-  public static readonly LOADER_SPINNER_SIZE: string = '64px';
-
-  public static readonly LOADER_SPINNER_THICKNESS: string = '5px';
-
-  public static readonly LOADER_TEXT: string = 'Loading...';
-
   public static readonly LOADER_BODY_CLASS: string = 'is-loading';
 
   public static readonly SNACKBAR_SUCCESS_ICON_CLASS: string = 'bx bx-badge-check';
