@@ -5,6 +5,7 @@ import { of, throwError } from 'rxjs';
 import { TwoFactorModalComponent } from './two-factor-modal.component';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { Constants } from '../../../core/constants/constants';
+import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 
 import type { ComponentFixture } from '@angular/core/testing';
 
@@ -118,10 +119,10 @@ describe('TwoFactorModalComponent', () => {
 
     expect(close).not.toHaveBeenCalled();
     expect(component.codeErrors()).toEqual([
-      { kind: Constants.SERVER_ERROR, message: Constants.INVALID_TWO_FACTOR_CODE },
+      { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.INVALID_TWO_FACTOR_CODE },
     ]);
     expect(fixture.nativeElement.querySelector('.code-field__errors').textContent).toContain(
-      Constants.INVALID_TWO_FACTOR_CODE,
+      AuthValidationMessages.INVALID_TWO_FACTOR_CODE,
     );
   });
 
@@ -144,7 +145,7 @@ describe('TwoFactorModalComponent', () => {
     await component.onResend();
 
     expect(component.codeErrors()).toEqual([
-      { kind: Constants.SERVER_ERROR, message: Constants.RESEND_TWO_FACTOR_CODE_FAILED },
+      { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.RESEND_TWO_FACTOR_CODE_FAILED },
     ]);
     expect(component.canResend()).toBe(true);
     expect(component.isResending()).toBe(false);

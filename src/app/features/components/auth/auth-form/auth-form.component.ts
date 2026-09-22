@@ -137,7 +137,7 @@ export class AuthFormComponent {
       await this.router.navigate([Links.DEFAULT_PATH]);
       return undefined;
     } catch {
-      return { kind: Constants.SERVER_ERROR, message: Constants.INVALID_LOGIN_PASSWORD };
+      return { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.INVALID_LOGIN_PASSWORD };
     }
   }
 
@@ -154,7 +154,7 @@ export class AuthFormComponent {
       await this.router.navigate([Links.DEFAULT_PATH]);
       return undefined;
     } catch {
-      return { kind: Constants.SERVER_ERROR, message: Constants.REGISTRATION_FAILED };
+      return { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.REGISTRATION_FAILED };
     }
   }
 

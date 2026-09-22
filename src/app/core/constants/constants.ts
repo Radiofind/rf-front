@@ -30,15 +30,6 @@ export class Constants {
 
   public static readonly AUTH_TYPE_PROP: string = 'authType';
 
-  public static readonly INVALID_LOGIN_PASSWORD: string = 'Invalid login or password';
-
-  public static readonly REGISTRATION_FAILED: string = 'Registration failed, please try again';
-
-  public static readonly INVALID_TWO_FACTOR_CODE: string = 'Invalid verification code, please try again';
-
-  public static readonly RESEND_TWO_FACTOR_CODE_FAILED: string =
-    'Failed to resend the code, please try again';
-
   public static readonly REQUIRED_PROPERTY: string = 'required';
 
   public static readonly SPLIT_DATE_BY_T: string = 'T';

@@ -7,6 +7,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { CodeFieldComponent } from '../../../shared/components/code-field/code-field.component';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { AuthService } from '../../services/auth-service/auth.service';
+import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { Subscription } from 'rxjs';
@@ -79,7 +80,7 @@ export class TwoFactorModalComponent {
       await firstValueFrom(this.authService.twoFactorAuth(twoFactorData));
       this.dialogRef.close(this.code());
     } catch {
-      this.codeErrors.set([{ kind: Constants.SERVER_ERROR, message: Constants.INVALID_TWO_FACTOR_CODE }]);
+      this.codeErrors.set([{ kind: Constants.SERVER_ERROR, message: AuthValidationMessages.INVALID_TWO_FACTOR_CODE }]);
     }
   }
 
@@ -99,7 +100,7 @@ export class TwoFactorModalComponent {
       this.startCountdown();
     } catch {
       this.codeErrors.set([
-        { kind: Constants.SERVER_ERROR, message: Constants.RESEND_TWO_FACTOR_CODE_FAILED },
+        { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.RESEND_TWO_FACTOR_CODE_FAILED },
       ]);
     } finally {
       this.isResending.set(false);

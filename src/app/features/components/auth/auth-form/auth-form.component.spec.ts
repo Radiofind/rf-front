@@ -8,9 +8,9 @@ import { AuthService } from '../../../services/auth-service/auth.service';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
 import { TwoFactorModalComponent } from '../../../dialogs/two-factor-modal/two-factor-modal.component';
 import { ForgetPasswordModalComponent } from '../../../dialogs/forget-password-modal/forget-password-modal.component';
-import { Constants } from '../../../../core/constants/constants';
 import { Links } from '../../../../core/constants/links';
 import { AUTH_TYPE } from '../../../enums/auth-type.enum';
+import { AuthValidationMessages } from '../../../constants/auth-error-messages.constant';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IModalOptions } from '../../../../shared/models/modal.model';
@@ -133,10 +133,10 @@ describe('AuthFormComponent', () => {
       await submit(component.loginForm);
       await fixture.whenStable();
 
-      expect(component.loginError()).toBe(Constants.INVALID_LOGIN_PASSWORD);
+      expect(component.loginError()).toBe(AuthValidationMessages.INVALID_LOGIN_PASSWORD);
       expect(navigate).not.toHaveBeenCalled();
       expect(fixture.nativeElement.querySelector('.form-content__error').textContent).toBe(
-        Constants.INVALID_LOGIN_PASSWORD,
+        AuthValidationMessages.INVALID_LOGIN_PASSWORD,
       );
     });
 
@@ -224,7 +224,7 @@ describe('AuthFormComponent', () => {
       await submit(component.registerForm);
       await fixture.whenStable();
 
-      expect(component.registerError()).toBe(Constants.REGISTRATION_FAILED);
+      expect(component.registerError()).toBe(AuthValidationMessages.REGISTRATION_FAILED);
       expect(navigate).not.toHaveBeenCalled();
     });
 
