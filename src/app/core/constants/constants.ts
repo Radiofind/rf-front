@@ -75,10 +75,6 @@ export class Constants {
 
   public static readonly MODAL_TITLE_ID_SUFFIX: string = '-title';
 
-  public static readonly MODAL_CLOSE_ARIA_LABEL: string = 'Close modal';
-
-  public static readonly MODAL_CLOSE_ICON_CLASS: string = 'bx bx-x';
-
   public static readonly MODAL_TAB_INDEX: string = '-1';
 
   public static readonly MODAL_MAX_WIDTH: string = 'calc(100vw - 32px)';

@@ -12,20 +12,15 @@
       }
 
       <div class="modal__heading">
-        <h2 class="modal__title" [id]="titleId">{{ title }}</h2>
+        <h2 class="modal__title" [id]="titleId()">{{ title }}</h2>
         @if (subtitle) {
           <p class="modal__subtitle">{{ subtitle }}</p>
         }
       </div>
 
       @if (hasCloseButton) {
-        <button
-          class="modal__close"
-          type="button"
-          [attr.aria-label]="closeAriaLabel"
-          (click)="onClose()"
-        >
-          <i [class]="closeIconClass"></i>
+        <button class="modal__close" type="button" aria-label="Close modal" (click)="onClose()">
+          <i class="bx bx-x"></i>
         </button>
       }
     </header>
@@ -33,10 +28,10 @@
     <button
       class="modal__close modal__close--floating"
       type="button"
-      [attr.aria-label]="closeAriaLabel"
+      aria-label="Close modal"
       (click)="onClose()"
     >
-      <i [class]="closeIconClass"></i>
+      <i class="bx bx-x"></i>
     </button>
   }
 
