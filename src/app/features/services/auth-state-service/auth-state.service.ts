@@ -9,6 +9,7 @@ import type { IJwtPayload } from "../../../core/models/auth.model";
 
 export class AuthStateService {
   private readonly tokenKey = Constants.TOKEN_KEY;
+
   private platformId = inject(PLATFORM_ID);
 
   public setToken(token: string): void {
@@ -43,7 +44,7 @@ export class AuthStateService {
 
     try {
       const decoded = jwtDecode<IJwtPayload>(token);
-      return decoded.exp * 1000 > Date.now();
+      return decoded.exp * Constants.MILLISECONDS_IN_ONE_SECOND > Date.now();
     } catch {
       return false
     };
