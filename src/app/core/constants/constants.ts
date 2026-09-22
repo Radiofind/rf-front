@@ -93,8 +93,6 @@ export class Constants {
 
   public static readonly MODAL_SIZE_LARGE: string = '840px';
 
-  public static readonly MAIL_ICON_CLASS: string = 'bx bx-envelope-alt';
-
   public static readonly TIME_SEPARATOR: string = ':';
 
   public static readonly CELL_FIELD: string = 'cell';
@@ -127,69 +125,11 @@ export class Constants {
 
   public static readonly ERROR_TYPE_PROP: string = 'errorType';
 
+  public static readonly EMAIL_SENT_SUCCESSFULLY: string = 'Email sent successfully';
+
   public static readonly PASSWORD_RESET_SUCCESSFULLY: string = 'Password reset successfully';
 
-  public static readonly HEADER_LOGO_ALT: string = 'Logo';
-
-  public static readonly HEADER_BRAND_TITLE: string = 'RADIOFIND';
-
-  public static readonly HEADER_SEARCH_PLACEHOLDER: string = 'Search artists, songs, genres...';
-
-  public static readonly HEADER_SEARCH_ARIA_LABEL: string = 'Search artists, songs, genres';
-
-  public static readonly HEADER_CLEAR_SEARCH_ARIA_LABEL: string = 'Clear search';
-
-  public static readonly HEADER_MESSAGES_ARIA_LABEL: string = 'Messages';
-
-  public static readonly HEADER_NOTIFICATIONS_ARIA_LABEL: string = 'Notifications';
-
-  public static readonly HEADER_PROFILE_ARIA_LABEL: string = 'Profile';
-
-  public static readonly HEADER_AVATAR_ALT: string = 'User avatar';
-
-  public static readonly HEADER_UPGRADE_BUTTON_TEXT: string = 'Upgrade to Premium';
-
-  public static readonly HEADER_PREMIUM_BUTTON_CLASS: string = 'button--premium';
-
-  public static readonly SEARCH_ICON_CLASS: string = 'bx bx-search';
-
-  public static readonly CLEAR_ICON_CLASS: string = 'bx bx-x';
-
-  public static readonly STAR_ICON_CLASS: string = 'bxf bx-star';
-
-  public static readonly BELL_ICON_CLASS: string = 'bx bx-bell';
-
-  public static readonly USER_ICON_CLASS: string = 'bxf bx-user';
-
-  public static readonly INBOX_ICON_CLASS: string = 'bx bx-inbox';
-
-  public static readonly DIALOG_ROLE: string = 'dialog';
-
-  public static readonly MENU_ROLE: string = 'menu';
-
-  public static readonly MENU_ITEM_ROLE: string = 'menuitem';
-
-  public static readonly HEADER_MESSAGES_TITLE: string = 'Messages';
-
-  public static readonly HEADER_NOTIFICATIONS_TITLE: string = 'Notifications';
-
-  public static readonly HEADER_MESSAGES_EMPTY_TITLE: string = 'No messages yet';
-
-  public static readonly HEADER_MESSAGES_EMPTY_DESCRIPTION: string =
-    'Messages from listeners, labels and radio stations will show up here.';
-
-  public static readonly HEADER_NOTIFICATIONS_EMPTY_TITLE: string = 'You are all caught up';
-
-  public static readonly HEADER_NOTIFICATIONS_EMPTY_DESCRIPTION: string =
-    'Track reviews, radio picks and account updates will appear here.';
-
-  public static readonly HEADER_PROFILE_MENU_ARIA_LABEL: string = 'Account menu';
-
   public static readonly POPOVER_DEFAULT_WIDTH: string = '360px';
-
-  public static readonly POPOVER_MENU_WIDTH: string = '224px';
-
-  public static readonly POPOVER_MENU_PANEL_CLASS: string = 'popover--menu';
 
   public static readonly SIDEBAR_COLLAPSE_ARIA_LABEL: string = 'Collapse menu';
 
@@ -198,8 +138,6 @@ export class Constants {
   public static readonly CHEVRON_LEFT_ICON_CLASS: string = 'bx bx-chevron-left';
 
   public static readonly CHEVRON_RIGHT_ICON_CLASS: string = 'bx bx-chevron-right';
-
-  public static readonly EMAIL_SENT_SUCCESSFULLY: string = 'Email sent successfully';
 
   // magic numbers
 
