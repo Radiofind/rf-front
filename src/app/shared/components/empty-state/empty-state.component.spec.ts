@@ -33,7 +33,7 @@ describe('EmptyStateComponent', () => {
     const icon: HTMLElement = fixture.nativeElement.querySelector('.icon');
 
     expect(icon.querySelector('i')?.className).toBe(Constants.INBOX_ICON_CLASS);
-    expect(icon.style.height).toBe(Constants.EMPTY_STATE_ICON_SIZE);
+    expect(icon.style.height).toBe('64px');
     expect(fixture.nativeElement.querySelector('.empty__description').textContent).toBe(
       'Nothing here for now',
     );

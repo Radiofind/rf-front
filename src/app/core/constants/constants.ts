@@ -191,12 +191,6 @@ export class Constants {
 
   public static readonly POPOVER_MENU_PANEL_CLASS: string = 'popover--menu';
 
-  public static readonly EMPTY_STATE_ICON_SIZE: string = '64px';
-
-  public static readonly EMPTY_STATE_ICON_FONT_SIZE: string = '32px';
-
-  public static readonly EMPTY_STATE_ICON_BORDER_RADIUS: string = '50%';
-
   public static readonly SIDEBAR_COLLAPSE_ARIA_LABEL: string = 'Collapse menu';
 
   public static readonly SIDEBAR_EXPAND_ARIA_LABEL: string = 'Expand menu';
