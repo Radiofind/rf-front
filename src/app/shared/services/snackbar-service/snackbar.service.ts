@@ -22,7 +22,7 @@ export class SnackbarService {
 
   private readonly defaultType: SnackbarType = SnackbarTypeEnum.SUCCESS;
 
-  private lastId: number = Constants.ZERO;
+  private readonly lastId: WritableSignal<number> = signal<number>(Constants.ZERO);
 
   public readonly messages: Signal<readonly ISnackbarMessage[]> = this.messagesState.asReadonly();
 
@@ -33,9 +33,9 @@ export class SnackbarService {
   }
 
   public show(content: string, options: ISnackbarOptions = {}): number {
-    this.lastId += Constants.ONE;
+    this.lastId.update(id => id + Constants.ONE);
 
-    const id: number = this.lastId;
+    const id: number = this.lastId();
 
     const message: ISnackbarMessage = {
       id: id,

@@ -1,4 +1,4 @@
-import { inject, Service } from '@angular/core';
+import { inject, Service, signal, type WritableSignal } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
 import { map } from 'rxjs';
 import { ModalSizeEnum } from '../../../core/enums/modal-size.enum';
@@ -19,13 +19,13 @@ export class ModalService {
 
   private readonly defaultSize: ModalSize = ModalSizeEnum.MEDIUM;
 
-  private readonly hasHeaderByDefault: boolean = true;
+  private readonly hasHeaderByDefault: WritableSignal<boolean> = signal<boolean>(true);
 
-  private readonly hasCloseButtonByDefault: boolean = true;
+  private readonly hasCloseButtonByDefault: WritableSignal<boolean> = signal<boolean>(true);
 
-  private readonly isDisabledCloseByDefault: boolean = false;
+  private readonly isDisabledCloseByDefault: WritableSignal<boolean> = signal<boolean>(false);
 
-  private readonly defaultConfirmResult: boolean = false;
+  private readonly defaultConfirmResult: WritableSignal<boolean> = signal<boolean>(false);
 
   private readonly sizeWidths: Readonly<Record<ModalSize, string>> = {
     [ModalSizeEnum.SMALL]: Constants.MODAL_SIZE_SMALL,
@@ -52,9 +52,9 @@ export class ModalService {
       ariaModal: true,
       restoreFocus: true,
       autoFocus: Constants.MODAL_AUTO_FOCUS_TARGET,
-      hasHeader: options.hasHeader ?? this.hasHeaderByDefault,
-      hasCloseButton: options.hasCloseButton ?? this.hasCloseButtonByDefault,
-      disableClose: options.disableClose ?? this.isDisabledCloseByDefault,
+      hasHeader: options.hasHeader ?? this.hasHeaderByDefault(),
+      hasCloseButton: options.hasCloseButton ?? this.hasCloseButtonByDefault(),
+      disableClose: options.disableClose ?? this.isDisabledCloseByDefault(),
     };
 
     return this.dialog.open<R, D, C>(component, config);
@@ -74,7 +74,7 @@ export class ModalService {
       data: data,
     });
 
-    return modalRef.closed.pipe(map(result => result ?? this.defaultConfirmResult));
+    return modalRef.closed.pipe(map(result => result ?? this.defaultConfirmResult()));
   }
 
   public closeAll(): void {
