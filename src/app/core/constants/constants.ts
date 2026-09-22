@@ -229,6 +229,8 @@ export class Constants {
 
   public static readonly CHEVRON_RIGHT_ICON_CLASS: string = 'bx bx-chevron-right';
 
+  public static readonly EMAIL_SENT_SUCCESSFULLY: string = 'Email sent successfully';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
