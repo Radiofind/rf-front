@@ -93,8 +93,6 @@ export class Constants {
 
   public static readonly MODAL_SIZE_LARGE: string = '840px';
 
-  public static readonly SHIELD_ICON_CLASS: string = 'bx bx-shield';
-
   public static readonly LOCK_ICON_CLASS: string = 'bx bx-lock-keyhole';
 
   public static readonly SUBMIT_ICON_CLASS: string = 'bx bx-arrow-right-stroke';
@@ -122,10 +120,6 @@ export class Constants {
   public static readonly LOADER_TEXT: string = 'Loading...';
 
   public static readonly LOADER_BODY_CLASS: string = 'is-loading';
-
-  public static readonly RESEND_SPINNER_SIZE: string = '20px';
-
-  public static readonly RESEND_SPINNER_THICKNESS: string = '2px';
 
   public static readonly SNACKBAR_SUCCESS_ICON_CLASS: string = 'bx bx-badge-check';
 
