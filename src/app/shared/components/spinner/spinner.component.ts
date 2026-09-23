@@ -12,11 +12,12 @@ import type { InputSignal } from '@angular/core';
     '[style.--spinner-thickness]': 'thickness()',
   },
 })
-
 export class SpinnerComponent {
   public readonly size: InputSignal<string> = input<string>(Constants.SPINNER_DEFAULT_SIZE);
 
-  public readonly thickness: InputSignal<string> = input<string>(Constants.SPINNER_DEFAULT_THICKNESS);
+  public readonly thickness: InputSignal<string> = input<string>(
+    Constants.SPINNER_DEFAULT_THICKNESS,
+  );
 
   public readonly ariaLabel: InputSignal<string> = input<string>(Constants.SPINNER_ARIA_LABEL);
 }

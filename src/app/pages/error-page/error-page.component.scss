@@ -7,8 +7,7 @@
   padding: 15px 6%;
   background:
     radial-gradient(circle at 50% 35%, var(--first-gradient-bg), transparent 55%),
-    radial-gradient(circle at 50% 100%, var(--second-gradient-bg), transparent 60%),
-    var(--bg-color);
+    radial-gradient(circle at 50% 100%, var(--second-gradient-bg), transparent 60%), var(--bg-color);
 }
 
 .error {

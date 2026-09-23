@@ -14,8 +14,7 @@ describe('noLoginGuard', () => {
 
   const runGuard = (): boolean =>
     TestBed.runInInjectionContext(
-      () =>
-        noLoginGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot) as boolean,
+      () => noLoginGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot) as boolean,
     );
 
   beforeEach(() => {

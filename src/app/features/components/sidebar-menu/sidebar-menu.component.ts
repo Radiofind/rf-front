@@ -1,12 +1,4 @@
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  model,
-  output,
-  signal
-} from '@angular/core';
+import { Component, computed, inject, input, model, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Constants } from '../../../core/constants/constants';
@@ -19,7 +11,7 @@ import type {
   OnInit,
   OutputEmitterRef,
   Signal,
-  WritableSignal
+  WritableSignal,
 } from '@angular/core';
 import type { ISidebarMenuItem } from '../../models/sidebar-menu-item.model';
 import type { ICurrentUser } from '../../../core/models/user.model';
@@ -30,7 +22,6 @@ import type { ICurrentUser } from '../../../core/models/user.model';
   styleUrl: './sidebar-menu.component.scss',
   imports: [RouterLink, RouterLinkActive],
 })
-
 export class SidebarMenuComponent implements OnInit {
   private readonly userService: UserService = inject(UserService);
 
@@ -72,8 +63,11 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   private async getCurrentUserData(): Promise<void> {
-    const currentUserData: ICurrentUser = await firstValueFrom(this.userService.getCurrentUserData());
-    const currentUserName: string = currentUserData.name + Constants.EMPTY_SPACE_STRING + currentUserData.surname;
+    const currentUserData: ICurrentUser = await firstValueFrom(
+      this.userService.getCurrentUserData(),
+    );
+    const currentUserName: string =
+      currentUserData.name + Constants.EMPTY_SPACE_STRING + currentUserData.surname;
     this.userName.set(currentUserName);
     this.userEmail.set(currentUserData.email);
   }

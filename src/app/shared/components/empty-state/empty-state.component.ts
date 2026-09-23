@@ -9,7 +9,6 @@ import type { InputSignal } from '@angular/core';
   templateUrl: './empty-state.component.html',
   styleUrl: './empty-state.component.scss',
 })
-
 export class EmptyStateComponent {
   public readonly emptyIconClass: InputSignal<string | null> = input<string | null>(null);
 

@@ -13,12 +13,14 @@ const CLIENT_RENDERED_PATHS: readonly string[] = [
 ];
 
 export const serverRoutes: ServerRoute[] = [
-  ...CLIENT_RENDERED_PATHS.map((path: string): ServerRoute => ({
-    path,
-    renderMode: RenderMode.Client,
-  })),
+  ...CLIENT_RENDERED_PATHS.map(
+    (path: string): ServerRoute => ({
+      path,
+      renderMode: RenderMode.Client,
+    }),
+  ),
   {
     path: Links.WILDCARD_PATH,
-    renderMode: RenderMode.Prerender
-  }
+    renderMode: RenderMode.Prerender,
+  },
 ];

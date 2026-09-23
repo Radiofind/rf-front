@@ -61,14 +61,18 @@ describe('AuthFormComponent', () => {
       ...overrides,
     };
 
-    (Object.keys(model) as (keyof IRegisterForm)[]).forEach(key => {
+    (Object.keys(model) as (keyof IRegisterForm)[]).forEach((key) => {
       component.registerForm[key]().value.set(model[key] as never);
     });
   };
 
   beforeEach(() => {
-    login = vi.fn().mockReturnValue(of({ challengeId: 'challenge', requiresTwoFactor: true, token: null }));
-    register = vi.fn().mockReturnValue(of({ challengeId: null, requiresTwoFactor: false, token: 'jwt' }));
+    login = vi
+      .fn()
+      .mockReturnValue(of({ challengeId: 'challenge', requiresTwoFactor: true, token: null }));
+    register = vi
+      .fn()
+      .mockReturnValue(of({ challengeId: null, requiresTwoFactor: false, token: 'jwt' }));
     navigate = vi.fn().mockResolvedValue(true);
     open = vi.fn().mockReturnValue({ closed: of('123456') });
   });
@@ -79,7 +83,9 @@ describe('AuthFormComponent', () => {
     });
 
     it('renders the login form', () => {
-      expect(fixture.nativeElement.querySelector('.form-content__title').textContent).toBe('Log In');
+      expect(fixture.nativeElement.querySelector('.form-content__title').textContent).toBe(
+        'Log In',
+      );
       expect(fixture.nativeElement.querySelectorAll('app-input-field')).toHaveLength(2);
       expect(fixture.nativeElement.querySelector('app-date-field')).toBeNull();
     });
@@ -118,7 +124,9 @@ describe('AuthFormComponent', () => {
 
       expect(login).toHaveBeenCalledWith({ email: 'ada@example.com', password: 'Passw0rd!' });
       expect(open.mock.calls[0]?.[0]).toBe(TwoFactorModalComponent);
-      expect((open.mock.calls[0]?.[1] as IModalOptions<{ challengeId: string | null }>).data).toEqual({
+      expect(
+        (open.mock.calls[0]?.[1] as IModalOptions<{ challengeId: string | null }>).data,
+      ).toEqual({
         email: 'ada@example.com',
         challengeId: 'challenge',
       });

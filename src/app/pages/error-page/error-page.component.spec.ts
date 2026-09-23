@@ -28,7 +28,8 @@ describe('ErrorPageComponent', () => {
       ],
     }).compileComponents();
 
-    const fixture: ComponentFixture<ErrorPageComponent> = TestBed.createComponent(ErrorPageComponent);
+    const fixture: ComponentFixture<ErrorPageComponent> =
+      TestBed.createComponent(ErrorPageComponent);
     await fixture.whenStable();
 
     return fixture;
@@ -40,7 +41,7 @@ describe('ErrorPageComponent', () => {
 
   it.each([ErrorTypeEnum.NOT_FOUND, ErrorTypeEnum.FORBIDDEN, ErrorTypeEnum.SERVER_ERROR])(
     'renders the %s content',
-    async errorType => {
+    async (errorType) => {
       const fixture: ComponentFixture<ErrorPageComponent> = await createFixture({
         [Constants.ERROR_TYPE_PROP]: errorType,
       });
@@ -48,10 +49,18 @@ describe('ErrorPageComponent', () => {
 
       expect(fixture.componentInstance.errorType()).toBe(errorType);
       expect(fixture.nativeElement.querySelector('.error-code').textContent).toBe(expected.code);
-      expect(fixture.nativeElement.querySelector('.error-title').textContent).toContain(expected.title.trim());
-      expect(fixture.nativeElement.querySelector('.error-title span').textContent).toBe(expected.titleColor);
-      expect(fixture.nativeElement.querySelector('.error-description').textContent).toBe(expected.description);
-      expect(fixture.nativeElement.querySelector('.error-badge .icon i').className).toBe(expected.iconClass);
+      expect(fixture.nativeElement.querySelector('.error-title').textContent).toContain(
+        expected.title.trim(),
+      );
+      expect(fixture.nativeElement.querySelector('.error-title span').textContent).toBe(
+        expected.titleColor,
+      );
+      expect(fixture.nativeElement.querySelector('.error-description').textContent).toBe(
+        expected.description,
+      );
+      expect(fixture.nativeElement.querySelector('.error-badge .icon i').className).toBe(
+        expected.iconClass,
+      );
     },
   );
 
@@ -59,7 +68,9 @@ describe('ErrorPageComponent', () => {
     const fixture: ComponentFixture<ErrorPageComponent> = await createFixture({});
 
     expect(fixture.componentInstance.errorType()).toBe(ErrorTypeEnum.NOT_FOUND);
-    expect(fixture.componentInstance.content()).toEqual(ERROR_PAGE_CONTENT[ErrorTypeEnum.NOT_FOUND]);
+    expect(fixture.componentInstance.content()).toEqual(
+      ERROR_PAGE_CONTENT[ErrorTypeEnum.NOT_FOUND],
+    );
   });
 
   it('renders the home action with its label and icon', async () => {

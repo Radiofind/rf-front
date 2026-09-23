@@ -21,7 +21,6 @@ import type { ErrorType } from '../../core/types/error-type.type';
   templateUrl: './error-page.component.html',
   styleUrl: './error-page.component.scss',
 })
-
 export class ErrorPageComponent {
   private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 

@@ -10,7 +10,7 @@ import type { Route } from '@angular/router';
 
 describe('routes', () => {
   const routeFor = (path: string): Route => {
-    const route: Route | undefined = routes.find(candidate => candidate.path === path);
+    const route: Route | undefined = routes.find((candidate) => candidate.path === path);
 
     expect(route, `no route registered for "${path}"`).toBeDefined();
 
@@ -62,7 +62,7 @@ describe('routes', () => {
     Links.SERVER_ERROR_URL,
     Links.NOT_FOUND_URL,
     Links.WILDCARD_PATH,
-  ])('lazy loads the component for %s', async path => {
+  ])('lazy loads the component for %s', async (path) => {
     const route: Route = routeFor(path);
 
     expect(route.loadComponent).toBeTypeOf('function');

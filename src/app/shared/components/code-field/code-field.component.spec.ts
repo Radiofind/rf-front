@@ -111,7 +111,9 @@ describe('CodeFieldComponent', () => {
     fixture.componentRef.setInput('value', '12');
     await fixture.whenStable();
 
-    cellsOf(fixture)[1]!.dispatchEvent(new KeyboardEvent('keydown', { key: Constants.BACKSPACE_KEY }));
+    cellsOf(fixture)[1]!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: Constants.BACKSPACE_KEY }),
+    );
     await fixture.whenStable();
 
     expect(fixture.componentInstance.cells()).toEqual(['1', '', '', '', '', '']);
@@ -135,7 +137,9 @@ describe('CodeFieldComponent', () => {
     const fixture: ComponentFixture<CodeFieldComponent> = await createFixture();
     await fixture.whenStable();
 
-    cellsOf(fixture)[0]!.dispatchEvent(new KeyboardEvent('keydown', { key: Constants.BACKSPACE_KEY }));
+    cellsOf(fixture)[0]!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: Constants.BACKSPACE_KEY }),
+    );
     await fixture.whenStable();
 
     expect(fixture.componentInstance.value()).toBe('');

@@ -10,11 +10,12 @@ import type { SnackbarType } from '../../../core/types/snackbar-type.type';
   templateUrl: './snackbar.component.html',
   styleUrl: './snackbar.component.scss',
 })
-
 export class SnackbarComponent {
   public readonly snackbarContent: InputSignal<string | null> = input<string | null>(null);
 
-  public readonly snackbarType: InputSignal<SnackbarType> = input<SnackbarType>(SnackbarTypeEnum.SUCCESS);
+  public readonly snackbarType: InputSignal<SnackbarType> = input<SnackbarType>(
+    SnackbarTypeEnum.SUCCESS,
+  );
 
   public readonly snackbarIconClass: InputSignal<string | null> = input<string | null>(null);
 

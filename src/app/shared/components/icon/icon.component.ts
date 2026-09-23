@@ -7,7 +7,6 @@ import type { InputSignal } from '@angular/core';
   templateUrl: './icon.component.html',
   styleUrl: './icon.component.scss',
 })
-
 export class IconComponent {
   public readonly iconClass: InputSignal<string | null> = input<string | null>(null);
 

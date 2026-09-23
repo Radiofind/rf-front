@@ -24,8 +24,8 @@ app.use((req, res, next) => {
   angularApp
     .handle(req)
     .then((response) =>
-       // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-       response ? writeResponseToNodeResponse(response, res) : next()
+      // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+      response ? writeResponseToNodeResponse(response, res) : next(),
     )
     .catch(next);
 });

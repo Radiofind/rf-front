@@ -14,8 +14,7 @@ describe('authGuard', () => {
 
   const runGuard = (): boolean =>
     TestBed.runInInjectionContext(
-      () =>
-        authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot) as boolean,
+      () => authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot) as boolean,
     );
 
   beforeEach(() => {

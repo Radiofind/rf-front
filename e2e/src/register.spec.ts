@@ -195,7 +195,7 @@ test.describe('registration', () => {
     await expect(page).toHaveURL(/\/media-library$/);
 
     const token: string | null = await page.evaluate(
-      key => window.localStorage.getItem(key),
+      (key) => window.localStorage.getItem(key),
       TOKEN_KEY,
     );
 

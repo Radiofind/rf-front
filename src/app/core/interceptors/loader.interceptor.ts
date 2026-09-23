@@ -5,10 +5,17 @@ import { LoaderService } from '../../shared/services/loader-service/loader.servi
 import { SKIP_GLOBAL_LOADER } from '../tokens/loader.token';
 
 import type { Observable } from 'rxjs';
-import type { HttpEvent, HttpRequest, HttpHandlerFn, HttpInterceptorFn } from '@angular/common/http';
+import type {
+  HttpEvent,
+  HttpRequest,
+  HttpHandlerFn,
+  HttpInterceptorFn,
+} from '@angular/common/http';
 
-export const loaderInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
-
+export const loaderInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+) => {
   const platformId = inject(PLATFORM_ID);
 
   if (!isPlatformBrowser(platformId) || req.context.get(SKIP_GLOBAL_LOADER)) {
@@ -21,5 +28,9 @@ export const loaderInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, 
 
   const request$: Observable<HttpEvent<unknown>> = next(req);
 
-  return request$.pipe(finalize(() => { loaderService.hide(); }));
-}
+  return request$.pipe(
+    finalize(() => {
+      loaderService.hide();
+    }),
+  );
+};

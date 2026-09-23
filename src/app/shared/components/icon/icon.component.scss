@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));
+  border: 1px solid
+    linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));
   background: var(--bg-round-color);
   color: var(--icon-color);
   box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);

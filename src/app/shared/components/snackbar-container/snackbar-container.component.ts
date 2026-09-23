@@ -11,7 +11,6 @@ import type { ISnackbarMessage } from '../../models/snackbar.model';
   templateUrl: './snackbar-container.component.html',
   styleUrl: './snackbar-container.component.scss',
 })
-
 export class SnackbarContainerComponent {
   private readonly snackbarService: SnackbarService = inject(SnackbarService);
 

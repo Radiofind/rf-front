@@ -21,14 +21,20 @@ describe('authInterceptor', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: PLATFORM_ID, useValue: platform },
-        { provide: AuthStateService, useValue: { getToken: (): string | null | undefined => token } },
+        {
+          provide: AuthStateService,
+          useValue: { getToken: (): string | null | undefined => token },
+        },
       ],
     });
   };
 
   const intercept = (request: HttpRequest<unknown>): void => {
     TestBed.runInInjectionContext(() => {
-      authInterceptor(request, next as unknown as (req: HttpRequest<unknown>) => Observable<HttpEvent<unknown>>);
+      authInterceptor(
+        request,
+        next as unknown as (req: HttpRequest<unknown>) => Observable<HttpEvent<unknown>>,
+      );
     });
   };
 

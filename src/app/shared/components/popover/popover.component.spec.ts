@@ -36,8 +36,9 @@ class PopoverHostStubComponent {
 
   public readonly popoverActionText: WritableSignal<string | null> = signal<string | null>(null);
 
-  public readonly popoverPosition: WritableSignal<PopoverPosition> =
-    signal<PopoverPosition>(PopoverPositionEnum.BOTTOM_END);
+  public readonly popoverPosition: WritableSignal<PopoverPosition> = signal<PopoverPosition>(
+    PopoverPositionEnum.BOTTOM_END,
+  );
 
   public readonly disabled: WritableSignal<boolean> = signal<boolean>(false);
 
@@ -52,7 +53,9 @@ describe('PopoverComponent', () => {
   let activeFixture: ComponentFixture<PopoverHostStubComponent> | undefined;
 
   const createFixture = async (): Promise<ComponentFixture<PopoverHostStubComponent>> => {
-    await TestBed.configureTestingModule({ imports: [PopoverHostStubComponent] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [PopoverHostStubComponent],
+    }).compileComponents();
 
     const fixture: ComponentFixture<PopoverHostStubComponent> =
       TestBed.createComponent(PopoverHostStubComponent);
@@ -67,12 +70,14 @@ describe('PopoverComponent', () => {
     activeFixture?.destroy();
     activeFixture = undefined;
 
-    document.querySelectorAll('.cdk-overlay-container').forEach(container => {
+    document.querySelectorAll('.cdk-overlay-container').forEach((container) => {
       container.remove();
     });
   });
 
-  const clickTrigger = async (fixture: ComponentFixture<PopoverHostStubComponent>): Promise<void> => {
+  const clickTrigger = async (
+    fixture: ComponentFixture<PopoverHostStubComponent>,
+  ): Promise<void> => {
     fixture.nativeElement.querySelector('.trigger').click();
     await fixture.whenStable();
   };
@@ -83,7 +88,9 @@ describe('PopoverComponent', () => {
     const fixture: ComponentFixture<PopoverHostStubComponent> = await createFixture();
 
     expect(panel()).toBeNull();
-    expect(fixture.nativeElement.querySelector('.trigger').getAttribute('aria-expanded')).toBe('false');
+    expect(fixture.nativeElement.querySelector('.trigger').getAttribute('aria-expanded')).toBe(
+      'false',
+    );
   });
 
   it('projects the content template into the panel', async () => {
@@ -93,7 +100,9 @@ describe('PopoverComponent', () => {
 
     expect(panel()?.querySelector('.stub')?.textContent).toBe('content');
     expect(panel()?.querySelector('.popover__title')?.textContent).toBe('Messages');
-    expect(fixture.nativeElement.querySelector('.trigger').getAttribute('aria-expanded')).toBe('true');
+    expect(fixture.nativeElement.querySelector('.trigger').getAttribute('aria-expanded')).toBe(
+      'true',
+    );
     expect(fixture.componentInstance.openedCount).toBe(1);
   });
 

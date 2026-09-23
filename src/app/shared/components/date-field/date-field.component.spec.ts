@@ -98,7 +98,9 @@ describe('DateFieldComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.componentInstance.isInputInvalid()).toBe(true);
-    expect(fixture.nativeElement.querySelector('.error-message').textContent).toContain('Field is required');
+    expect(fixture.nativeElement.querySelector('.error-message').textContent).toContain(
+      'Field is required',
+    );
   });
 
   it('emits touch on blur', async () => {

@@ -1,9 +1,9 @@
-import { ModalSizeEnum } from "../../core/enums/modal-size.enum";
+import { ModalSizeEnum } from '../../core/enums/modal-size.enum';
 
-import type { ArtistType } from "../../core/types/artist-type.type";
-import type { IModalOptions } from "../../shared/models/modal.model";
-import type { ITwoFactorModalData } from "../models/two-factor.model";
-import type { IAuthContent } from "../models/auth-content.model";
+import type { ArtistType } from '../../core/types/artist-type.type';
+import type { IModalOptions } from '../../shared/models/modal.model';
+import type { ITwoFactorModalData } from '../models/two-factor.model';
+import type { IAuthContent } from '../models/auth-content.model';
 
 export const AUTH_DESCRIPTION_CONTENT_LOGIN: IAuthContent = {
   title: 'Welcome Back ',
@@ -72,4 +72,4 @@ export const FORGET_PASSWORD_MODAL_OPTIONS: IModalOptions = {
   size: ModalSizeEnum.MEDIUM,
   hasHeader: false,
   ariaLabel: 'Reset Password',
-}
+};

@@ -1,4 +1,1 @@
-export type ProfileMenuItemType =
-  | 'profile'
-  | 'settings'
-  | 'log-out';
+export type ProfileMenuItemType = 'profile' | 'settings' | 'log-out';

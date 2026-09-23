@@ -2,10 +2,13 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { HeaderComponent } from "../../shared/components/header/header.component";
-import { AuthDescriptionComponent } from "../../features/components/auth/auth-description/auth-description.component";
-import { AuthFormComponent } from "../../features/components/auth/auth-form/auth-form.component";
-import { AUTH_DESCRIPTION_CONTENT_LOGIN, AUTH_DESCRIPTION_CONTENT_REGISTER } from '../../features/constants/auth-content.constant';
+import { HeaderComponent } from '../../shared/components/header/header.component';
+import { AuthDescriptionComponent } from '../../features/components/auth/auth-description/auth-description.component';
+import { AuthFormComponent } from '../../features/components/auth/auth-form/auth-form.component';
+import {
+  AUTH_DESCRIPTION_CONTENT_LOGIN,
+  AUTH_DESCRIPTION_CONTENT_REGISTER,
+} from '../../features/constants/auth-content.constant';
 import { Constants } from '../../core/constants/constants';
 
 import type { Signal } from '@angular/core';
@@ -19,7 +22,6 @@ import type { AuthType } from '../../core/types/auth.type';
   templateUrl: './auth-page.component.html',
   styleUrl: './auth-page.component.scss',
 })
-
 export class AuthPageComponent {
   private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
@@ -29,10 +31,10 @@ export class AuthPageComponent {
 
   public readonly authType: Signal<AuthType> = toSignal(
     this.activatedRoute.data.pipe(
-      map((data: Data): AuthType => data[Constants.AUTH_TYPE_PROP] as AuthType)
+      map((data: Data): AuthType => data[Constants.AUTH_TYPE_PROP] as AuthType),
     ),
     {
       initialValue: Constants.LOGIN as AuthType,
-    }
-  )
+    },
+  );
 }

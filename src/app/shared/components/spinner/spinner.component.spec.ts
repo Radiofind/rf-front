@@ -19,7 +19,9 @@ describe('SpinnerComponent', () => {
     const spinner: HTMLElement = host.querySelector<HTMLElement>('.spinner')!;
 
     expect(host.style.getPropertyValue('--spinner-size')).toBe(Constants.SPINNER_DEFAULT_SIZE);
-    expect(host.style.getPropertyValue('--spinner-thickness')).toBe(Constants.SPINNER_DEFAULT_THICKNESS);
+    expect(host.style.getPropertyValue('--spinner-thickness')).toBe(
+      Constants.SPINNER_DEFAULT_THICKNESS,
+    );
     expect(spinner.getAttribute('aria-label')).toBe('Loading');
     expect(spinner.getAttribute('role')).toBe('status');
   });

@@ -1,4 +1,13 @@
-import { Component, computed, contentChild, ElementRef, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  contentChild,
+  ElementRef,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 import { Constants } from '../../../core/constants/constants';
@@ -6,7 +15,11 @@ import { PopoverPositionEnum } from '../../../core/enums/popover-position.enum';
 import { PopoverContentDirective } from '../../directives/popover-content.directive';
 
 import type { InputSignal, OutputEmitterRef, Signal, WritableSignal } from '@angular/core';
-import type { ConnectedPosition, HorizontalConnectionPos, VerticalConnectionPos } from '@angular/cdk/overlay';
+import type {
+  ConnectedPosition,
+  HorizontalConnectionPos,
+  VerticalConnectionPos,
+} from '@angular/cdk/overlay';
 import type { PopoverPosition } from '../../../core/types/popover-position.type';
 
 @Component({
@@ -16,20 +29,21 @@ import type { PopoverPosition } from '../../../core/types/popover-position.type'
   templateUrl: './popover.component.html',
   styleUrl: './popover.component.scss',
   host: {
-    'class': 'popover-origin',
+    class: 'popover-origin',
     '(click)': 'onToggle()',
   },
 })
-
 export class PopoverComponent {
-  public readonly hostElement: ElementRef<HTMLElement> = inject<ElementRef<HTMLElement>>(ElementRef);
+  public readonly hostElement: ElementRef<HTMLElement> =
+    inject<ElementRef<HTMLElement>>(ElementRef);
 
   public readonly popoverTitle: InputSignal<string | null> = input<string | null>(null);
 
   public readonly popoverActionText: InputSignal<string | null> = input<string | null>(null);
 
-  public readonly popoverPosition: InputSignal<PopoverPosition> =
-    input<PopoverPosition>(PopoverPositionEnum.BOTTOM_END);
+  public readonly popoverPosition: InputSignal<PopoverPosition> = input<PopoverPosition>(
+    PopoverPositionEnum.BOTTOM_END,
+  );
 
   public readonly panelWidth: InputSignal<string> = input<string>(Constants.POPOVER_DEFAULT_WIDTH);
 
@@ -77,7 +91,7 @@ export class PopoverComponent {
     if (this.isOpen()) {
       this.close();
       return;
-    };
+    }
 
     this.open();
   }
@@ -85,7 +99,7 @@ export class PopoverComponent {
   public open(): void {
     if (this.disabled() || this.isOpen()) {
       return;
-    };
+    }
 
     this.isOpenState.set(true);
     this.opened.emit();
@@ -94,7 +108,7 @@ export class PopoverComponent {
   public close(): void {
     if (!this.isOpen()) {
       return;
-    };
+    }
 
     this.isOpenState.set(false);
     this.closed.emit();
@@ -104,7 +118,10 @@ export class PopoverComponent {
     this.actionClick.emit();
   }
 
-  private buildPositions(alignment: HorizontalConnectionPos, isAbove: boolean): ConnectedPosition[] {
+  private buildPositions(
+    alignment: HorizontalConnectionPos,
+    isAbove: boolean,
+  ): ConnectedPosition[] {
     const below: ConnectedPosition = {
       originX: alignment,
       originY: this.bottomSide,

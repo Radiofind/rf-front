@@ -10,7 +10,9 @@ import type { ComponentFixture } from '@angular/core/testing';
 
 describe('AuthDescriptionComponent', () => {
   const createFixture = async (): Promise<ComponentFixture<AuthDescriptionComponent>> => {
-    await TestBed.configureTestingModule({ imports: [AuthDescriptionComponent] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [AuthDescriptionComponent],
+    }).compileComponents();
     return TestBed.createComponent(AuthDescriptionComponent);
   };
 
@@ -21,7 +23,9 @@ describe('AuthDescriptionComponent', () => {
     const title: HTMLElement = fixture.nativeElement.querySelector('.description-title');
 
     expect(title.textContent).toContain(AUTH_DESCRIPTION_CONTENT_LOGIN.title.trim());
-    expect(title.querySelector('span')?.textContent).toBe(AUTH_DESCRIPTION_CONTENT_LOGIN.titleColor);
+    expect(title.querySelector('span')?.textContent).toBe(
+      AUTH_DESCRIPTION_CONTENT_LOGIN.titleColor,
+    );
     expect(fixture.nativeElement.querySelector('.description-instructions').textContent).toBe(
       AUTH_DESCRIPTION_CONTENT_LOGIN.instructions,
     );
@@ -70,6 +74,8 @@ describe('AuthDescriptionComponent', () => {
     fixture.componentRef.setInput('content', AUTH_DESCRIPTION_CONTENT_REGISTER);
     await fixture.whenStable();
 
-    expect(fixture.nativeElement.querySelector('.description-title').textContent).not.toContain('👋');
+    expect(fixture.nativeElement.querySelector('.description-title').textContent).not.toContain(
+      '👋',
+    );
   });
 });

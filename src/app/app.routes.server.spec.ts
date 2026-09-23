@@ -7,7 +7,9 @@ import type { ServerRoute } from '@angular/ssr';
 
 describe('serverRoutes', () => {
   const routeFor = (path: string): ServerRoute => {
-    const route: ServerRoute | undefined = serverRoutes.find(candidate => candidate.path === path);
+    const route: ServerRoute | undefined = serverRoutes.find(
+      (candidate) => candidate.path === path,
+    );
 
     expect(route, `no server route registered for "${path}"`).toBeDefined();
 
@@ -21,7 +23,7 @@ describe('serverRoutes', () => {
     Links.MY_UPLOADS_URL,
     Links.STATISTICS_URL,
     Links.SUPPORT_URL,
-  ])('renders %s on the client only', path => {
+  ])('renders %s on the client only', (path) => {
     expect(routeFor(path).renderMode).toBe(RenderMode.Client);
   });
 

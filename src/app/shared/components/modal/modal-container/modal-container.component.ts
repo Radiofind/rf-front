@@ -15,8 +15,8 @@ import type { IModalDialogConfig } from '../../../models/modal.model';
   templateUrl: './modal-container.component.html',
   styleUrl: './modal-container.component.scss',
   host: {
-    'class': Constants.MODAL_CONTAINER_CLASS,
-    'tabindex': Constants.MODAL_TAB_INDEX,
+    class: Constants.MODAL_CONTAINER_CLASS,
+    tabindex: Constants.MODAL_TAB_INDEX,
     '[attr.id]': '_config.id || null',
     '[attr.role]': '_config.role',
     '[attr.aria-modal]': '_config.ariaModal',
@@ -25,7 +25,6 @@ import type { IModalDialogConfig } from '../../../models/modal.model';
     '[attr.aria-describedby]': '_config.ariaDescribedBy || null',
   },
 })
-
 export class ModalContainerComponent extends CdkDialogContainer<IModalDialogConfig> {
   private readonly dialogRef: DialogRef = inject(DialogRef);
 
@@ -44,7 +43,7 @@ export class ModalContainerComponent extends CdkDialogContainer<IModalDialogConf
 
     if (this.hasHeader && this.title) {
       this._addAriaLabelledBy(this.titleId());
-    };
+    }
   }
 
   public get title(): string | null {

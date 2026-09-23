@@ -92,7 +92,7 @@ describe('SnackbarService', () => {
 
     service.dismiss(first);
 
-    expect(service.messages().map(message => message.content)).toEqual(['second']);
+    expect(service.messages().map((message) => message.content)).toEqual(['second']);
   });
 
   it('ignores dismissing an unknown id', () => {
@@ -112,7 +112,7 @@ describe('SnackbarService', () => {
 
     service.show('newest');
 
-    expect(service.messages().map(message => message.content)).toEqual([
+    expect(service.messages().map((message) => message.content)).toEqual([
       'message 2',
       'message 3',
       'newest',

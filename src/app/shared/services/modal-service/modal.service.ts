@@ -10,10 +10,13 @@ import type { ComponentType } from '@angular/cdk/overlay';
 import type { DialogRef } from '@angular/cdk/dialog';
 import type { Observable } from 'rxjs';
 import type { ModalSize } from '../../../core/types/modal-size.type';
-import type { IConfirmModalData, IModalDialogConfig, IModalOptions } from '../../models/modal.model';
+import type {
+  IConfirmModalData,
+  IModalDialogConfig,
+  IModalOptions,
+} from '../../models/modal.model';
 
 @Service()
-
 export class ModalService {
   private readonly dialog: Dialog = inject(Dialog);
 
@@ -74,7 +77,7 @@ export class ModalService {
       data: data,
     });
 
-    return modalRef.closed.pipe(map(result => result ?? this.defaultConfirmResult()));
+    return modalRef.closed.pipe(map((result) => result ?? this.defaultConfirmResult()));
   }
 
   public closeAll(): void {

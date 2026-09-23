@@ -70,9 +70,14 @@ describe('loaderInterceptor', () => {
   });
 
   it('stays out of the way when the request opts out', () => {
-    const request = new HttpRequest<unknown>('POST', '/api/auth/resend-2fa', {}, {
-      context: skipGlobalLoader(),
-    });
+    const request = new HttpRequest<unknown>(
+      'POST',
+      '/api/auth/resend-2fa',
+      {},
+      {
+        context: skipGlobalLoader(),
+      },
+    );
 
     intercept(request, () => new Subject<HttpEvent<unknown>>()).subscribe();
 
@@ -82,7 +87,10 @@ describe('loaderInterceptor', () => {
   it('does nothing on the server', () => {
     configure('server');
 
-    intercept(new HttpRequest('GET', '/api/tracks'), () => new Subject<HttpEvent<unknown>>()).subscribe();
+    intercept(
+      new HttpRequest('GET', '/api/tracks'),
+      () => new Subject<HttpEvent<unknown>>(),
+    ).subscribe();
 
     expect(show).not.toHaveBeenCalled();
   });

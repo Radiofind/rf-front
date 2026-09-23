@@ -3,7 +3,6 @@ import { Component, input, model, output } from '@angular/core';
 import type { OutputEmitterRef, InputSignal, ModelSignal } from '@angular/core';
 import type { FormValueControl } from '@angular/forms/signals';
 
-
 @Component({
   selector: 'app-radio-field',
   templateUrl: './radio-field.component.html',

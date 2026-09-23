@@ -1,9 +1,9 @@
-import { inject, Service } from "@angular/core";
-import { Router } from "@angular/router";
-import { AuthStateService } from "../auth-state-service/auth-state.service";
-import { ApiService } from "../../../core/services/api.service";
+import { inject, Service } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthStateService } from '../auth-state-service/auth-state.service';
+import { ApiService } from '../../../core/services/api.service';
 
-import type { Observable } from "rxjs";
+import type { Observable } from 'rxjs';
 import type {
   IAuthResponse,
   IForgotPasswordData,
@@ -12,13 +12,12 @@ import type {
   IResetPasswordData,
   IResetTokenValidData,
   IResetTokenValidResponse,
-  ITwoFactorData
-} from "../../../core/models/auth.model";
-import type { IRegisterData } from "../../models/auth-content.model";
-import { Links } from "../../../core/constants/links";
+  ITwoFactorData,
+} from '../../../core/models/auth.model';
+import type { IRegisterData } from '../../models/auth-content.model';
+import { Links } from '../../../core/constants/links';
 
 @Service()
-
 export class AuthService {
   private readonly router: Router = inject(Router);
 

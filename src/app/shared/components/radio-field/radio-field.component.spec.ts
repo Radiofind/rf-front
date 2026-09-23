@@ -27,7 +27,7 @@ describe('RadioFieldComponent', () => {
     const inputs: HTMLInputElement[] = Array.from(fixture.nativeElement.querySelectorAll('input'));
 
     expect(inputs).toHaveLength(2);
-    expect(inputs.map(input => input.value)).toEqual(['Artist', 'Band']);
+    expect(inputs.map((input) => input.value)).toEqual(['Artist', 'Band']);
   });
 
   it('checks only the selected option', async () => {
@@ -36,7 +36,7 @@ describe('RadioFieldComponent', () => {
 
     const inputs: HTMLInputElement[] = Array.from(fixture.nativeElement.querySelectorAll('input'));
 
-    expect(inputs.map(input => input.checked)).toEqual([true, false]);
+    expect(inputs.map((input) => input.checked)).toEqual([true, false]);
   });
 
   it('renders the field label', async () => {
@@ -45,7 +45,9 @@ describe('RadioFieldComponent', () => {
     fixture.componentRef.setInput('fieldLabel', 'Who are you?');
     await fixture.whenStable();
 
-    expect(fixture.nativeElement.querySelector('.radio-field__label').textContent).toContain('Who are you?');
+    expect(fixture.nativeElement.querySelector('.radio-field__label').textContent).toContain(
+      'Who are you?',
+    );
   });
 
   it('updates the model and emits touch on change', async () => {
@@ -64,7 +66,7 @@ describe('RadioFieldComponent', () => {
     expect(touchCount).toBe(1);
 
     const inputs: HTMLInputElement[] = Array.from(fixture.nativeElement.querySelectorAll('input'));
-    expect(inputs.map(input => input.checked)).toEqual([false, true]);
+    expect(inputs.map((input) => input.checked)).toEqual([false, true]);
   });
 
   it('disables every radio when disabled', async () => {
@@ -75,6 +77,6 @@ describe('RadioFieldComponent', () => {
 
     const inputs: HTMLInputElement[] = Array.from(fixture.nativeElement.querySelectorAll('input'));
 
-    expect(inputs.every(input => input.disabled)).toBe(true);
+    expect(inputs.every((input) => input.disabled)).toBe(true);
   });
 });

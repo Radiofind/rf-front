@@ -58,7 +58,7 @@ describe('AuthService', () => {
   it('delegates register to the api service', () => {
     let received: IAuthResponse | undefined;
 
-    service.register(registerData).subscribe(value => {
+    service.register(registerData).subscribe((value) => {
       received = value;
     });
 
@@ -97,7 +97,7 @@ describe('AuthService', () => {
   it('delegates reset token validation to the api service', () => {
     let valid: boolean | undefined;
 
-    service.resetTokenValidation({ token: 'reset-token' }).subscribe(value => {
+    service.resetTokenValidation({ token: 'reset-token' }).subscribe((value) => {
       valid = value.valid;
     });
 

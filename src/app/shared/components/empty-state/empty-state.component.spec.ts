@@ -16,7 +16,9 @@ describe('EmptyStateComponent', () => {
     fixture.componentRef.setInput('emptyTitle', 'No messages yet');
     await fixture.whenStable();
 
-    expect(fixture.nativeElement.querySelector('.empty__title').textContent).toBe('No messages yet');
+    expect(fixture.nativeElement.querySelector('.empty__title').textContent).toBe(
+      'No messages yet',
+    );
     expect(fixture.nativeElement.querySelector('app-icon')).toBeNull();
     expect(fixture.nativeElement.querySelector('.empty__description')).toBeNull();
   });

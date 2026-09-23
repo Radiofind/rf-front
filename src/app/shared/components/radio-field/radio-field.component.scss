@@ -30,7 +30,7 @@
       }
 
       input:checked + span::after {
-        content: "";
+        content: '';
         width: 10px;
         height: 10px;
         background: var(--main-color);

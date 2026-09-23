@@ -19,8 +19,7 @@ describe('ModalService', () => {
   let closeAll: ReturnType<typeof vi.fn>;
   let closed: Observable<boolean | undefined>;
 
-  const openedConfig = (): IModalDialogConfig =>
-    open.mock.calls[0]?.[1] as IModalDialogConfig;
+  const openedConfig = (): IModalDialogConfig => open.mock.calls[0]?.[1] as IModalDialogConfig;
 
   beforeEach(() => {
     closed = of(undefined);
@@ -106,7 +105,7 @@ describe('ModalService', () => {
     closed = of(true);
     let result: boolean | undefined;
 
-    service.confirm(confirmData).subscribe(value => {
+    service.confirm(confirmData).subscribe((value) => {
       result = value;
     });
 
@@ -117,7 +116,7 @@ describe('ModalService', () => {
     closed = of(undefined);
     let result: boolean | undefined;
 
-    service.confirm(confirmData).subscribe(value => {
+    service.confirm(confirmData).subscribe((value) => {
       result = value;
     });
 

@@ -13,7 +13,7 @@ import type { Routes } from '@angular/router';
 import type { ICurrentUser } from '../../../core/models/user.model';
 
 describe('SidebarMenuComponent', () => {
-  const routes: Routes = SIDEBAR_MENU_ITEMS.map(item => ({ path: item.link, children: [] }));
+  const routes: Routes = SIDEBAR_MENU_ITEMS.map((item) => ({ path: item.link, children: [] }));
 
   const currentUser: ICurrentUser = {
     name: 'Ada',
@@ -59,23 +59,23 @@ describe('SidebarMenuComponent', () => {
   it('renders every menu item', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
 
-    expect(items(fixture).map(item => item.textContent.trim())).toEqual(
-      SIDEBAR_MENU_ITEMS.map(item => item.label),
+    expect(items(fixture).map((item) => item.textContent.trim())).toEqual(
+      SIDEBAR_MENU_ITEMS.map((item) => item.label),
     );
   });
 
   it('points every item at its route', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
 
-    expect(items(fixture).map(item => item.getAttribute('href'))).toEqual(
-      SIDEBAR_MENU_ITEMS.map(item => `/${item.link}`),
+    expect(items(fixture).map((item) => item.getAttribute('href'))).toEqual(
+      SIDEBAR_MENU_ITEMS.map((item) => `/${item.link}`),
     );
   });
 
   it('marks nothing as active before navigating', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
 
-    expect(items(fixture).some(item => item.classList.contains('sidebar__item--active'))).toBe(
+    expect(items(fixture).some((item) => item.classList.contains('sidebar__item--active'))).toBe(
       false,
     );
   });
@@ -155,7 +155,7 @@ describe('SidebarMenuComponent', () => {
     let resolveUser: (user: ICurrentUser) => void = () => undefined;
 
     getCurrentUserData = vi.fn().mockReturnValue(
-      new Observable<ICurrentUser>(subscriber => {
+      new Observable<ICurrentUser>((subscriber) => {
         resolveUser = (user: ICurrentUser): void => {
           subscriber.next(user);
           subscriber.complete();

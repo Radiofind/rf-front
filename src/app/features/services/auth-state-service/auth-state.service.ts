@@ -1,12 +1,11 @@
-import { inject, PLATFORM_ID, Service } from "@angular/core";
-import { Constants } from "../../../core/constants/constants";
-import { isPlatformBrowser } from "@angular/common";
+import { inject, PLATFORM_ID, Service } from '@angular/core';
+import { Constants } from '../../../core/constants/constants';
+import { isPlatformBrowser } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 
-import type { IJwtPayload } from "../../../core/models/auth.model";
+import type { IJwtPayload } from '../../../core/models/auth.model';
 
 @Service()
-
 export class AuthStateService {
   private readonly tokenKey = Constants.TOKEN_KEY;
 
@@ -46,7 +45,7 @@ export class AuthStateService {
       const decoded = jwtDecode<IJwtPayload>(token);
       return decoded.exp * Constants.MILLISECONDS_IN_ONE_SECOND > Date.now();
     } catch {
-      return false
-    };
+      return false;
+    }
   }
 }

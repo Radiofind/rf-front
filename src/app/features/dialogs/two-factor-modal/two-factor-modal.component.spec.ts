@@ -38,8 +38,12 @@ describe('TwoFactorModalComponent', () => {
     vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
 
     close = vi.fn();
-    twoFactorAuth = vi.fn().mockReturnValue(of({ challengeId: null, requiresTwoFactor: false, token: 'jwt' }));
-    resendTwoFactorAuth = vi.fn().mockReturnValue(of({ challengeId: 'challenge', requiresTwoFactor: true, token: null }));
+    twoFactorAuth = vi
+      .fn()
+      .mockReturnValue(of({ challengeId: null, requiresTwoFactor: false, token: 'jwt' }));
+    resendTwoFactorAuth = vi
+      .fn()
+      .mockReturnValue(of({ challengeId: 'challenge', requiresTwoFactor: true, token: null }));
 
     await createFixture();
   });
@@ -49,7 +53,9 @@ describe('TwoFactorModalComponent', () => {
   });
 
   it('renders the masked destination and the code field', () => {
-    expect(fixture.nativeElement.querySelector('.two-factor__email').textContent).toBe('ada@example.com');
+    expect(fixture.nativeElement.querySelector('.two-factor__email').textContent).toBe(
+      'ada@example.com',
+    );
     expect(fixture.nativeElement.querySelectorAll('.code-field__cell')).toHaveLength(
       Constants.CODE_FIELD_DEFAULT_LENGTH,
     );
@@ -145,7 +151,10 @@ describe('TwoFactorModalComponent', () => {
     await component.onResend();
 
     expect(component.codeErrors()).toEqual([
-      { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.RESEND_TWO_FACTOR_CODE_FAILED },
+      {
+        kind: Constants.SERVER_ERROR,
+        message: AuthValidationMessages.RESEND_TWO_FACTOR_CODE_FAILED,
+      },
     ]);
     expect(component.canResend()).toBe(true);
     expect(component.isResending()).toBe(false);
