@@ -25,13 +25,6 @@ npm run e2e:headed   # watch it happen in a browser
 npm run e2e:report   # open the HTML report of the last run
 ```
 
-## CI
-
-The `E2E tests` job in `.github/workflows/pr.yml` checks out and builds `rf-back`, then
-starts it against a throwaway PostgreSQL and a Mailpit SMTP server (no real mail is sent).
-Checking out the private backend repo needs the `BACKEND_REPO_TOKEN` secret: a
-fine-grained token with read access to `Contents` of `AlexanderHanziuk/rf-back`.
-
 ## Layout
 
 ```
