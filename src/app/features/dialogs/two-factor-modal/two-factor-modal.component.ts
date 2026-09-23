@@ -21,7 +21,6 @@ import type { ITwoFactorData } from '../../../core/models/auth.model';
   templateUrl: './two-factor-modal.component.html',
   styleUrl: './two-factor-modal.component.scss',
 })
-
 export class TwoFactorModalComponent {
   private readonly dialogRef: DialogRef<string, TwoFactorModalComponent> =
     inject<DialogRef<string, TwoFactorModalComponent>>(DialogRef);
@@ -43,11 +42,17 @@ export class TwoFactorModalComponent {
   public readonly codeErrors: WritableSignal<readonly ValidationError.WithOptionalFieldTree[]> =
     signal<readonly ValidationError.WithOptionalFieldTree[]>([]);
 
-  public readonly hasCodeError: Signal<boolean> = computed(() => this.codeErrors().length > Constants.ZERO);
+  public readonly hasCodeError: Signal<boolean> = computed(
+    () => this.codeErrors().length > Constants.ZERO,
+  );
 
-  public readonly isCodeComplete: Signal<boolean> = computed(() => this.code().length === Constants.CODE_FIELD_DEFAULT_LENGTH);
+  public readonly isCodeComplete: Signal<boolean> = computed(
+    () => this.code().length === Constants.CODE_FIELD_DEFAULT_LENGTH,
+  );
 
-  public readonly canResend: Signal<boolean> = computed(() => this.resendSeconds() === Constants.ZERO);
+  public readonly canResend: Signal<boolean> = computed(
+    () => this.resendSeconds() === Constants.ZERO,
+  );
 
   public readonly resendTimer: Signal<string> = computed(() => {
     const seconds: number = this.resendSeconds();
@@ -55,7 +60,7 @@ export class TwoFactorModalComponent {
     const secondsPart: number = seconds % Constants.SECONDS_IN_MINUTE;
 
     return [minutesPart, secondsPart]
-      .map(part => String(part).padStart(Constants.TIME_PAD_LENGTH, Constants.ZERO_STRING))
+      .map((part) => String(part).padStart(Constants.TIME_PAD_LENGTH, Constants.ZERO_STRING))
       .join(Constants.TIME_SEPARATOR);
   });
 
@@ -80,31 +85,38 @@ export class TwoFactorModalComponent {
       await firstValueFrom(this.authService.twoFactorAuth(twoFactorData));
       this.dialogRef.close(this.code());
     } catch {
-      this.codeErrors.set([{ kind: Constants.SERVER_ERROR, message: AuthValidationMessages.INVALID_TWO_FACTOR_CODE }]);
+      this.codeErrors.set([
+        { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.INVALID_TWO_FACTOR_CODE },
+      ]);
     }
   }
 
   public async onResend(): Promise<void> {
     if (this.isResending()) {
       return;
-    };
+    }
 
     this.isResending.set(true);
     this.code.set(Constants.EMPTY_STRING);
     this.codeErrors.set([]);
 
     try {
-      await firstValueFrom(this.authService.resendTwoFactorAuth({
-        challengeId: this.data.challengeId,
-      }));
+      await firstValueFrom(
+        this.authService.resendTwoFactorAuth({
+          challengeId: this.data.challengeId,
+        }),
+      );
       this.startCountdown();
     } catch {
       this.codeErrors.set([
-        { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.RESEND_TWO_FACTOR_CODE_FAILED },
+        {
+          kind: Constants.SERVER_ERROR,
+          message: AuthValidationMessages.RESEND_TWO_FACTOR_CODE_FAILED,
+        },
       ]);
     } finally {
       this.isResending.set(false);
-    };
+    }
   }
 
   private startCountdown(): void {
@@ -113,11 +125,11 @@ export class TwoFactorModalComponent {
 
     this.countdownSubscription = interval(Constants.TIMER_INTERVAL_MS)
       .pipe(
-        map(tick => Constants.RESEND_TIMEOUT_SECONDS - tick - Constants.ONE),
-        takeWhile(seconds => seconds >= Constants.ZERO),
+        map((tick) => Constants.RESEND_TIMEOUT_SECONDS - tick - Constants.ONE),
+        takeWhile((seconds) => seconds >= Constants.ZERO),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(seconds => {
+      .subscribe((seconds) => {
         this.resendSeconds.set(seconds);
       });
   }

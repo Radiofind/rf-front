@@ -43,37 +43,44 @@ export class ResetPasswordPageComponent implements OnInit {
 
   public isTokenValid: WritableSignal<boolean> = signal<boolean>(false);
 
-  private readonly resetPasswordModel: WritableSignal<IResetPasswordForm> = signal<IResetPasswordForm>({
-    password: Constants.EMPTY_STRING,
-    confirmPassword: Constants.EMPTY_STRING,
-  });
+  private readonly resetPasswordModel: WritableSignal<IResetPasswordForm> =
+    signal<IResetPasswordForm>({
+      password: Constants.EMPTY_STRING,
+      confirmPassword: Constants.EMPTY_STRING,
+    });
 
-  public readonly resetPasswordForm: FieldTree<IResetPasswordForm> = form<IResetPasswordForm>(this.resetPasswordModel, resetPasswordSchema, {
-    submission: { action: () => this.onResetPassword() }
-  });
+  public readonly resetPasswordForm: FieldTree<IResetPasswordForm> = form<IResetPasswordForm>(
+    this.resetPasswordModel,
+    resetPasswordSchema,
+    {
+      submission: { action: () => this.onResetPassword() },
+    },
+  );
 
   public ngOnInit(): void {
-    this.activatedRoute.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
-      params => {
+    this.activatedRoute.queryParamMap
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((params) => {
         this.currentResetToken.set(params.get(Constants.TOKEN));
         void this.validateResetToken();
-      }
-    )
+      });
   }
 
   public togglePasswordVisibility(index: number): void {
     if (index === Constants.ZERO) {
-      this.showPassword.update(visibility => !visibility);
+      this.showPassword.update((visibility) => !visibility);
     } else {
-      this.showConfirmPassword.update(visibility => !visibility);
-    };
+      this.showConfirmPassword.update((visibility) => !visibility);
+    }
   }
 
   private async onResetPassword(): Promise<void> {
-    await firstValueFrom(this.authService.resetPassword({
-      token: this.currentResetToken(),
-      newPassword: this.resetPasswordForm.password().value(),
-    }));
+    await firstValueFrom(
+      this.authService.resetPassword({
+        token: this.currentResetToken(),
+        newPassword: this.resetPasswordForm.password().value(),
+      }),
+    );
     this.snackbarService.success(Constants.PASSWORD_RESET_SUCCESSFULLY);
     await this.router.navigate([Links.LOGIN_URL]);
   }
@@ -86,9 +93,11 @@ export class ResetPasswordPageComponent implements OnInit {
     }
 
     try {
-      const validationResult: IResetTokenValidResponse = await firstValueFrom(this.authService.resetTokenValidation({
-        token,
-      }));
+      const validationResult: IResetTokenValidResponse = await firstValueFrom(
+        this.authService.resetTokenValidation({
+          token,
+        }),
+      );
       this.isTokenValid.set(validationResult.valid);
     } catch {
       this.isTokenValid.set(false);

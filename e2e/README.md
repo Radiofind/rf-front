@@ -6,11 +6,11 @@ actual API and database.
 
 ## Prerequisites
 
-| Service        | Where                   | Notes                                                              |
-| -------------- | ----------------------- | ------------------------------------------------------------------ |
+| Service        | Where                   | Notes                                                                  |
+| -------------- | ----------------------- | ---------------------------------------------------------------------- |
 | Angular app    | `http://localhost:4200` | Started automatically (`npm start`); an already running one is reused. |
-| Spring backend | `http://localhost:8080` | Must be started manually — it is not part of this repository.         |
-| PostgreSQL     | `localhost:5432`        | The backend's database.                                             |
+| Spring backend | `http://localhost:8080` | Must be started manually — it is not part of this repository.          |
+| PostgreSQL     | `localhost:5432`        | The backend's database.                                                |
 
 The port 4200 is fixed: the backend's CORS configuration allows that origin only.
 

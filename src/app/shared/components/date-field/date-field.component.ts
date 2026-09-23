@@ -5,7 +5,11 @@ import { AuthValidationMessages } from '../../../features/constants/auth-error-m
 import { transformDateToString, transformStringToDate } from '../../helpers/date.helpers';
 
 import type { OutputEmitterRef, InputSignal, ModelSignal, Signal } from '@angular/core';
-import type { FormValueControl, TransformedValueSignal, ValidationError } from '@angular/forms/signals';
+import type {
+  FormValueControl,
+  TransformedValueSignal,
+  ValidationError,
+} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-date-field',
@@ -15,8 +19,9 @@ import type { FormValueControl, TransformedValueSignal, ValidationError } from '
 export class DateFieldComponent implements FormValueControl<Date | null> {
   public readonly value: ModelSignal<Date | null> = model<Date | null>(null);
 
-  public readonly errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]> =
-    input<readonly ValidationError.WithOptionalFieldTree[]>([]);
+  public readonly errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]> = input<
+    readonly ValidationError.WithOptionalFieldTree[]
+  >([]);
 
   public readonly touched: InputSignal<boolean> = input<boolean>(false);
 
@@ -42,7 +47,7 @@ export class DateFieldComponent implements FormValueControl<Date | null> {
     parse: (raw: string) => {
       if (!raw) {
         return { value: null };
-      };
+      }
 
       const parsed: Date = transformStringToDate(raw);
 
@@ -63,11 +68,12 @@ export class DateFieldComponent implements FormValueControl<Date | null> {
     return max ? transformDateToString(max) : null;
   });
 
-  public readonly visibleErrors: Signal<readonly ValidationError.WithOptionalFieldTree[]> = computed(() =>
-    this.touched() || this.dirty() ? this.errors() : []
-  );
+  public readonly visibleErrors: Signal<readonly ValidationError.WithOptionalFieldTree[]> =
+    computed(() => (this.touched() || this.dirty() ? this.errors() : []));
 
-  public readonly isInputInvalid: Signal<boolean> = computed(() => this.visibleErrors().length > Constants.ZERO);
+  public readonly isInputInvalid: Signal<boolean> = computed(
+    () => this.visibleErrors().length > Constants.ZERO,
+  );
 
   public onInput(event: Event): void {
     this.rawValue.set((event.target as HTMLInputElement).value);

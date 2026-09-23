@@ -8,17 +8,19 @@ import type { SnackbarType } from '../../../core/types/snackbar-type.type';
 import type { ISnackbarMessage, ISnackbarOptions } from '../../models/snackbar.model';
 
 @Service()
-
 export class SnackbarService {
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   private readonly isBrowser: boolean = isPlatformBrowser(inject(PLATFORM_ID));
 
-  private readonly messagesState: WritableSignal<readonly ISnackbarMessage[]> =
-    signal<readonly ISnackbarMessage[]>([]);
+  private readonly messagesState: WritableSignal<readonly ISnackbarMessage[]> = signal<
+    readonly ISnackbarMessage[]
+  >([]);
 
-  private readonly timers: Map<number, ReturnType<typeof setTimeout>> =
-    new Map<number, ReturnType<typeof setTimeout>>();
+  private readonly timers: Map<number, ReturnType<typeof setTimeout>> = new Map<
+    number,
+    ReturnType<typeof setTimeout>
+  >();
 
   private readonly defaultType: SnackbarType = SnackbarTypeEnum.SUCCESS;
 
@@ -33,7 +35,7 @@ export class SnackbarService {
   }
 
   public show(content: string, options: ISnackbarOptions = {}): number {
-    this.lastId.update(id => id + Constants.ONE);
+    this.lastId.update((id) => id + Constants.ONE);
 
     const id: number = this.lastId();
 
@@ -46,7 +48,7 @@ export class SnackbarService {
 
     this.dropOverflow();
 
-    this.messagesState.update(messages => [...messages, message]);
+    this.messagesState.update((messages) => [...messages, message]);
     this.scheduleDismiss(id, options.duration ?? Constants.SNACKBAR_DURATION_MS);
 
     return id;
@@ -71,11 +73,11 @@ export class SnackbarService {
   public dismiss(id: number): void {
     this.clearTimer(id);
 
-    this.messagesState.update(messages => messages.filter(message => message.id !== id));
+    this.messagesState.update((messages) => messages.filter((message) => message.id !== id));
   }
 
   public clear(): void {
-    this.timers.forEach(timerId => {
+    this.timers.forEach((timerId) => {
       clearTimeout(timerId);
     });
 
@@ -86,7 +88,7 @@ export class SnackbarService {
   private scheduleDismiss(id: number, duration: number): void {
     if (!this.isBrowser || duration <= Constants.ZERO) {
       return;
-    };
+    }
 
     const timerId: ReturnType<typeof setTimeout> = setTimeout(() => {
       this.dismiss(id);
@@ -101,9 +103,9 @@ export class SnackbarService {
 
     if (overflow <= Constants.ZERO) {
       return;
-    };
+    }
 
-    messages.slice(Constants.ZERO, overflow).forEach(message => {
+    messages.slice(Constants.ZERO, overflow).forEach((message) => {
       this.dismiss(message.id);
     });
   }
@@ -113,7 +115,7 @@ export class SnackbarService {
 
     if (timerId === undefined) {
       return;
-    };
+    }
 
     clearTimeout(timerId);
     this.timers.delete(id);

@@ -49,7 +49,6 @@ import type { IAuthResponse } from '../../../../core/models/auth.model';
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',
 })
-
 export class AuthFormComponent {
   private readonly authService: AuthService = inject(AuthService);
 
@@ -72,9 +71,13 @@ export class AuthFormComponent {
     password: Constants.EMPTY_STRING,
   });
 
-  public readonly loginForm: FieldTree<ILoginForm> = form<ILoginForm>(this.loginModel, loginFormSchema, {
-    submission: { action: () => this.login() },
-  });
+  public readonly loginForm: FieldTree<ILoginForm> = form<ILoginForm>(
+    this.loginModel,
+    loginFormSchema,
+    {
+      submission: { action: () => this.login() },
+    },
+  );
 
   private readonly registerModel: WritableSignal<IRegisterForm> = signal<IRegisterForm>({
     name: Constants.EMPTY_STRING,
@@ -90,54 +93,73 @@ export class AuthFormComponent {
     description: Constants.EMPTY_STRING,
   });
 
-  public readonly registerForm: FieldTree<IRegisterForm> = form<IRegisterForm>(this.registerModel, registerFormSchema, {
-    submission: { action: () => this.register() },
-  });
+  public readonly registerForm: FieldTree<IRegisterForm> = form<IRegisterForm>(
+    this.registerModel,
+    registerFormSchema,
+    {
+      submission: { action: () => this.register() },
+    },
+  );
 
-  public readonly loginError: Signal<string | undefined> = computed(() => this.serverErrorOf(this.loginForm));
+  public readonly loginError: Signal<string | undefined> = computed(() =>
+    this.serverErrorOf(this.loginForm),
+  );
 
-  public readonly registerError: Signal<string | undefined> = computed(() => this.serverErrorOf(this.registerForm));
+  public readonly registerError: Signal<string | undefined> = computed(() =>
+    this.serverErrorOf(this.registerForm),
+  );
 
   public onForgetPassword(): DialogRef<string> {
-    return this.modalService.open<string>(
-      ForgetPasswordModalComponent,
-      { ...FORGET_PASSWORD_MODAL_OPTIONS},
-    )
+    return this.modalService.open<string>(ForgetPasswordModalComponent, {
+      ...FORGET_PASSWORD_MODAL_OPTIONS,
+    });
   }
 
   public togglePasswordVisibility(index: number): void {
     if (index === Constants.ZERO) {
-      this.showPassword.update(visibility => !visibility);
+      this.showPassword.update((visibility) => !visibility);
     } else {
-      this.showConfirmPassword.update(visibility => !visibility);
-    };
+      this.showConfirmPassword.update((visibility) => !visibility);
+    }
   }
 
   public onSwitchAuthType(): void {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-    void this.router.navigate(this.authType() === AUTH_TYPE.LOGIN ? [Links.REGISTER_URL] : [Links.LOGIN_URL]);
+    void this.router.navigate(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      this.authType() === AUTH_TYPE.LOGIN ? [Links.REGISTER_URL] : [Links.LOGIN_URL],
+    );
   }
 
   private openTwoFactorModal(): DialogRef<string, TwoFactorModalComponent> {
     return this.modalService.open<string, ITwoFactorModalData, TwoFactorModalComponent>(
       TwoFactorModalComponent,
-      { ...TWO_FACTOR_MODAL_OPTIONS, data: { email: this.loginModel().email, challengeId: this.challengeId() } },
+      {
+        ...TWO_FACTOR_MODAL_OPTIONS,
+        data: { email: this.loginModel().email, challengeId: this.challengeId() },
+      },
     );
   }
 
   private serverErrorOf(fieldTree: FieldTree<ILoginForm | IRegisterForm>): string | undefined {
-    return fieldTree().errors().find(error => error.kind === Constants.SERVER_ERROR)?.message;
+    return fieldTree()
+      .errors()
+      .find((error) => error.kind === Constants.SERVER_ERROR)?.message;
   }
 
   private async login(): Promise<ValidationError | undefined> {
     try {
-      const loginData: IAuthResponse = await firstValueFrom(this.authService.login(this.loginModel()));
+      const loginData: IAuthResponse = await firstValueFrom(
+        this.authService.login(this.loginModel()),
+      );
       this.challengeId.set(loginData.challengeId);
       await firstValueFrom(this.openTwoFactorModal().closed);
       await this.router.navigate([Links.DEFAULT_PATH]);
       return undefined;
     } catch {
-      return { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.INVALID_LOGIN_PASSWORD };
+      return {
+        kind: Constants.SERVER_ERROR,
+        message: AuthValidationMessages.INVALID_LOGIN_PASSWORD,
+      };
     }
   }
 
@@ -147,7 +169,7 @@ export class AuthFormComponent {
 
     if (!dateOfBirth) {
       return { kind: Constants.REQUIRED_PROPERTY, message: AuthValidationMessages.REQUIRED };
-    };
+    }
 
     try {
       await firstValueFrom(this.authService.register(this.toRegisterData(model, dateOfBirth)));

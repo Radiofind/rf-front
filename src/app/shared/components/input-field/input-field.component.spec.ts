@@ -51,7 +51,9 @@ describe('InputFieldComponent', () => {
 
     expect(label.textContent).toContain('Recovery Email');
     expect(label.textContent).toContain('(optional)');
-    expect(fixture.nativeElement.querySelector('i.default').className).toContain('bx bx-envelope-alt');
+    expect(fixture.nativeElement.querySelector('i.default').className).toContain(
+      'bx bx-envelope-alt',
+    );
   });
 
   it('writes typed input into the value model', async () => {
@@ -103,7 +105,7 @@ describe('InputFieldComponent', () => {
     expect(fixture.nativeElement.querySelector('.error-message').textContent.trim()).toBe('');
   });
 
-  it.each(['touched', 'dirty'])('shows errors once the field is %s', async flag => {
+  it.each(['touched', 'dirty'])('shows errors once the field is %s', async (flag) => {
     const fixture: ComponentFixture<InputFieldComponent> = await createFixture();
 
     fixture.componentRef.setInput('errors', errors);
@@ -111,7 +113,9 @@ describe('InputFieldComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.componentInstance.isInputInvalid()).toBe(true);
-    expect(fixture.nativeElement.querySelector('.error-message').textContent).toContain('Field is required');
+    expect(fixture.nativeElement.querySelector('.error-message').textContent).toContain(
+      'Field is required',
+    );
     expect(fixture.nativeElement.querySelector('.field-input').classList).toContain('invalid');
   });
 

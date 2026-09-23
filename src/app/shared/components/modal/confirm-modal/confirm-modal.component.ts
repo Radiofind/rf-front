@@ -11,7 +11,6 @@ import type { IConfirmModalData } from '../../../models/modal.model';
   templateUrl: './confirm-modal.component.html',
   styleUrl: './confirm-modal.component.scss',
 })
-
 export class ConfirmModalComponent {
   private readonly dialogRef: DialogRef<boolean, ConfirmModalComponent> =
     inject<DialogRef<boolean, ConfirmModalComponent>>(DialogRef);

@@ -37,7 +37,9 @@ describe('ConfirmModalComponent', () => {
     });
     await fixture.whenStable();
 
-    expect(fixture.nativeElement.querySelector('.confirm__message').textContent).toBe('Delete this track?');
+    expect(fixture.nativeElement.querySelector('.confirm__message').textContent).toBe(
+      'Delete this track?',
+    );
     expect(fixture.componentInstance.confirmText).toBe(Constants.MODAL_DEFAULT_CONFIRM_TEXT);
     expect(fixture.componentInstance.cancelText).toBe(Constants.MODAL_DEFAULT_CANCEL_TEXT);
   });

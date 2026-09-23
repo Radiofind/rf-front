@@ -1,9 +1,9 @@
-import type { IAuthEndpoints } from "../models/auth.model";
-import type { IUserEndpoints } from "../models/user.model";
+import type { IAuthEndpoints } from '../models/auth.model';
+import type { IUserEndpoints } from '../models/user.model';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class EndpointConstants {
-    public static readonly AUTH_ENDPOINTS: IAuthEndpoints = {
+  public static readonly AUTH_ENDPOINTS: IAuthEndpoints = {
     auth: '/auth',
     register: '/register',
     login: '/login',
@@ -17,5 +17,5 @@ export class EndpointConstants {
   public static readonly USER_ENDPOINTS: IUserEndpoints = {
     users: '/users',
     me: '/me',
-  }
+  };
 }

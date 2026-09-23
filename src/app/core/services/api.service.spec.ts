@@ -52,7 +52,7 @@ describe('ApiService', () => {
     const response: IAuthResponse = { challengeId: null, requiresTwoFactor: false, token: 'jwt' };
     let received: IAuthResponse | undefined;
 
-    service.register(registerData).subscribe(value => {
+    service.register(registerData).subscribe((value) => {
       received = value;
     });
 
@@ -80,10 +80,14 @@ describe('ApiService', () => {
   });
 
   it('posts login data without storing a token', () => {
-    const response: IAuthResponse = { challengeId: 'challenge', requiresTwoFactor: true, token: null };
+    const response: IAuthResponse = {
+      challengeId: 'challenge',
+      requiresTwoFactor: true,
+      token: null,
+    };
     let received: IAuthResponse | undefined;
 
-    service.login({ email: 'ada@example.com', password: 'Passw0rd!' }).subscribe(value => {
+    service.login({ email: 'ada@example.com', password: 'Passw0rd!' }).subscribe((value) => {
       received = value;
     });
 
@@ -94,7 +98,11 @@ describe('ApiService', () => {
   });
 
   it('stores the token returned by the two-factor verification', () => {
-    const response: ITwoFactorResponse = { token: 'jwt', requiresTwoFactor: false, challengeId: null };
+    const response: ITwoFactorResponse = {
+      token: 'jwt',
+      requiresTwoFactor: false,
+      challengeId: null,
+    };
 
     service.twoFactorAuth({ challengeId: 'challenge', code: '123456' }).subscribe();
 
@@ -130,7 +138,7 @@ describe('ApiService', () => {
   it('posts the reset token validation and returns its result', () => {
     let received: boolean | undefined;
 
-    service.resetTokenValidation({ token: 'reset-token' }).subscribe(value => {
+    service.resetTokenValidation({ token: 'reset-token' }).subscribe((value) => {
       received = value.valid;
     });
 
@@ -162,7 +170,7 @@ describe('ApiService', () => {
 
     let received: ICurrentUser | undefined;
 
-    service.getCurrentUserData().subscribe(value => {
+    service.getCurrentUserData().subscribe((value) => {
       received = value;
     });
 

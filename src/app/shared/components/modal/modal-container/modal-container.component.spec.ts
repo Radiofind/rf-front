@@ -59,7 +59,9 @@ describe('ModalContainerComponent', () => {
     });
 
     expect(container.querySelector('.modal__title')?.textContent).toBe('Reset Password');
-    expect(container.querySelector('.modal__subtitle')?.textContent).toBe('We will email you a link');
+    expect(container.querySelector('.modal__subtitle')?.textContent).toBe(
+      'We will email you a link',
+    );
     expect(container.querySelector('.modal__header .icon i')?.className).toBe('bx bx-shield');
   });
 

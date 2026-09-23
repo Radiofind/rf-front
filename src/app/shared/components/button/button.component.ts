@@ -10,7 +10,6 @@ import type { ButtonType } from '../../../core/types/button-type.type';
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss',
 })
-
 export class ButtonComponent {
   public readonly buttonType: InputSignal<ButtonType> = input<ButtonType>(ButtonTypeEnum.BUTTON);
 

@@ -5,6 +5,6 @@ import { config } from './app/app.config.server';
 import type { BootstrapContext } from '@angular/platform-browser';
 
 const bootstrap = (context: BootstrapContext) =>
-    bootstrapApplication(AppComponent, config, context);
+  bootstrapApplication(AppComponent, config, context);
 
 export default bootstrap;

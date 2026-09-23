@@ -20,7 +20,6 @@ import type { ProfileMenuItemType } from '../../../core/types/profile-menu-item.
   styleUrl: './header.component.scss',
   imports: [ButtonComponent, PopoverComponent, PopoverContentDirective, EmptyStateComponent],
 })
-
 export class HeaderComponent {
   private readonly authService: AuthService = inject(AuthService);
 

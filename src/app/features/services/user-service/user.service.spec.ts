@@ -45,7 +45,7 @@ describe('UserService', () => {
   it('emits the current user returned by the api service', () => {
     let received: ICurrentUser | undefined;
 
-    service.getCurrentUserData().subscribe(value => {
+    service.getCurrentUserData().subscribe((value) => {
       received = value;
     });
 
@@ -55,7 +55,7 @@ describe('UserService', () => {
   it('passes the response through untouched', () => {
     let received: ICurrentUser | undefined;
 
-    service.getCurrentUserData().subscribe(value => {
+    service.getCurrentUserData().subscribe((value) => {
       received = value;
     });
 
@@ -67,7 +67,7 @@ describe('UserService', () => {
     let completed: boolean = false;
 
     service.getCurrentUserData().subscribe({
-      next: value => emissions.push(value),
+      next: (value) => emissions.push(value),
       complete: () => {
         completed = true;
       },
@@ -112,7 +112,7 @@ describe('UserService', () => {
     let received: ICurrentUser | undefined;
 
     service.getCurrentUserData().subscribe({
-      next: value => {
+      next: (value) => {
         received = value;
       },
       error: (error: { status: number }) => {

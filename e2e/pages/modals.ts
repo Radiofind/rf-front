@@ -29,7 +29,9 @@ export class TwoFactorModal {
     await this.cells.first().evaluate((cell, text) => {
       const data: DataTransfer = new DataTransfer();
       data.setData('text', text);
-      cell.dispatchEvent(new ClipboardEvent('paste', { clipboardData: data, bubbles: true, cancelable: true }));
+      cell.dispatchEvent(
+        new ClipboardEvent('paste', { clipboardData: data, bubbles: true, cancelable: true }),
+      );
     }, code);
   }
 }

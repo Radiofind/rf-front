@@ -11,7 +11,9 @@ import type { IForgetPasswordForm } from '../models/forget-password.model';
 
 describe('forgetPasswordSchema', () => {
   const buildForm = (email: string): FieldTree<IForgetPasswordForm> => {
-    const model: WritableSignal<IForgetPasswordForm> = signal<IForgetPasswordForm>({ email: email });
+    const model: WritableSignal<IForgetPasswordForm> = signal<IForgetPasswordForm>({
+      email: email,
+    });
 
     return TestBed.runInInjectionContext(() =>
       form<IForgetPasswordForm>(model, forgetPasswordSchema),
@@ -19,7 +21,10 @@ describe('forgetPasswordSchema', () => {
   };
 
   const messagesOf = (tree: FieldTree<IForgetPasswordForm>): (string | undefined)[] =>
-    tree.email().errors().map(error => error.message);
+    tree
+      .email()
+      .errors()
+      .map((error) => error.message);
 
   it('requires an email', () => {
     const tree: FieldTree<IForgetPasswordForm> = buildForm('');

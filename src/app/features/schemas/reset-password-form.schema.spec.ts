@@ -17,11 +17,18 @@ describe('resetPasswordSchema', () => {
       confirmPassword: confirmPassword,
     });
 
-    return TestBed.runInInjectionContext(() => form<IResetPasswordForm>(model, resetPasswordSchema));
+    return TestBed.runInInjectionContext(() =>
+      form<IResetPasswordForm>(model, resetPasswordSchema),
+    );
   };
 
-  const kindsOf = (tree: FieldTree<IResetPasswordForm>, field: 'password' | 'confirmPassword'): string[] =>
-    tree[field]().errors().map(error => error.kind);
+  const kindsOf = (
+    tree: FieldTree<IResetPasswordForm>,
+    field: 'password' | 'confirmPassword',
+  ): string[] =>
+    tree[field]()
+      .errors()
+      .map((error) => error.kind);
 
   it('requires both fields', () => {
     const tree: FieldTree<IResetPasswordForm> = buildForm('', '');
@@ -35,7 +42,10 @@ describe('resetPasswordSchema', () => {
     const tree: FieldTree<IResetPasswordForm> = buildForm('Pa1!', 'Pa1!');
 
     expect(
-      tree.password().errors().map(error => error.message),
+      tree
+        .password()
+        .errors()
+        .map((error) => error.message),
     ).toContain(AuthValidationMessages.MIN_LENGTH);
   });
 

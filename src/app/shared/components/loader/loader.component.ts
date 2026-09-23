@@ -5,7 +5,7 @@ import {
   DOCUMENT,
   effect,
   inject,
-  PLATFORM_ID
+  PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Constants } from '../../../core/constants/constants';
@@ -20,7 +20,6 @@ import type { Signal } from '@angular/core';
   templateUrl: './loader.component.html',
   styleUrl: './loader.component.scss',
 })
-
 export class LoaderComponent {
   private readonly loaderService: LoaderService = inject(LoaderService);
 
@@ -37,7 +36,7 @@ export class LoaderComponent {
   constructor() {
     if (!this.isBrowser) {
       return;
-    };
+    }
 
     this.blockInteractionEvents();
 
@@ -48,14 +47,14 @@ export class LoaderComponent {
 
       if (isLoading) {
         this.releaseFocus();
-      };
+      }
     });
   }
 
   private readonly interceptEvent = (event: Event): void => {
     if (!this.isLoading()) {
       return;
-    };
+    }
 
     event.preventDefault();
     event.stopPropagation();
@@ -64,12 +63,12 @@ export class LoaderComponent {
   private blockInteractionEvents(): void {
     const options: AddEventListenerOptions = { capture: true, passive: false };
 
-    Constants.LOADER_BLOCKED_EVENTS.forEach(eventName => {
+    Constants.LOADER_BLOCKED_EVENTS.forEach((eventName) => {
       this.document.addEventListener(eventName, this.interceptEvent, options);
     });
 
     this.destroyRef.onDestroy(() => {
-      Constants.LOADER_BLOCKED_EVENTS.forEach(eventName => {
+      Constants.LOADER_BLOCKED_EVENTS.forEach((eventName) => {
         this.document.removeEventListener(eventName, this.interceptEvent, options);
       });
     });
@@ -80,6 +79,6 @@ export class LoaderComponent {
 
     if (activeElement instanceof HTMLElement) {
       activeElement.blur();
-    };
+    }
   }
 }

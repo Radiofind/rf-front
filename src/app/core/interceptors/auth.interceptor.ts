@@ -1,12 +1,14 @@
-import { inject, PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
-import { AuthStateService } from "../../features/services/auth-state-service/auth-state.service";
-import { Constants } from "../constants/constants";
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AuthStateService } from '../../features/services/auth-state-service/auth-state.service';
+import { Constants } from '../constants/constants';
 
-import type { HttpRequest, HttpHandlerFn, HttpInterceptorFn } from "@angular/common/http";
+import type { HttpRequest, HttpHandlerFn, HttpInterceptorFn } from '@angular/common/http';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
-
+export const authInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+) => {
   const platformId = inject(PLATFORM_ID);
 
   if (!isPlatformBrowser(platformId)) {
@@ -26,9 +28,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
 
   const authReq: HttpRequest<unknown> = req.clone({
     setHeaders: {
-      Authorization: `${Constants.BEARER} ${token}`
-    }
+      Authorization: `${Constants.BEARER} ${token}`,
+    },
   });
 
   return next(authReq);
-}
+};

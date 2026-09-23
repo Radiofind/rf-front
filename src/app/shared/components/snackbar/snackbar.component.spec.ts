@@ -17,7 +17,9 @@ describe('SnackbarComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.componentInstance.iconClass()).toBe(Constants.SNACKBAR_SUCCESS_ICON_CLASS);
-    expect(fixture.nativeElement.querySelector('.snackbar').classList).toContain('snackbar--success');
+    expect(fixture.nativeElement.querySelector('.snackbar').classList).toContain(
+      'snackbar--success',
+    );
   });
 
   it.each([

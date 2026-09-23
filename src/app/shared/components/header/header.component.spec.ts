@@ -31,7 +31,7 @@ describe('HeaderComponent', () => {
     activeFixture?.destroy();
     activeFixture = undefined;
 
-    document.querySelectorAll('.cdk-overlay-container').forEach(container => {
+    document.querySelectorAll('.cdk-overlay-container').forEach((container) => {
       container.remove();
     });
   });
@@ -87,9 +87,8 @@ describe('HeaderComponent', () => {
   it('opens the messages popover with its empty state', async () => {
     const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
 
-    const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-      `[aria-label="Messages"]`,
-    );
+    const trigger: HTMLButtonElement =
+      fixture.nativeElement.querySelector(`[aria-label="Messages"]`);
 
     trigger.click();
     await fixture.whenStable();
@@ -102,12 +101,12 @@ describe('HeaderComponent', () => {
   it('opens the notifications popover with its empty state', async () => {
     const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
 
-    fixture.nativeElement
-      .querySelector(`[aria-label="Notifications"]`)
-      .click();
+    fixture.nativeElement.querySelector(`[aria-label="Notifications"]`).click();
     await fixture.whenStable();
 
     expect(popoverPanel()?.querySelector('.popover__title')?.textContent).toBe('Notifications');
-    expect(popoverPanel()?.querySelector('.empty__title')?.textContent).toBe('You are all caught up');
+    expect(popoverPanel()?.querySelector('.empty__title')?.textContent).toBe(
+      'You are all caught up',
+    );
   });
 });

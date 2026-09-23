@@ -50,7 +50,9 @@ test.describe('routing and guards', () => {
     await authenticatedPage.goto('/auth/register');
 
     await expect(authenticatedPage).toHaveURL(/\/auth\/register$/);
-    await expect(authenticatedPage.locator('h2.form-content__title')).toHaveText('Create Your Account');
+    await expect(authenticatedPage.locator('h2.form-content__title')).toHaveText(
+      'Create Your Account',
+    );
   });
 
   test.describe('error pages', () => {

@@ -5,7 +5,6 @@ import type { Observable } from 'rxjs';
 import type { ICurrentUser } from '../../../core/models/user.model';
 
 @Service()
-
 export class UserService {
   private readonly apiService: ApiService = inject(ApiService);
 

@@ -20,16 +20,29 @@ describe('loginFormSchema', () => {
     const tree: FieldTree<ILoginForm> = buildForm({ email: '', password: '' });
 
     expect(tree().invalid()).toBe(true);
-    expect(tree.email().errors().map(error => error.kind)).toContain(Constants.REQUIRED_PROPERTY);
-    expect(tree.password().errors().map(error => error.kind)).toContain(Constants.REQUIRED_PROPERTY);
+    expect(
+      tree
+        .email()
+        .errors()
+        .map((error) => error.kind),
+    ).toContain(Constants.REQUIRED_PROPERTY);
+    expect(
+      tree
+        .password()
+        .errors()
+        .map((error) => error.kind),
+    ).toContain(Constants.REQUIRED_PROPERTY);
   });
 
   it('rejects a malformed email', () => {
     const tree: FieldTree<ILoginForm> = buildForm({ email: 'nope', password: 'Passw0rd!' });
 
-    expect(tree.email().errors().map(error => error.message)).toContain(
-      AuthValidationMessages.EMAIL,
-    );
+    expect(
+      tree
+        .email()
+        .errors()
+        .map((error) => error.message),
+    ).toContain(AuthValidationMessages.EMAIL);
   });
 
   it('accepts valid credentials and does not apply password rules here', () => {
@@ -63,10 +76,17 @@ describe('registerFormSchema', () => {
     );
 
   const kindsOf = (tree: FieldTree<IRegisterForm>, field: keyof IRegisterForm): string[] =>
-    (tree[field] as FieldTree<unknown>)().errors().map(error => error.kind);
+    (tree[field] as FieldTree<unknown>)()
+      .errors()
+      .map((error) => error.kind);
 
-  const messagesOf = (tree: FieldTree<IRegisterForm>, field: keyof IRegisterForm): (string | undefined)[] =>
-    (tree[field] as FieldTree<unknown>)().errors().map(error => error.message);
+  const messagesOf = (
+    tree: FieldTree<IRegisterForm>,
+    field: keyof IRegisterForm,
+  ): (string | undefined)[] =>
+    (tree[field] as FieldTree<unknown>)()
+      .errors()
+      .map((error) => error.message);
 
   it('accepts a complete, valid model', () => {
     expect(buildForm()().valid()).toBe(true);
@@ -74,7 +94,7 @@ describe('registerFormSchema', () => {
 
   it.each(['name', 'surname', 'email', 'password', 'confirmPassword'] as const)(
     'requires %s',
-    field => {
+    (field) => {
       const tree: FieldTree<IRegisterForm> = buildForm({ [field]: '' });
 
       expect(kindsOf(tree, field)).toContain(Constants.REQUIRED_PROPERTY);
@@ -87,7 +107,7 @@ describe('registerFormSchema', () => {
     expect(kindsOf(tree, 'dateOfBirth')).toContain(Constants.REQUIRED_PROPERTY);
   });
 
-  it.each(['name', 'surname'] as const)('allows only english letters in %s', field => {
+  it.each(['name', 'surname'] as const)('allows only english letters in %s', (field) => {
     const tree: FieldTree<IRegisterForm> = buildForm({ [field]: 'Ада' });
 
     expect(messagesOf(tree, field)).toContain(AuthValidationMessages.PATTERN);

@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { DialogRef } from '@angular/cdk/dialog';
-import { form, FormRoot, FormField } from "@angular/forms/signals";
+import { form, FormRoot, FormField } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { Constants } from '../../../core/constants/constants';
@@ -21,29 +21,32 @@ import type { IForgetPasswordForm } from '../../models/forget-password.model';
 })
 export class ForgetPasswordModalComponent {
   private readonly dialogRef: DialogRef<string, ForgetPasswordModalComponent> =
-  inject<DialogRef<string, ForgetPasswordModalComponent>>(DialogRef);
+    inject<DialogRef<string, ForgetPasswordModalComponent>>(DialogRef);
 
   private readonly authService: AuthService = inject(AuthService);
 
   private readonly snackbarService: SnackbarService = inject(SnackbarService);
 
-  private readonly forgetPasswordModel: WritableSignal<IForgetPasswordForm> = signal<IForgetPasswordForm>({
-    email: Constants.EMPTY_STRING,
-  })
+  private readonly forgetPasswordModel: WritableSignal<IForgetPasswordForm> =
+    signal<IForgetPasswordForm>({
+      email: Constants.EMPTY_STRING,
+    });
 
   public readonly forgetPasswordForm: FieldTree<IForgetPasswordForm> = form<IForgetPasswordForm>(
     this.forgetPasswordModel,
     forgetPasswordSchema,
     {
-      submission: { action: () => this.sendResetLink() }
-    }
+      submission: { action: () => this.sendResetLink() },
+    },
   );
 
   public async sendResetLink(): Promise<void> {
     this.dialogRef.close();
-    await firstValueFrom(this.authService.forgetPassword({
-      email: this.forgetPasswordForm.email().value(),
-    }));
+    await firstValueFrom(
+      this.authService.forgetPassword({
+        email: this.forgetPasswordForm.email().value(),
+      }),
+    );
     this.snackbarService.success(Constants.EMAIL_SENT_SUCCESSFULLY);
   }
 }

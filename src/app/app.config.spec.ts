@@ -70,7 +70,7 @@ describe('appConfig', () => {
 describe('server config', () => {
   it('keeps every browser provider and adds the server ones on top', () => {
     expect(serverConfig.providers.length).toBeGreaterThan(appConfig.providers.length);
-    appConfig.providers.forEach(provider => {
+    appConfig.providers.forEach((provider) => {
       expect(serverConfig.providers).toContain(provider);
     });
   });

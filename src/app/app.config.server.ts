@@ -12,8 +12,8 @@ const serverConfig: ApplicationConfig = {
     {
       provide: APP_BASE_HREF,
       useValue: '/',
-    }
-  ]
+    },
+  ],
 };
 
 export const config = mergeApplicationConfig(appConfig, serverConfig);

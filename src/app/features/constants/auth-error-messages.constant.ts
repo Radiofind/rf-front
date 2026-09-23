@@ -10,7 +10,8 @@ export class AuthValidationMessages {
 
   public static readonly PATTERN: string = 'Only English letters are allowed (without spaces)';
 
-  public static readonly PATTERN_WITH_SPACES_AND_SYMBOLS: string = 'Only English letters are allowed';
+  public static readonly PATTERN_WITH_SPACES_AND_SYMBOLS: string =
+    'Only English letters are allowed';
 
   public static readonly INVALID_DATE: string = 'Invalid date';
 
@@ -34,7 +35,9 @@ export class AuthValidationMessages {
 
   public static readonly REGISTRATION_FAILED: string = 'Registration failed, please try again';
 
-  public static readonly INVALID_TWO_FACTOR_CODE: string = 'Invalid verification code, please try again';
+  public static readonly INVALID_TWO_FACTOR_CODE: string =
+    'Invalid verification code, please try again';
 
-  public static readonly RESEND_TWO_FACTOR_CODE_FAILED: string = 'Failed to resend the code, please try again';
+  public static readonly RESEND_TWO_FACTOR_CODE_FAILED: string =
+    'Failed to resend the code, please try again';
 }
