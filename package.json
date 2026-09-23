@@ -14,7 +14,8 @@
     "e2e:headed": "playwright test --headed",
     "e2e:report": "playwright show-report",
     "serve:ssr:front": "node dist/front/server/server.mjs",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "format:check": "prettier --check ."
   },
   "private": true,
   "packageManager": "npm@11.9.0",
