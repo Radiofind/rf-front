@@ -2,7 +2,7 @@ import { Component, inject, input, model, output } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { EmptyStateComponent } from '../empty-state/empty-state.component';
 import { PopoverComponent } from '../popover/popover.component';
-import { PopoverContentDirective } from '../../directives/popover-content.directive';
+import { PopoverContentDirective } from '../../directives/popover-content/popover-content.directive';
 import { Constants } from '../../../core/constants/constants';
 import { PopoverPositionEnum } from '../../../core/enums/popover-position.enum';
 import { ProfileMenuItemEnum } from '../../../core/enums/profile-menu-item.enum';

@@ -1,10 +1,10 @@
 import { inject, Service } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import { tap } from 'rxjs';
-import { AuthStateService } from '../../features/services/auth-state-service/auth-state.service';
-import { EndpointConstants } from '../constants/endpoints.constants';
-import { skipGlobalLoader } from '../tokens/loader.token';
+import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
+import { EndpointConstants } from '../../constants/endpoints.constants';
+import { skipGlobalLoader } from '../../tokens/loader/loader.token';
 
 import type { Observable } from 'rxjs';
 import type {
@@ -18,9 +18,9 @@ import type {
   IResetTokenValidData,
   ITwoFactorData,
   ITwoFactorResponse,
-} from '../models/auth.model';
-import type { IRegisterData } from '../../features/models/auth-content.model';
-import type { ICurrentUser, IUserEndpoints } from '../models/user.model';
+} from '../../models/auth.model';
+import type { IRegisterData } from '../../../features/models/auth-content.model';
+import type { ICurrentUser, IUserEndpoints } from '../../models/user.model';
 
 @Service()
 export class ApiService {

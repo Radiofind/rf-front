@@ -1,7 +1,7 @@
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { AuthStateService } from '../../features/services/auth-state-service/auth-state.service';
-import { Constants } from '../constants/constants';
+import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
+import { Constants } from '../../constants/constants';
 
 import type { HttpRequest, HttpHandlerFn, HttpInterceptorFn } from '@angular/common/http';
 

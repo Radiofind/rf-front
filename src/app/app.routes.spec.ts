@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { routes } from './app.routes';
-import { authGuard } from './core/guards/auth.guard';
-import { noLoginGuard } from './core/guards/auto-login.guard';
+import { authGuard } from './core/guards/auth/auth.guard';
+import { noLoginGuard } from './core/guards/auth-login/auto-login.guard';
 import { Constants } from './core/constants/constants';
 import { Links } from './core/constants/links';
 import { ErrorTypeEnum } from './core/enums/error-type.enum';

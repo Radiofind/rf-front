@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { defer, of, throwError } from 'rxjs';
 import { UserService } from './user.service';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService } from '../../../core/services/api/api.service';
 
 import type { Observable } from 'rxjs';
 import type { ICurrentUser } from '../../../core/models/user.model';

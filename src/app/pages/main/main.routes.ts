@@ -11,30 +11,30 @@ export const MAIN_ROUTES: Routes = [
   {
     path: Links.MEDIA_LIBRARY_URL,
     loadComponent: () =>
-      import('../media-library-page/media-library-page.component').then(
+      import('./media-library-page/media-library-page.component').then(
         (c) => c.MediaLibraryPageComponent,
       ),
   },
   {
     path: Links.UPLOAD_TRACK_URL,
     loadComponent: () =>
-      import('../upload-track-page/upload-track-page.component').then(
+      import('./upload-track-page/upload-track-page.component').then(
         (c) => c.UploadTrackPageComponent,
       ),
   },
   {
     path: Links.MY_UPLOADS_URL,
     loadComponent: () =>
-      import('../my-uploads-page/my-uploads-page.component').then((c) => c.MyUploadsPageComponent),
+      import('./my-uploads-page/my-uploads-page.component').then((c) => c.MyUploadsPageComponent),
   },
   {
     path: Links.STATISTICS_URL,
     loadComponent: () =>
-      import('../statistics-page/statistics-page.component').then((c) => c.StatisticsPageComponent),
+      import('./statistics-page/statistics-page.component').then((c) => c.StatisticsPageComponent),
   },
   {
     path: Links.SUPPORT_URL,
     loadComponent: () =>
-      import('../support-page/support-page.component').then((c) => c.SupportPageComponent),
+      import('./support-page/support-page.component').then((c) => c.SupportPageComponent),
   },
 ];

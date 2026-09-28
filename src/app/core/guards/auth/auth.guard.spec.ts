@@ -3,8 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { authGuard } from './auth.guard';
-import { AuthStateService } from '../../features/services/auth-state-service/auth-state.service';
-import { Links } from '../constants/links';
+import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
+import { Links } from '../../constants/links';
 
 import type { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 

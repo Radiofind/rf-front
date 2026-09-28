@@ -12,7 +12,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 import { Constants } from '../../../core/constants/constants';
 import { PopoverPositionEnum } from '../../../core/enums/popover-position.enum';
-import { PopoverContentDirective } from '../../directives/popover-content.directive';
+import { PopoverContentDirective } from '../../directives/popover-content/popover-content.directive';
 
 import type { InputSignal, OutputEmitterRef, Signal, WritableSignal } from '@angular/core';
 import type {

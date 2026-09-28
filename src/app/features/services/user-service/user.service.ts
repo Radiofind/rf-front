@@ -1,5 +1,5 @@
 import { inject, Service } from '@angular/core';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService } from '../../../core/services/api/api.service';
 
 import type { Observable } from 'rxjs';
 import type { ICurrentUser } from '../../../core/models/user.model';
