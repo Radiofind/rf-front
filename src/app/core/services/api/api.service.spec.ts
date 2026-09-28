@@ -4,15 +4,15 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { provideHttpClient } from '@angular/common/http';
 import { PLATFORM_ID } from '@angular/core';
 import { ApiService } from './api.service';
-import { AuthStateService } from '../../features/services/auth-state-service/auth-state.service';
-import { EndpointConstants } from '../constants/endpoints.constants';
-import { SKIP_GLOBAL_LOADER } from '../tokens/loader.token';
-import { environment } from '../../../environments/environment';
+import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
+import { EndpointConstants } from '../../constants/endpoints.constants';
+import { SKIP_GLOBAL_LOADER } from '../../tokens/loader/loader.token';
+import { environment } from '../../../../environments/environment';
 
 import type { TestRequest } from '@angular/common/http/testing';
-import type { IAuthResponse, ITwoFactorResponse } from '../models/auth.model';
-import type { IRegisterData } from '../../features/models/auth-content.model';
-import type { ICurrentUser } from '../models/user.model';
+import type { IAuthResponse, ITwoFactorResponse } from '../../models/auth.model';
+import type { IRegisterData } from '../../../features/models/auth-content.model';
+import type { ICurrentUser } from '../../models/user.model';
 
 describe('ApiService', () => {
   const api: string = `${environment.apiUrl}${EndpointConstants.AUTH_ENDPOINTS.auth}`;

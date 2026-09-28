@@ -1,8 +1,8 @@
-import { Router } from '@angular/router';
-import { AuthStateService } from '../../features/services/auth-state-service/auth-state.service';
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Links } from '../constants/links';
+import { Router } from '@angular/router';
+import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
+import { Links } from '../../constants/links';
 
 import type { CanActivateFn } from '@angular/router';
 

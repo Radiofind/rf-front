@@ -4,9 +4,9 @@ import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { PLATFORM_ID } from '@angular/core';
 import { of } from 'rxjs';
 import { authInterceptor } from './auth.interceptor';
-import { AuthStateService } from '../../features/services/auth-state-service/auth-state.service';
-import { Constants } from '../constants/constants';
-import { environment } from '../../../environments/environment';
+import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
+import { Constants } from '../../constants/constants';
+import { environment } from '../../../../environments/environment';
 
 import type { HttpEvent } from '@angular/common/http';
 import type { Observable } from 'rxjs';

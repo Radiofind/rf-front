@@ -4,8 +4,8 @@ import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { PLATFORM_ID } from '@angular/core';
 import { Subject, throwError } from 'rxjs';
 import { loaderInterceptor } from './loader.interceptor';
-import { LoaderService } from '../../shared/services/loader-service/loader.service';
-import { skipGlobalLoader } from '../tokens/loader.token';
+import { LoaderService } from '../../../shared/services/loader-service/loader.service';
+import { skipGlobalLoader } from '../../tokens/loader/loader.token';
 
 import type { HttpEvent } from '@angular/common/http';
 import type { Observable } from 'rxjs';

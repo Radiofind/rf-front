@@ -1,7 +1,7 @@
 import { minLength, required, schema, validate } from '@angular/forms/signals';
 import { AuthValidationMessages } from '../constants/auth-error-messages.constant';
 import { Constants } from '../../core/constants/constants';
-import { passwordRuleErrors } from '../../core/validators/password.validator';
+import { passwordRuleErrors } from '../../core/validators/password/password.validator';
 
 import type { Schema } from '@angular/forms/signals';
 import type { IResetPasswordForm } from '../models/reset-password-form.model';

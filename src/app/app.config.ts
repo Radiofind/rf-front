@@ -6,8 +6,8 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { loaderInterceptor } from './core/interceptors/loader.interceptor';
+import { authInterceptor } from './core/interceptors/auth/auth.interceptor';
+import { loaderInterceptor } from './core/interceptors/loader/loader.interceptor';
 
 import type { ApplicationConfig } from '@angular/core';
 

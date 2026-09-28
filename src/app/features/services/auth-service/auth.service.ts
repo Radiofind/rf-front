@@ -1,7 +1,7 @@
 import { inject, Service } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthStateService } from '../auth-state-service/auth-state.service';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService } from '../../../core/services/api/api.service';
 
 import type { Observable } from 'rxjs';
 import type {

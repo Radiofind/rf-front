@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { PopoverComponent } from './popover.component';
-import { PopoverContentDirective } from '../../directives/popover-content.directive';
+import { PopoverContentDirective } from '../../directives/popover-content/popover-content.directive';
 import { PopoverPositionEnum } from '../../../core/enums/popover-position.enum';
 
 import type { ComponentFixture } from '@angular/core/testing';

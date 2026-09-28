@@ -1,5 +1,5 @@
-import { Constants } from '../constants/constants';
-import { AuthValidationMessages } from '../../features/constants/auth-error-messages.constant';
+import { Constants } from '../../constants/constants';
+import { AuthValidationMessages } from '../../../features/constants/auth-error-messages.constant';
 
 import type { ValidationError } from '@angular/forms/signals';
 

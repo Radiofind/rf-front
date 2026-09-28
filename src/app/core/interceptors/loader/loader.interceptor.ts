@@ -1,8 +1,8 @@
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { finalize } from 'rxjs';
-import { LoaderService } from '../../shared/services/loader-service/loader.service';
-import { SKIP_GLOBAL_LOADER } from '../tokens/loader.token';
+import { LoaderService } from '../../../shared/services/loader-service/loader.service';
+import { SKIP_GLOBAL_LOADER } from '../../tokens/loader/loader.token';
 
 import type { Observable } from 'rxjs';
 import type {
