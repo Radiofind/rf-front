@@ -6,13 +6,14 @@ actual API and database.
 
 ## Prerequisites
 
-| Service        | Where                   | Notes                                                                  |
-| -------------- | ----------------------- | ---------------------------------------------------------------------- |
-| Angular app    | `http://localhost:4200` | Started automatically (`npm start`); an already running one is reused. |
-| Spring backend | `http://localhost:8080` | Must be started manually — it is not part of this repository.          |
-| PostgreSQL     | `localhost:5432`        | The backend's database.                                                |
+| Service        | Where                   | Notes                                                                        |
+| -------------- | ----------------------- | ---------------------------------------------------------------------------- |
+| Angular app    | `http://localhost:4200` | Started automatically (`npm start`); an already running one is reused.       |
+| Spring backend | `http://localhost/api`  | Served by the `rf-infra` Docker stack (nginx on port 80); start it manually. |
+| PostgreSQL     | `localhost:5432`        | The backend's database.                                                      |
 
-The port 4200 is fixed: the backend's CORS configuration allows that origin only.
+The app calls the API through the relative `/api`; under `npm start` the dev server forwards it
+to nginx (`proxy.conf.json`).
 
 Override the endpoints with `E2E_BASE_URL` and `E2E_API_URL` if needed.
 
