@@ -175,6 +175,27 @@
         text-overflow: ellipsis;
       }
 
+      &--premium {
+        .header-menu-item-icon {
+          color: var(--premium-color);
+        }
+
+        .header-menu-item-label {
+          background: linear-gradient(
+            135deg,
+            var(--first-gradient-color),
+            var(--second-gradient-color)
+          );
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+        }
+
+        &:hover .header-menu-item-icon {
+          color: var(--premium-color);
+        }
+      }
+
       &--danger {
         margin-top: 9px;
         color: var(--error-color);
@@ -202,6 +223,11 @@
         }
       }
     }
+  }
+
+  &-menu-entry--compact,
+  &-menu-entry--mobile {
+    display: none;
   }
 
   &-profile {
@@ -286,12 +312,20 @@
     display: none;
   }
 
+  .header-menu-entry--compact {
+    display: block;
+  }
+
   .header-actions {
     gap: 12px;
   }
 }
 
 @media (max-width: 640px) {
+  .header-menu-entry--mobile {
+    display: block;
+  }
+
   .header--extended {
     height: 72px;
     padding: 0 16px;
@@ -310,5 +344,90 @@
   .header-profile {
     width: 44px;
     height: 44px;
+  }
+}
+
+@media (max-width: 540px) {
+  .header--extended {
+    flex-wrap: wrap;
+    row-gap: 12px;
+    height: auto;
+    padding: 12px 16px;
+
+    .header-main {
+      display: contents;
+    }
+
+    .header-title {
+      display: inline;
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
+
+    .header-logo {
+      width: 36px;
+      height: 36px;
+    }
+
+    .header-actions {
+      gap: 10px;
+    }
+
+    .header-search {
+      order: 1;
+      flex-basis: 100%;
+      height: 42px;
+    }
+  }
+
+  .header-action,
+  .header-profile {
+    width: 40px;
+    height: 40px;
+  }
+
+  .header-action {
+    font-size: 22px;
+  }
+
+  .header-profile {
+    font-size: 24px;
+  }
+
+  .header:not(.header--extended) {
+    .header-logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .header-title {
+      font-size: 24px;
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .header--extended {
+    padding: 12px;
+
+    .header-logo {
+      width: 32px;
+      height: 32px;
+    }
+
+    .header-title {
+      font-size: 17px;
+      letter-spacing: 0.5px;
+    }
+
+    .header-actions {
+      gap: 8px;
+    }
+  }
+
+  .header-action,
+  .header-profile {
+    width: 38px;
+    height: 38px;
   }
 }

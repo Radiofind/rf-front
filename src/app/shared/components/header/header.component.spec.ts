@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { HeaderComponent } from './header.component';
 import { Constants } from '../../../core/constants/constants';
@@ -108,5 +108,38 @@ describe('HeaderComponent', () => {
     expect(popoverPanel()?.querySelector('.empty__title')?.textContent).toBe(
       'You are all caught up',
     );
+  });
+
+  it('places the account item before profile and the premium item after it', async () => {
+    const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
+
+    fixture.nativeElement.querySelector(`[aria-label="Profile"]`).click();
+    await fixture.whenStable();
+
+    const labels: string[] = Array.from(
+      document.querySelectorAll('.header-menu-item-label'),
+      (label) => label.textContent,
+    );
+
+    expect(labels).toEqual(['Account', 'Profile', 'Upgrade to Premium', 'Settings', 'Log out']);
+    expect(document.querySelector('.header-menu-entry--mobile')?.textContent).toContain('Account');
+    expect(document.querySelector('.header-menu-entry--compact')?.textContent).toContain(
+      'Upgrade to Premium',
+    );
+  });
+
+  it('emits the account and upgrade actions from the profile menu', async () => {
+    const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
+
+    const accountSpy = vi.fn();
+    const upgradeSpy = vi.fn();
+    fixture.componentInstance.openAccountAction.subscribe(accountSpy);
+    fixture.componentInstance.upgradeAction.subscribe(upgradeSpy);
+
+    fixture.componentInstance.onProfileMenuItemSelect('account');
+    fixture.componentInstance.onProfileMenuItemSelect('upgrade');
+
+    expect(accountSpy).toHaveBeenCalledTimes(1);
+    expect(upgradeSpy).toHaveBeenCalledTimes(1);
   });
 });

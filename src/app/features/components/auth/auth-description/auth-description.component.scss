@@ -33,3 +33,48 @@
     }
   }
 }
+
+@media (max-width: 992px) {
+  .description {
+    &-instructions {
+      margin-bottom: 40px;
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .description {
+    &-title {
+      font-size: 32px;
+      line-height: 1.25;
+    }
+
+    &-instructions {
+      margin-top: 8px;
+      margin-bottom: 28px;
+      font-size: 16px;
+    }
+
+    &-content {
+      gap: 16px;
+      margin-bottom: 20px;
+
+      ::ng-deep .icon {
+        min-width: 52px !important;
+        height: 52px !important;
+        font-size: 32px !important;
+      }
+
+      &__text {
+        &--title {
+          margin-bottom: 4px;
+          font-size: 18px;
+        }
+
+        &--overview {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

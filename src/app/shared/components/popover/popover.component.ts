@@ -47,6 +47,12 @@ export class PopoverComponent {
 
   public readonly panelWidth: InputSignal<string> = input<string>(Constants.POPOVER_DEFAULT_WIDTH);
 
+  public readonly overlayWidth: Signal<string> = computed(
+    () => `
+      ${Constants.MIN_SCSS_FUNCTION_OPENS}${this.panelWidth()}${Constants.COMMA} ${Constants.POPOVER_MAX_WIDTH}${Constants.CLOSING_BRACKET}
+    `,
+  );
+
   public readonly panelClass: InputSignal<string> = input<string>(Constants.EMPTY_STRING);
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
@@ -64,23 +70,33 @@ export class PopoverComponent {
 
   public readonly isOpen: Signal<boolean> = this.isOpenState.asReadonly();
 
-  private readonly startAlignment: HorizontalConnectionPos = 'start';
+  private readonly startAlignment: WritableSignal<HorizontalConnectionPos> = signal(
+    Constants.START_HORIZONTAL_ALIGNMENT,
+  );
 
-  private readonly centerAlignment: HorizontalConnectionPos = 'center';
+  private readonly centerAlignment: WritableSignal<HorizontalConnectionPos> = signal(
+    Constants.CENTER_HORIZONTAL_ALIGNMENT,
+  );
 
-  private readonly endAlignment: HorizontalConnectionPos = 'end';
+  private readonly endAlignment: WritableSignal<HorizontalConnectionPos> = signal(
+    Constants.END_HORIZONTAL_ALIGNMENT,
+  );
 
-  private readonly topSide: VerticalConnectionPos = 'top';
+  private readonly topSide: WritableSignal<VerticalConnectionPos> = signal(
+    Constants.TOP_VERTICAL_ALIGNMENT,
+  );
 
-  private readonly bottomSide: VerticalConnectionPos = 'bottom';
+  private readonly bottomSide: WritableSignal<VerticalConnectionPos> = signal(
+    Constants.BOTTOM_VERTICAL_ALIGNMENT,
+  );
 
   private readonly positionsMap: Readonly<Record<PopoverPosition, ConnectedPosition[]>> = {
-    [PopoverPositionEnum.BOTTOM_START]: this.buildPositions(this.startAlignment, false),
-    [PopoverPositionEnum.BOTTOM_CENTER]: this.buildPositions(this.centerAlignment, false),
-    [PopoverPositionEnum.BOTTOM_END]: this.buildPositions(this.endAlignment, false),
-    [PopoverPositionEnum.TOP_START]: this.buildPositions(this.startAlignment, true),
-    [PopoverPositionEnum.TOP_CENTER]: this.buildPositions(this.centerAlignment, true),
-    [PopoverPositionEnum.TOP_END]: this.buildPositions(this.endAlignment, true),
+    [PopoverPositionEnum.BOTTOM_START]: this.buildPositions(this.startAlignment(), false),
+    [PopoverPositionEnum.BOTTOM_CENTER]: this.buildPositions(this.centerAlignment(), false),
+    [PopoverPositionEnum.BOTTOM_END]: this.buildPositions(this.endAlignment(), false),
+    [PopoverPositionEnum.TOP_START]: this.buildPositions(this.startAlignment(), true),
+    [PopoverPositionEnum.TOP_CENTER]: this.buildPositions(this.centerAlignment(), true),
+    [PopoverPositionEnum.TOP_END]: this.buildPositions(this.endAlignment(), true),
   };
 
   public readonly positions: Signal<ConnectedPosition[]> = computed(
@@ -124,17 +140,17 @@ export class PopoverComponent {
   ): ConnectedPosition[] {
     const below: ConnectedPosition = {
       originX: alignment,
-      originY: this.bottomSide,
+      originY: this.bottomSide(),
       overlayX: alignment,
-      overlayY: this.topSide,
+      overlayY: this.topSide(),
       offsetY: Constants.POPOVER_OFFSET,
     };
 
     const above: ConnectedPosition = {
       originX: alignment,
-      originY: this.topSide,
+      originY: this.topSide(),
       overlayX: alignment,
-      overlayY: this.bottomSide,
+      overlayY: this.bottomSide(),
       offsetY: -Constants.POPOVER_OFFSET,
     };
 

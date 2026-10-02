@@ -91,7 +91,7 @@
         <app-popover
           #profilePopover="appPopover"
           [popoverPosition]="profileMenuPosition"
-          panelWidth="224px"
+          panelWidth="248px"
           panelClass="popover--menu"
           (opened)="onProfile()"
         >
@@ -115,7 +115,7 @@
           <ng-template appPopoverContent>
             <ul class="header-menu" role="menu" aria-label="Account menu">
               @for (item of profileMenuItems; track item.id) {
-                <li>
+                <li [class]="item.visibilityClass">
                   <button
                     class="header-menu-item {{ item.additionalClass }}"
                     type="button"

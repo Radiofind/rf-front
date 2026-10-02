@@ -43,6 +43,8 @@ export class HeaderComponent {
 
   public readonly profileAction: OutputEmitterRef<void> = output();
 
+  public readonly openAccountAction: OutputEmitterRef<void> = output();
+
   public readonly openProfileAction: OutputEmitterRef<void> = output();
 
   public readonly openSettingsAction: OutputEmitterRef<void> = output();
@@ -52,8 +54,14 @@ export class HeaderComponent {
   public readonly profileMenuItems: readonly IProfileMenuItem[] = PROFILE_MENU_ITEMS;
 
   private readonly profileMenuActions: Readonly<Record<ProfileMenuItemType, () => void>> = {
+    [ProfileMenuItemEnum.ACCOUNT]: (): void => {
+      this.onOpenAccount();
+    },
     [ProfileMenuItemEnum.PROFILE]: (): void => {
       this.onOpenProfile();
+    },
+    [ProfileMenuItemEnum.UPGRADE]: (): void => {
+      this.onUpgrade();
     },
     [ProfileMenuItemEnum.SETTINGS]: (): void => {
       this.onOpenSettings();
@@ -90,6 +98,10 @@ export class HeaderComponent {
 
   public onProfileMenuItemSelect(itemId: ProfileMenuItemType): void {
     this.profileMenuActions[itemId]();
+  }
+
+  public onOpenAccount(): void {
+    this.openAccountAction.emit();
   }
 
   public onOpenProfile(): void {

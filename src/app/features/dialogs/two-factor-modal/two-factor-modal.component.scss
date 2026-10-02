@@ -99,3 +99,28 @@
     }
   }
 }
+
+@media (max-width: 540px) {
+  .two-factor {
+    &__title {
+      font-size: 24px;
+    }
+
+    &__description {
+      font-size: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    &__code {
+      margin: 24px 0;
+    }
+
+    &__resend {
+      font-size: 14px;
+    }
+
+    &__resend-action {
+      font-size: 14px;
+    }
+  }
+}

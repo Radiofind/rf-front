@@ -92,3 +92,33 @@
     transform: translateY(0) scale(1);
   }
 }
+
+@media (max-width: 540px) {
+  .modal {
+    &__header {
+      gap: 12px;
+      padding: 18px 20px;
+    }
+
+    &__title {
+      font-size: 20px;
+    }
+
+    &__subtitle {
+      font-size: 15px;
+    }
+
+    &__close--floating {
+      top: 12px;
+      right: 12px;
+    }
+
+    &--headless &__content {
+      padding: 32px 20px 24px;
+    }
+
+    &__content {
+      padding: 20px;
+    }
+  }
+}
