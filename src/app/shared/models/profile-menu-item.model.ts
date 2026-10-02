@@ -5,4 +5,5 @@ export interface IProfileMenuItem {
   label: string;
   iconClass: string;
   additionalClass: string;
+  visibilityClass: string;
 }
