@@ -1,4 +1,4 @@
-import type { HorizontalConnectionPos, VerticalConnectionPos } from "@angular/cdk/overlay";
+import type { HorizontalConnectionPos, VerticalConnectionPos } from '@angular/cdk/overlay';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Constants {

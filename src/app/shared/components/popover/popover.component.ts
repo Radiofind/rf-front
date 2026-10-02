@@ -70,15 +70,25 @@ export class PopoverComponent {
 
   public readonly isOpen: Signal<boolean> = this.isOpenState.asReadonly();
 
-  private readonly startAlignment: WritableSignal<HorizontalConnectionPos> = signal(Constants.START_HORIZONTAL_ALIGNMENT);
+  private readonly startAlignment: WritableSignal<HorizontalConnectionPos> = signal(
+    Constants.START_HORIZONTAL_ALIGNMENT,
+  );
 
-  private readonly centerAlignment: WritableSignal<HorizontalConnectionPos> = signal(Constants.CENTER_HORIZONTAL_ALIGNMENT);
+  private readonly centerAlignment: WritableSignal<HorizontalConnectionPos> = signal(
+    Constants.CENTER_HORIZONTAL_ALIGNMENT,
+  );
 
-  private readonly endAlignment: WritableSignal<HorizontalConnectionPos> = signal(Constants.END_HORIZONTAL_ALIGNMENT);
+  private readonly endAlignment: WritableSignal<HorizontalConnectionPos> = signal(
+    Constants.END_HORIZONTAL_ALIGNMENT,
+  );
 
-  private readonly topSide: WritableSignal<VerticalConnectionPos> = signal(Constants.TOP_VERTICAL_ALIGNMENT);
+  private readonly topSide: WritableSignal<VerticalConnectionPos> = signal(
+    Constants.TOP_VERTICAL_ALIGNMENT,
+  );
 
-  private readonly bottomSide: WritableSignal<VerticalConnectionPos> = signal(Constants.BOTTOM_VERTICAL_ALIGNMENT);
+  private readonly bottomSide: WritableSignal<VerticalConnectionPos> = signal(
+    Constants.BOTTOM_VERTICAL_ALIGNMENT,
+  );
 
   private readonly positionsMap: Readonly<Record<PopoverPosition, ConnectedPosition[]>> = {
     [PopoverPositionEnum.BOTTOM_START]: this.buildPositions(this.startAlignment(), false),
