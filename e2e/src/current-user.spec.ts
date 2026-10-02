@@ -6,8 +6,10 @@ import type { Request, Response } from '@playwright/test';
 
 const CURRENT_USER_URL: string = `${API_URL}/users/me`;
 
+const CURRENT_USER_PATH: string = new URL(CURRENT_USER_URL).pathname;
+
 const isCurrentUserRequest = (request: Request): boolean =>
-  request.url().startsWith(CURRENT_USER_URL) && request.method() === 'GET';
+  new URL(request.url()).pathname === CURRENT_USER_PATH && request.method() === 'GET';
 
 test.describe('current user', () => {
   test.describe('GET /users/me', () => {
