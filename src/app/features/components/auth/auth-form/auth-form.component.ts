@@ -49,7 +49,6 @@ import type { IAuthResponse } from '../../../../core/models/auth.model';
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',
 })
-
 export class AuthFormComponent {
   private readonly authService: AuthService = inject(AuthService);
 
