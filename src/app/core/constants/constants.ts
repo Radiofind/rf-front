@@ -110,6 +110,8 @@ export class Constants {
 
   public static readonly POPOVER_DEFAULT_WIDTH: string = '360px';
 
+  public static readonly POPOVER_MAX_WIDTH: string = 'calc(100vw - 32px)';
+
   public static readonly SIDEBAR_COLLAPSE_ARIA_LABEL: string = 'Collapse menu';
 
   public static readonly SIDEBAR_EXPAND_ARIA_LABEL: string = 'Expand menu';

@@ -9,3 +9,12 @@
   z-index: 1000;
   pointer-events: none;
 }
+
+@media (max-width: 540px) {
+  .snackbar-container {
+    align-items: stretch;
+    top: 16px;
+    right: 16px;
+    left: 16px;
+  }
+}

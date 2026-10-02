@@ -47,6 +47,10 @@ export class PopoverComponent {
 
   public readonly panelWidth: InputSignal<string> = input<string>(Constants.POPOVER_DEFAULT_WIDTH);
 
+  public readonly overlayWidth: Signal<string> = computed(
+    () => `min(${this.panelWidth()}, ${Constants.POPOVER_MAX_WIDTH})`,
+  );
+
   public readonly panelClass: InputSignal<string> = input<string>(Constants.EMPTY_STRING);
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);

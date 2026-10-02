@@ -52,3 +52,14 @@
     transform: translateX(0);
   }
 }
+
+@media (max-width: 540px) {
+  .snackbar {
+    padding: 12px 16px;
+    font-size: 14px;
+
+    &__icon {
+      font-size: 26px;
+    }
+  }
+}

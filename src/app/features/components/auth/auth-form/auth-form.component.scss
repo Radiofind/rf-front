@@ -40,6 +40,12 @@
       &-passwords {
         display: flex;
         justify-content: space-between;
+        gap: 24px;
+
+        app-input-field {
+          flex: 0 1 400px;
+          min-width: 0;
+        }
       }
     }
 
@@ -57,6 +63,62 @@
 
       button:hover {
         opacity: 0.7;
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .form-content__form {
+    &--name-surname,
+    &-passwords {
+      flex-direction: column;
+      gap: 0;
+
+      app-input-field {
+        flex-basis: auto;
+      }
+
+      ::ng-deep .input-custom__width {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .form {
+    border-radius: 16px;
+
+    &-content {
+      padding: 28px 20px;
+      border-radius: 16px;
+
+      &__title {
+        margin-bottom: 8px;
+        font-size: 26px;
+        text-align: center;
+      }
+
+      &__description {
+        font-size: 15px;
+        text-align: center;
+      }
+
+      &__error {
+        margin-bottom: 24px;
+        font-size: 15px;
+        text-align: center;
+      }
+
+      &__form {
+        margin-bottom: 24px;
+      }
+
+      &__sign-up,
+      &__sign-in {
+        font-size: 15px;
+        text-align: center;
       }
     }
   }

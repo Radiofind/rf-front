@@ -22,6 +22,7 @@
       }
 
       span {
+        flex-shrink: 0;
         width: 20px;
         height: 20px;
         border: 2px solid var(--second-gradient-bg);
@@ -39,6 +40,25 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .radio-field {
+    &__label {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    &__buttons {
+      gap: 24px;
+      margin-bottom: 28px;
+
+      &--option {
+        gap: 10px;
+        font-size: 18px;
       }
     }
   }

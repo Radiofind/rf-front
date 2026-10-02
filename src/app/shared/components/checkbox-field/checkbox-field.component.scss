@@ -12,6 +12,7 @@
     }
 
     span {
+      flex-shrink: 0;
       width: 20px;
       height: 20px;
       border: 2px solid var(--second-gradient-bg);
@@ -36,5 +37,13 @@
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
     }
+  }
+}
+
+@media (max-width: 540px) {
+  .checkbox-field__label {
+    gap: 12px;
+    margin-bottom: 28px;
+    font-size: 15px;
   }
 }
