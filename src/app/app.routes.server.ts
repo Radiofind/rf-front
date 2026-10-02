@@ -10,6 +10,7 @@ const CLIENT_RENDERED_PATHS: readonly string[] = [
   Links.MY_UPLOADS_URL,
   Links.STATISTICS_URL,
   Links.SUPPORT_URL,
+  Links.RESET_PASSWORD_URL,
 ];
 
 export const serverRoutes: ServerRoute[] = [
