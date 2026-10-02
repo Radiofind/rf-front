@@ -2,7 +2,7 @@ import { expect, request } from '@playwright/test';
 
 import type { APIRequestContext } from '@playwright/test';
 
-export const API_URL: string = process.env['E2E_API_URL'] ?? 'http://localhost:8080/api';
+export const API_URL: string = process.env['E2E_API_URL'] ?? 'http://localhost/api';
 
 export const TOKEN_KEY: string = 'radiofind_token';
 
