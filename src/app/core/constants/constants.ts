@@ -1,3 +1,5 @@
+import type { HorizontalConnectionPos, VerticalConnectionPos } from "@angular/cdk/overlay";
+
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Constants {
   // inline strings
@@ -5,6 +7,10 @@ export class Constants {
   public static readonly EMPTY_STRING: string = '';
 
   public static readonly EMPTY_SPACE_STRING: string = ' ';
+
+  public static readonly COMMA: string = ',';
+
+  public static readonly CLOSING_BRACKET: string = ')';
 
   public static readonly TOKEN_KEY: string = 'radiofind_token';
 
@@ -120,6 +126,8 @@ export class Constants {
 
   public static readonly CHEVRON_RIGHT_ICON_CLASS: string = 'bx bx-chevron-right';
 
+  public static readonly MIN_SCSS_FUNCTION_OPENS: string = 'min(';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
@@ -187,4 +195,14 @@ export class Constants {
   public static readonly SPACES_VALIDATOR_PATTERN: RegExp = /\s/;
 
   public static readonly NOT_DIGIT_PATTERN: RegExp = /\D/g;
+
+  public static readonly START_HORIZONTAL_ALIGNMENT: HorizontalConnectionPos = 'start';
+
+  public static readonly CENTER_HORIZONTAL_ALIGNMENT: HorizontalConnectionPos = 'center';
+
+  public static readonly END_HORIZONTAL_ALIGNMENT: HorizontalConnectionPos = 'end';
+
+  public static readonly TOP_VERTICAL_ALIGNMENT: VerticalConnectionPos = 'top';
+
+  public static readonly BOTTOM_VERTICAL_ALIGNMENT: VerticalConnectionPos = 'bottom';
 }
