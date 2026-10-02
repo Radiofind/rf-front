@@ -1,0 +1,16 @@
+node_modules/
+dist/
+
+.angular/
+
+.git/
+.github/
+
+.vscode/
+.idea/
+
+*.iml
+
+.DS_Store
+
+README.md
