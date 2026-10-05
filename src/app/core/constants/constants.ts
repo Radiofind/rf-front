@@ -126,6 +126,8 @@ export class Constants {
 
   public static readonly CHEVRON_RIGHT_ICON_CLASS: string = 'bx bx-chevron-right';
 
+  public static readonly MOBILE_MEDIA_QUERY: string = '(max-width: 640px)';
+
   public static readonly MIN_SCSS_FUNCTION_OPENS: string = 'min(';
 
   // magic numbers

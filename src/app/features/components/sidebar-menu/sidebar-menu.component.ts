@@ -1,8 +1,13 @@
 import { Component, computed, inject, input, model, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { firstValueFrom, map } from 'rxjs';
 import { Constants } from '../../../core/constants/constants';
-import { SIDEBAR_MENU_ITEMS } from '../../constants/sidebar-menu.constant';
+import {
+  MOBILE_SIDEBAR_MENU_ITEMS,
+  SIDEBAR_MENU_ITEMS,
+} from '../../constants/sidebar-menu.constant';
 import { UserService } from '../../services/user-service/user.service';
 
 import type {
@@ -13,6 +18,7 @@ import type {
   Signal,
   WritableSignal,
 } from '@angular/core';
+import type { BreakpointState } from '@angular/cdk/layout';
 import type { ISidebarMenuItem } from '../../models/sidebar-menu-item.model';
 import type { ICurrentUser } from '../../../core/models/user.model';
 
@@ -25,8 +31,22 @@ import type { ICurrentUser } from '../../../core/models/user.model';
 export class SidebarMenuComponent implements OnInit {
   private readonly userService: UserService = inject(UserService);
 
+  private readonly isMobile: Signal<boolean> = toSignal(
+    inject(BreakpointObserver)
+      .observe(Constants.MOBILE_MEDIA_QUERY)
+      .pipe(map((state: BreakpointState) => state.matches)),
+    { initialValue: false },
+  );
+
   public readonly menuItems: InputSignal<readonly ISidebarMenuItem[]> =
     input<readonly ISidebarMenuItem[]>(SIDEBAR_MENU_ITEMS);
+
+  public readonly mobileMenuItems: InputSignal<readonly ISidebarMenuItem[]> =
+    input<readonly ISidebarMenuItem[]>(MOBILE_SIDEBAR_MENU_ITEMS);
+
+  public readonly visibleMenuItems: Signal<readonly ISidebarMenuItem[]> = computed<
+    readonly ISidebarMenuItem[]
+  >(() => (this.isMobile() ? this.mobileMenuItems() : this.menuItems()));
 
   public readonly isCollapsed: ModelSignal<boolean> = model<boolean>(false);
 
