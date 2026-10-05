@@ -18,9 +18,9 @@ import type {
   Signal,
   WritableSignal,
 } from '@angular/core';
+import type { BreakpointState } from '@angular/cdk/layout';
 import type { ISidebarMenuItem } from '../../models/sidebar-menu-item.model';
 import type { ICurrentUser } from '../../../core/models/user.model';
-import type { BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-sidebar-menu',
