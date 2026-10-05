@@ -2,10 +2,14 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Observable, of } from 'rxjs';
 import { SidebarMenuComponent } from './sidebar-menu.component';
 import { UserService } from '../../services/user-service/user.service';
-import { SIDEBAR_MENU_ITEMS } from '../../../features/constants/sidebar-menu.constant';
+import {
+  MOBILE_SIDEBAR_MENU_ITEMS,
+  SIDEBAR_MENU_ITEMS,
+} from '../../../features/constants/sidebar-menu.constant';
 import { Constants } from '../../../core/constants/constants';
 
 import type { ComponentFixture } from '@angular/core/testing';
@@ -23,6 +27,8 @@ describe('SidebarMenuComponent', () => {
 
   let getCurrentUserData: ReturnType<typeof vi.fn>;
 
+  let isMobile: boolean;
+
   const createFixture = async (): Promise<ComponentFixture<SidebarMenuComponent>> => {
     await TestBed.configureTestingModule({
       imports: [SidebarMenuComponent],
@@ -30,6 +36,10 @@ describe('SidebarMenuComponent', () => {
         provideRouter(routes),
         provideLocationMocks(),
         { provide: UserService, useValue: { getCurrentUserData: getCurrentUserData } },
+        {
+          provide: BreakpointObserver,
+          useValue: { observe: () => of({ matches: isMobile, breakpoints: {} }) },
+        },
       ],
     }).compileComponents();
 
@@ -54,6 +64,7 @@ describe('SidebarMenuComponent', () => {
   beforeEach(() => {
     TestBed.resetTestingModule();
     getCurrentUserData = vi.fn().mockReturnValue(of(currentUser));
+    isMobile = false;
   });
 
   it('renders every menu item', async () => {
@@ -61,6 +72,23 @@ describe('SidebarMenuComponent', () => {
 
     expect(items(fixture).map((item) => item.textContent.trim())).toEqual(
       SIDEBAR_MENU_ITEMS.map((item) => item.label),
+    );
+  });
+
+  it('swaps Media Library and My Uploads on mobile', async () => {
+    isMobile = true;
+
+    const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
+
+    expect(items(fixture).map((item) => item.textContent.trim())).toEqual([
+      'My Uploads',
+      'Upload Track',
+      'Media Library',
+      'Statistics',
+      'Support',
+    ]);
+    expect(items(fixture).map((item) => item.getAttribute('href'))).toEqual(
+      MOBILE_SIDEBAR_MENU_ITEMS.map((item) => `/${item.link}`),
     );
   });
 
