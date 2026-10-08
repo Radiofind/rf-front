@@ -18,7 +18,7 @@ describe('AuthService', () => {
     name: 'Ada',
     surname: 'Lovelace',
     email: 'ada@example.com',
-    dateOfBirth: new Date(1994, 2, 7),
+    dateOfBirth: '1994-03-07',
     password: 'Passw0rd!',
   };
 

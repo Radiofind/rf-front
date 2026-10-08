@@ -23,7 +23,7 @@ export interface IRegisterData {
   surname: string;
   email: string;
   recoveryEmail?: string | null;
-  dateOfBirth: Date;
+  dateOfBirth: string;
   password: string;
   artistInformation?: IArtistInformation;
 }
