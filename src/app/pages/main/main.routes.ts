@@ -9,6 +9,13 @@ export const MAIN_ROUTES: Routes = [
     pathMatch: 'full',
   },
   {
+    path: Links.PROFILE_URL,
+    loadComponent: () =>
+      import('./profile-page/profile-page.component').then(
+        (c) => c.ProfilePageComponent
+      ),
+  },
+  {
     path: Links.MEDIA_LIBRARY_URL,
     loadComponent: () =>
       import('./media-library-page/media-library-page.component').then(
