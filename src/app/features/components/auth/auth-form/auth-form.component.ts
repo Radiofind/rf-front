@@ -23,6 +23,7 @@ import {
 } from '../../../constants/auth-content.constant';
 import { AUTH_TYPE } from '../../../enums/auth-type.enum';
 import { ForgetPasswordModalComponent } from '../../../dialogs/forget-password-modal/forget-password-modal.component';
+import { transformDateToString } from '../../../../shared/helpers/date/date.helpers';
 
 import type { InputSignal, Signal, WritableSignal } from '@angular/core';
 import type { DialogRef } from '@angular/cdk/dialog';
@@ -186,7 +187,7 @@ export class AuthFormComponent {
       surname: model.surname,
       email: model.email,
       recoveryEmail: model.recoveryEmail || null,
-      dateOfBirth: dateOfBirth,
+      dateOfBirth: transformDateToString(dateOfBirth),
       password: model.password,
       artistInformation: {
         typeOfArtist: model.typeOfArtist.toUpperCase(),

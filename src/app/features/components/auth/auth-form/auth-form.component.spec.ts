@@ -193,7 +193,7 @@ describe('AuthFormComponent', () => {
         surname: 'Lovelace',
         email: 'ada@example.com',
         recoveryEmail: null,
-        dateOfBirth: new Date(1994, 2, 7),
+        dateOfBirth: '1994-03-07',
         password: 'Passw0rd!',
         artistInformation: {
           typeOfArtist: 'ARTIST',
