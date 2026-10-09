@@ -3,12 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { form } from '@angular/forms/signals';
 import { loginFormSchema, registerFormSchema } from './auth-form.schema';
-import { AuthValidationMessages } from '../constants/auth-error-messages.constant';
-import { Constants } from '../../core/constants/constants';
-import { DEFAULT_ARTIST_TYPE } from '../constants/auth-content.constant';
+import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
+import { Constants } from '../../../core/constants/constants';
+import { DEFAULT_ARTIST_TYPE } from '../../constants/auth-content.constant';
 
 import type { FieldTree } from '@angular/forms/signals';
-import type { ILoginForm, IRegisterForm } from '../models/auth-form.model';
+import type { ILoginForm, IRegisterForm } from '../../models/auth-form.model';
 
 describe('loginFormSchema', () => {
   const buildForm = (model: ILoginForm): FieldTree<ILoginForm> =>

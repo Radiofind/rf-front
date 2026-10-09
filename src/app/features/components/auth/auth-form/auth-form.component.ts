@@ -11,7 +11,7 @@ import { DateFieldComponent } from '../../../../shared/components/date-field/dat
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { RadioFieldComponent } from '../../../../shared/components/radio-field/radio-field.component';
 import { AuthValidationMessages } from '../../../constants/auth-error-messages.constant';
-import { loginFormSchema, registerFormSchema } from '../../../schemas/auth-form.schema';
+import { loginFormSchema, registerFormSchema } from '../../../schemas/auth-form/auth-form.schema';
 import { AuthService } from '../../../services/auth-service/auth.service';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
 import { TwoFactorModalComponent } from '../../../dialogs/two-factor-modal/two-factor-modal.component';
