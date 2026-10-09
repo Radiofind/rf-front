@@ -4,7 +4,7 @@ import { form, FormRoot, FormField } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { Constants } from '../../../core/constants/constants';
-import { forgetPasswordSchema } from '../../schemas/forget-password.schema';
+import { forgetPasswordSchema } from '../../schemas/forget-password/forget-password.schema';
 import { InputFieldComponent } from '../../../shared/components/input-field/input-field.component';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';

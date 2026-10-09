@@ -10,12 +10,12 @@ import {
   schema,
   validate,
 } from '@angular/forms/signals';
-import { Constants } from '../../core/constants/constants';
-import { passwordRuleErrors } from '../../core/validators/password/password.validator';
-import { AuthValidationMessages } from '../constants/auth-error-messages.constant';
+import { Constants } from '../../../core/constants/constants';
+import { passwordRuleErrors } from '../../../core/validators/password/password.validator';
+import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 
 import type { Schema } from '@angular/forms/signals';
-import type { ILoginForm, IRegisterForm } from '../models/auth-form.model';
+import type { ILoginForm, IRegisterForm } from '../../models/auth-form.model';
 
 const earliestBirthDate = (): Date => {
   const date: Date = new Date();

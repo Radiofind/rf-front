@@ -1,7 +1,7 @@
 import { authGuard } from './core/guards/auth/auth.guard';
 import { Links } from './core/constants/links';
 import { Constants } from './core/constants/constants';
-import { noLoginGuard } from './core/guards/auth-login/auto-login.guard';
+import { noLoginGuard } from './core/guards/auto-login/auto-login.guard';
 import { ErrorTypeEnum } from './core/enums/error-type.enum';
 
 import type { Routes } from '@angular/router';

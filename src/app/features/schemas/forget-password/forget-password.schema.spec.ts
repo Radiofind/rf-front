@@ -3,11 +3,11 @@ import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { form } from '@angular/forms/signals';
 import { forgetPasswordSchema } from './forget-password.schema';
-import { AuthValidationMessages } from '../constants/auth-error-messages.constant';
+import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 
 import type { WritableSignal } from '@angular/core';
 import type { FieldTree } from '@angular/forms/signals';
-import type { IForgetPasswordForm } from '../models/forget-password.model';
+import type { IForgetPasswordForm } from '../../models/forget-password.model';
 
 describe('forgetPasswordSchema', () => {
   const buildForm = (email: string): FieldTree<IForgetPasswordForm> => {
