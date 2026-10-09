@@ -23,6 +23,7 @@ describe('serverRoutes', () => {
     Links.MY_UPLOADS_URL,
     Links.STATISTICS_URL,
     Links.SUPPORT_URL,
+    Links.PROFILE_URL,
   ])('renders %s on the client only', (path) => {
     expect(routeFor(path).renderMode).toBe(RenderMode.Client);
   });

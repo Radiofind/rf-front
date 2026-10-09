@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { HeaderComponent } from './header.component';
 import { Constants } from '../../../core/constants/constants';
+import { Router } from '@angular/router';
+import { Links } from '../../../core/constants/links';
 
 import type { ComponentFixture } from '@angular/core/testing';
 
@@ -141,5 +143,37 @@ describe('HeaderComponent', () => {
 
     expect(accountSpy).toHaveBeenCalledTimes(1);
     expect(upgradeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('navigates to the profile page when the profile item is selected', async () => {
+    const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
+
+    const navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    fixture.componentInstance.onProfileMenuItemSelect('profile');
+
+    expect(navigateSpy).toHaveBeenCalledTimes(1);
+    expect(navigateSpy).toHaveBeenCalledWith([Links.PROFILE_URL]);
+  });
+
+  it('navigates to the profile page from the rendered profile menu', async () => {
+    const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
+
+    const navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    fixture.nativeElement.querySelector('[aria-label="Profile"]').click();
+    await fixture.whenStable();
+
+    const profileItem: HTMLButtonElement | undefined = Array.from(
+      document.querySelectorAll<HTMLButtonElement>('.header-menu-item'),
+    ).find((item) => item.textContent.trim() === 'Profile');
+
+    expect(profileItem).toBeDefined();
+
+    profileItem!.click();
+    await fixture.whenStable();
+
+    expect(navigateSpy).toHaveBeenCalledWith([Links.PROFILE_URL]);
+    expect(popoverPanel()).toBeNull();
   });
 });

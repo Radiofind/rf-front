@@ -130,6 +130,8 @@ export class Constants {
 
   public static readonly MIN_SCSS_FUNCTION_OPENS: string = 'min(';
 
+  public static readonly FILE_FORM_DATA: string = 'file';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;

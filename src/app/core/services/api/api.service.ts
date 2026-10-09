@@ -5,6 +5,7 @@ import { tap } from 'rxjs';
 import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
 import { EndpointConstants } from '../../constants/endpoints.constants';
 import { skipGlobalLoader } from '../../tokens/loader/loader.token';
+import { Constants } from '../../constants/constants';
 
 import type { Observable } from 'rxjs';
 import type {
@@ -20,7 +21,12 @@ import type {
   ITwoFactorResponse,
 } from '../../models/auth.model';
 import type { IRegisterData } from '../../../features/models/auth-content.model';
-import type { ICurrentUser, IUserEndpoints } from '../../models/user.model';
+import type {
+  IAvatarResponse,
+  ICurrentUser,
+  IUserEndpoints,
+  IUserProfileData,
+} from '../../models/user.model';
 
 @Service()
 export class ApiService {
@@ -31,6 +37,8 @@ export class ApiService {
   private readonly authApi: string = `${environment.apiUrl}${this.authEndpoints.auth}`;
 
   private readonly userApi: string = `${environment.apiUrl}${this.userEndpoints.users}`;
+
+  private readonly currentUserApi: string = `${this.userApi}${this.userEndpoints.me}`;
 
   private readonly http: HttpClient = inject(HttpClient);
 
@@ -84,6 +92,30 @@ export class ApiService {
   }
 
   public getCurrentUserData(): Observable<ICurrentUser> {
-    return this.http.get<ICurrentUser>(`${this.userApi}${this.userEndpoints.me}`);
+    return this.http.get<ICurrentUser>(this.currentUserApi);
+  }
+
+  public getUserProfileData(): Observable<IUserProfileData> {
+    return this.http.get<IUserProfileData>(`${this.currentUserApi}${this.userEndpoints.profile}`);
+  }
+
+  public uploadNewAvatar(file: File): Observable<IAvatarResponse> {
+    const formData: FormData = new FormData();
+    formData.append(Constants.FILE_FORM_DATA, file);
+    return this.http.post<IAvatarResponse>(
+      `${this.currentUserApi}${this.userEndpoints.avatar}`,
+      formData,
+    );
+  }
+
+  public getCurrentAvatar(): Observable<Blob> {
+    return this.http.get(`${this.currentUserApi}${this.userEndpoints.avatar}`, {
+      responseType: 'blob',
+    });
+  }
+
+  public deleteAvatar(): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.delete<void>(`${this.currentUserApi}${this.userEndpoints.avatar}`);
   }
 }
