@@ -18,19 +18,17 @@
 
   <div class="hero__info">
     <div class="hero__name-row">
-      <h1 class="hero__name">John Doe</h1>
+      <h1 class="hero__name">{{ userFullName() }}</h1>
       <i class="hero__verified bxf bx-badge-check" title="Verified artist"></i>
     </div>
 
     <p class="hero__meta">
-      <span>Artist</span>
+      <span>{{ artistRoleLabel() }}</span>
       <span class="hero__meta-dot" aria-hidden="true"></span>
-      <span>Electronic / Ambient / Chillwave</span>
+      <span>Rock / Metal / Post-punk</span>
     </p>
 
-    <p class="hero__bio">
-      Creating atmospheric soundscapes and electronic journeys for dreamers and night listeners.
-    </p>
+    <p class="hero__bio">{{ bio() }}</p>
 
     <ul class="hero__socials" aria-label="Social links">
       <li>

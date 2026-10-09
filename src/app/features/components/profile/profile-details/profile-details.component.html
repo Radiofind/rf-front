@@ -29,21 +29,19 @@
     aria-labelledby="profile-tab-about"
   >
     <div class="details__section">
-      <h2 class="details__title">About</h2>
-      <p class="details__text">
-        Creating atmospheric soundscapes and electronic journeys for dreamers and night listeners.
-      </p>
+      <h2 class="details__title">About {{ artistTypeLabel() }}</h2>
+      <p class="details__text">{{ description() }}</p>
     </div>
 
     <dl class="details__list">
       <div class="details__field">
-        <dt class="details__label">Artist Name</dt>
-        <dd class="details__value">The Solar Waves</dd>
+        <dt class="details__label">{{ artistTypeLabel() }} Name</dt>
+        <dd class="details__value">{{ artistName() }}</dd>
       </div>
 
       <div class="details__field">
         <dt class="details__label">Date of Birth</dt>
-        <dd class="details__value">Jun 14, 1998</dd>
+        <dd class="details__value">{{ birthdayDate() }}</dd>
       </div>
 
       <div class="details__field details__field--full">

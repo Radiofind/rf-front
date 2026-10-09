@@ -6,7 +6,7 @@ import { LatestActivityComponent } from './latest-activity.component';
 import type { ComponentFixture } from '@angular/core/testing';
 
 describe('LatestActivityComponent', () => {
-  it('should create', async () => {
+  const createFixture = async (): Promise<ComponentFixture<LatestActivityComponent>> => {
     await TestBed.configureTestingModule({
       imports: [LatestActivityComponent],
       providers: [provideRouter([])],
@@ -16,6 +16,23 @@ describe('LatestActivityComponent', () => {
       TestBed.createComponent(LatestActivityComponent);
     await fixture.whenStable();
 
-    expect(fixture.componentInstance).toBeTruthy();
+    return fixture;
+  };
+
+  it('shows the empty state instead of the activity list', async () => {
+    const fixture: ComponentFixture<LatestActivityComponent> = await createFixture();
+
+    expect(fixture.nativeElement.querySelector('.activity__list')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.empty__title').textContent).toBe(
+      'No activity yet',
+    );
+  });
+
+  it('links the empty state to the upload page', async () => {
+    const fixture: ComponentFixture<LatestActivityComponent> = await createFixture();
+
+    expect(fixture.nativeElement.querySelector('.activity__cta').getAttribute('href')).toBe(
+      '/upload-track',
+    );
   });
 });
