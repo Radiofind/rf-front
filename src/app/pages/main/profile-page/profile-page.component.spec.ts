@@ -82,7 +82,7 @@ describe('ProfilePageComponent', () => {
 
     expect(text(fixture, '.hero__name')).toBe('Ada Lovelace');
     expect(text(fixture, '.hero__meta span')).toBe('Member of band');
-    expect(text(fixture, '.hero__bio')).toBe('Analytical soundscapes');
+    expect(text(fixture, '.hero__bio')).toBe(Constants.DASH);
     expect(text(fixture, '.stats__item:last-child .stats__value')).toBe('Jan 2026');
     expect(text(fixture, '.details__title')).toBe('About Band');
     expect(text(fixture, '.details__text')).toBe('Analytical soundscapes');
