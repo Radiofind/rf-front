@@ -1,9 +1,9 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { Constants } from '../../../../core/constants/constants';
 import { ArtistTypeRequestEnum } from '../../../../core/enums/artist-type.enum';
 import { ARTIST_ROLE_LABELS } from '../../../constants/artist-type.constant';
 
-import type { InputSignal, Signal } from '@angular/core';
+import type { InputSignal, OutputEmitterRef, Signal } from '@angular/core';
 import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';
 
 @Component({
@@ -20,7 +20,15 @@ export class ProfileHeroComponent {
 
   public readonly bio: InputSignal<string> = input<string>(Constants.DASH);
 
+  public readonly avatarUrl: InputSignal<string | null> = input<string | null>(null);
+
+  public readonly avatarEdit: OutputEmitterRef<void> = output();
+
   protected readonly artistRoleLabel: Signal<string> = computed<string>(
     () => ARTIST_ROLE_LABELS[this.artistType()],
   );
+
+  public onAvatarEdit(): void {
+    this.avatarEdit.emit();
+  }
 }

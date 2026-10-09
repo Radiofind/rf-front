@@ -132,6 +132,12 @@ export class Constants {
 
   public static readonly FILE_FORM_DATA: string = 'file';
 
+  public static readonly PROFILE_PHOTO: string = 'Profile Photo';
+
+  public static readonly AVATAR_SUBTITLE: string = 'Upload a new avatar or remove the current one';
+
+  public static readonly CAMERA_ICON: string = 'bx bx-camera';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;

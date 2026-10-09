@@ -1,13 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of, Subject } from 'rxjs';
 import { ProfilePageComponent } from './profile-page.component';
 import { UserService } from '../../../features/services/user-service/user.service';
+import { AvatarStateService } from '../../../features/services/avatar-state-service/avatar-state.service';
+import { ModalService } from '../../../shared/services/modal-service/modal.service';
+import { AvatarModalComponent } from '../../../features/dialogs/avatar-modal/avatar-modal.component';
 import { Constants } from '../../../core/constants/constants';
 
+import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IUserProfileData } from '../../../core/models/user.model';
+import type { IAvatarModalResult } from '../../../features/models/avatar-modal.model';
 
 describe('ProfilePageComponent', () => {
   const profileData: IUserProfileData = {
@@ -22,6 +28,10 @@ describe('ProfilePageComponent', () => {
   };
 
   let getUserProfileData: ReturnType<typeof vi.fn>;
+  let open: ReturnType<typeof vi.fn>;
+  let modalClosed$: Subject<IAvatarModalResult | undefined>;
+  let avatarUrl: WritableSignal<string | null>;
+  let setAvatar: ReturnType<typeof vi.fn>;
 
   const createFixture = async (): Promise<ComponentFixture<ProfilePageComponent>> => {
     await TestBed.configureTestingModule({
@@ -29,6 +39,11 @@ describe('ProfilePageComponent', () => {
       providers: [
         provideRouter([]),
         { provide: UserService, useValue: { getUserProfileData: getUserProfileData } },
+        { provide: ModalService, useValue: { open: open } },
+        {
+          provide: AvatarStateService,
+          useValue: { avatarUrl: avatarUrl.asReadonly(), setAvatar: setAvatar },
+        },
       ],
     }).compileComponents();
 
@@ -50,7 +65,23 @@ describe('ProfilePageComponent', () => {
   beforeEach(() => {
     TestBed.resetTestingModule();
     getUserProfileData = vi.fn().mockReturnValue(of(profileData));
+    modalClosed$ = new Subject<IAvatarModalResult | undefined>();
+    open = vi.fn().mockReturnValue({ closed: modalClosed$ });
+    avatarUrl = signal<string | null>(null);
+    setAvatar = vi.fn();
   });
+
+  const avatarSrc = (fixture: ComponentFixture<ProfilePageComponent>): string | null =>
+    (fixture.nativeElement as HTMLElement)
+      .querySelector('.hero__avatar-photo')
+      ?.getAttribute('src') ?? null;
+
+  const editAvatar = async (fixture: ComponentFixture<ProfilePageComponent>): Promise<void> => {
+    (fixture.nativeElement as HTMLElement)
+      .querySelector<HTMLButtonElement>('.hero__avatar-edit')!
+      .click();
+    await fixture.whenStable();
+  };
 
   it('requests the profile once on init', async () => {
     await createFixture();
@@ -103,5 +134,68 @@ describe('ProfilePageComponent', () => {
     expect(text(fixture, '.details__title')).toBe('About Artist');
     expect(text(fixture, '.details__text')).toBe(Constants.DASH);
     expect(detailValues(fixture)[0]).toBe(Constants.DASH);
+  });
+
+  describe('avatar', () => {
+    it('shows the shared avatar and follows its updates', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      expect(avatarSrc(fixture)).toBeNull();
+
+      avatarUrl.set('blob:avatar');
+      await fixture.whenStable();
+
+      expect(avatarSrc(fixture)).toBe('blob:avatar');
+    });
+
+    it('opens the avatar modal with the current avatar', async () => {
+      avatarUrl.set('blob:avatar');
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      await editAvatar(fixture);
+
+      expect(open).toHaveBeenCalledWith(
+        AvatarModalComponent,
+        expect.objectContaining({ data: { avatarUrl: 'blob:avatar' } }),
+      );
+    });
+
+    it('shares the uploaded avatar with the rest of the app', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+      const uploaded: File = new File(['new'], 'new.png', { type: 'image/png' });
+
+      await editAvatar(fixture);
+      modalClosed$.next({ avatar: uploaded });
+
+      expect(setAvatar).toHaveBeenCalledWith(uploaded);
+    });
+
+    it('shares the removal with the rest of the app', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      await editAvatar(fixture);
+      modalClosed$.next({ avatar: null });
+
+      expect(setAvatar).toHaveBeenCalledWith(null);
+    });
+
+    it('keeps the avatar when the modal is dismissed', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      await editAvatar(fixture);
+      modalClosed$.next(undefined);
+
+      expect(setAvatar).not.toHaveBeenCalled();
+    });
+
+    it('stops listening to the modal once the page is destroyed', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      await editAvatar(fixture);
+      fixture.destroy();
+      modalClosed$.next({ avatar: null });
+
+      expect(setAvatar).not.toHaveBeenCalled();
+    });
   });
 });

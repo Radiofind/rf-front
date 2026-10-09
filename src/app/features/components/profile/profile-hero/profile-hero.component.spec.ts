@@ -1,10 +1,11 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { ProfileHeroComponent } from './profile-hero.component';
 import { Constants } from '../../../../core/constants/constants';
 import { ArtistTypeRequestEnum } from '../../../../core/enums/artist-type.enum';
 
 import type { ComponentFixture } from '@angular/core/testing';
+import type { Mock } from 'vitest';
 
 describe('ProfileHeroComponent', () => {
   const createFixture = async (): Promise<ComponentFixture<ProfileHeroComponent>> => {
@@ -69,5 +70,37 @@ describe('ProfileHeroComponent', () => {
       'X',
       'Edit profile',
     ]);
+  });
+
+  it('shows the placeholder until an avatar is bound', async () => {
+    const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.hero__avatar-photo')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.hero__avatar-image')).not.toBeNull();
+  });
+
+  it('renders the bound avatar', async () => {
+    const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+
+    fixture.componentRef.setInput('avatarUrl', 'blob:avatar');
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.hero__avatar-photo').getAttribute('src')).toBe(
+      'blob:avatar',
+    );
+    expect(fixture.nativeElement.querySelector('.hero__avatar-image')).toBeNull();
+  });
+
+  it('asks to edit the avatar when the avatar button is clicked', async () => {
+    const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+    await fixture.whenStable();
+
+    const avatarEdit: Mock<() => void> = vi.fn<() => void>();
+    fixture.componentInstance.avatarEdit.subscribe(avatarEdit);
+
+    fixture.nativeElement.querySelector('.hero__avatar-edit').click();
+
+    expect(avatarEdit).toHaveBeenCalledTimes(1);
   });
 });

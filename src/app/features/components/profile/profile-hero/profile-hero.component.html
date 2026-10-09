@@ -1,9 +1,13 @@
 <section class="hero" aria-label="Profile overview">
   <div class="hero__avatar">
     <div class="hero__avatar-ring">
-      <div class="hero__avatar-image">
-        <i class="bxf bx-user"></i>
-      </div>
+      @if (avatarUrl(); as avatarUrl) {
+        <img class="hero__avatar-photo" [src]="avatarUrl" alt="User avatar" />
+      } @else {
+        <div class="hero__avatar-image">
+          <i class="bxf bx-user"></i>
+        </div>
+      }
     </div>
 
     <button
@@ -11,6 +15,8 @@
       type="button"
       aria-label="Change avatar"
       title="Change avatar"
+      aria-haspopup="dialog"
+      (click)="onAvatarEdit()"
     >
       <i class="bx bx-pencil"></i>
     </button>

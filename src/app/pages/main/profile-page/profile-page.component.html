@@ -1,5 +1,10 @@
 <div class="profile">
-  <app-profile-hero [userFullName]="fullName()" [artistType]="artistType()" />
+  <app-profile-hero
+    [userFullName]="fullName()"
+    [artistType]="artistType()"
+    [avatarUrl]="avatarUrl()"
+    (avatarEdit)="onAvatarEdit()"
+  />
 
   <app-profile-stats [registeredAt]="registeredAt()" />
 

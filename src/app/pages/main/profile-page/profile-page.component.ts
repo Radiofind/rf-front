@@ -1,18 +1,27 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { firstValueFrom } from 'rxjs';
 import { ProfileHeroComponent } from '../../../features/components/profile/profile-hero/profile-hero.component';
 import { ProfileStatsComponent } from '../../../features/components/profile/profile-stats/profile-stats.component';
 import { ProfileDetailsComponent } from '../../../features/components/profile/profile-details/profile-details.component';
 import { LatestActivityComponent } from '../../../features/components/profile/latest-activity/latest-activity.component';
 import { UserService } from '../../../features/services/user-service/user.service';
+import { AvatarStateService } from '../../../features/services/avatar-state-service/avatar-state.service';
+import { AvatarModalComponent } from '../../../features/dialogs/avatar-modal/avatar-modal.component';
+import { ModalService } from '../../../shared/services/modal-service/modal.service';
 import { Constants } from '../../../core/constants/constants';
 import { ArtistTypeRequestEnum } from '../../../core/enums/artist-type.enum';
 import { DateFormatEnum } from '../../../core/enums/date-format.enum';
+import { ModalSizeEnum } from '../../../core/enums/modal-size.enum';
 import { formatStringDate } from '../../../shared/helpers/date/date.helpers';
 
 import type { OnInit, Signal, WritableSignal } from '@angular/core';
 import type { IUserProfileData } from '../../../core/models/user.model';
 import type { ArtistTypeRequest } from '../../../core/types/artist-type-request.type';
+import type {
+  IAvatarModalData,
+  IAvatarModalResult,
+} from '../../../features/models/avatar-modal.model';
 
 @Component({
   selector: 'app-profile-page',
@@ -28,8 +37,16 @@ import type { ArtistTypeRequest } from '../../../core/types/artist-type-request.
 export class ProfilePageComponent implements OnInit {
   private readonly userService: UserService = inject(UserService);
 
+  private readonly modalService: ModalService = inject(ModalService);
+
+  private readonly avatarStateService: AvatarStateService = inject(AvatarStateService);
+
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
+
   private readonly profile: WritableSignal<IUserProfileData | null> =
     signal<IUserProfileData | null>(null);
+
+  protected readonly avatarUrl: Signal<string | null> = this.avatarStateService.avatarUrl;
 
   protected readonly fullName: Signal<string> = computed<string>(() => {
     const profile: IUserProfileData | null = this.profile();
@@ -58,6 +75,23 @@ export class ProfilePageComponent implements OnInit {
 
   public ngOnInit(): void {
     void this.getUserProfileData();
+  }
+
+  public onAvatarEdit(): void {
+    this.modalService
+      .open<IAvatarModalResult, IAvatarModalData, AvatarModalComponent>(AvatarModalComponent, {
+        title: Constants.PROFILE_PHOTO,
+        subtitle: Constants.AVATAR_SUBTITLE,
+        iconClass: Constants.CAMERA_ICON,
+        size: ModalSizeEnum.SMALL,
+        data: { avatarUrl: this.avatarUrl() },
+      })
+      .closed.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result: IAvatarModalResult | undefined) => {
+        if (result) {
+          this.avatarStateService.setAvatar(result.avatar);
+        }
+      });
   }
 
   private async getUserProfileData(): Promise<void> {
