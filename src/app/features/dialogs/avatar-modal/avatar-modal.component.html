@@ -1,0 +1,94 @@
+<div class="avatar-modal">
+  <div class="avatar-modal__preview">
+    <div class="avatar-modal__ring">
+      @if (displayedAvatarUrl(); as avatarUrl) {
+        <img class="avatar-modal__image" [src]="avatarUrl" alt="Avatar preview" />
+      } @else {
+        <div class="avatar-modal__placeholder">
+          <i class="bxf bx-user"></i>
+        </div>
+      }
+    </div>
+
+    @if (canRemove()) {
+      <button
+        class="avatar-modal__remove"
+        type="button"
+        [disabled]="isPending()"
+        (click)="onRemove()"
+      >
+        <i class="bx bx-trash"></i>
+        <span>Remove photo</span>
+      </button>
+    }
+  </div>
+
+  <label
+    class="avatar-modal__dropzone"
+    [class.avatar-modal__dropzone--active]="isDragOver()"
+    [class.avatar-modal__dropzone--invalid]="errorMessage()"
+    [class.avatar-modal__dropzone--disabled]="isPending()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
+    <input
+      class="avatar-modal__input"
+      type="file"
+      aria-describedby="avatar-modal-hint"
+      [accept]="accept"
+      [disabled]="isPending()"
+      [attr.aria-invalid]="errorMessage() ? true : null"
+      (change)="onFileChange($event)"
+    />
+
+    <i class="avatar-modal__dropzone-icon bx bx-image-plus"></i>
+
+    @if (selectedFile(); as file) {
+      <span class="avatar-modal__dropzone-title">{{ file.name }}</span>
+      <span class="avatar-modal__dropzone-hint" id="avatar-modal-hint">
+        Click or drop another image to replace it
+      </span>
+    } @else {
+      <span class="avatar-modal__dropzone-title">
+        <span class="avatar-modal__accent">Click to upload</span> or drag and drop
+      </span>
+      <span class="avatar-modal__dropzone-hint" id="avatar-modal-hint">
+        JPEG, PNG or WebP, up to {{ maxSizeMb }} MB
+      </span>
+    }
+  </label>
+
+  @if (errorMessage(); as error) {
+    <p class="avatar-modal__error" role="alert">
+      <i class="bx bx-error-circle"></i>
+      <span>{{ error }}</span>
+    </p>
+  }
+
+  @if (selectedFile()) {
+    <button
+      class="avatar-modal__reset"
+      type="button"
+      [disabled]="isPending()"
+      (click)="onResetSelection()"
+    >
+      Discard selected image
+    </button>
+  }
+
+  <div class="avatar-modal__actions">
+    <app-button
+      contentText="Cancel"
+      additionalClass="button--secondary"
+      [disabled]="isPending()"
+      (clickAction)="onCancel()"
+    />
+
+    <app-button
+      contentText="Save"
+      [disabled]="!selectedFile() || isPending()"
+      (clickAction)="onSave()"
+    />
+  </div>
+</div>

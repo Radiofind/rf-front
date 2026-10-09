@@ -15,7 +15,8 @@
     "e2e:report": "playwright show-report",
     "serve:ssr:front": "node dist/front/server/server.mjs",
     "lint": "ng lint",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "private": true,
   "packageManager": "npm@11.9.0",

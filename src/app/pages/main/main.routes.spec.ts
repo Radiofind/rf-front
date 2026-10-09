@@ -26,6 +26,7 @@ describe('MAIN_ROUTES', () => {
     Links.MY_UPLOADS_URL,
     Links.STATISTICS_URL,
     Links.SUPPORT_URL,
+    Links.PROFILE_URL,
   ])('lazy loads the component for %s', async (path) => {
     const route: Route = routeFor(path);
 

@@ -1,4 +1,5 @@
 import { Component, inject, input, model, output } from '@angular/core';
+import { Router } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
 import { EmptyStateComponent } from '../empty-state/empty-state.component';
 import { PopoverComponent } from '../popover/popover.component';
@@ -8,6 +9,7 @@ import { PopoverPositionEnum } from '../../../core/enums/popover-position.enum';
 import { ProfileMenuItemEnum } from '../../../core/enums/profile-menu-item.enum';
 import { PROFILE_MENU_ITEMS } from '../../constants/profile-menu.constant';
 import { AuthService } from '../../../features/services/auth-service/auth.service';
+import { Links } from '../../../core/constants/links';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
 import type { IProfileMenuItem } from '../../models/profile-menu-item.model';
@@ -22,6 +24,8 @@ import type { ProfileMenuItemType } from '../../../core/types/profile-menu-item.
 })
 export class HeaderComponent {
   private readonly authService: AuthService = inject(AuthService);
+
+  private readonly router: Router = inject(Router);
 
   public readonly isMainApplication: InputSignal<boolean> = input<boolean>(false);
 
@@ -44,8 +48,6 @@ export class HeaderComponent {
   public readonly profileAction: OutputEmitterRef<void> = output();
 
   public readonly openAccountAction: OutputEmitterRef<void> = output();
-
-  public readonly openProfileAction: OutputEmitterRef<void> = output();
 
   public readonly openSettingsAction: OutputEmitterRef<void> = output();
 
@@ -105,7 +107,7 @@ export class HeaderComponent {
   }
 
   public onOpenProfile(): void {
-    this.openProfileAction.emit();
+    void this.router.navigate([Links.PROFILE_URL]);
   }
 
   public onOpenSettings(): void {
