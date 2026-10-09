@@ -27,4 +27,6 @@ export class Links {
   public static readonly STATISTICS_URL: string = 'statistics';
 
   public static readonly SUPPORT_URL: string = 'support';
+
+  public static readonly PROFILE_URL: string = 'profile';
 }

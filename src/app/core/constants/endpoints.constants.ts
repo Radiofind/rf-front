@@ -17,5 +17,7 @@ export class EndpointConstants {
   public static readonly USER_ENDPOINTS: IUserEndpoints = {
     users: '/users',
     me: '/me',
+    profile: '/profile',
+    avatar: '/avatar',
   };
 }

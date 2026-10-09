@@ -1,8 +1,13 @@
 <div class="main">
-  <app-header [isMainApplication]="true" [hasUnreadNotifications]="false" [isUserOnline]="true" />
+  <app-header
+    [isMainApplication]="true"
+    [hasUnreadNotifications]="false"
+    [isUserOnline]="true"
+    [userAvatarUrl]="avatarUrl()"
+  />
 
   <div class="main__body">
-    <app-sidebar-menu [isUserOnline]="true" />
+    <app-sidebar-menu [isUserOnline]="true" [userAvatarUrl]="avatarUrl()" />
 
     <section class="main__content">
       <router-outlet></router-outlet>
