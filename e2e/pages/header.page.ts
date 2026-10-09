@@ -13,10 +13,8 @@ export class HeaderPage {
 
   // The icon glyph is part of the accessible name, so match on the visible label instead.
   public menuItem(label: string): Locator {
-    return this.profileMenu
-      .getByRole('menuitem')
-      .filter({
-        has: this.profileMenu.page().locator('.header-menu-item-label', { hasText: label }),
-      });
+    return this.profileMenu.getByRole('menuitem').filter({
+      has: this.profileMenu.page().locator('.header-menu-item-label', { hasText: label }),
+    });
   }
 }

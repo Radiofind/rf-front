@@ -1,4 +1,4 @@
-import type { ArtistTypeRequest } from "../types/artist-type-request.type";
+import type { ArtistTypeRequest } from '../types/artist-type-request.type';
 
 export interface IUserEndpoints {
   users: string;
