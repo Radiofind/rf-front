@@ -3,12 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { form } from '@angular/forms/signals';
 import { resetPasswordSchema } from './reset-password-form.schema';
-import { AuthValidationMessages } from '../constants/auth-error-messages.constant';
-import { Constants } from '../../core/constants/constants';
+import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
+import { Constants } from '../../../core/constants/constants';
 
 import type { WritableSignal } from '@angular/core';
 import type { FieldTree } from '@angular/forms/signals';
-import type { IResetPasswordForm } from '../models/reset-password-form.model';
+import type { IResetPasswordForm } from '../../models/reset-password-form.model';
 
 describe('resetPasswordSchema', () => {
   const buildForm = (password: string, confirmPassword: string): FieldTree<IResetPasswordForm> => {

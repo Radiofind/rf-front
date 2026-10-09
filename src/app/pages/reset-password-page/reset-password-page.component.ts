@@ -10,7 +10,7 @@ import { Links } from '../../core/constants/links';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
-import { resetPasswordSchema } from '../../features/schemas/reset-password-form.schema';
+import { resetPasswordSchema } from '../../features/schemas/reset-password/reset-password-form.schema';
 import { SnackbarService } from '../../shared/services/snackbar-service/snackbar.service';
 
 import type { OnInit, WritableSignal } from '@angular/core';
