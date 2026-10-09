@@ -1,0 +1,56 @@
+@let hasActivity = false;
+
+<section class="activity" aria-labelledby="latest-activity-title">
+  <div class="activity__cover" aria-hidden="true"></div>
+
+  <div class="activity__body">
+    <h2 class="activity__title" id="latest-activity-title">Latest Activity</h2>
+
+    @if (hasActivity) {
+      <ul class="activity__list">
+        <li class="activity__item">
+          <div class="activity__thumb activity__thumb--violet">
+            <i class="bx bx-disc"></i>
+          </div>
+          <div class="activity__info">
+            <span class="activity__name">Midnight Dreams</span>
+            <span class="activity__date">Uploaded 2 days ago</span>
+          </div>
+        </li>
+
+        <li class="activity__item">
+          <div class="activity__thumb activity__thumb--pink">
+            <i class="bx bx-music"></i>
+          </div>
+          <div class="activity__info">
+            <span class="activity__name">Neon Lights</span>
+            <span class="activity__date">Uploaded 5 days ago</span>
+          </div>
+        </li>
+
+        <li class="activity__item">
+          <div class="activity__thumb activity__thumb--blue">
+            <i class="bx bx-pulse"></i>
+          </div>
+          <div class="activity__info">
+            <span class="activity__name">Lost in Space</span>
+            <span class="activity__date">Uploaded 1 week ago</span>
+          </div>
+        </li>
+      </ul>
+    } @else {
+      <div class="activity__empty">
+        <app-empty-state
+          emptyIconClass="bx bx-pulse"
+          emptyTitle="No activity yet"
+          emptyDescription="Your uploads, reviews and radio picks will show up here."
+        />
+
+        <a class="activity__cta" routerLink="/upload-track">
+          <i class="bx bx-arrow-up-circle"></i>
+          <span>Upload your first track</span>
+        </a>
+      </div>
+    }
+  </div>
+</section>

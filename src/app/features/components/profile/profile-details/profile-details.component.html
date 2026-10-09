@@ -1,0 +1,87 @@
+<section class="details">
+  <div class="details__tabs" role="tablist" aria-label="Profile sections">
+    <button
+      class="details__tab details__tab--active"
+      id="profile-tab-about"
+      type="button"
+      role="tab"
+      aria-selected="true"
+      aria-controls="profile-panel-about"
+    >
+      About
+    </button>
+    <button
+      class="details__tab"
+      id="profile-tab-stats"
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="profile-panel-stats"
+    >
+      Stats
+    </button>
+  </div>
+
+  <div
+    class="details__panel"
+    id="profile-panel-about"
+    role="tabpanel"
+    aria-labelledby="profile-tab-about"
+  >
+    <div class="details__section">
+      <h2 class="details__title">About</h2>
+      <p class="details__text">
+        Creating atmospheric soundscapes and electronic journeys for dreamers and night listeners.
+      </p>
+    </div>
+
+    <dl class="details__list">
+      <div class="details__field">
+        <dt class="details__label">Artist Name</dt>
+        <dd class="details__value">The Solar Waves</dd>
+      </div>
+
+      <div class="details__field">
+        <dt class="details__label">Date of Birth</dt>
+        <dd class="details__value">Jun 14, 1998</dd>
+      </div>
+
+      <div class="details__field details__field--full">
+        <dt class="details__label">Genres</dt>
+        <dd class="details__value">
+          <ul class="details__chips">
+            <li>
+              <button class="details__chip" type="button">
+                <span>Rock</span>
+              </button>
+            </li>
+            <li>
+              <button class="details__chip" type="button">
+                <span>Metal</span>
+              </button>
+            </li>
+            <li>
+              <button class="details__chip" type="button">
+                <span>Post-punk</span>
+              </button>
+            </li>
+          </ul>
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <div
+    class="details__panel"
+    id="profile-panel-stats"
+    role="tabpanel"
+    aria-labelledby="profile-tab-stats"
+    hidden
+  >
+    <app-empty-state
+      emptyIconClass="bx bx-bar-chart"
+      emptyTitle="No stats yet"
+      emptyDescription="Plays, listeners and radio picks will appear here once your tracks go live."
+    />
+  </div>
+</section>

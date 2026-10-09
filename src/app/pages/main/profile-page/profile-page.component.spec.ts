@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { ProfilePageComponent } from './profile-page.component';
 
 import type { ComponentFixture } from '@angular/core/testing';
@@ -10,6 +11,7 @@ describe('ProfilePageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProfilePageComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProfilePageComponent);
