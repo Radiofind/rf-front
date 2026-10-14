@@ -188,6 +188,7 @@ describe('ApiService', () => {
       name: 'Ada',
       surname: 'Lovelace',
       email: 'ada@example.com',
+      avatarUrl: null,
     };
 
     let received: ICurrentUser | undefined;

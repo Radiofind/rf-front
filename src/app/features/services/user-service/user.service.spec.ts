@@ -16,6 +16,7 @@ describe('UserService', () => {
     name: 'Ada',
     surname: 'Lovelace',
     email: 'ada@example.com',
+    avatarUrl: null,
   };
 
   const profileData: IUserProfileData = {

@@ -23,6 +23,7 @@ describe('SidebarMenuComponent', () => {
     name: 'Ada',
     surname: 'Lovelace',
     email: 'ada@example.com',
+    avatarUrl: null,
   };
 
   let getCurrentUserData: ReturnType<typeof vi.fn>;

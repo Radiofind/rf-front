@@ -11,6 +11,7 @@ export interface ICurrentUser {
   name: string;
   surname: string;
   email: string;
+  avatarUrl: string | null;
 }
 
 export interface IUserProfileData {

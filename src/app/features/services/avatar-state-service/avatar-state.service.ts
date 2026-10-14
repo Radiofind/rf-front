@@ -5,6 +5,7 @@ import { UserService } from '../user-service/user.service';
 import { Constants } from '../../../core/constants/constants';
 
 import type { Signal, WritableSignal } from '@angular/core';
+import type { ICurrentUser } from '../../../core/models/user.model';
 
 @Service()
 export class AvatarStateService {
@@ -44,7 +45,11 @@ export class AvatarStateService {
 
   private async fetchAvatar(): Promise<Blob | null> {
     try {
-      return await firstValueFrom(this.userService.getCurrentAvatar());
+      const currentUser: ICurrentUser = await firstValueFrom(this.userService.getCurrentUserData());
+
+      return currentUser.avatarUrl
+        ? await firstValueFrom(this.userService.getCurrentAvatar())
+        : null;
     } catch {
       return null;
     }
