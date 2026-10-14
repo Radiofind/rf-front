@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { LatestActivityComponent } from './latest-activity.component';
+import { Links } from '../../../../core/constants/links';
 
 import type { ComponentFixture } from '@angular/core/testing';
 
@@ -28,11 +29,21 @@ describe('LatestActivityComponent', () => {
     );
   });
 
-  it('links the empty state to the upload page', async () => {
+  it('renders the empty state call to action as a button', async () => {
     const fixture: ComponentFixture<LatestActivityComponent> = await createFixture();
+    const cta: HTMLElement = fixture.nativeElement.querySelector('.activity__cta');
 
-    expect(fixture.nativeElement.querySelector('.activity__cta').getAttribute('href')).toBe(
-      '/upload-track',
-    );
+    expect(cta.tagName).toBe('BUTTON');
+    expect(cta.textContent.trim()).toBe('Upload your first track');
+  });
+
+  it('navigates to the upload page when the call to action is clicked', async () => {
+    const fixture: ComponentFixture<LatestActivityComponent> = await createFixture();
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    fixture.nativeElement.querySelector('.activity__cta').click();
+
+    expect(navigate).toHaveBeenCalledOnce();
+    expect(navigate).toHaveBeenCalledWith([Links.UPLOAD_TRACK_URL]);
   });
 });
