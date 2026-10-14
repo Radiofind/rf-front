@@ -17,6 +17,7 @@ describe('MainContainerComponent', () => {
     name: 'Ada',
     surname: 'Lovelace',
     email: 'ada@example.com',
+    avatarUrl: null,
   };
 
   let fixture: ComponentFixture<MainContainerComponent>;
