@@ -1,6 +1,7 @@
 import { expect, test } from '../fixtures/test';
 import { API_URL, registerUser } from '../fixtures/api';
 import { HeaderPage } from '../pages/header.page';
+import { LatestActivityPage } from '../pages/latest-activity.page';
 
 import type { APIRequestContext, APIResponse } from '@playwright/test';
 import type { ITestUser } from '../fixtures/api';
@@ -219,6 +220,60 @@ test.describe('profile', () => {
       await expect(authenticatedPage).toHaveURL(/\/profile$/);
       await expect(header.profileMenu).toBeHidden();
       await expect(authenticatedPage.locator('app-profile-page')).toBeAttached();
+    });
+  });
+
+  test.describe('latest activity', () => {
+    test('shows the empty state to a user without any activity', async ({ authenticatedPage }) => {
+      const activity: LatestActivityPage = new LatestActivityPage(authenticatedPage);
+
+      await authenticatedPage.goto('/profile');
+
+      await expect(activity.root).toBeVisible();
+      await expect(activity.list).toHaveCount(0);
+      await expect(activity.emptyTitle).toHaveText('No activity yet');
+      await expect(activity.emptyDescription).toHaveText(
+        'Your uploads, reviews and radio picks will show up here.',
+      );
+      await expect(activity.uploadFirstTrackButton).toBeVisible();
+    });
+
+    test('opens the upload page from the empty state', async ({ authenticatedPage }) => {
+      const activity: LatestActivityPage = new LatestActivityPage(authenticatedPage);
+
+      await authenticatedPage.goto('/profile');
+
+      await activity.uploadFirstTrackButton.click();
+
+      await expect(authenticatedPage).toHaveURL(/\/upload-track$/);
+      await expect(authenticatedPage.locator('app-upload-track-page')).toBeAttached();
+      await expect(authenticatedPage.locator('app-profile-page')).toBeHidden();
+    });
+
+    test('opens the upload page from the keyboard', async ({ authenticatedPage }) => {
+      const activity: LatestActivityPage = new LatestActivityPage(authenticatedPage);
+
+      await authenticatedPage.goto('/profile');
+
+      await activity.uploadFirstTrackButton.focus();
+      await authenticatedPage.keyboard.press('Enter');
+
+      await expect(authenticatedPage).toHaveURL(/\/upload-track$/);
+    });
+
+    test('returns to the profile page with the browser back button', async ({
+      authenticatedPage,
+    }) => {
+      const activity: LatestActivityPage = new LatestActivityPage(authenticatedPage);
+
+      await authenticatedPage.goto('/profile');
+      await activity.uploadFirstTrackButton.click();
+      await expect(authenticatedPage).toHaveURL(/\/upload-track$/);
+
+      await authenticatedPage.goBack();
+
+      await expect(authenticatedPage).toHaveURL(/\/profile$/);
+      await expect(activity.uploadFirstTrackButton).toBeVisible();
     });
   });
 });
