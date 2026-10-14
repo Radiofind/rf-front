@@ -6,10 +6,20 @@ import { of, Subject, throwError } from 'rxjs';
 import { AvatarStateService } from './avatar-state.service';
 import { UserService } from '../user-service/user.service';
 
+import type { ICurrentUser } from '../../../core/models/user.model';
+
 describe('AvatarStateService', () => {
   const avatar: Blob = new Blob(['avatar'], { type: 'image/png' });
 
+  const currentUser: ICurrentUser = {
+    name: 'Ada',
+    surname: 'Lovelace',
+    email: 'ada@example.com',
+    avatarUrl: '/api/users/me/avatar',
+  };
+
   let service: AvatarStateService;
+  let getCurrentUserData: ReturnType<typeof vi.fn>;
   let getCurrentAvatar: ReturnType<typeof vi.fn>;
   let createObjectURL: ReturnType<typeof vi.fn>;
   let revokeObjectURL: ReturnType<typeof vi.fn>;
@@ -18,7 +28,10 @@ describe('AvatarStateService', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: PLATFORM_ID, useValue: platform },
-        { provide: UserService, useValue: { getCurrentAvatar: getCurrentAvatar } },
+        {
+          provide: UserService,
+          useValue: { getCurrentUserData: getCurrentUserData, getCurrentAvatar: getCurrentAvatar },
+        },
       ],
     });
     service = TestBed.inject(AvatarStateService);
@@ -26,6 +39,7 @@ describe('AvatarStateService', () => {
 
   beforeEach(() => {
     TestBed.resetTestingModule();
+    getCurrentUserData = vi.fn().mockReturnValue(of(currentUser));
     getCurrentAvatar = vi.fn().mockReturnValue(of(avatar));
     createObjectURL = vi.fn().mockReturnValue('blob:avatar');
     revokeObjectURL = vi.fn();
@@ -53,7 +67,27 @@ describe('AvatarStateService', () => {
     expect(service.avatarUrl()).toBe('blob:avatar');
   });
 
-  it('treats a missing avatar as no avatar', async () => {
+  it('does not request the image when the user has no avatar', async () => {
+    getCurrentUserData.mockReturnValue(of({ ...currentUser, avatarUrl: null }));
+    createService();
+
+    await service.loadAvatar();
+
+    expect(getCurrentAvatar).not.toHaveBeenCalled();
+    expect(service.avatarUrl()).toBeNull();
+  });
+
+  it('treats a failed user request as no avatar', async () => {
+    getCurrentUserData.mockReturnValue(throwError(() => new Error('Unauthorized')));
+    createService();
+
+    await service.loadAvatar();
+
+    expect(getCurrentAvatar).not.toHaveBeenCalled();
+    expect(service.avatarUrl()).toBeNull();
+  });
+
+  it('treats a missing avatar file as no avatar', async () => {
     getCurrentAvatar.mockReturnValue(
       throwError(() => new HttpErrorResponse({ status: 404, statusText: 'Not Found' })),
     );
@@ -70,6 +104,7 @@ describe('AvatarStateService', () => {
 
     await service.loadAvatar();
 
+    expect(getCurrentUserData).not.toHaveBeenCalled();
     expect(getCurrentAvatar).not.toHaveBeenCalled();
     expect(service.avatarUrl()).toBeNull();
   });
