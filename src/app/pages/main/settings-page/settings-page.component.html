@@ -1,0 +1,30 @@
+<div class="settings">
+  <section class="settings__hero" aria-labelledby="settings-title">
+    <h1 class="settings__title" id="settings-title">Settings</h1>
+    <p class="settings__subtitle">Customize your experience and preferences.</p>
+  </section>
+
+  <div class="settings__body">
+    <nav class="settings__nav" aria-label="Settings sections">
+      <ul class="settings__nav-list">
+        @for (item of navItems; track item.link) {
+          <li>
+            <a
+              class="settings__nav-item"
+              routerLinkActive="settings__nav-item--active"
+              ariaCurrentWhenActive="page"
+              [routerLink]="item.link"
+            >
+              <i class="settings__nav-icon" [class]="item.iconClass" aria-hidden="true"></i>
+              <span>{{ item.label }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <div class="settings__content">
+      <router-outlet />
+    </div>
+  </div>
+</div>

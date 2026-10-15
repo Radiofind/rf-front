@@ -1,0 +1,32 @@
+.general-settings {
+  padding: 12px 28px 4px;
+  border: 1px solid var(--header-element-border);
+  border-radius: 16px;
+  background: var(--second-bg-color);
+
+  &__title {
+    padding: 12px 0;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-color);
+  }
+
+  &__select,
+  &__picker {
+    width: 100%;
+  }
+
+  app-settings-row + app-settings-row {
+    border-top: 1px solid var(--header-border-color);
+  }
+}
+
+@media (max-width: 540px) {
+  .general-settings {
+    padding: 8px 16px 0;
+
+    &__title {
+      font-size: 19px;
+    }
+  }
+}

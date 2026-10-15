@@ -27,6 +27,7 @@ import type {
   IUserEndpoints,
   IUserProfileData,
 } from '../../models/user.model';
+import type { IGeneralSettings } from '../../models/settings.model';
 
 @Service()
 export class ApiService {
@@ -39,6 +40,8 @@ export class ApiService {
   private readonly userApi: string = `${environment.apiUrl}${this.userEndpoints.users}`;
 
   private readonly currentUserApi: string = `${this.userApi}${this.userEndpoints.me}`;
+
+  private readonly generalSettingsApi: string = `${this.currentUserApi}${this.userEndpoints.settings}${this.userEndpoints.general}`;
 
   private readonly http: HttpClient = inject(HttpClient);
 
@@ -117,5 +120,15 @@ export class ApiService {
   public deleteAvatar(): Observable<void> {
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     return this.http.delete<void>(`${this.currentUserApi}${this.userEndpoints.avatar}`);
+  }
+
+  public getGeneralSettings(): Observable<IGeneralSettings> {
+    return this.http.get<IGeneralSettings>(this.generalSettingsApi);
+  }
+
+  public updateGeneralSettings(settings: IGeneralSettings): Observable<IGeneralSettings> {
+    return this.http.put<IGeneralSettings>(this.generalSettingsApi, settings, {
+      context: skipGlobalLoader(),
+    });
   }
 }

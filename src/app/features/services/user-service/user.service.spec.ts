@@ -10,6 +10,7 @@ import type {
   ICurrentUser,
   IUserProfileData,
 } from '../../../core/models/user.model';
+import type { IGeneralSettings } from '../../../core/models/settings.model';
 
 describe('UserService', () => {
   const currentUser: ICurrentUser = {
@@ -34,6 +35,15 @@ describe('UserService', () => {
 
   const avatarBlob: Blob = new Blob(['avatar-bytes'], { type: 'image/png' });
 
+  const generalSettings: IGeneralSettings = {
+    language: 'EN',
+    radioMode: true,
+    profileVisibility: 'EVERYONE',
+    notificationsEnabled: true,
+    audioQuality: 'HIGH',
+    accentColor: 'VIOLET',
+  };
+
   const avatarFile: File = new File(['avatar-bytes'], 'avatar.png', { type: 'image/png' });
 
   let service: UserService;
@@ -42,7 +52,9 @@ describe('UserService', () => {
     | 'getUserProfileData'
     | 'uploadNewAvatar'
     | 'getCurrentAvatar'
-    | 'deleteAvatar',
+    | 'deleteAvatar'
+    | 'getGeneralSettings'
+    | 'updateGeneralSettings',
     ReturnType<typeof vi.fn>
   >;
 
@@ -57,6 +69,8 @@ describe('UserService', () => {
       uploadNewAvatar: vi.fn().mockReturnValue(of(avatarResponse)),
       getCurrentAvatar: vi.fn().mockReturnValue(of(avatarBlob)),
       deleteAvatar: vi.fn().mockReturnValue(of(undefined)),
+      getGeneralSettings: vi.fn().mockReturnValue(of(generalSettings)),
+      updateGeneralSettings: vi.fn().mockReturnValue(of(generalSettings)),
     };
 
     TestBed.configureTestingModule({
@@ -236,6 +250,44 @@ describe('UserService', () => {
 
       expect(apiMock.deleteAvatar).toHaveBeenCalledTimes(1);
       expect(completed).toBe(true);
+    });
+  });
+
+  describe('general settings', () => {
+    it('delegates the settings request to the api service', () => {
+      let received: IGeneralSettings | undefined;
+
+      service.getGeneralSettings().subscribe((value) => {
+        received = value;
+      });
+
+      expect(apiMock.getGeneralSettings).toHaveBeenCalledTimes(1);
+      expect(received).toBe(generalSettings);
+    });
+
+    it('passes the settings to save to the api service unchanged', () => {
+      let received: IGeneralSettings | undefined;
+
+      service.updateGeneralSettings(generalSettings).subscribe((value) => {
+        received = value;
+      });
+
+      expect(apiMock.updateGeneralSettings).toHaveBeenCalledWith(generalSettings);
+      expect(received).toBe(generalSettings);
+    });
+
+    it('surfaces a failed save to the caller', () => {
+      apiMock.updateGeneralSettings.mockReturnValue(throwError(() => ({ status: 500 })));
+
+      let errorStatus: number | undefined;
+
+      service.updateGeneralSettings(generalSettings).subscribe({
+        error: (error: { status: number }) => {
+          errorStatus = error.status;
+        },
+      });
+
+      expect(errorStatus).toBe(500);
     });
   });
 });

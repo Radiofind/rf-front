@@ -14,6 +14,7 @@ import type { TestRequest } from '@angular/common/http/testing';
 import type { IAuthResponse, ITwoFactorResponse } from '../../models/auth.model';
 import type { IRegisterData } from '../../../features/models/auth-content.model';
 import type { IAvatarResponse, ICurrentUser, IUserProfileData } from '../../models/user.model';
+import type { IGeneralSettings } from '../../models/settings.model';
 
 describe('ApiService', () => {
   const api: string = `${environment.apiUrl}${EndpointConstants.AUTH_ENDPOINTS.auth}`;
@@ -25,6 +26,17 @@ describe('ApiService', () => {
   const profileUrl: string = `${currentUserApi}${EndpointConstants.USER_ENDPOINTS.profile}`;
 
   const avatarUrl: string = `${currentUserApi}${EndpointConstants.USER_ENDPOINTS.avatar}`;
+
+  const generalSettingsUrl: string = '/api/users/me/settings/general';
+
+  const generalSettings: IGeneralSettings = {
+    language: 'DE',
+    radioMode: false,
+    profileVisibility: 'ONLY_ME',
+    notificationsEnabled: true,
+    audioQuality: 'NORMAL',
+    accentColor: 'OCEAN',
+  };
 
   const profileData: IUserProfileData = {
     name: 'Ada',
@@ -413,5 +425,76 @@ describe('ApiService', () => {
       .flush({ message: 'Unauthorized' }, { status: 401, statusText: 'Unauthorized' });
 
     expect(errorStatus).toBe(401);
+  });
+
+  describe('general settings', () => {
+    it('reads the general settings of the current user', () => {
+      let received: IGeneralSettings | undefined;
+
+      service.getGeneralSettings().subscribe((value) => {
+        received = value;
+      });
+
+      const request: TestRequest = httpMock.expectOne(generalSettingsUrl);
+
+      expect(request.request.method).toBe('GET');
+
+      request.flush(generalSettings);
+
+      expect(received).toEqual(generalSettings);
+    });
+
+    it('replaces the general settings with a PUT of the full settings object', () => {
+      let received: IGeneralSettings | undefined;
+
+      service.updateGeneralSettings(generalSettings).subscribe((value) => {
+        received = value;
+      });
+
+      const request: TestRequest = httpMock.expectOne(generalSettingsUrl);
+
+      expect(request.request.method).toBe('PUT');
+      expect(request.request.body).toEqual(generalSettings);
+
+      request.flush(generalSettings);
+
+      expect(received).toEqual(generalSettings);
+    });
+
+    it('saves settings in the background without the global loader', () => {
+      service.updateGeneralSettings(generalSettings).subscribe();
+
+      const request: TestRequest = httpMock.expectOne(generalSettingsUrl);
+
+      expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(true);
+
+      request.flush(generalSettings);
+    });
+
+    it('keeps the global loader for the initial settings request', () => {
+      service.getGeneralSettings().subscribe();
+
+      const request: TestRequest = httpMock.expectOne(generalSettingsUrl);
+
+      expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(false);
+
+      request.flush(generalSettings);
+    });
+
+    it('surfaces a rejected update to the caller', () => {
+      let errorStatus: number | undefined;
+
+      service.updateGeneralSettings(generalSettings).subscribe({
+        error: (error: { status: number }) => {
+          errorStatus = error.status;
+        },
+      });
+
+      httpMock
+        .expectOne(generalSettingsUrl)
+        .flush({ message: 'Bad Request' }, { status: 400, statusText: 'Bad Request' });
+
+      expect(errorStatus).toBe(400);
+    });
   });
 });

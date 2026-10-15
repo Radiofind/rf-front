@@ -33,4 +33,13 @@ describe('MAIN_ROUTES', () => {
     expect(route.loadComponent).toBeTypeOf('function');
     await expect(route.loadComponent?.()).resolves.toBeTypeOf('function');
   });
+
+  it('lazy loads the settings layout together with its child routes', async () => {
+    const route: Route = routeFor(Links.SETTINGS_URL);
+
+    await expect(route.loadComponent?.()).resolves.toBeTypeOf('function');
+    await expect(route.loadChildren?.()).resolves.toEqual(
+      expect.arrayContaining([expect.objectContaining({ path: Links.GENERAL_SETTINGS_PATH })]),
+    );
+  });
 });

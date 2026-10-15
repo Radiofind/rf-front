@@ -12,6 +12,9 @@ const CLIENT_RENDERED_PATHS: readonly string[] = [
   Links.SUPPORT_URL,
   Links.RESET_PASSWORD_URL,
   Links.PROFILE_URL,
+  Links.SETTINGS_URL,
+  Links.GENERAL_SETTINGS_URL,
+  Links.ACCOUNT_SETTINGS_URL,
 ];
 
 export const serverRoutes: ServerRoute[] = [

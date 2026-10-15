@@ -42,4 +42,10 @@ export const MAIN_ROUTES: Routes = [
     loadComponent: () =>
       import('./support-page/support-page.component').then((c) => c.SupportPageComponent),
   },
+  {
+    path: Links.SETTINGS_URL,
+    loadComponent: () =>
+      import('./settings-page/settings-page.component').then((c) => c.SettingsPageComponent),
+    loadChildren: () => import('./settings-page/settings.routes').then((m) => m.SETTINGS_ROUTES),
+  },
 ];
