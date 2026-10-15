@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { MainContainerComponent } from './main-container.component';
 import { UserService } from '../../../features/services/user-service/user.service';
 import { AvatarStateService } from '../../../features/services/avatar-state-service/avatar-state.service';
+import { SettingsStateService } from '../../../features/services/settings-state-service/settings-state.service';
 
 import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
@@ -24,6 +25,8 @@ describe('MainContainerComponent', () => {
   let avatarUrl: WritableSignal<string | null>;
   let loadAvatar: ReturnType<typeof vi.fn>;
   let clear: ReturnType<typeof vi.fn>;
+  let loadSettings: ReturnType<typeof vi.fn>;
+  let clearSettings: ReturnType<typeof vi.fn>;
 
   const avatarSources = (): (string | null)[] =>
     Array.from(
@@ -37,6 +40,8 @@ describe('MainContainerComponent', () => {
     avatarUrl = signal<string | null>(null);
     loadAvatar = vi.fn().mockResolvedValue(undefined);
     clear = vi.fn();
+    loadSettings = vi.fn().mockResolvedValue(true);
+    clearSettings = vi.fn();
 
     await TestBed.configureTestingModule({
       imports: [MainContainerComponent],
@@ -50,6 +55,10 @@ describe('MainContainerComponent', () => {
         {
           provide: AvatarStateService,
           useValue: { avatarUrl: avatarUrl.asReadonly(), loadAvatar: loadAvatar, clear: clear },
+        },
+        {
+          provide: SettingsStateService,
+          useValue: { loadSettings: loadSettings, clear: clearSettings },
         },
       ],
     }).compileComponents();
@@ -87,5 +96,15 @@ describe('MainContainerComponent', () => {
     fixture.destroy();
 
     expect(clear).toHaveBeenCalledTimes(1);
+  });
+
+  it('loads the user settings once on init so the accent color applies everywhere', () => {
+    expect(loadSettings).toHaveBeenCalledTimes(1);
+  });
+
+  it('resets the user settings when the layout is destroyed', () => {
+    fixture.destroy();
+
+    expect(clearSettings).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,0 +1,28 @@
+<div
+  class="picker"
+  role="radiogroup"
+  [attr.aria-labelledby]="labelledBy()"
+  [attr.aria-describedby]="describedBy()"
+>
+  @for (option of options(); track option.value) {
+    <label class="picker__option" [title]="option.label">
+      <input
+        class="picker__input"
+        type="radio"
+        [name]="groupName()"
+        [value]="option.value"
+        [checked]="option.value === value()"
+        [disabled]="disabled()"
+        [attr.aria-label]="option.label"
+        (change)="onSelect(option)"
+      />
+      <span
+        class="picker__swatch"
+        aria-hidden="true"
+        [style.background]="
+          'linear-gradient(135deg, ' + option.firstColor + ', ' + option.secondColor + ')'
+        "
+      ></span>
+    </label>
+  }
+</div>

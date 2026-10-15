@@ -29,4 +29,14 @@ export class Links {
   public static readonly SUPPORT_URL: string = 'support';
 
   public static readonly PROFILE_URL: string = 'profile';
+
+  public static readonly SETTINGS_URL: string = 'settings';
+
+  public static readonly GENERAL_SETTINGS_PATH: string = 'general';
+
+  public static readonly ACCOUNT_SETTINGS_PATH: string = 'account';
+
+  public static readonly GENERAL_SETTINGS_URL: string = `${this.SETTINGS_URL}/${this.GENERAL_SETTINGS_PATH}`;
+
+  public static readonly ACCOUNT_SETTINGS_URL: string = `${this.SETTINGS_URL}/${this.ACCOUNT_SETTINGS_PATH}`;
 }

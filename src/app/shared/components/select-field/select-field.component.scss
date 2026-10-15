@@ -1,0 +1,47 @@
+:host {
+  display: block;
+}
+
+.select {
+  position: relative;
+
+  &--disabled {
+    opacity: 0.5;
+  }
+
+  &__control {
+    width: 100%;
+    height: 48px;
+    padding: 0 48px 0 18px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 12px;
+    background: var(--surface-color);
+    font-size: 15px;
+    color: var(--text-color);
+    color-scheme: dark;
+    appearance: none;
+    cursor: pointer;
+    transition: all 300ms ease;
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      border-color: var(--first-gradient-color);
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    display: flex;
+    font-size: 22px;
+    color: var(--text-color);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+}

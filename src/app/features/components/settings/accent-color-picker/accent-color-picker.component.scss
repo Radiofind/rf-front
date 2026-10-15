@@ -1,0 +1,56 @@
+:host {
+  display: block;
+}
+
+.picker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  &__option {
+    position: relative;
+    display: flex;
+    cursor: pointer;
+  }
+
+  &__input {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+  }
+
+  &__swatch {
+    width: 32px;
+    height: 32px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    transition: all 300ms ease;
+  }
+
+  &__option:hover &__swatch {
+    transform: scale(1.08);
+  }
+
+  &__input:checked + &__swatch {
+    border-color: var(--text-color);
+    box-shadow:
+      0 0 0 3px var(--bg-color),
+      0 0 0 5px var(--first-gradient-color),
+      0 0 18px var(--second-gradient-color);
+  }
+
+  &__input:focus-visible + &__swatch {
+    outline: 2px dashed var(--text-color);
+    outline-offset: 6px;
+  }
+
+  &__input:disabled + &__swatch {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

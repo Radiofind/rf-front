@@ -24,6 +24,9 @@ describe('serverRoutes', () => {
     Links.STATISTICS_URL,
     Links.SUPPORT_URL,
     Links.PROFILE_URL,
+    Links.SETTINGS_URL,
+    Links.GENERAL_SETTINGS_URL,
+    Links.ACCOUNT_SETTINGS_URL,
   ])('renders %s on the client only', (path) => {
     expect(routeFor(path).renderMode).toBe(RenderMode.Client);
   });

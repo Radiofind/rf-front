@@ -138,6 +138,24 @@ export class Constants {
 
   public static readonly CAMERA_ICON: string = 'bx bx-camera';
 
+  public static readonly SETTINGS_SAVED: string = 'Settings saved';
+
+  public static readonly SETTINGS_SAVE_FAILED: string =
+    'Could not save settings. Please try again.';
+
+  public static readonly SETTINGS_LOAD_FAILED: string =
+    'Could not load settings. Please reload the page.';
+
+  public static readonly TOGGLE_ENABLED_TEXT: string = 'Enabled';
+
+  public static readonly TOGGLE_DISABLED_TEXT: string = 'Disabled';
+
+  public static readonly FIRST_GRADIENT_COLOR_PROPERTY: string = '--first-gradient-color';
+
+  public static readonly SECOND_GRADIENT_COLOR_PROPERTY: string = '--second-gradient-color';
+
+  public static readonly MAIN_COLOR_PROPERTY: string = '--main-color';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;

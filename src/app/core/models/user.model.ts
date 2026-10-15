@@ -5,6 +5,8 @@ export interface IUserEndpoints {
   me: string;
   profile: string;
   avatar: string;
+  settings: string;
+  general: string;
 }
 
 export interface ICurrentUser {

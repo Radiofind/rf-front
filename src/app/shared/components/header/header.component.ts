@@ -49,8 +49,6 @@ export class HeaderComponent {
 
   public readonly openAccountAction: OutputEmitterRef<void> = output();
 
-  public readonly openSettingsAction: OutputEmitterRef<void> = output();
-
   public readonly profileMenuPosition: PopoverPosition = PopoverPositionEnum.BOTTOM_START;
 
   public readonly profileMenuItems: readonly IProfileMenuItem[] = PROFILE_MENU_ITEMS;
@@ -111,7 +109,7 @@ export class HeaderComponent {
   }
 
   public onOpenSettings(): void {
-    this.openSettingsAction.emit();
+    void this.router.navigate([Links.GENERAL_SETTINGS_URL]);
   }
 
   public onLogOut(): void {

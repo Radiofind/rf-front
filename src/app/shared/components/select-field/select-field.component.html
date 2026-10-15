@@ -1,0 +1,16 @@
+<div class="select" [class.select--disabled]="disabled()">
+  <select
+    class="select__control"
+    [disabled]="disabled()"
+    [attr.aria-labelledby]="labelledBy()"
+    [attr.aria-describedby]="describedBy()"
+    (change)="onChange($event)"
+  >
+    @for (option of options(); track option.value) {
+      <option [value]="option.value" [selected]="option.value === value()">
+        {{ option.label }}
+      </option>
+    }
+  </select>
+  <i class="select__arrow bx bx-chevron-down" aria-hidden="true"></i>
+</div>
