@@ -7,6 +7,7 @@ import type {
   ICurrentUser,
   IUserProfileData,
 } from '../../../core/models/user.model';
+import type { IGeneralSettings } from '../../../core/models/settings.model';
 
 @Service()
 export class UserService {
@@ -30,5 +31,13 @@ export class UserService {
 
   public deleteAvatar(): Observable<void> {
     return this.apiService.deleteAvatar();
+  }
+
+  public getGeneralSettings(): Observable<IGeneralSettings> {
+    return this.apiService.getGeneralSettings();
+  }
+
+  public updateGeneralSettings(settings: IGeneralSettings): Observable<IGeneralSettings> {
+    return this.apiService.updateGeneralSettings(settings);
   }
 }

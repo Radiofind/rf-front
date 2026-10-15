@@ -19,5 +19,7 @@ export class EndpointConstants {
     me: '/me',
     profile: '/profile',
     avatar: '/avatar',
+    settings: '/settings',
+    general: '/general',
   };
 }

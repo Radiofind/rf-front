@@ -1,0 +1,73 @@
+:host {
+  display: inline-flex;
+}
+
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &__input {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+  }
+
+  &__track {
+    position: relative;
+    flex-shrink: 0;
+    width: 48px;
+    height: 26px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 999px;
+    background: var(--surface-color);
+    transition: all 300ms ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--second-text-color);
+      transition: all 300ms ease;
+    }
+  }
+
+  &__input:checked + &__track {
+    border-color: transparent;
+    background: linear-gradient(90deg, var(--first-gradient-color), var(--second-gradient-color));
+    box-shadow: 0 0 14px rgba(168, 85, 247, 0.45);
+
+    &::after {
+      background: var(--text-color);
+      transform: translateX(22px);
+    }
+  }
+
+  &__input:focus-visible + &__track {
+    box-shadow:
+      0 0 0 2px var(--bg-color),
+      0 0 0 4px var(--first-gradient-color);
+  }
+
+  &__text {
+    min-width: 64px;
+    font-size: 15px;
+    color: var(--text-color);
+  }
+}

@@ -1,0 +1,144 @@
+import { DOCUMENT, inject, PLATFORM_ID, Service, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
+import { UserService } from '../user-service/user.service';
+import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
+import { Constants } from '../../../core/constants/constants';
+import { ACCENT_COLORS, DEFAULT_GENERAL_SETTINGS } from '../../constants/settings.constant';
+
+import type { Signal, WritableSignal } from '@angular/core';
+import type { IGeneralSettings } from '../../../core/models/settings.model';
+import type { IAccentColorOption } from '../../models/accent-color-option.model';
+
+@Service()
+export class SettingsStateService {
+  private readonly userService: UserService = inject(UserService);
+
+  private readonly snackbarService: SnackbarService = inject(SnackbarService);
+
+  private readonly document: Document = inject(DOCUMENT);
+
+  private readonly isBrowser: boolean = isPlatformBrowser(inject(PLATFORM_ID));
+
+  private readonly settingsState: WritableSignal<IGeneralSettings> = signal<IGeneralSettings>({
+    ...DEFAULT_GENERAL_SETTINGS,
+  });
+
+  private readonly isLoadedState: WritableSignal<boolean> = signal<boolean>(false);
+
+  private savedSettings: IGeneralSettings = { ...DEFAULT_GENERAL_SETTINGS };
+
+  private loadRequest: Promise<boolean> | null = null;
+
+  private saveQueue: Promise<void> = Promise.resolve();
+
+  private changeId: number = Constants.ZERO;
+
+  private sessionId: number = Constants.ZERO;
+
+  public readonly settings: Signal<IGeneralSettings> = this.settingsState.asReadonly();
+
+  public readonly isLoaded: Signal<boolean> = this.isLoadedState.asReadonly();
+
+  public loadSettings(): Promise<boolean> {
+    if (!this.isBrowser) {
+      return Promise.resolve(false);
+    }
+
+    this.loadRequest ??= this.fetchSettings().finally(() => {
+      this.loadRequest = null;
+    });
+
+    return this.loadRequest;
+  }
+
+  public updateSettings(changes: Partial<IGeneralSettings>): Promise<void> {
+    const settings: IGeneralSettings = { ...this.settingsState(), ...changes };
+
+    this.changeId += Constants.ONE;
+    const changeId: number = this.changeId;
+    const sessionId: number = this.sessionId;
+
+    this.applySettings(settings);
+
+    this.saveQueue = this.saveQueue.then(() => this.saveSettings(settings, changeId, sessionId));
+
+    return this.saveQueue;
+  }
+
+  public clear(): void {
+    this.sessionId += Constants.ONE;
+    this.savedSettings = { ...DEFAULT_GENERAL_SETTINGS };
+    this.isLoadedState.set(false);
+    this.applySettings(this.savedSettings);
+  }
+
+  private async fetchSettings(): Promise<boolean> {
+    const sessionId: number = this.sessionId;
+
+    try {
+      const settings: IGeneralSettings = await firstValueFrom(
+        this.userService.getGeneralSettings(),
+      );
+
+      if (sessionId === this.sessionId) {
+        this.savedSettings = settings;
+        this.applySettings(settings);
+        this.isLoadedState.set(true);
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  private async saveSettings(
+    settings: IGeneralSettings,
+    changeId: number,
+    sessionId: number,
+  ): Promise<void> {
+    if (sessionId !== this.sessionId) {
+      return;
+    }
+
+    try {
+      const savedSettings: IGeneralSettings = await firstValueFrom(
+        this.userService.updateGeneralSettings(settings),
+      );
+
+      if (sessionId !== this.sessionId) {
+        return;
+      }
+
+      this.savedSettings = savedSettings;
+
+      if (changeId === this.changeId) {
+        this.applySettings(savedSettings);
+        this.snackbarService.success(Constants.SETTINGS_SAVED);
+      }
+    } catch {
+      if (sessionId !== this.sessionId) {
+        return;
+      }
+
+      if (changeId === this.changeId) {
+        this.applySettings(this.savedSettings);
+      }
+
+      this.snackbarService.error(Constants.SETTINGS_SAVE_FAILED);
+    }
+  }
+
+  private applySettings(settings: IGeneralSettings): void {
+    this.settingsState.set(settings);
+
+    const root: HTMLElement = this.document.documentElement;
+    const accentColor: IAccentColorOption = ACCENT_COLORS[settings.accentColor];
+
+    root.lang = settings.language.toLowerCase();
+    root.style.setProperty(Constants.FIRST_GRADIENT_COLOR_PROPERTY, accentColor.firstColor);
+    root.style.setProperty(Constants.SECOND_GRADIENT_COLOR_PROPERTY, accentColor.secondColor);
+    root.style.setProperty(Constants.MAIN_COLOR_PROPERTY, accentColor.mainColor);
+  }
+}

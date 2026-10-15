@@ -1,0 +1,14 @@
+<label class="toggle" [class.toggle--disabled]="disabled()">
+  <input
+    class="toggle__input"
+    type="checkbox"
+    role="switch"
+    [checked]="checked()"
+    [disabled]="disabled()"
+    [attr.aria-labelledby]="labelledBy()"
+    [attr.aria-describedby]="describedBy()"
+    (change)="onChange($event)"
+  />
+  <span class="toggle__track" aria-hidden="true"></span>
+  <span class="toggle__text" aria-hidden="true">{{ stateText() }}</span>
+</label>

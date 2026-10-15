@@ -176,4 +176,36 @@ describe('HeaderComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith([Links.PROFILE_URL]);
     expect(popoverPanel()).toBeNull();
   });
+
+  it('navigates to the general settings when the settings item is selected', async () => {
+    const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
+
+    const navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    fixture.componentInstance.onProfileMenuItemSelect('settings');
+
+    expect(navigateSpy).toHaveBeenCalledTimes(1);
+    expect(navigateSpy).toHaveBeenCalledWith([Links.GENERAL_SETTINGS_URL]);
+  });
+
+  it('navigates to the general settings from the rendered profile menu', async () => {
+    const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
+
+    const navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    fixture.nativeElement.querySelector('[aria-label="Profile"]').click();
+    await fixture.whenStable();
+
+    const settingsItem: HTMLButtonElement | undefined = Array.from(
+      document.querySelectorAll<HTMLButtonElement>('.header-menu-item'),
+    ).find((item) => item.textContent.trim() === 'Settings');
+
+    expect(settingsItem).toBeDefined();
+
+    settingsItem!.click();
+    await fixture.whenStable();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['settings/general']);
+    expect(popoverPanel()).toBeNull();
+  });
 });
