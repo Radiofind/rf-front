@@ -11,13 +11,7 @@ import {
 import { UserService } from '../../services/user-service/user.service';
 import { Links } from '../../../core/constants/links';
 
-import type {
-  InputSignal,
-  ModelSignal,
-  OnInit,
-  Signal,
-  WritableSignal,
-} from '@angular/core';
+import type { InputSignal, ModelSignal, OnInit, Signal, WritableSignal } from '@angular/core';
 import type { BreakpointState } from '@angular/cdk/layout';
 import type { ISidebarMenuItem } from '../../models/sidebar-menu-item.model';
 import type { ICurrentUser } from '../../../core/models/user.model';
