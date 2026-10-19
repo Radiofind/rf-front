@@ -1,5 +1,5 @@
-import { Component, computed, inject, input, model, output, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, computed, inject, input, model, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { firstValueFrom, map } from 'rxjs';
@@ -9,15 +9,9 @@ import {
   SIDEBAR_MENU_ITEMS,
 } from '../../constants/sidebar-menu.constant';
 import { UserService } from '../../services/user-service/user.service';
+import { Links } from '../../../core/constants/links';
 
-import type {
-  InputSignal,
-  ModelSignal,
-  OnInit,
-  OutputEmitterRef,
-  Signal,
-  WritableSignal,
-} from '@angular/core';
+import type { InputSignal, ModelSignal, OnInit, Signal, WritableSignal } from '@angular/core';
 import type { BreakpointState } from '@angular/cdk/layout';
 import type { ISidebarMenuItem } from '../../models/sidebar-menu-item.model';
 import type { ICurrentUser } from '../../../core/models/user.model';
@@ -30,6 +24,8 @@ import type { ICurrentUser } from '../../../core/models/user.model';
 })
 export class SidebarMenuComponent implements OnInit {
   private readonly userService: UserService = inject(UserService);
+
+  private readonly router: Router = inject(Router);
 
   private readonly isMobile: Signal<boolean> = toSignal(
     inject(BreakpointObserver)
@@ -54,8 +50,6 @@ export class SidebarMenuComponent implements OnInit {
 
   public readonly isUserOnline: InputSignal<boolean> = input<boolean>(false);
 
-  public readonly profileAction: OutputEmitterRef<void> = output();
-
   public readonly userName: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
 
   public readonly userEmail: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
@@ -79,7 +73,7 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   public onProfile(): void {
-    this.profileAction.emit();
+    void this.router.navigate([Links.SETTINGS_URL, Links.ACCOUNT_SETTINGS_PATH]);
   }
 
   private async getCurrentUserData(): Promise<void> {

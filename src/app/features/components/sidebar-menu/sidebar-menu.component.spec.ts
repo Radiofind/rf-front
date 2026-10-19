@@ -11,6 +11,7 @@ import {
   SIDEBAR_MENU_ITEMS,
 } from '../../../features/constants/sidebar-menu.constant';
 import { Constants } from '../../../core/constants/constants';
+import { Links } from '../../../core/constants/links';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { Routes } from '@angular/router';
@@ -201,5 +202,28 @@ describe('SidebarMenuComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.componentInstance.userName()).toBe('Ada Lovelace');
+  });
+
+  it('navigates to the account settings on profile', async () => {
+    const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
+
+    const navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    fixture.componentInstance.onProfile();
+
+    expect(navigateSpy).toHaveBeenCalledTimes(1);
+    expect(navigateSpy).toHaveBeenCalledWith([Links.SETTINGS_URL, Links.ACCOUNT_SETTINGS_PATH]);
+  });
+
+  it('navigates to the account settings from the rendered user card', async () => {
+    const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
+
+    const navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    fixture.nativeElement.querySelector('.sidebar__user').click();
+    await fixture.whenStable();
+
+    expect(navigateSpy).toHaveBeenCalledTimes(1);
+    expect(navigateSpy).toHaveBeenCalledWith([Links.SETTINGS_URL, Links.ACCOUNT_SETTINGS_PATH]);
   });
 });
