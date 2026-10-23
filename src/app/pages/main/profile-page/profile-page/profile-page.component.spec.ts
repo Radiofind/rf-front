@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 import { ProfilePageComponent } from './profile-page.component';
 import { UserService } from '../../../../features/services/user-service/user.service';
@@ -9,6 +9,7 @@ import { AvatarStateService } from '../../../../features/services/avatar-state-s
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
 import { AvatarModalComponent } from '../../../../features/dialogs/avatar-modal/avatar-modal.component';
 import { Constants } from '../../../../core/constants/constants';
+import { Links } from '../../../../core/constants/links';
 
 import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
@@ -214,5 +215,14 @@ describe('ProfilePageComponent', () => {
 
       expect(setAvatar).not.toHaveBeenCalled();
     });
+  });
+
+  it('opens the edit page from the hero edit button', async () => {
+    const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('.hero__edit')!.click();
+
+    expect(navigate).toHaveBeenCalledWith([Links.EDIT_PROFILE_URL]);
   });
 });

@@ -79,4 +79,16 @@ describe('RadioFieldComponent', () => {
 
     expect(inputs.every((input) => input.disabled)).toBe(true);
   });
+
+  it('switches to the compact variant on demand', async () => {
+    const fixture: ComponentFixture<RadioFieldComponent<ArtistType>> = await createFixture();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.radio-field--compact')).toBeNull();
+
+    fixture.componentRef.setInput('isCompact', true);
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.radio-field--compact')).not.toBeNull();
+  });
 });

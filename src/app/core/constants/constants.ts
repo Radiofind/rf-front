@@ -12,6 +12,8 @@ export class Constants {
 
   public static readonly CLOSING_BRACKET: string = ')';
 
+  public static readonly DOT: string = '.';
+
   public static readonly TOKEN_KEY: string = 'radiofind_token';
 
   public static readonly UPPERCASE: string = 'uppercase';
@@ -156,6 +158,24 @@ export class Constants {
 
   public static readonly MAIN_COLOR_PROPERTY: string = '--main-color';
 
+  public static readonly URL_PROPERTY: string = 'url';
+
+  public static readonly SOCIAL_LINK_PROPERTY: string = 'socialLink';
+
+  public static readonly SAME_EMAIL_PROPERTY: string = 'sameEmail';
+
+  public static readonly PROFILE_SAVED: string = 'Profile saved';
+
+  public static readonly PROFILE_SAVE_FAILED: string = 'Could not save profile. Please try again.';
+
+  public static readonly PROFILE_LOAD_FAILED: string =
+    'Could not load profile. Please reload the page.';
+
+  public static readonly EMAIL_CHANGED_SIGN_IN_AGAIN: string =
+    'Email changed. Please sign in with your new email.';
+
+  public static readonly ADD_LABEL: string = 'Add';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
@@ -165,6 +185,24 @@ export class Constants {
   public static readonly MIN_LINGTS_FORM_VALIDATION_PASSWORD: number = 8;
 
   public static readonly MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME: number = 50;
+
+  public static readonly MAX_LENGTH_FORM_NAME: number = 100;
+
+  public static readonly MAX_LENGTH_FORM_EMAIL: number = 254;
+
+  public static readonly MAX_LENGTH_FORM_SHORT_DESCRIPTION: number = 160;
+
+  public static readonly MAX_LENGTH_FORM_DESCRIPTION: number = 1000;
+
+  public static readonly MAX_MAIN_GENRES: number = 3;
+
+  public static readonly MAX_ADDITIONAL_GENRES: number = 10;
+
+  public static readonly SHORT_DESCRIPTION_TEXTAREA_ROWS: number = 3;
+
+  public static readonly DESCRIPTION_TEXTAREA_ROWS: number = 5;
+
+  public static readonly HTTP_CONFLICT_STATUS: number = 409;
 
   public static readonly MIN_BIRTH_DATE: number = 100;
 
@@ -223,6 +261,8 @@ export class Constants {
   public static readonly SPACES_VALIDATOR_PATTERN: RegExp = /\s/;
 
   public static readonly NOT_DIGIT_PATTERN: RegExp = /\D/g;
+
+  public static readonly ALLOWED_URL_PROTOCOLS: readonly string[] = ['http:', 'https:'];
 
   public static readonly START_HORIZONTAL_ALIGNMENT: HorizontalConnectionPos = 'start';
 

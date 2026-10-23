@@ -1,5 +1,6 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ProfileHeroComponent } from '../../../../features/components/profile/profile-hero/profile-hero.component';
 import { ProfileStatsComponent } from '../../../../features/components/profile/profile-stats/profile-stats.component';
@@ -10,6 +11,7 @@ import { AvatarStateService } from '../../../../features/services/avatar-state-s
 import { AvatarModalComponent } from '../../../../features/dialogs/avatar-modal/avatar-modal.component';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
 import { Constants } from '../../../../core/constants/constants';
+import { Links } from '../../../../core/constants/links';
 import { ArtistTypeRequestEnum } from '../../../../core/enums/artist-type.enum';
 import { DateFormatEnum } from '../../../../core/enums/date-format.enum';
 import { ModalSizeEnum } from '../../../../core/enums/modal-size.enum';
@@ -42,6 +44,8 @@ export class ProfilePageComponent implements OnInit {
   private readonly avatarStateService: AvatarStateService = inject(AvatarStateService);
 
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
+
+  private readonly router: Router = inject(Router);
 
   private readonly profile: WritableSignal<IUserProfileData | null> =
     signal<IUserProfileData | null>(null);
@@ -92,6 +96,10 @@ export class ProfilePageComponent implements OnInit {
           this.avatarStateService.setAvatar(result.avatar);
         }
       });
+  }
+
+  public onProfileEdit(): void {
+    void this.router.navigate([Links.EDIT_PROFILE_URL]);
   }
 
   private async getUserProfileData(): Promise<void> {

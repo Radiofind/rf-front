@@ -103,4 +103,16 @@ describe('ProfileHeroComponent', () => {
 
     expect(avatarEdit).toHaveBeenCalledTimes(1);
   });
+
+  it('asks to edit the profile when the edit button is clicked', async () => {
+    const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+    await fixture.whenStable();
+
+    const profileEdit: Mock<() => void> = vi.fn<() => void>();
+    fixture.componentInstance.profileEdit.subscribe(profileEdit);
+
+    fixture.nativeElement.querySelector('.hero__edit').click();
+
+    expect(profileEdit).toHaveBeenCalledTimes(1);
+  });
 });

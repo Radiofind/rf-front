@@ -24,11 +24,17 @@ export class ProfileHeroComponent {
 
   public readonly avatarEdit: OutputEmitterRef<void> = output();
 
+  public readonly profileEdit: OutputEmitterRef<void> = output();
+
   protected readonly artistRoleLabel: Signal<string> = computed<string>(
     () => ARTIST_ROLE_LABELS[this.artistType()],
   );
 
   public onAvatarEdit(): void {
     this.avatarEdit.emit();
+  }
+
+  public onProfileEdit(): void {
+    this.profileEdit.emit();
   }
 }

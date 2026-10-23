@@ -75,6 +75,10 @@ module.exports = tseslint.config(
 
       '@typescript-eslint/no-inferrable-types': 'off',
 
+      '@typescript-eslint/no-unsafe-argument': 'off',
+
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+
       '@typescript-eslint/no-unnecessary-condition': 'warn',
 
       '@typescript-eslint/no-confusing-void-expression': 'off',

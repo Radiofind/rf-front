@@ -54,6 +54,10 @@ export class InputFieldComponent implements FormValueControl<string> {
     Constants.DEFAULT_TEXTAREA_ROWS,
   );
 
+  public readonly isCompact: InputSignal<boolean> = input<boolean>(false);
+
+  public readonly characterLimit: InputSignal<number | null> = input<number | null>(null);
+
   public readonly inputActionEmiter: OutputEmitterRef<void> = output();
 
   public readonly additionalFieldAction: OutputEmitterRef<void> = output();
@@ -64,6 +68,11 @@ export class InputFieldComponent implements FormValueControl<string> {
   public readonly isInputInvalid: Signal<boolean> = computed(
     () => this.visibleErrors().length > Constants.ZERO,
   );
+
+  public readonly isLimitExceeded: Signal<boolean> = computed(() => {
+    const characterLimit: number | null = this.characterLimit();
+    return characterLimit !== null && this.value().length > characterLimit;
+  });
 
   public onInput(event: Event): void {
     const input: HTMLInputElement | HTMLTextAreaElement = event.target as
