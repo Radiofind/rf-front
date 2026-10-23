@@ -24,6 +24,7 @@ describe('serverRoutes', () => {
     Links.STATISTICS_URL,
     Links.SUPPORT_URL,
     Links.PROFILE_URL,
+    Links.EDIT_PROFILE_URL,
     Links.SETTINGS_URL,
     Links.GENERAL_SETTINGS_URL,
     Links.ACCOUNT_SETTINGS_URL,
