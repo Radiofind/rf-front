@@ -192,8 +192,6 @@ test.describe('edit profile', () => {
     });
 
     test('rejects the old token once the email has changed', async ({ request, user }) => {
-      test.fail(true, 'Backend currently answers a stale token with 500 instead of 401/403');
-
       await updateProfile(request, user.token, profileUpdate(user, { email: uniqueEmail() }));
 
       const response: APIResponse = await request.get(PROFILE_URL, {

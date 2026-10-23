@@ -2,7 +2,7 @@ import { expect, test } from '../fixtures/test';
 import { API_URL } from '../fixtures/api';
 import { SidebarPage } from '../pages/sidebar.page';
 
-import type { Request, Response } from '@playwright/test';
+import type { APIResponse, Request, Response } from '@playwright/test';
 
 const CURRENT_USER_URL: string = `${API_URL}/users/me`;
 
@@ -14,7 +14,7 @@ const isCurrentUserRequest = (request: Request): boolean =>
 test.describe('current user', () => {
   test.describe('GET /users/me', () => {
     test('returns the signed-in user for a valid token', async ({ request, user }) => {
-      const response: Response = await request.get(CURRENT_USER_URL, {
+      const response: APIResponse = await request.get(CURRENT_USER_URL, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
 
@@ -30,7 +30,7 @@ test.describe('current user', () => {
     });
 
     test('never returns the password of the user', async ({ request, user }) => {
-      const response: Response = await request.get(CURRENT_USER_URL, {
+      const response: APIResponse = await request.get(CURRENT_USER_URL, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
 
@@ -40,13 +40,13 @@ test.describe('current user', () => {
     });
 
     test('rejects a request without a token', async ({ request }) => {
-      const response: Response = await request.get(CURRENT_USER_URL);
+      const response: APIResponse = await request.get(CURRENT_USER_URL);
 
       expect([401, 403]).toContain(response.status());
     });
 
     test('rejects a malformed token', async ({ request }) => {
-      const response: Response = await request.get(CURRENT_USER_URL, {
+      const response: APIResponse = await request.get(CURRENT_USER_URL, {
         headers: { Authorization: 'Bearer not-a-jwt' },
       });
 
@@ -54,7 +54,7 @@ test.describe('current user', () => {
     });
 
     test('rejects a token of the wrong scheme', async ({ request, user }) => {
-      const response: Response = await request.get(CURRENT_USER_URL, {
+      const response: APIResponse = await request.get(CURRENT_USER_URL, {
         headers: { Authorization: user.token },
       });
 
@@ -100,11 +100,6 @@ test.describe('current user', () => {
     }) => {
       const sidebar: SidebarPage = new SidebarPage(authenticatedPage);
 
-      await authenticatedPage.goto('/my-uploads');
-      await expect(sidebar.userName).toHaveText(`${user.name} ${user.surname}`);
-      await authenticatedPage.waitForLoadState('networkidle');
-
-      // The shell asks for the current user on start-up (sidebar and avatar); only count what follows.
       let requests: number = 0;
 
       authenticatedPage.on('request', (request: Request) => {
@@ -112,6 +107,9 @@ test.describe('current user', () => {
           requests += 1;
         }
       });
+
+      await authenticatedPage.goto('/my-uploads');
+      await expect(sidebar.userName).toHaveText(`${user.name} ${user.surname}`);
 
       await sidebar.item('Statistics').click();
       await expect(authenticatedPage).toHaveURL(/\/statistics$/);
@@ -121,7 +119,8 @@ test.describe('current user', () => {
 
       await expect(sidebar.userName).toHaveText(`${user.name} ${user.surname}`);
       await expect(sidebar.userEmail).toHaveText(user.email);
-      expect(requests).toBe(0);
+      await authenticatedPage.waitForLoadState('networkidle');
+      expect(requests).toBe(1);
     });
 
     test('does not ask for the current user on the login page', async ({ page }) => {

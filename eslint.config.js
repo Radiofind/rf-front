@@ -77,6 +77,8 @@ module.exports = tseslint.config(
 
       '@typescript-eslint/no-unnecessary-condition': 'warn',
 
+      '@typescript-eslint/no-confusing-void-expression': 'off',
+
       '@angular-eslint/component-class-suffix': 'error',
 
       '@angular-eslint/directive-class-suffix': 'error',

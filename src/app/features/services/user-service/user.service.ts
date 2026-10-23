@@ -1,5 +1,7 @@
 import { inject, Service } from '@angular/core';
+import { catchError, shareReplay, tap, throwError } from 'rxjs';
 import { ApiService } from '../../../core/services/api/api.service';
+import { AuthStateService } from '../auth-state-service/auth-state.service';
 
 import type { Observable } from 'rxjs';
 import type {
@@ -15,8 +17,27 @@ import type { IGeneralSettings } from '../../../core/models/settings.model';
 export class UserService {
   private readonly apiService: ApiService = inject(ApiService);
 
+  private readonly authStateService: AuthStateService = inject(AuthStateService);
+
+  private currentUser$: Observable<ICurrentUser> | null = null;
+
+  private currentUserToken: string | null | undefined = null;
+
   public getCurrentUserData(): Observable<ICurrentUser> {
-    return this.apiService.getCurrentUserData();
+    const token: string | null | undefined = this.authStateService.getToken();
+
+    if (!this.currentUser$ || token !== this.currentUserToken) {
+      this.currentUserToken = token;
+      this.currentUser$ = this.apiService.getCurrentUserData().pipe(
+        catchError((error: unknown) => {
+          this.resetCurrentUser();
+          return throwError(() => error);
+        }),
+        shareReplay(1),
+      );
+    }
+
+    return this.currentUser$;
   }
 
   public getUserProfileData(): Observable<IUserProfileData> {
@@ -24,11 +45,11 @@ export class UserService {
   }
 
   public updateUserProfileData(data: IUpdateProfileData): Observable<IUpdatedProfileData> {
-    return this.apiService.updateUserProfileData(data);
+    return this.apiService.updateUserProfileData(data).pipe(tap(() => this.resetCurrentUser()));
   }
 
   public uploadNewAvatar(file: File): Observable<IAvatarResponse> {
-    return this.apiService.uploadNewAvatar(file);
+    return this.apiService.uploadNewAvatar(file).pipe(tap(() => this.resetCurrentUser()));
   }
 
   public getCurrentAvatar(): Observable<Blob> {
@@ -36,7 +57,7 @@ export class UserService {
   }
 
   public deleteAvatar(): Observable<void> {
-    return this.apiService.deleteAvatar();
+    return this.apiService.deleteAvatar().pipe(tap(() => this.resetCurrentUser()));
   }
 
   public getGeneralSettings(): Observable<IGeneralSettings> {
@@ -45,5 +66,9 @@ export class UserService {
 
   public updateGeneralSettings(settings: IGeneralSettings): Observable<IGeneralSettings> {
     return this.apiService.updateGeneralSettings(settings);
+  }
+
+  private resetCurrentUser(): void {
+    this.currentUser$ = null;
   }
 }
