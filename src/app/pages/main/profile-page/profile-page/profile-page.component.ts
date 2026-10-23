@@ -18,7 +18,7 @@ import { ModalSizeEnum } from '../../../../core/enums/modal-size.enum';
 import { formatStringDate } from '../../../../shared/helpers/date/date.helpers';
 
 import type { OnInit, Signal, WritableSignal } from '@angular/core';
-import type { IUserProfileData } from '../../../../core/models/user.model';
+import type { ISocialLinksData, IUserProfileData } from '../../../../core/models/user.model';
 import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';
 import type {
   IAvatarModalData,
@@ -66,6 +66,9 @@ export class ProfilePageComponent implements OnInit {
       .map((genre: string) => this.formatGenre(genre))
       .join(Constants.SLASH_WITH_SPACES);
   });
+
+  protected readonly socialLinks: Signal<ISocialLinksData | null> =
+    computed<ISocialLinksData | null>(() => this.profile()?.socialLinks ?? null);
 
   protected readonly additionalGenres: Signal<string[]> = computed<string[]>(
     () => this.profile()?.additionalGenres ?? [],

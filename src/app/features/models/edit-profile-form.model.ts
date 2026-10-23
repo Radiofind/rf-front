@@ -26,3 +26,10 @@ export interface ISocialLinkConfig {
   placeholder: string;
   domains: readonly string[];
 }
+
+export interface ISocialLinkItem {
+  key: SocialLinkKey;
+  label: string;
+  iconClass: string;
+  url: string;
+}

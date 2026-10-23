@@ -158,6 +158,34 @@ describe('ProfilePageComponent', () => {
     expect(detailValues(fixture)[0]).toBe(Constants.DASH);
   });
 
+  describe('social links', () => {
+    const socialLabels = (fixture: ComponentFixture<ProfilePageComponent>): (string | null)[] =>
+      Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.hero__social')).map(
+        (link: HTMLElement) => link.getAttribute('aria-label'),
+      );
+
+    it('shows the saved social links in the hero', async () => {
+      getUserProfileData = vi.fn().mockReturnValue(
+        of({
+          ...profileData,
+          socialLinks: { ...profileData.socialLinks!, youtube: 'https://youtube.com/@engines' },
+        }),
+      );
+
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      expect(socialLabels(fixture)).toEqual(['YouTube']);
+    });
+
+    it('shows no social links when none are saved', async () => {
+      getUserProfileData = vi.fn().mockReturnValue(of({ ...profileData, socialLinks: null }));
+
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      expect(fixture.nativeElement.querySelector('.hero__socials')).toBeNull();
+    });
+  });
+
   describe('additional genres', () => {
     const genresValue = (fixture: ComponentFixture<ProfilePageComponent>): string =>
       text(fixture, '.details__field--full dd');
