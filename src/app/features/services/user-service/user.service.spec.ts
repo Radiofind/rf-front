@@ -8,6 +8,8 @@ import type { Observable } from 'rxjs';
 import type {
   IAvatarResponse,
   ICurrentUser,
+  IUpdatedProfileData,
+  IUpdateProfileData,
   IUserProfileData,
 } from '../../../core/models/user.model';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
@@ -23,12 +25,49 @@ describe('UserService', () => {
   const profileData: IUserProfileData = {
     name: 'Ada',
     surname: 'Lovelace',
+    email: 'ada@example.com',
+    recoveryEmail: null,
     dateOfBirth: '1994-03-07',
     artistType: 'BAND',
     artistName: 'The Engines',
     description: null,
+    shortDescription: 'Analytical soundscapes',
+    socialLinks: {
+      telegram: null,
+      instagram: null,
+      youtube: null,
+      facebook: null,
+      spotify: null,
+      appleMusic: null,
+      soundcloud: null,
+      bandcamp: null,
+      icloud: null,
+      tiktok: null,
+    },
+    mainGenres: [],
+    additionalGenres: [],
     registeredAt: '2026-01-15T10:00:00Z',
     avatarUrl: null,
+  };
+
+  const updateData: IUpdateProfileData = {
+    name: 'Grace',
+    surname: 'Hopper',
+    email: 'grace@example.com',
+    recoveryEmail: null,
+    artistType: 'ARTIST',
+    artistName: null,
+    description: null,
+    shortDescription: 'Debugging the charts',
+    socialLinks: profileData.socialLinks,
+    mainGenres: ['ROCK'],
+    additionalGenres: [],
+  };
+
+  const updatedProfile: IUpdatedProfileData = {
+    profile: { ...profileData, ...updateData },
+    emailChanged: true,
+    requiresReauthentication: true,
   };
 
   const avatarResponse: IAvatarResponse = { avatarUrl: '/api/users/me/avatar' };
@@ -50,6 +89,7 @@ describe('UserService', () => {
   let apiMock: Record<
     | 'getCurrentUserData'
     | 'getUserProfileData'
+    | 'updateUserProfileData'
     | 'uploadNewAvatar'
     | 'getCurrentAvatar'
     | 'deleteAvatar'
@@ -66,6 +106,7 @@ describe('UserService', () => {
     apiMock = {
       getCurrentUserData: getCurrentUserData,
       getUserProfileData: vi.fn().mockReturnValue(of(profileData)),
+      updateUserProfileData: vi.fn().mockReturnValue(of(updatedProfile)),
       uploadNewAvatar: vi.fn().mockReturnValue(of(avatarResponse)),
       getCurrentAvatar: vi.fn().mockReturnValue(of(avatarBlob)),
       deleteAvatar: vi.fn().mockReturnValue(of(undefined)),
@@ -198,6 +239,34 @@ describe('UserService', () => {
       });
 
       expect(errorStatus).toBe(401);
+    });
+  });
+
+  describe('profile update', () => {
+    it('passes the update payload to the api service unchanged', () => {
+      let received: IUpdatedProfileData | undefined;
+
+      service.updateUserProfileData(updateData).subscribe((value) => {
+        received = value;
+      });
+
+      expect(apiMock.updateUserProfileData).toHaveBeenCalledTimes(1);
+      expect(apiMock.updateUserProfileData).toHaveBeenCalledWith(updateData);
+      expect(received).toBe(updatedProfile);
+    });
+
+    it('surfaces a rejected update to the caller', () => {
+      apiMock.updateUserProfileData.mockReturnValue(throwError(() => ({ status: 409 })));
+
+      let errorStatus: number | undefined;
+
+      service.updateUserProfileData(updateData).subscribe({
+        error: (error: { status: number }) => {
+          errorStatus = error.status;
+        },
+      });
+
+      expect(errorStatus).toBe(409);
     });
   });
 

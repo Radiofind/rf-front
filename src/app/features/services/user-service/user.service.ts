@@ -5,6 +5,8 @@ import type { Observable } from 'rxjs';
 import type {
   IAvatarResponse,
   ICurrentUser,
+  IUpdatedProfileData,
+  IUpdateProfileData,
   IUserProfileData,
 } from '../../../core/models/user.model';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
@@ -19,6 +21,10 @@ export class UserService {
 
   public getUserProfileData(): Observable<IUserProfileData> {
     return this.apiService.getUserProfileData();
+  }
+
+  public updateUserProfileData(data: IUpdateProfileData): Observable<IUpdatedProfileData> {
+    return this.apiService.updateUserProfileData(data);
   }
 
   public uploadNewAvatar(file: File): Observable<IAvatarResponse> {

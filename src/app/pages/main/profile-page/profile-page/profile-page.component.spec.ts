@@ -4,25 +4,42 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of, Subject } from 'rxjs';
 import { ProfilePageComponent } from './profile-page.component';
-import { UserService } from '../../../features/services/user-service/user.service';
-import { AvatarStateService } from '../../../features/services/avatar-state-service/avatar-state.service';
-import { ModalService } from '../../../shared/services/modal-service/modal.service';
-import { AvatarModalComponent } from '../../../features/dialogs/avatar-modal/avatar-modal.component';
-import { Constants } from '../../../core/constants/constants';
+import { UserService } from '../../../../features/services/user-service/user.service';
+import { AvatarStateService } from '../../../../features/services/avatar-state-service/avatar-state.service';
+import { ModalService } from '../../../../shared/services/modal-service/modal.service';
+import { AvatarModalComponent } from '../../../../features/dialogs/avatar-modal/avatar-modal.component';
+import { Constants } from '../../../../core/constants/constants';
 
 import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
-import type { IUserProfileData } from '../../../core/models/user.model';
-import type { IAvatarModalResult } from '../../../features/models/avatar-modal.model';
+import type { IUserProfileData } from '../../../../core/models/user.model';
+import type { IAvatarModalResult } from '../../../../features/models/avatar-modal.model';
 
 describe('ProfilePageComponent', () => {
   const profileData: IUserProfileData = {
     name: 'Ada',
     surname: 'Lovelace',
+    email: 'ada@example.com',
+    recoveryEmail: null,
     dateOfBirth: '1994-03-07',
     artistType: 'BAND',
     artistName: 'The Engines',
     description: 'Analytical soundscapes',
+    shortDescription: 'Engines in harmony',
+    socialLinks: {
+      telegram: null,
+      instagram: null,
+      youtube: null,
+      facebook: null,
+      spotify: null,
+      appleMusic: null,
+      soundcloud: null,
+      bandcamp: null,
+      icloud: null,
+      tiktok: null,
+    },
+    mainGenres: ['ELECTRONIC'],
+    additionalGenres: ['JAZZ'],
     registeredAt: '2026-01-15T10:00:00.000000',
     avatarUrl: null,
   };

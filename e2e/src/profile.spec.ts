@@ -45,10 +45,16 @@ test.describe('profile', () => {
       expect(body).toMatchObject({
         name: user.name,
         surname: user.surname,
+        email: user.email,
+        recoveryEmail: null,
         dateOfBirth: user.dateOfBirth,
         artistType: 'ARTIST',
         artistName: null,
         description: null,
+        shortDescription: null,
+        socialLinks: null,
+        mainGenres: [],
+        additionalGenres: [],
         avatarUrl: null,
       });
       expect(body['registeredAt']).toMatch(ISO_DATE_TIME);
@@ -63,10 +69,16 @@ test.describe('profile', () => {
         [
           'name',
           'surname',
+          'email',
+          'recoveryEmail',
           'dateOfBirth',
           'artistType',
           'artistName',
           'description',
+          'shortDescription',
+          'socialLinks',
+          'mainGenres',
+          'additionalGenres',
           'registeredAt',
           'avatarUrl',
         ].sort(),
@@ -166,8 +178,6 @@ test.describe('profile', () => {
     });
 
     test('rejects a file that is not an image as a client error', async ({ request, user }) => {
-      test.fail(true, 'Backend currently answers a non-image upload with 500 instead of 4xx');
-
       const response: APIResponse = await uploadAvatar(request, user.token, {
         name: 'avatar.txt',
         mimeType: 'text/plain',

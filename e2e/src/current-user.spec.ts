@@ -100,6 +100,11 @@ test.describe('current user', () => {
     }) => {
       const sidebar: SidebarPage = new SidebarPage(authenticatedPage);
 
+      await authenticatedPage.goto('/my-uploads');
+      await expect(sidebar.userName).toHaveText(`${user.name} ${user.surname}`);
+      await authenticatedPage.waitForLoadState('networkidle');
+
+      // The shell asks for the current user on start-up (sidebar and avatar); only count what follows.
       let requests: number = 0;
 
       authenticatedPage.on('request', (request: Request) => {
@@ -107,9 +112,6 @@ test.describe('current user', () => {
           requests += 1;
         }
       });
-
-      await authenticatedPage.goto('/my-uploads');
-      await expect(sidebar.userName).toHaveText(`${user.name} ${user.surname}`);
 
       await sidebar.item('Statistics').click();
       await expect(authenticatedPage).toHaveURL(/\/statistics$/);
@@ -119,7 +121,7 @@ test.describe('current user', () => {
 
       await expect(sidebar.userName).toHaveText(`${user.name} ${user.surname}`);
       await expect(sidebar.userEmail).toHaveText(user.email);
-      expect(requests).toBe(1);
+      expect(requests).toBe(0);
     });
 
     test('does not ask for the current user on the login page', async ({ page }) => {

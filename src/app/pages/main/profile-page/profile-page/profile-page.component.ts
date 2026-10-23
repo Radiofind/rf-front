@@ -1,27 +1,27 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { firstValueFrom } from 'rxjs';
-import { ProfileHeroComponent } from '../../../features/components/profile/profile-hero/profile-hero.component';
-import { ProfileStatsComponent } from '../../../features/components/profile/profile-stats/profile-stats.component';
-import { ProfileDetailsComponent } from '../../../features/components/profile/profile-details/profile-details.component';
-import { LatestActivityComponent } from '../../../features/components/profile/latest-activity/latest-activity.component';
-import { UserService } from '../../../features/services/user-service/user.service';
-import { AvatarStateService } from '../../../features/services/avatar-state-service/avatar-state.service';
-import { AvatarModalComponent } from '../../../features/dialogs/avatar-modal/avatar-modal.component';
-import { ModalService } from '../../../shared/services/modal-service/modal.service';
-import { Constants } from '../../../core/constants/constants';
-import { ArtistTypeRequestEnum } from '../../../core/enums/artist-type.enum';
-import { DateFormatEnum } from '../../../core/enums/date-format.enum';
-import { ModalSizeEnum } from '../../../core/enums/modal-size.enum';
-import { formatStringDate } from '../../../shared/helpers/date/date.helpers';
+import { ProfileHeroComponent } from '../../../../features/components/profile/profile-hero/profile-hero.component';
+import { ProfileStatsComponent } from '../../../../features/components/profile/profile-stats/profile-stats.component';
+import { ProfileDetailsComponent } from '../../../../features/components/profile/profile-details/profile-details.component';
+import { LatestActivityComponent } from '../../../../features/components/profile/latest-activity/latest-activity.component';
+import { UserService } from '../../../../features/services/user-service/user.service';
+import { AvatarStateService } from '../../../../features/services/avatar-state-service/avatar-state.service';
+import { AvatarModalComponent } from '../../../../features/dialogs/avatar-modal/avatar-modal.component';
+import { ModalService } from '../../../../shared/services/modal-service/modal.service';
+import { Constants } from '../../../../core/constants/constants';
+import { ArtistTypeRequestEnum } from '../../../../core/enums/artist-type.enum';
+import { DateFormatEnum } from '../../../../core/enums/date-format.enum';
+import { ModalSizeEnum } from '../../../../core/enums/modal-size.enum';
+import { formatStringDate } from '../../../../shared/helpers/date/date.helpers';
 
 import type { OnInit, Signal, WritableSignal } from '@angular/core';
-import type { IUserProfileData } from '../../../core/models/user.model';
-import type { ArtistTypeRequest } from '../../../core/types/artist-type-request.type';
+import type { IUserProfileData } from '../../../../core/models/user.model';
+import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';
 import type {
   IAvatarModalData,
   IAvatarModalResult,
-} from '../../../features/models/avatar-modal.model';
+} from '../../../../features/models/avatar-modal.model';
 
 @Component({
   selector: 'app-profile-page',
