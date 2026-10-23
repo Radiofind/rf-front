@@ -1,0 +1,176 @@
+<form class="edit-profile" [formRoot]="editProfileForm">
+  <header class="edit-profile__header">
+    <button
+      class="edit-profile__back"
+      type="button"
+      aria-label="Back to profile"
+      title="Back to profile"
+      (click)="onBack()"
+    >
+      <i class="bx bx-chevron-left" aria-hidden="true"></i>
+    </button>
+
+    <div class="edit-profile__heading">
+      <h1 class="edit-profile__title">Edit Profile</h1>
+      <p class="edit-profile__subtitle">Update your personal and artist information.</p>
+    </div>
+  </header>
+
+  <div class="edit-profile__grid">
+    <div class="edit-profile__column">
+      <section class="edit-profile__card" aria-labelledby="edit-profile-personal-title">
+        <h2 class="edit-profile__card-title" id="edit-profile-personal-title">
+          Personal Information
+        </h2>
+        <p class="edit-profile__card-subtitle">
+          Basic information about you and your artist project.
+        </p>
+
+        <div class="edit-profile__row">
+          <app-input-field
+            fieldLabel="Name"
+            inputPlaceholder="Enter your name"
+            [isCompact]="true"
+            [formField]="editProfileForm.name"
+          />
+
+          <app-input-field
+            fieldLabel="Surname"
+            inputPlaceholder="Enter your surname"
+            [isCompact]="true"
+            [formField]="editProfileForm.surname"
+          />
+        </div>
+
+        <div class="edit-profile__row">
+          <app-input-field
+            fieldLabel="Email"
+            inputType="email"
+            inputPlaceholder="you@example.com"
+            [isCompact]="true"
+            [formField]="editProfileForm.email"
+          />
+
+          <app-input-field
+            fieldLabel="Recovery email"
+            inputType="email"
+            inputPlaceholder="recovery@example.com"
+            [isCompact]="true"
+            [hasOptionalLabel]="true"
+            [formField]="editProfileForm.recoveryEmail"
+          />
+        </div>
+
+        <app-input-field
+          inputPlaceholder="Enter artist/band name"
+          [fieldLabel]="editProfileForm.artistType().value() + ' name'"
+          [isCompact]="true"
+          [hasOptionalLabel]="true"
+          [formField]="editProfileForm.artistName"
+        />
+
+        <div class="edit-profile__identity">
+          <app-radio-field
+            class="edit-profile__artist-type"
+            fieldLabel="Who are you?"
+            [isCompact]="true"
+            [options]="artistTypes()"
+            [formField]="editProfileForm.artistType"
+          />
+
+          <app-chips-field
+            class="edit-profile__main-genres"
+            fieldId="edit-profile-main-genres"
+            fieldLabel="Choose main genres"
+            fieldHint="for your profile header"
+            addLabel="Add genre"
+            [options]="genreOptions()"
+            [maxItems]="maxMainGenres()"
+            [excludedValues]="editProfileForm.additionalGenres().value()"
+            [formField]="editProfileForm.mainGenres"
+          />
+        </div>
+
+        <app-chips-field
+          class="edit-profile__additional-genres"
+          fieldId="edit-profile-additional-genres"
+          fieldLabel="Additional genres"
+          fieldHint="(optional)"
+          addLabel="Add genre"
+          [options]="genreOptions()"
+          [maxItems]="maxAdditionalGenres()"
+          [excludedValues]="editProfileForm.mainGenres().value()"
+          [formField]="editProfileForm.additionalGenres"
+        />
+      </section>
+
+      <section class="edit-profile__card" aria-labelledby="edit-profile-descriptions-title">
+        <h2 class="edit-profile__card-title" id="edit-profile-descriptions-title">Descriptions</h2>
+        <p class="edit-profile__card-subtitle">Tell others about yourself and your music.</p>
+
+        <app-input-field
+          fieldLabel="Profile header"
+          inputPlaceholder="A short description about yourself, your music and your style..."
+          [isCompact]="true"
+          [isTextareaField]="true"
+          [hasOptionalLabel]="true"
+          [textareaRows]="shortDescriptionRows()"
+          [characterLimit]="shortDescriptionLimit()"
+          [formField]="editProfileForm.shortDescription"
+        />
+
+        <app-input-field
+          [fieldLabel]="editProfileForm.artistType().value() + ' description'"
+          inputPlaceholder="Tell more about your journey, influences, sound, and what makes your music unique..."
+          [isCompact]="true"
+          [isTextareaField]="true"
+          [hasOptionalLabel]="true"
+          [textareaRows]="descriptionRows()"
+          [characterLimit]="descriptionLimit()"
+          [formField]="editProfileForm.description"
+        />
+      </section>
+    </div>
+
+    <section
+      class="edit-profile__card edit-profile__card--social"
+      aria-labelledby="edit-profile-social-title"
+    >
+      <h2 class="edit-profile__card-title" id="edit-profile-social-title">Social Links</h2>
+      <p class="edit-profile__card-subtitle">Add your social media and streaming links.</p>
+
+      <ul class="edit-profile__social-list">
+        @for (link of socialLinks(); track link.key) {
+          <li class="edit-profile__social">
+            <span class="edit-profile__social-icon" aria-hidden="true">
+              <i [class]="link.iconClass"></i>
+            </span>
+            <app-input-field
+              class="edit-profile__social-field"
+              inputType="url"
+              [fieldLabel]="link.label"
+              [inputPlaceholder]="link.placeholder"
+              [isCompact]="true"
+              [formField]="editProfileForm.socialLinks[link.key]"
+            />
+          </li>
+        }
+      </ul>
+    </section>
+  </div>
+
+  <footer class="edit-profile__actions">
+    <app-button
+      class="edit-profile__action"
+      contentText="Cancel"
+      additionalClass="button--secondary"
+      (clickAction)="onBack()"
+    />
+    <app-button
+      class="edit-profile__action"
+      contentText="Save Changes"
+      buttonType="submit"
+      [disabled]="isSaveDisabled()"
+    />
+  </footer>
+</form>

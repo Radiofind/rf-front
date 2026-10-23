@@ -1,4 +1,4 @@
-<div class="field">
+<div class="field" [class.field--compact]="isCompact()" [class.field--no-icon]="!iconClass()">
   <div class="field-label" [class]="additionalClass()">
     <span class="label">
       {{ fieldLabel() }}
@@ -16,19 +16,28 @@
       >
     }
   </div>
-  <i class="default" [class]="iconClass()"></i>
+  @if (iconClass()) {
+    <i class="default" [class]="iconClass()"></i>
+  }
   @if (isTextareaField()) {
-    <textarea
-      class="field-textarea"
-      [class.invalid]="isInputInvalid()"
-      [rows]="textareaRows()"
-      [placeholder]="inputPlaceholder()"
-      [value]="value()"
-      [disabled]="disabled()"
-      [required]="required()"
-      (input)="onInput($event)"
-      (blur)="touch.emit()"
-    ></textarea>
+    <div class="field-textarea-wrapper">
+      <textarea
+        class="field-textarea"
+        [class.invalid]="isInputInvalid()"
+        [rows]="textareaRows()"
+        [placeholder]="inputPlaceholder()"
+        [value]="value()"
+        [disabled]="disabled()"
+        [required]="required()"
+        (input)="onInput($event)"
+        (blur)="touch.emit()"
+      ></textarea>
+      @if (characterLimit() !== null) {
+        <span class="field-counter" [class.field-counter--exceeded]="isLimitExceeded()"
+          >{{ value().length }}/{{ characterLimit() }}</span
+        >
+      }
+    </div>
   } @else {
     <input
       class="field-input"

@@ -11,7 +11,16 @@ export const MAIN_ROUTES: Routes = [
   {
     path: Links.PROFILE_URL,
     loadComponent: () =>
-      import('./profile-page/profile-page.component').then((c) => c.ProfilePageComponent),
+      import('./profile-page/profile-page/profile-page.component').then(
+        (c) => c.ProfilePageComponent,
+      ),
+  },
+  {
+    path: Links.EDIT_PROFILE_URL,
+    loadComponent: () =>
+      import('./profile-page/edit-profile-page/edit-profile-page.component').then(
+        (c) => c.EditProfilePageComponent,
+      ),
   },
   {
     path: Links.MEDIA_LIBRARY_URL,

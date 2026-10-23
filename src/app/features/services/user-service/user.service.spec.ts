@@ -1,13 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { defer, of, throwError } from 'rxjs';
+import { defer, of, Subject, throwError } from 'rxjs';
 import { UserService } from './user.service';
 import { ApiService } from '../../../core/services/api/api.service';
+import { AuthStateService } from '../auth-state-service/auth-state.service';
 
 import type { Observable } from 'rxjs';
 import type {
   IAvatarResponse,
   ICurrentUser,
+  IUpdatedProfileData,
+  IUpdateProfileData,
   IUserProfileData,
 } from '../../../core/models/user.model';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
@@ -23,12 +26,49 @@ describe('UserService', () => {
   const profileData: IUserProfileData = {
     name: 'Ada',
     surname: 'Lovelace',
+    email: 'ada@example.com',
+    recoveryEmail: null,
     dateOfBirth: '1994-03-07',
     artistType: 'BAND',
     artistName: 'The Engines',
     description: null,
+    shortDescription: 'Analytical soundscapes',
+    socialLinks: {
+      telegram: null,
+      instagram: null,
+      youtube: null,
+      facebook: null,
+      spotify: null,
+      appleMusic: null,
+      soundcloud: null,
+      bandcamp: null,
+      icloud: null,
+      tiktok: null,
+    },
+    mainGenres: [],
+    additionalGenres: [],
     registeredAt: '2026-01-15T10:00:00Z',
     avatarUrl: null,
+  };
+
+  const updateData: IUpdateProfileData = {
+    name: 'Grace',
+    surname: 'Hopper',
+    email: 'grace@example.com',
+    recoveryEmail: null,
+    artistType: 'ARTIST',
+    artistName: null,
+    description: null,
+    shortDescription: 'Debugging the charts',
+    socialLinks: profileData.socialLinks,
+    mainGenres: ['ROCK'],
+    additionalGenres: [],
+  };
+
+  const updatedProfile: IUpdatedProfileData = {
+    profile: { ...profileData, ...updateData },
+    emailChanged: true,
+    requiresReauthentication: true,
   };
 
   const avatarResponse: IAvatarResponse = { avatarUrl: '/api/users/me/avatar' };
@@ -47,9 +87,11 @@ describe('UserService', () => {
   const avatarFile: File = new File(['avatar-bytes'], 'avatar.png', { type: 'image/png' });
 
   let service: UserService;
+  let token: string | null;
   let apiMock: Record<
     | 'getCurrentUserData'
     | 'getUserProfileData'
+    | 'updateUserProfileData'
     | 'uploadNewAvatar'
     | 'getCurrentAvatar'
     | 'deleteAvatar'
@@ -66,6 +108,7 @@ describe('UserService', () => {
     apiMock = {
       getCurrentUserData: getCurrentUserData,
       getUserProfileData: vi.fn().mockReturnValue(of(profileData)),
+      updateUserProfileData: vi.fn().mockReturnValue(of(updatedProfile)),
       uploadNewAvatar: vi.fn().mockReturnValue(of(avatarResponse)),
       getCurrentAvatar: vi.fn().mockReturnValue(of(avatarBlob)),
       deleteAvatar: vi.fn().mockReturnValue(of(undefined)),
@@ -74,13 +117,18 @@ describe('UserService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [UserService, { provide: ApiService, useValue: apiMock }],
+      providers: [
+        UserService,
+        { provide: ApiService, useValue: apiMock },
+        { provide: AuthStateService, useValue: { getToken: () => token } },
+      ],
     });
 
     service = TestBed.inject(UserService);
   };
 
   beforeEach(() => {
+    token = 'jwt-ada';
     createService();
   });
 
@@ -147,11 +195,119 @@ describe('UserService', () => {
     expect(subscriptions).toBe(1);
   });
 
-  it('requests the user again for every new call', () => {
-    service.getCurrentUserData().subscribe();
-    service.getCurrentUserData().subscribe();
+  describe('current user cache', () => {
+    let subscriptions: number;
 
-    expect(apiMock.getCurrentUserData).toHaveBeenCalledTimes(2);
+    beforeEach(() => {
+      subscriptions = 0;
+
+      createService(
+        vi.fn().mockImplementation(() =>
+          defer((): Observable<ICurrentUser> => {
+            subscriptions += 1;
+            return of(currentUser);
+          }),
+        ),
+      );
+    });
+
+    it('asks the backend once and shares the user with every later caller', () => {
+      const received: ICurrentUser[] = [];
+
+      service.getCurrentUserData().subscribe((value) => received.push(value));
+      service.getCurrentUserData().subscribe((value) => received.push(value));
+
+      expect(subscriptions).toBe(1);
+      expect(received).toEqual([currentUser, currentUser]);
+    });
+
+    it('shares a request that is still in flight', () => {
+      const pending$: Subject<ICurrentUser> = new Subject<ICurrentUser>();
+      const received: ICurrentUser[] = [];
+
+      createService(vi.fn().mockReturnValue(pending$));
+
+      service.getCurrentUserData().subscribe((value) => received.push(value));
+      service.getCurrentUserData().subscribe((value) => received.push(value));
+
+      pending$.next(currentUser);
+      pending$.complete();
+
+      expect(apiMock.getCurrentUserData).toHaveBeenCalledTimes(1);
+      expect(received).toEqual([currentUser, currentUser]);
+    });
+
+    it('asks again once a different user has signed in', () => {
+      service.getCurrentUserData().subscribe();
+
+      token = 'jwt-grace';
+      service.getCurrentUserData().subscribe();
+
+      expect(subscriptions).toBe(2);
+    });
+
+    it('asks again after signing out and back in', () => {
+      service.getCurrentUserData().subscribe();
+
+      token = null;
+      service.getCurrentUserData().subscribe();
+      token = 'jwt-ada';
+      service.getCurrentUserData().subscribe();
+
+      expect(subscriptions).toBe(3);
+    });
+
+    it('does not keep a failed request', () => {
+      let attempts: number = 0;
+
+      createService(
+        vi.fn().mockImplementation(() =>
+          defer((): Observable<ICurrentUser> => {
+            attempts += 1;
+            return attempts === 1 ? throwError(() => ({ status: 500 })) : of(currentUser);
+          }),
+        ),
+      );
+
+      let errorStatus: number | undefined;
+      let received: ICurrentUser | undefined;
+
+      service.getCurrentUserData().subscribe({
+        error: (error: { status: number }) => {
+          errorStatus = error.status;
+        },
+      });
+      service.getCurrentUserData().subscribe((value) => {
+        received = value;
+      });
+
+      expect(errorStatus).toBe(500);
+      expect(received).toBe(currentUser);
+      expect(attempts).toBe(2);
+    });
+
+    it.each([
+      ['a profile update', (): Observable<unknown> => service.updateUserProfileData(updateData)],
+      ['an avatar upload', (): Observable<unknown> => service.uploadNewAvatar(avatarFile)],
+      ['an avatar removal', (): Observable<unknown> => service.deleteAvatar()],
+    ])('asks again after %s', (_, change) => {
+      service.getCurrentUserData().subscribe();
+
+      change().subscribe();
+      service.getCurrentUserData().subscribe();
+
+      expect(subscriptions).toBe(2);
+    });
+
+    it('keeps the cached user when a change fails', () => {
+      apiMock.updateUserProfileData.mockReturnValue(throwError(() => ({ status: 409 })));
+
+      service.getCurrentUserData().subscribe();
+      service.updateUserProfileData(updateData).subscribe({ error: () => undefined });
+      service.getCurrentUserData().subscribe();
+
+      expect(subscriptions).toBe(1);
+    });
   });
 
   it('surfaces api errors to the caller', () => {
@@ -198,6 +354,67 @@ describe('UserService', () => {
       });
 
       expect(errorStatus).toBe(401);
+    });
+  });
+
+  describe('current user state', () => {
+    it('is empty until the current user is loaded', () => {
+      expect(service.currentUser()).toBeNull();
+    });
+
+    it('holds the loaded current user', () => {
+      service.getCurrentUserData().subscribe();
+
+      expect(service.currentUser()).toEqual(currentUser);
+    });
+
+    it('takes the name, surname and email from a saved profile', () => {
+      service.getCurrentUserData().subscribe();
+      service.updateUserProfileData(updateData).subscribe();
+
+      expect(service.currentUser()).toEqual({
+        name: updatedProfile.profile.name,
+        surname: updatedProfile.profile.surname,
+        email: updatedProfile.profile.email,
+        avatarUrl: updatedProfile.profile.avatarUrl,
+      });
+    });
+
+    it('keeps the current user when a profile update fails', () => {
+      apiMock.updateUserProfileData.mockReturnValue(throwError(() => ({ status: 409 })));
+
+      service.getCurrentUserData().subscribe();
+      service.updateUserProfileData(updateData).subscribe({ error: () => undefined });
+
+      expect(service.currentUser()).toEqual(currentUser);
+    });
+  });
+
+  describe('profile update', () => {
+    it('passes the update payload to the api service unchanged', () => {
+      let received: IUpdatedProfileData | undefined;
+
+      service.updateUserProfileData(updateData).subscribe((value) => {
+        received = value;
+      });
+
+      expect(apiMock.updateUserProfileData).toHaveBeenCalledTimes(1);
+      expect(apiMock.updateUserProfileData).toHaveBeenCalledWith(updateData);
+      expect(received).toBe(updatedProfile);
+    });
+
+    it('surfaces a rejected update to the caller', () => {
+      apiMock.updateUserProfileData.mockReturnValue(throwError(() => ({ status: 409 })));
+
+      let errorStatus: number | undefined;
+
+      service.updateUserProfileData(updateData).subscribe({
+        error: (error: { status: number }) => {
+          errorStatus = error.status;
+        },
+      });
+
+      expect(errorStatus).toBe(409);
     });
   });
 

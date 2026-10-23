@@ -30,37 +30,35 @@
 
     <p class="hero__meta">
       <span>{{ artistRoleLabel() }}</span>
-      <span class="hero__meta-dot" aria-hidden="true"></span>
-      <span>Rock / Metal / Post-punk</span>
+      @if (mainGenres()) {
+        <span class="hero__meta-dot" aria-hidden="true"></span>
+        <span>{{ mainGenres() }}</span>
+      }
     </p>
 
     <p class="hero__bio">{{ bio() }}</p>
 
-    <ul class="hero__socials" aria-label="Social links">
-      <li>
-        <a class="hero__social" href="#" target="_blank" rel="noopener" aria-label="Spotify">
-          <i class="bxl bx-spotify"></i>
-        </a>
-      </li>
-      <li>
-        <a class="hero__social" href="#" target="_blank" rel="noopener" aria-label="SoundCloud">
-          <i class="bxl bx-soundcloud"></i>
-        </a>
-      </li>
-      <li>
-        <a class="hero__social" href="#" target="_blank" rel="noopener" aria-label="YouTube">
-          <i class="bxl bx-youtube"></i>
-        </a>
-      </li>
-      <li>
-        <a class="hero__social" href="#" target="_blank" rel="noopener" aria-label="X">
-          <i class="bxl bx-twitter-x"></i>
-        </a>
-      </li>
-    </ul>
+    @if (visibleSocialLinks().length) {
+      <ul class="hero__socials" aria-label="Social links">
+        @for (link of visibleSocialLinks(); track link.key) {
+          <li>
+            <a
+              class="hero__social"
+              target="_blank"
+              rel="noopener noreferrer"
+              [href]="link.url"
+              [attr.aria-label]="link.label"
+              [title]="link.label"
+            >
+              <i [class]="link.iconClass" aria-hidden="true"></i>
+            </a>
+          </li>
+        }
+      </ul>
+    }
   </div>
 
-  <button class="hero__edit" type="button" aria-label="Edit profile">
+  <button class="hero__edit" type="button" aria-label="Edit profile" (click)="onProfileEdit()">
     <i class="bx bx-pencil"></i>
     <span>Edit Profile</span>
   </button>

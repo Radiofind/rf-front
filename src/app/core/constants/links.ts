@@ -30,6 +30,8 @@ export class Links {
 
   public static readonly PROFILE_URL: string = 'profile';
 
+  public static readonly EDIT_PROFILE_URL: string = `${this.PROFILE_URL}/edit`;
+
   public static readonly SETTINGS_URL: string = 'settings';
 
   public static readonly GENERAL_SETTINGS_PATH: string = 'general';

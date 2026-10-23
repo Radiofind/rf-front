@@ -47,23 +47,16 @@
       <div class="details__field details__field--full">
         <dt class="details__label">Genres</dt>
         <dd class="details__value">
-          <ul class="details__chips">
-            <li>
-              <button class="details__chip" type="button">
-                <span>Rock</span>
-              </button>
-            </li>
-            <li>
-              <button class="details__chip" type="button">
-                <span>Metal</span>
-              </button>
-            </li>
-            <li>
-              <button class="details__chip" type="button">
-                <span>Post-punk</span>
-              </button>
-            </li>
-          </ul>
+          @if (additionalGenres().length) {
+            <app-chips-field
+              fieldId="profile-additional-genres"
+              [value]="additionalGenres()"
+              [options]="genreOptions()"
+              [isReadonly]="true"
+            />
+          } @else {
+            {{ emptyValue() }}
+          }
         </dd>
       </div>
     </dl>

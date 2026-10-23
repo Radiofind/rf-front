@@ -164,4 +164,62 @@ describe('InputFieldComponent', () => {
     expect(input.disabled).toBe(true);
     expect(input.required).toBe(true);
   });
+
+  it('renders no icon element when no icon class is given', async () => {
+    const fixture: ComponentFixture<InputFieldComponent> = await createFixture();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.default')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.field--no-icon')).not.toBeNull();
+  });
+
+  it('switches to the compact variant on demand', async () => {
+    const fixture: ComponentFixture<InputFieldComponent> = await createFixture();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.field--compact')).toBeNull();
+
+    fixture.componentRef.setInput('isCompact', true);
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.field--compact')).not.toBeNull();
+  });
+
+  describe('character counter', () => {
+    const counter = (fixture: ComponentFixture<InputFieldComponent>): HTMLElement | null =>
+      (fixture.nativeElement as HTMLElement).querySelector('.field-counter');
+
+    it('is hidden without a character limit', async () => {
+      const fixture: ComponentFixture<InputFieldComponent> = await createFixture();
+
+      fixture.componentRef.setInput('isTextareaField', true);
+      await fixture.whenStable();
+
+      expect(counter(fixture)).toBeNull();
+    });
+
+    it('shows the typed length against the limit', async () => {
+      const fixture: ComponentFixture<InputFieldComponent> = await createFixture();
+
+      fixture.componentRef.setInput('isTextareaField', true);
+      fixture.componentRef.setInput('characterLimit', 160);
+      fixture.componentRef.setInput('value', 'Ambient');
+      await fixture.whenStable();
+
+      expect(counter(fixture)!.textContent.trim()).toBe('7/160');
+      expect(counter(fixture)!.classList).not.toContain('field-counter--exceeded');
+    });
+
+    it('highlights the counter once the limit is exceeded', async () => {
+      const fixture: ComponentFixture<InputFieldComponent> = await createFixture();
+
+      fixture.componentRef.setInput('isTextareaField', true);
+      fixture.componentRef.setInput('characterLimit', 3);
+      fixture.componentRef.setInput('value', 'Jazz');
+      await fixture.whenStable();
+
+      expect(counter(fixture)!.textContent.trim()).toBe('4/3');
+      expect(counter(fixture)!.classList).toContain('field-counter--exceeded');
+    });
+  });
 });

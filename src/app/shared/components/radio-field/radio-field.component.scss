@@ -45,6 +45,23 @@
   }
 }
 
+.radio-field--compact {
+  .radio-field__label {
+    margin-bottom: 14px;
+    font-size: 15px;
+  }
+
+  .radio-field__buttons {
+    gap: 40px;
+    margin-bottom: 0;
+  }
+
+  .radio-field__buttons--option {
+    gap: 12px;
+    font-size: 15px;
+  }
+}
+
 @media (max-width: 540px) {
   .radio-field {
     &__label {

@@ -62,7 +62,7 @@ export class AvatarModalComponent {
 
   public onFileChange(event: Event): void {
     const input: HTMLInputElement = event.target as HTMLInputElement;
-    this.selectFile(input.files?.item(0) ?? null);
+    this.selectFile(input.files?.item(Constants.ZERO) ?? null);
     input.value = Constants.EMPTY_STRING;
   }
 
@@ -80,7 +80,7 @@ export class AvatarModalComponent {
     this.isDragOver.set(false);
 
     if (!this.isPending()) {
-      this.selectFile(event.dataTransfer?.files.item(0) ?? null);
+      this.selectFile(event.dataTransfer?.files.item(Constants.ZERO) ?? null);
     }
   }
 

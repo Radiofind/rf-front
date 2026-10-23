@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, model, signal } from '@angular/core';
+import { Component, computed, inject, input, model } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -11,7 +11,7 @@ import {
 import { UserService } from '../../services/user-service/user.service';
 import { Links } from '../../../core/constants/links';
 
-import type { InputSignal, ModelSignal, OnInit, Signal, WritableSignal } from '@angular/core';
+import type { InputSignal, ModelSignal, OnInit, Signal } from '@angular/core';
 import type { BreakpointState } from '@angular/cdk/layout';
 import type { ISidebarMenuItem } from '../../models/sidebar-menu-item.model';
 import type { ICurrentUser } from '../../../core/models/user.model';
@@ -50,9 +50,18 @@ export class SidebarMenuComponent implements OnInit {
 
   public readonly isUserOnline: InputSignal<boolean> = input<boolean>(false);
 
-  public readonly userName: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+  private readonly currentUser: Signal<ICurrentUser | null> = this.userService.currentUser;
 
-  public readonly userEmail: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+  public readonly userName: Signal<string> = computed<string>(() => {
+    const currentUser: ICurrentUser | null = this.currentUser();
+    return currentUser
+      ? currentUser.name + Constants.EMPTY_SPACE_STRING + currentUser.surname
+      : Constants.EMPTY_STRING;
+  });
+
+  public readonly userEmail: Signal<string> = computed<string>(
+    () => this.currentUser()?.email ?? Constants.EMPTY_STRING,
+  );
 
   public readonly toggleIconClass: Signal<string> = computed<string>(() =>
     this.isCollapsed() ? Constants.CHEVRON_RIGHT_ICON_CLASS : Constants.CHEVRON_LEFT_ICON_CLASS,
@@ -77,12 +86,6 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   private async getCurrentUserData(): Promise<void> {
-    const currentUserData: ICurrentUser = await firstValueFrom(
-      this.userService.getCurrentUserData(),
-    );
-    const currentUserName: string =
-      currentUserData.name + Constants.EMPTY_SPACE_STRING + currentUserData.surname;
-    this.userName.set(currentUserName);
-    this.userEmail.set(currentUserData.email);
+    await firstValueFrom(this.userService.getCurrentUserData());
   }
 }

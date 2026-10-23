@@ -19,6 +19,8 @@ export class RadioFieldComponent<T extends string> implements FormValueControl<T
 
   public readonly options: InputSignal<readonly T[]> = input<readonly T[]>([]);
 
+  public readonly isCompact: InputSignal<boolean> = input<boolean>(false);
+
   public onChange(option: T): void {
     this.value.set(option);
     this.touch.emit();
