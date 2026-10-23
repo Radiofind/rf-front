@@ -13,7 +13,14 @@ import { Constants } from '../../constants/constants';
 import type { TestRequest } from '@angular/common/http/testing';
 import type { IAuthResponse, ITwoFactorResponse } from '../../models/auth.model';
 import type { IRegisterData } from '../../../features/models/auth-content.model';
-import type { IAvatarResponse, ICurrentUser, IUserProfileData } from '../../models/user.model';
+import type {
+  IAvatarResponse,
+  ICurrentUser,
+  ISocialLinksData,
+  IUpdatedProfileData,
+  IUpdateProfileData,
+  IUserProfileData,
+} from '../../models/user.model';
 import type { IGeneralSettings } from '../../models/settings.model';
 
 describe('ApiService', () => {
@@ -38,15 +45,48 @@ describe('ApiService', () => {
     accentColor: 'OCEAN',
   };
 
+  const socialLinks: ISocialLinksData = {
+    telegram: 'https://t.me/countess',
+    instagram: null,
+    youtube: null,
+    facebook: null,
+    spotify: null,
+    appleMusic: null,
+    soundcloud: null,
+    bandcamp: null,
+    icloud: null,
+    tiktok: null,
+  };
+
   const profileData: IUserProfileData = {
     name: 'Ada',
     surname: 'Lovelace',
+    email: 'ada@example.com',
+    recoveryEmail: null,
     dateOfBirth: '1994-03-07',
     artistType: 'ARTIST',
     artistName: 'Countess',
     description: 'Analytical engine enthusiast',
+    shortDescription: 'Engine enthusiast',
+    socialLinks: socialLinks,
+    mainGenres: ['ELECTRONIC'],
+    additionalGenres: [],
     registeredAt: '2026-01-15T10:00:00Z',
     avatarUrl: '/api/users/me/avatar',
+  };
+
+  const updateData: IUpdateProfileData = {
+    name: 'Grace',
+    surname: 'Hopper',
+    email: 'grace@example.com',
+    recoveryEmail: 'backup@example.com',
+    artistType: 'BAND',
+    artistName: 'The Compilers',
+    description: 'Debugging the charts',
+    shortDescription: 'Debuggers',
+    socialLinks: { ...socialLinks, spotify: 'https://open.spotify.com/artist/compilers' },
+    mainGenres: ['ROCK'],
+    additionalGenres: ['JAZZ'],
   };
 
   const registerData: IRegisterData = {
@@ -275,6 +315,8 @@ describe('ApiService', () => {
         artistType: null,
         artistName: null,
         description: null,
+        shortDescription: null,
+        socialLinks: null,
         avatarUrl: null,
       };
       let received: IUserProfileData | undefined;
@@ -302,6 +344,77 @@ describe('ApiService', () => {
         .flush({ message: 'Unauthorized' }, { status: 401, statusText: 'Unauthorized' });
 
       expect(errorStatus).toBe(401);
+    });
+  });
+
+  describe('profile update', () => {
+    const updatedProfile: IUpdatedProfileData = {
+      profile: { ...profileData, ...updateData },
+      emailChanged: true,
+      requiresReauthentication: true,
+    };
+
+    it('replaces the profile with a PUT of the full update payload', () => {
+      let received: IUpdatedProfileData | undefined;
+
+      service.updateUserProfileData(updateData).subscribe((value) => {
+        received = value;
+      });
+
+      const request: TestRequest = httpMock.expectOne(profileUrl);
+
+      expect(request.request.method).toBe('PUT');
+      expect(request.request.url).not.toMatch(/\s/);
+      expect(request.request.body).toBe(updateData);
+
+      request.flush(updatedProfile);
+
+      expect(received).toEqual(updatedProfile);
+    });
+
+    it('keeps the global loader while the profile is being saved', () => {
+      service.updateUserProfileData(updateData).subscribe();
+
+      const request: TestRequest = httpMock.expectOne(profileUrl);
+
+      expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(false);
+
+      request.flush(updatedProfile);
+    });
+
+    it('passes the email change flags through untouched', () => {
+      const unchanged: IUpdatedProfileData = {
+        ...updatedProfile,
+        emailChanged: false,
+        requiresReauthentication: false,
+      };
+      let received: IUpdatedProfileData | undefined;
+
+      service.updateUserProfileData(updateData).subscribe((value) => {
+        received = value;
+      });
+
+      httpMock.expectOne(profileUrl).flush(unchanged);
+
+      expect(received?.emailChanged).toBe(false);
+      expect(received?.requiresReauthentication).toBe(false);
+    });
+
+    it.each([
+      [400, 'Bad Request'],
+      [409, 'Conflict'],
+    ])('surfaces a %i rejection to the caller', (status, statusText) => {
+      let errorStatus: number | undefined;
+
+      service.updateUserProfileData(updateData).subscribe({
+        error: (error: { status: number }) => {
+          errorStatus = error.status;
+        },
+      });
+
+      httpMock.expectOne(profileUrl).flush({ message: statusText }, { status, statusText });
+
+      expect(errorStatus).toBe(status);
     });
   });
 

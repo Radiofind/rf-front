@@ -24,6 +24,8 @@ import type { IRegisterData } from '../../../features/models/auth-content.model'
 import type {
   IAvatarResponse,
   ICurrentUser,
+  IUpdatedProfileData,
+  IUpdateProfileData,
   IUserEndpoints,
   IUserProfileData,
 } from '../../models/user.model';
@@ -100,6 +102,13 @@ export class ApiService {
 
   public getUserProfileData(): Observable<IUserProfileData> {
     return this.http.get<IUserProfileData>(`${this.currentUserApi}${this.userEndpoints.profile}`);
+  }
+
+  public updateUserProfileData(data: IUpdateProfileData): Observable<IUpdatedProfileData> {
+    return this.http.put<IUpdatedProfileData>(
+      `${this.currentUserApi}${this.userEndpoints.profile}`,
+      data,
+    );
   }
 
   public uploadNewAvatar(file: File): Observable<IAvatarResponse> {

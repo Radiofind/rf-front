@@ -3,7 +3,11 @@
     [userFullName]="fullName()"
     [artistType]="artistType()"
     [avatarUrl]="avatarUrl()"
+    [mainGenres]="mainGenres()"
+    [bio]="shortDescription()"
+    [socialLinks]="socialLinks()"
     (avatarEdit)="onAvatarEdit()"
+    (profileEdit)="onProfileEdit()"
   />
 
   <app-profile-stats [registeredAt]="registeredAt()" />
@@ -15,6 +19,7 @@
       [description]="description()"
       [artistName]="artistName()"
       [birthdayDate]="birthdayDate()"
+      [additionalGenres]="additionalGenres()"
     />
     <app-latest-activity class="profile__activity" />
   </div>
