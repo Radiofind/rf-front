@@ -151,4 +151,27 @@ describe('ChipsFieldComponent', () => {
       'Too many genres',
     );
   });
+
+  it('shows chips without remove buttons and picker in read-only mode', async () => {
+    const fixture: ComponentFixture<ChipsFieldComponent<string>> = await createFixture(['ROCK']);
+
+    fixture.componentRef.setInput('isReadonly', true);
+    await fixture.whenStable();
+
+    expect(chipLabels(fixture)).toEqual(['Rock']);
+    expect(element(fixture).querySelector('.chips-field__remove')).toBeNull();
+    expect(element(fixture).querySelector('select')).toBeNull();
+  });
+
+  it('renders no header when there is neither a label nor a limit', async () => {
+    const fixture: ComponentFixture<ChipsFieldComponent<string>> = await createFixture(['ROCK']);
+
+    fixture.componentRef.setInput('fieldLabel', null);
+    await fixture.whenStable();
+
+    expect(element(fixture).querySelector('.chips-field__header')).toBeNull();
+    expect(
+      element(fixture).querySelector('.chips-field__list')!.hasAttribute('aria-labelledby'),
+    ).toBe(false);
+  });
 });

@@ -56,6 +56,10 @@
     box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
   }
 
+  &__chip--readonly {
+    padding: 0 16px;
+  }
+
   &__remove {
     display: flex;
     align-items: center;

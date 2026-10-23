@@ -158,6 +158,29 @@ describe('ProfilePageComponent', () => {
     expect(detailValues(fixture)[0]).toBe(Constants.DASH);
   });
 
+  describe('additional genres', () => {
+    const genresValue = (fixture: ComponentFixture<ProfilePageComponent>): string =>
+      text(fixture, '.details__field--full dd');
+
+    it('passes the additional genres to the details as chips', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      expect(
+        Array.from<HTMLElement>(
+          fixture.nativeElement.querySelectorAll('.details__field--full .chips-field__chip'),
+        ).map((chip: HTMLElement) => chip.textContent.trim()),
+      ).toEqual(['Jazz']);
+    });
+
+    it('shows a dash when the profile has no additional genres', async () => {
+      getUserProfileData = vi.fn().mockReturnValue(of({ ...profileData, additionalGenres: [] }));
+
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      expect(genresValue(fixture)).toBe(Constants.DASH);
+    });
+  });
+
   describe('main genres', () => {
     const heroMeta = (fixture: ComponentFixture<ProfilePageComponent>): string[] =>
       Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.hero__meta span'))

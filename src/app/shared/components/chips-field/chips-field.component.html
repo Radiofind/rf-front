@@ -1,33 +1,37 @@
 <div class="chips-field" [class.chips-field--disabled]="disabled()">
-  <div class="chips-field__header">
-    <span class="chips-field__label" [id]="fieldId() + '-label'">
-      {{ fieldLabel() }}
-      @if (fieldHint()) {
-        <span class="chips-field__hint">{{ fieldHint() }}</span>
+  @if (fieldLabel() || maxItems()) {
+    <div class="chips-field__header">
+      <span class="chips-field__label" [id]="fieldId() + '-label'">
+        {{ fieldLabel() }}
+        @if (fieldHint()) {
+          <span class="chips-field__hint">{{ fieldHint() }}</span>
+        }
+      </span>
+      @if (maxItems()) {
+        <span class="chips-field__counter">{{ value().length }}/{{ maxItems() }}</span>
       }
-    </span>
-    @if (maxItems()) {
-      <span class="chips-field__counter">{{ value().length }}/{{ maxItems() }}</span>
-    }
-  </div>
+    </div>
+  }
 
-  <ul class="chips-field__list" [attr.aria-labelledby]="fieldId() + '-label'">
+  <ul class="chips-field__list" [attr.aria-labelledby]="fieldLabel() ? fieldId() + '-label' : null">
     @for (chip of selectedOptions(); track chip.value) {
-      <li class="chips-field__chip">
+      <li class="chips-field__chip" [class.chips-field__chip--readonly]="isReadonly()">
         <span>{{ chip.label }}</span>
-        <button
-          class="chips-field__remove"
-          type="button"
-          [attr.aria-label]="'Remove ' + chip.label"
-          [disabled]="disabled()"
-          (click)="onRemove(chip.value)"
-        >
-          <i class="bx bx-x" aria-hidden="true"></i>
-        </button>
+        @if (!isReadonly()) {
+          <button
+            class="chips-field__remove"
+            type="button"
+            [attr.aria-label]="'Remove ' + chip.label"
+            [disabled]="disabled()"
+            (click)="onRemove(chip.value)"
+          >
+            <i class="bx bx-x" aria-hidden="true"></i>
+          </button>
+        }
       </li>
     }
 
-    @if (!isLimitReached()) {
+    @if (!isReadonly() && !isLimitReached()) {
       <li class="chips-field__add">
         <i class="chips-field__add-icon bx bx-plus" aria-hidden="true"></i>
         <select

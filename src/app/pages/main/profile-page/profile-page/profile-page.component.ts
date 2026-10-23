@@ -67,6 +67,10 @@ export class ProfilePageComponent implements OnInit {
       .join(Constants.SLASH_WITH_SPACES);
   });
 
+  protected readonly additionalGenres: Signal<string[]> = computed<string[]>(
+    () => this.profile()?.additionalGenres ?? [],
+  );
+
   protected readonly artistType: Signal<ArtistTypeRequest> = computed<ArtistTypeRequest>(
     () => this.profile()?.artistType ?? ArtistTypeRequestEnum.ARTIST,
   );

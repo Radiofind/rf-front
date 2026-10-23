@@ -41,6 +41,8 @@ export class ChipsFieldComponent<T extends string> implements FormValueControl<T
 
   public readonly maxItems: InputSignal<number | null> = input<number | null>(null);
 
+  public readonly isReadonly: InputSignal<boolean> = input<boolean>(false);
+
   public readonly selectedOptions: Signal<readonly ISelectOption<T>[]> = computed(() =>
     this.value().map(
       (value: T) =>

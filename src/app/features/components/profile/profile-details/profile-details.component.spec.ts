@@ -75,15 +75,40 @@ describe('ProfileDetailsComponent', () => {
     expect(fixture.nativeElement.querySelector('#profile-panel-stats').hidden).toBe(true);
   });
 
-  it('renders genres as buttons', async () => {
-    const fixture: ComponentFixture<ProfileDetailsComponent> = await createFixture();
-    await fixture.whenStable();
+  describe('genres', () => {
+    const genresValue = (fixture: ComponentFixture<ProfileDetailsComponent>): HTMLElement =>
+      (fixture.nativeElement as HTMLElement).querySelector('.details__field--full dd')!;
 
-    const chips: HTMLButtonElement[] = Array.from(
-      fixture.nativeElement.querySelectorAll('.details__chip'),
-    );
+    const chipLabels = (fixture: ComponentFixture<ProfileDetailsComponent>): string[] =>
+      Array.from(genresValue(fixture).querySelectorAll('.chips-field__chip')).map((chip) =>
+        chip.textContent.trim(),
+      );
 
-    expect(chips.length).toBeGreaterThan(0);
-    expect(chips.every((chip: HTMLButtonElement) => chip.type === 'button')).toBe(true);
+    it('shows a dash when there are no additional genres', async () => {
+      const fixture: ComponentFixture<ProfileDetailsComponent> = await createFixture();
+      await fixture.whenStable();
+
+      expect(genresValue(fixture).textContent.trim()).toBe(Constants.DASH);
+      expect(genresValue(fixture).querySelector('app-chips-field')).toBeNull();
+    });
+
+    it('renders the additional genres as chips with readable labels', async () => {
+      const fixture: ComponentFixture<ProfileDetailsComponent> = await createFixture();
+
+      fixture.componentRef.setInput('additionalGenres', ['JAZZ', 'DRUM_AND_BASS', 'Shoegaze']);
+      await fixture.whenStable();
+
+      expect(chipLabels(fixture)).toEqual(['Jazz', 'Drum & Bass', 'Shoegaze']);
+    });
+
+    it('shows the genres read-only', async () => {
+      const fixture: ComponentFixture<ProfileDetailsComponent> = await createFixture();
+
+      fixture.componentRef.setInput('additionalGenres', ['JAZZ']);
+      await fixture.whenStable();
+
+      expect(genresValue(fixture).querySelector('button')).toBeNull();
+      expect(genresValue(fixture).querySelector('select')).toBeNull();
+    });
   });
 });
