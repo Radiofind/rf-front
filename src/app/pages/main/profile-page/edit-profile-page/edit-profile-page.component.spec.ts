@@ -264,7 +264,7 @@ describe('EditProfilePageComponent', () => {
         mainGenres: ['ELECTRONIC', 'AMBIENT'],
         additionalGenres: ['JAZZ'],
       });
-      expect(snackbar.success).toHaveBeenCalledWith(Constants.PROFILE_SAVED);
+      expect(snackbar.success).toHaveBeenCalledWith(Constants.PROFILE_INFORMATION_SAVED);
       expect(navigate).toHaveBeenCalledWith([Links.PROFILE_URL]);
     });
 

@@ -160,7 +160,7 @@ export class EditProfilePageComponent implements OnInit {
         return undefined;
       }
 
-      this.snackbarService.success(Constants.PROFILE_SAVED);
+      this.snackbarService.success(Constants.PROFILE_INFORMATION_SAVED);
       await this.router.navigate([Links.PROFILE_URL]);
       return undefined;
     } catch (error: unknown) {

@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { SidebarMenuComponent } from './sidebar-menu.component';
 import { UserService } from '../../services/user-service/user.service';
 import {
@@ -13,6 +14,7 @@ import {
 import { Constants } from '../../../core/constants/constants';
 import { Links } from '../../../core/constants/links';
 
+import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { Routes } from '@angular/router';
 import type { ICurrentUser } from '../../../core/models/user.model';
@@ -29,6 +31,11 @@ describe('SidebarMenuComponent', () => {
 
   let getCurrentUserData: ReturnType<typeof vi.fn>;
 
+  let currentUserState: WritableSignal<ICurrentUser | null>;
+
+  const serve = (user$: Observable<ICurrentUser>): Observable<ICurrentUser> =>
+    user$.pipe(tap((user: ICurrentUser) => currentUserState.set(user)));
+
   let isMobile: boolean;
 
   const createFixture = async (): Promise<ComponentFixture<SidebarMenuComponent>> => {
@@ -37,7 +44,13 @@ describe('SidebarMenuComponent', () => {
       providers: [
         provideRouter(routes),
         provideLocationMocks(),
-        { provide: UserService, useValue: { getCurrentUserData: getCurrentUserData } },
+        {
+          provide: UserService,
+          useValue: {
+            getCurrentUserData: getCurrentUserData,
+            currentUser: currentUserState.asReadonly(),
+          },
+        },
         {
           provide: BreakpointObserver,
           useValue: { observe: () => of({ matches: isMobile, breakpoints: {} }) },
@@ -65,7 +78,8 @@ describe('SidebarMenuComponent', () => {
 
   beforeEach(() => {
     TestBed.resetTestingModule();
-    getCurrentUserData = vi.fn().mockReturnValue(of(currentUser));
+    currentUserState = signal<ICurrentUser | null>(null);
+    getCurrentUserData = vi.fn().mockReturnValue(serve(of(currentUser)));
     isMobile = false;
   });
 
@@ -185,12 +199,14 @@ describe('SidebarMenuComponent', () => {
     let resolveUser: (user: ICurrentUser) => void = () => undefined;
 
     getCurrentUserData = vi.fn().mockReturnValue(
-      new Observable<ICurrentUser>((subscriber) => {
-        resolveUser = (user: ICurrentUser): void => {
-          subscriber.next(user);
-          subscriber.complete();
-        };
-      }),
+      serve(
+        new Observable<ICurrentUser>((subscriber) => {
+          resolveUser = (user: ICurrentUser): void => {
+            subscriber.next(user);
+            subscriber.complete();
+          };
+        }),
+      ),
     );
 
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
@@ -202,6 +218,17 @@ describe('SidebarMenuComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.componentInstance.userName()).toBe('Ada Lovelace');
+  });
+
+  it('follows changes of the current user without reloading', async () => {
+    const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
+
+    currentUserState.set({ ...currentUser, name: 'Grace', surname: 'Hopper' });
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.sidebar__user-name').textContent).toBe(
+      'Grace Hopper',
+    );
   });
 
   it('navigates to the account settings on profile', async () => {

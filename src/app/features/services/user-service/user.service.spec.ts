@@ -357,6 +357,39 @@ describe('UserService', () => {
     });
   });
 
+  describe('current user state', () => {
+    it('is empty until the current user is loaded', () => {
+      expect(service.currentUser()).toBeNull();
+    });
+
+    it('holds the loaded current user', () => {
+      service.getCurrentUserData().subscribe();
+
+      expect(service.currentUser()).toEqual(currentUser);
+    });
+
+    it('takes the name, surname and email from a saved profile', () => {
+      service.getCurrentUserData().subscribe();
+      service.updateUserProfileData(updateData).subscribe();
+
+      expect(service.currentUser()).toEqual({
+        name: updatedProfile.profile.name,
+        surname: updatedProfile.profile.surname,
+        email: updatedProfile.profile.email,
+        avatarUrl: updatedProfile.profile.avatarUrl,
+      });
+    });
+
+    it('keeps the current user when a profile update fails', () => {
+      apiMock.updateUserProfileData.mockReturnValue(throwError(() => ({ status: 409 })));
+
+      service.getCurrentUserData().subscribe();
+      service.updateUserProfileData(updateData).subscribe({ error: () => undefined });
+
+      expect(service.currentUser()).toEqual(currentUser);
+    });
+  });
+
   describe('profile update', () => {
     it('passes the update payload to the api service unchanged', () => {
       let received: IUpdatedProfileData | undefined;

@@ -50,7 +50,10 @@ describe('MainContainerComponent', () => {
         provideLocationMocks(),
         {
           provide: UserService,
-          useValue: { getCurrentUserData: vi.fn().mockReturnValue(of(currentUser)) },
+          useValue: {
+            getCurrentUserData: vi.fn().mockReturnValue(of(currentUser)),
+            currentUser: signal(currentUser).asReadonly(),
+          },
         },
         {
           provide: AvatarStateService,

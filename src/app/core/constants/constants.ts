@@ -164,7 +164,7 @@ export class Constants {
 
   public static readonly SAME_EMAIL_PROPERTY: string = 'sameEmail';
 
-  public static readonly PROFILE_SAVED: string = 'Profile saved';
+  public static readonly PROFILE_INFORMATION_SAVED: string = 'Profile information saved';
 
   public static readonly PROFILE_SAVE_FAILED: string = 'Could not save profile. Please try again.';
 
