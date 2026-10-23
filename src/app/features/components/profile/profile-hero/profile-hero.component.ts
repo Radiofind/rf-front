@@ -22,6 +22,8 @@ export class ProfileHeroComponent {
 
   public readonly avatarUrl: InputSignal<string | null> = input<string | null>(null);
 
+  public readonly mainGenres: InputSignal<string | null> = input<string | null>(null);
+
   public readonly avatarEdit: OutputEmitterRef<void> = output();
 
   public readonly profileEdit: OutputEmitterRef<void> = output();

@@ -30,8 +30,10 @@
 
     <p class="hero__meta">
       <span>{{ artistRoleLabel() }}</span>
-      <span class="hero__meta-dot" aria-hidden="true"></span>
-      <span>Rock / Metal / Post-punk</span>
+      @if (mainGenres()) {
+        <span class="hero__meta-dot" aria-hidden="true"></span>
+        <span>{{ mainGenres() }}</span>
+      }
     </p>
 
     <p class="hero__bio">{{ bio() }}</p>

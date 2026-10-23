@@ -54,6 +54,24 @@ describe('ProfileHeroComponent', () => {
     expect(text(fixture, '.hero__meta span')).toBe('Member of band');
   });
 
+  it('hides the genres and their separator until genres are bound', async () => {
+    const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelectorAll('.hero__meta span')).toHaveLength(1);
+    expect(fixture.nativeElement.querySelector('.hero__meta-dot')).toBeNull();
+  });
+
+  it('renders the bound genres after the role', async () => {
+    const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+
+    fixture.componentRef.setInput('mainGenres', 'Rock / Hip Hop');
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.hero__meta-dot')).not.toBeNull();
+    expect(text(fixture, '.hero__meta span:last-child')).toBe('Rock / Hip Hop');
+  });
+
   it('gives every icon-only control an accessible name', async () => {
     const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
     await fixture.whenStable();

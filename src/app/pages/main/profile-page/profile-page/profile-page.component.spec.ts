@@ -131,7 +131,7 @@ describe('ProfilePageComponent', () => {
 
     expect(text(fixture, '.hero__name')).toBe('Ada Lovelace');
     expect(text(fixture, '.hero__meta span')).toBe('Member of band');
-    expect(text(fixture, '.hero__bio')).toBe(Constants.DASH);
+    expect(text(fixture, '.hero__bio')).toBe('Engines in harmony');
     expect(text(fixture, '.stats__item:last-child .stats__value')).toBe('Jan 2026');
     expect(text(fixture, '.details__title')).toBe('About Band');
     expect(text(fixture, '.details__text')).toBe('Analytical soundscapes');
@@ -139,11 +139,15 @@ describe('ProfilePageComponent', () => {
   });
 
   it('falls back to artist wording and placeholders for missing optional fields', async () => {
-    getUserProfileData = vi
-      .fn()
-      .mockReturnValue(
-        of({ ...profileData, artistType: null, artistName: null, description: null }),
-      );
+    getUserProfileData = vi.fn().mockReturnValue(
+      of({
+        ...profileData,
+        artistType: null,
+        artistName: null,
+        description: null,
+        shortDescription: null,
+      }),
+    );
 
     const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
@@ -152,6 +156,64 @@ describe('ProfilePageComponent', () => {
     expect(text(fixture, '.details__title')).toBe('About Artist');
     expect(text(fixture, '.details__text')).toBe(Constants.DASH);
     expect(detailValues(fixture)[0]).toBe(Constants.DASH);
+  });
+
+  describe('main genres', () => {
+    const heroMeta = (fixture: ComponentFixture<ProfilePageComponent>): string[] =>
+      Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.hero__meta span'))
+        .map((value: HTMLElement) => value.textContent.trim())
+        .filter(Boolean);
+
+    const createFixtureWithGenres = (
+      genres: string[],
+    ): Promise<ComponentFixture<ProfilePageComponent>> => {
+      getUserProfileData = vi.fn().mockReturnValue(of({ ...profileData, mainGenres: genres }));
+      return createFixture();
+    };
+
+    it('hides the genres until the profile arrives', async () => {
+      getUserProfileData = vi.fn().mockReturnValue(new Subject<IUserProfileData>());
+
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      expect(heroMeta(fixture)).toEqual(['Artist']);
+      expect(fixture.nativeElement.querySelector('.hero__meta-dot')).toBeNull();
+    });
+
+    it('hides the genres when the profile has none', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixtureWithGenres([]);
+
+      expect(heroMeta(fixture)).toEqual(['Member of band']);
+      expect(fixture.nativeElement.querySelector('.hero__meta-dot')).toBeNull();
+    });
+
+    it('capitalizes a single-word genre', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixtureWithGenres([
+        'ELECTRONIC',
+      ]);
+
+      expect(heroMeta(fixture)).toEqual(['Member of band', 'Electronic']);
+      expect(fixture.nativeElement.querySelector('.hero__meta-dot')).not.toBeNull();
+    });
+
+    it('replaces underscores with spaces and capitalizes every word', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixtureWithGenres([
+        'HIP_HOP',
+        'drum_and_bass',
+      ]);
+
+      expect(heroMeta(fixture)[1]).toBe('Hip Hop / Drum And Bass');
+    });
+
+    it('joins several genres with a slash', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixtureWithGenres([
+        'ROCK',
+        'pop',
+        'JAZZ',
+      ]);
+
+      expect(heroMeta(fixture)[1]).toBe('Rock / Pop / Jazz');
+    });
   });
 
   describe('avatar', () => {

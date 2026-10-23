@@ -57,8 +57,22 @@ export class ProfilePageComponent implements OnInit {
     return profile ? profile.name + Constants.EMPTY_SPACE_STRING + profile.surname : Constants.DASH;
   });
 
+  protected readonly mainGenres: Signal<string | null> = computed<string | null>(() => {
+    const mainGenres: string[] | undefined = this.profile()?.mainGenres;
+    if (!mainGenres?.length) {
+      return null;
+    }
+    return mainGenres
+      .map((genre: string) => this.formatGenre(genre))
+      .join(Constants.SLASH_WITH_SPACES);
+  });
+
   protected readonly artistType: Signal<ArtistTypeRequest> = computed<ArtistTypeRequest>(
     () => this.profile()?.artistType ?? ArtistTypeRequestEnum.ARTIST,
+  );
+
+  protected readonly shortDescription: Signal<string> = computed<string>(
+    () => this.profile()?.shortDescription ?? Constants.DASH,
   );
 
   protected readonly description: Signal<string> = computed<string>(
@@ -105,6 +119,16 @@ export class ProfilePageComponent implements OnInit {
   private async getUserProfileData(): Promise<void> {
     const profile: IUserProfileData = await firstValueFrom(this.userService.getUserProfileData());
     this.profile.set(profile);
+  }
+
+  private formatGenre(genre: string): string {
+    return genre
+      .split(Constants.UNDERSCORE)
+      .map(
+        (word: string) =>
+          word.charAt(Constants.ZERO).toUpperCase() + word.slice(Constants.ONE).toLowerCase(),
+      )
+      .join(Constants.EMPTY_SPACE_STRING);
   }
 
   private formatProfileDate(date: string | undefined, format: DateFormatEnum): string {

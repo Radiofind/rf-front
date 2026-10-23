@@ -14,6 +14,12 @@ export class Constants {
 
   public static readonly DOT: string = '.';
 
+  public static readonly DASH: string = '-';
+
+  public static readonly UNDERSCORE: string = '_';
+
+  public static readonly SLASH_WITH_SPACES: string = ' / ';
+
   public static readonly TOKEN_KEY: string = 'radiofind_token';
 
   public static readonly UPPERCASE: string = 'uppercase';
@@ -41,8 +47,6 @@ export class Constants {
   public static readonly REQUIRED_PROPERTY: string = 'required';
 
   public static readonly SPLIT_DATE_BY_T: string = 'T';
-
-  public static readonly DASH: string = '-';
 
   public static readonly ZERO_STRING: string = '0';
 
@@ -180,6 +184,8 @@ export class Constants {
 
   public static readonly ZERO: number = 0;
 
+  public static readonly ONE: number = 1;
+
   public static readonly MIN_LINGTH_FORM_VALIDATION_NAME: number = 2;
 
   public static readonly MIN_LINGTS_FORM_VALIDATION_PASSWORD: number = 8;
@@ -205,8 +211,6 @@ export class Constants {
   public static readonly HTTP_CONFLICT_STATUS: number = 409;
 
   public static readonly MIN_BIRTH_DATE: number = 100;
-
-  public static readonly ONE: number = 1;
 
   public static readonly INVALID_DATA_MESSAGE_TIME: number = 3000;
 

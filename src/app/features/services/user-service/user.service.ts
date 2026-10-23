@@ -13,6 +13,7 @@ import type {
   IUserProfileData,
 } from '../../../core/models/user.model';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
+import { Constants } from '../../../core/constants/constants';
 
 @Service()
 export class UserService {
@@ -44,7 +45,7 @@ export class UserService {
           this.resetCurrentUser();
           return throwError(() => error);
         }),
-        shareReplay(1),
+        shareReplay(Constants.ONE),
       );
     }
 
