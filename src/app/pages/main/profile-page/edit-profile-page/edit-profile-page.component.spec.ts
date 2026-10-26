@@ -368,8 +368,7 @@ describe('EditProfilePageComponent', () => {
   });
 
   describe('unsaved changes', () => {
-    const unloadEvent = (): BeforeUnloadEvent =>
-      new Event('beforeunload', { cancelable: true });
+    const unloadEvent = (): BeforeUnloadEvent => new Event('beforeunload', { cancelable: true });
 
     it('has none right after the profile is loaded', async () => {
       const fixture: ComponentFixture<EditProfilePageComponent> = await createFixture();
