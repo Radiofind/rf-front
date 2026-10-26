@@ -174,11 +174,11 @@ test.describe('settings', () => {
 
       await authenticatedPage.goto('/settings/general');
 
-      await expect(settings.language).toHaveValue('DE');
+      await expect(settings.language).toHaveText('Deutsch');
       await expect(settings.radioMode).not.toBeChecked();
-      await expect(settings.profileVisibility).toHaveValue('ONLY_ME');
+      await expect(settings.profileVisibility).toHaveText('Only me');
       await expect(settings.notifications).not.toBeChecked();
-      await expect(settings.audioQuality).toHaveValue('LOW');
+      await expect(settings.audioQuality).toHaveText('Low (96 kbps)');
       await expect(settings.accentColor('Ocean')).toBeChecked();
     });
 
@@ -193,7 +193,7 @@ test.describe('settings', () => {
       await expect(settings.language).toBeEnabled();
 
       let saved: Promise<unknown> = waitForSave(authenticatedPage);
-      await settings.language.selectOption('FR');
+      await settings.choose(settings.language, 'Français');
       await saved;
 
       saved = waitForSave(authenticatedPage);
@@ -201,7 +201,7 @@ test.describe('settings', () => {
       await saved;
 
       saved = waitForSave(authenticatedPage);
-      await settings.profileVisibility.selectOption('FOLLOWERS');
+      await settings.choose(settings.profileVisibility, 'Followers only');
       await saved;
 
       saved = waitForSave(authenticatedPage);
@@ -209,7 +209,7 @@ test.describe('settings', () => {
       await saved;
 
       saved = waitForSave(authenticatedPage);
-      await settings.audioQuality.selectOption('NORMAL');
+      await settings.choose(settings.audioQuality, 'Normal (160 kbps)');
       await saved;
 
       saved = waitForSave(authenticatedPage);
@@ -233,7 +233,7 @@ test.describe('settings', () => {
 
       await authenticatedPage.reload();
 
-      await expect(settings.language).toHaveValue('FR');
+      await expect(settings.language).toHaveText('Français');
       await expect(settings.accentColor('Plum')).toBeChecked();
     });
 
@@ -284,7 +284,7 @@ test.describe('settings', () => {
       await expect(settings.language).toBeEnabled();
 
       const saved: Promise<unknown> = waitForSave(authenticatedPage);
-      await settings.language.selectOption('IT');
+      await settings.choose(settings.language, 'Italiano');
       await saved;
 
       await expect(authenticatedPage.locator('html')).toHaveAttribute('lang', 'it');

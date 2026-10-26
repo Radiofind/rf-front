@@ -13,12 +13,17 @@ export class SettingsPage {
   public constructor(private readonly page: Page) {
     this.root = page.locator('app-settings-page');
     this.navigation = page.getByRole('navigation', { name: 'Settings sections' });
-    this.language = page.getByRole('combobox', { name: 'Language' });
+    this.language = page.getByRole('button', { name: 'Language' });
     this.radioMode = page.getByRole('switch', { name: 'Radio-mode' });
-    this.profileVisibility = page.getByRole('combobox', { name: 'Profile Visibility' });
+    this.profileVisibility = page.getByRole('button', { name: 'Profile Visibility' });
     this.notifications = page.getByRole('switch', { name: 'Notifications' });
-    this.audioQuality = page.getByRole('combobox', { name: 'Audio Quality' });
+    this.audioQuality = page.getByRole('button', { name: 'Audio Quality' });
     this.accentColors = page.getByRole('radiogroup', { name: 'Accent Color' });
+  }
+
+  public async choose(control: Locator, label: string): Promise<void> {
+    await control.click();
+    await this.page.getByRole('menuitemradio', { name: label, exact: true }).click();
   }
 
   public accentColor(label: string): Locator {

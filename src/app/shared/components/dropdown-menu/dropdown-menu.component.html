@@ -1,0 +1,42 @@
+<ng-template #menu let-items let-isNested="isNested">
+  <div
+    class="dropdown-menu"
+    cdkMenu
+    cdkTargetMenuAim
+    [class.dropdown-menu--nested]="isNested"
+    [style.--dropdown-menu-trigger-width.px]="isNested ? null : panelMinWidth()"
+  >
+    @for (option of items ?? options(); track option.value) {
+      @if (hasChildren(option)) {
+        <button
+          class="dropdown-menu__item dropdown-menu__item--group"
+          type="button"
+          cdkMenuItem
+          #groupTrigger="cdkMenuTriggerFor"
+          [class.dropdown-menu__item--active]="containsSelected(option)"
+          [cdkMenuTriggerFor]="menu"
+          [cdkMenuTriggerData]="nestedContext(option)"
+          [cdkMenuPosition]="nestedPositions"
+          (click)="onGroupClick(groupTrigger)"
+        >
+          <span class="dropdown-menu__label">{{ option.label }}</span>
+          <i class="dropdown-menu__icon bx bx-chevron-right" aria-hidden="true"></i>
+        </button>
+      } @else {
+        <button
+          class="dropdown-menu__item"
+          type="button"
+          cdkMenuItemRadio
+          [class.dropdown-menu__item--active]="isSelected(option)"
+          [cdkMenuItemChecked]="isSelected(option)"
+          (cdkMenuItemTriggered)="onSelect(option)"
+        >
+          <span class="dropdown-menu__label">{{ option.label }}</span>
+          @if (isSelected(option)) {
+            <i class="dropdown-menu__icon bx bx-check" aria-hidden="true"></i>
+          }
+        </button>
+      }
+    }
+  </div>
+</ng-template>

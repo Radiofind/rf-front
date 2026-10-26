@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { GeneralSettingsPageComponent } from './general-settings-page.component';
@@ -59,7 +59,12 @@ describe('GeneralSettingsPageComponent', () => {
   const select = (
     fixture: ComponentFixture<GeneralSettingsPageComponent>,
     id: string,
-  ): HTMLSelectElement => row(fixture, id).querySelector('select')!;
+  ): HTMLButtonElement => row(fixture, id).querySelector('.select__control')!;
+
+  const selectedLabel = (
+    fixture: ComponentFixture<GeneralSettingsPageComponent>,
+    id: string,
+  ): string => row(fixture, id).querySelector('.select__value')!.textContent.trim();
 
   const toggle = (
     fixture: ComponentFixture<GeneralSettingsPageComponent>,
@@ -72,12 +77,19 @@ describe('GeneralSettingsPageComponent', () => {
   const choose = async (
     fixture: ComponentFixture<GeneralSettingsPageComponent>,
     id: string,
-    value: string,
+    label: string,
   ): Promise<void> => {
-    select(fixture, id).value = value;
-    select(fixture, id).dispatchEvent(new Event('change'));
+    select(fixture, id).click();
+    await fixture.whenStable();
+    Array.from(document.querySelectorAll<HTMLButtonElement>('.dropdown-menu__item'))
+      .find((item) => item.textContent.trim() === label)!
+      .click();
     await fixture.whenStable();
   };
+
+  afterEach(() => {
+    document.querySelector('.cdk-overlay-container')?.remove();
+  });
 
   beforeEach(() => {
     TestBed.resetTestingModule();
@@ -109,11 +121,11 @@ describe('GeneralSettingsPageComponent', () => {
   it('shows the current settings in the controls', async () => {
     const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
 
-    expect(select(fixture, 'settings-language').value).toBe('DE');
+    expect(selectedLabel(fixture, 'settings-language')).toBe('Deutsch');
     expect(toggle(fixture, 'settings-radio-mode').checked).toBe(true);
-    expect(select(fixture, 'settings-profile-visibility').value).toBe('FOLLOWERS');
+    expect(selectedLabel(fixture, 'settings-profile-visibility')).toBe('Followers only');
     expect(toggle(fixture, 'settings-notifications').checked).toBe(false);
-    expect(select(fixture, 'settings-audio-quality').value).toBe('NORMAL');
+    expect(selectedLabel(fixture, 'settings-audio-quality')).toBe('Normal (160 kbps)');
     expect(swatches(fixture).find((swatch) => swatch.checked)?.value).toBe('ORCHID');
   });
 
@@ -123,17 +135,17 @@ describe('GeneralSettingsPageComponent', () => {
     settings.set({ ...storedSettings, language: 'IT', notificationsEnabled: true });
     await fixture.whenStable();
 
-    expect(select(fixture, 'settings-language').value).toBe('IT');
+    expect(selectedLabel(fixture, 'settings-language')).toBe('Italiano');
     expect(toggle(fixture, 'settings-notifications').checked).toBe(true);
   });
 
   it('labels every control with its row title and description', async () => {
     const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
 
-    const language: HTMLSelectElement = select(fixture, 'settings-language');
+    const language: HTMLButtonElement = select(fixture, 'settings-language');
     const radioMode: HTMLInputElement = toggle(fixture, 'settings-radio-mode');
 
-    expect(language.getAttribute('aria-labelledby')).toBe('settings-language-title');
+    expect(language.getAttribute('aria-labelledby')).toBe(`settings-language-title ${language.id}`);
     expect(language.getAttribute('aria-describedby')).toBe('settings-language-description');
     expect(radioMode.getAttribute('aria-labelledby')).toBe('settings-radio-mode-title');
   });
@@ -142,7 +154,7 @@ describe('GeneralSettingsPageComponent', () => {
     it('saves a new language', async () => {
       const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
 
-      await choose(fixture, 'settings-language', 'FR');
+      await choose(fixture, 'settings-language', 'Français');
 
       expect(updateSettings).toHaveBeenCalledWith({ language: 'FR' });
     });
@@ -159,7 +171,7 @@ describe('GeneralSettingsPageComponent', () => {
     it('saves a new profile visibility', async () => {
       const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
 
-      await choose(fixture, 'settings-profile-visibility', 'ONLY_ME');
+      await choose(fixture, 'settings-profile-visibility', 'Only me');
 
       expect(updateSettings).toHaveBeenCalledWith({ profileVisibility: 'ONLY_ME' });
     });
@@ -176,7 +188,7 @@ describe('GeneralSettingsPageComponent', () => {
     it('saves a new audio quality', async () => {
       const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
 
-      await choose(fixture, 'settings-audio-quality', 'HIGH');
+      await choose(fixture, 'settings-audio-quality', 'High (320 kbps)');
 
       expect(updateSettings).toHaveBeenCalledWith({ audioQuality: 'HIGH' });
     });
@@ -222,8 +234,8 @@ describe('GeneralSettingsPageComponent', () => {
       loadSettings.mockReturnValue(new Promise<boolean>(() => undefined));
 
       const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
-      const controls: (HTMLInputElement | HTMLSelectElement)[] = Array.from(
-        fixture.nativeElement.querySelectorAll('select, input'),
+      const controls: (HTMLInputElement | HTMLButtonElement)[] = Array.from(
+        fixture.nativeElement.querySelectorAll('.select__control, input'),
       );
 
       expect(controls).toHaveLength(9);

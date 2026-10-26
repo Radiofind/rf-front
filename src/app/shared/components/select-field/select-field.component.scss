@@ -10,6 +10,8 @@
   }
 
   &__control {
+    display: flex;
+    align-items: center;
     width: 100%;
     height: 48px;
     padding: 0 48px 0 18px;
@@ -17,9 +19,8 @@
     border-radius: 12px;
     background: var(--surface-color);
     font-size: 15px;
+    text-align: left;
     color: var(--text-color);
-    color-scheme: dark;
-    appearance: none;
     cursor: pointer;
     transition: all 300ms ease;
 
@@ -34,6 +35,21 @@
     }
   }
 
+  &--open &__control {
+    border-color: var(--first-gradient-color);
+    box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+  }
+
+  &__value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &--placeholder {
+      color: var(--second-text-color);
+    }
+  }
+
   &__arrow {
     position: absolute;
     top: 50%;
@@ -42,6 +58,11 @@
     font-size: 22px;
     color: var(--text-color);
     transform: translateY(-50%);
+    transition: transform 300ms ease;
     pointer-events: none;
+  }
+
+  &--open &__arrow {
+    transform: translateY(-50%) rotate(180deg);
   }
 }
