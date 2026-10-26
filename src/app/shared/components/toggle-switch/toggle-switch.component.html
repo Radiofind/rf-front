@@ -4,6 +4,7 @@
     type="checkbox"
     role="switch"
     [checked]="checked()"
+    [attr.name]="name() || null"
     [disabled]="disabled()"
     [attr.aria-labelledby]="labelledBy()"
     [attr.aria-describedby]="describedBy()"

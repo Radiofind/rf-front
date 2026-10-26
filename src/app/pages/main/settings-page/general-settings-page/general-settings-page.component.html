@@ -9,6 +9,7 @@
   >
     <app-select-field
       class="general-settings__select"
+      name="language"
       labelledBy="settings-language-title"
       describedBy="settings-language-description"
       [options]="languageOptions"
@@ -25,6 +26,7 @@
     rowDescription="When enabled, the app works as a radio — you can only listen to curated stations. When disabled, you can also play any track from the library."
   >
     <app-toggle-switch
+      name="radio-mode"
       labelledBy="settings-radio-mode-title"
       describedBy="settings-radio-mode-description"
       [checked]="settings().radioMode"
@@ -41,6 +43,7 @@
   >
     <app-select-field
       class="general-settings__select"
+      name="profile-visibility"
       labelledBy="settings-profile-visibility-title"
       describedBy="settings-profile-visibility-description"
       [options]="profileVisibilityOptions"
@@ -57,6 +60,7 @@
     rowDescription="Receive updates about new followers, likes, and more."
   >
     <app-toggle-switch
+      name="notifications"
       labelledBy="settings-notifications-title"
       describedBy="settings-notifications-description"
       [checked]="settings().notificationsEnabled"
@@ -73,6 +77,7 @@
   >
     <app-select-field
       class="general-settings__select"
+      name="audio-quality"
       labelledBy="settings-audio-quality-title"
       describedBy="settings-audio-quality-description"
       [options]="audioQualityOptions"

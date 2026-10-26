@@ -1,4 +1,5 @@
 import { Component, input, model, output } from '@angular/core';
+import { Constants } from '../../../core/constants/constants';
 
 import type { OutputEmitterRef, InputSignal, ModelSignal } from '@angular/core';
 import type { FormValueControl } from '@angular/forms/signals';
@@ -12,6 +13,8 @@ export class RadioFieldComponent<T extends string> implements FormValueControl<T
   public readonly value: ModelSignal<T> = model.required<T>();
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
+
+  public readonly name: InputSignal<string> = input<string>(Constants.EMPTY_STRING);
 
   public readonly touch: OutputEmitterRef<void> = output();
 
