@@ -14,6 +14,8 @@ export class ToggleSwitchComponent implements FormCheckboxControl {
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
 
+  public readonly name: InputSignal<string> = input<string>(Constants.EMPTY_STRING);
+
   public readonly touch: OutputEmitterRef<void> = output();
 
   public readonly checkedText: InputSignal<string> = input<string>(Constants.TOGGLE_ENABLED_TEXT);

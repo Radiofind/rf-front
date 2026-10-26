@@ -22,6 +22,8 @@ export class CodeFieldComponent implements FormValueControl<string> {
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
 
+  public readonly name: InputSignal<string> = input<string>(Constants.EMPTY_STRING);
+
   public readonly required: InputSignal<boolean> = input<boolean>(false);
 
   public readonly codeLength: InputSignal<number> = input<number>(

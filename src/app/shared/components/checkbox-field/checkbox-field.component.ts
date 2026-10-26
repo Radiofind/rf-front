@@ -1,4 +1,5 @@
 import { Component, input, model, output } from '@angular/core';
+import { Constants } from '../../../core/constants/constants';
 
 import type { OutputEmitterRef, InputSignal, ModelSignal } from '@angular/core';
 import type { FormCheckboxControl } from '@angular/forms/signals';
@@ -12,6 +13,8 @@ export class CheckboxFieldComponent implements FormCheckboxControl {
   public readonly checked: ModelSignal<boolean> = model<boolean>(false);
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
+
+  public readonly name: InputSignal<string> = input<string>(Constants.EMPTY_STRING);
 
   public readonly touch: OutputEmitterRef<void> = output();
 

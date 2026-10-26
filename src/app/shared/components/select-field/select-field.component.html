@@ -1,6 +1,7 @@
 <div class="select" [class.select--disabled]="disabled()">
   <select
     class="select__control"
+    [attr.name]="name() || null"
     [disabled]="disabled()"
     [attr.aria-labelledby]="labelledBy()"
     [attr.aria-describedby]="describedBy()"
