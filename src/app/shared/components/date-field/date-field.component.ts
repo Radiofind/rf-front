@@ -29,6 +29,8 @@ export class DateFieldComponent implements FormValueControl<Date | null> {
 
   public readonly disabled: InputSignal<boolean> = input<boolean>(false);
 
+  public readonly name: InputSignal<string> = input<string>(Constants.EMPTY_STRING);
+
   public readonly required: InputSignal<boolean> = input<boolean>(false);
 
   public readonly min: InputSignal<Date | undefined> = input<Date | undefined>(undefined);

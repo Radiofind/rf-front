@@ -11,6 +11,7 @@
         maxlength="1"
         [value]="cell"
         [placeholder]="cellPlaceholder()"
+        [attr.name]="name() ? name() + '-' + ($index + 1) : null"
         [disabled]="disabled()"
         [required]="required()"
         [attr.aria-label]="cellAriaLabel() + ' ' + ($index + 1)"

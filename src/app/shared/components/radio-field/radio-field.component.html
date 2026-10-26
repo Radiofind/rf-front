@@ -9,6 +9,7 @@
           type="radio"
           [value]="option"
           [checked]="value() === option"
+          [attr.name]="name() || null"
           [disabled]="disabled()"
           (change)="onChange(option)"
         />
