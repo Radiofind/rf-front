@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { ForgetPasswordModalComponent } from './forget-password-modal.component';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
+import { Constants } from '../../../core/constants/constants';
 
 import type { ComponentFixture } from '@angular/core/testing';
 
@@ -72,6 +73,6 @@ describe('ForgetPasswordModalComponent', () => {
 
     expect(close).toHaveBeenCalledTimes(1);
     expect(forgetPassword).toHaveBeenCalledWith({ email: 'ada@example.com' });
-    expect(success).toHaveBeenCalledWith('Email sent successfully');
+    expect(success).toHaveBeenCalledWith(Constants.EMAIL_SENT_SUCCESSFULLY);
   });
 });

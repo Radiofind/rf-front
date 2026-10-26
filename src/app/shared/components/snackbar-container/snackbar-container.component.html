@@ -3,11 +3,11 @@
   role="status"
   aria-live="polite"
   aria-atomic="false"
-  aria-label="Notifications"
+  [attr.aria-label]="'common.notifications' | translate"
 >
   @for (message of messages(); track message.id) {
     <app-snackbar
-      [snackbarContent]="message.content"
+      [snackbarContent]="message.content | translate: message.params ?? undefined"
       [snackbarType]="message.type"
       [snackbarIconClass]="message.iconClass"
     />

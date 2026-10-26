@@ -1,11 +1,13 @@
 <section class="general-settings" aria-labelledby="general-settings-title">
-  <h2 class="general-settings__title" id="general-settings-title">General Settings</h2>
+  <h2 class="general-settings__title" id="general-settings-title">
+    {{ 'settings.generalTitle' | translate }}
+  </h2>
 
   <app-settings-row
     rowId="settings-language"
     iconClass="bx bx-globe"
-    rowTitle="Language"
-    rowDescription="Choose your preferred language for the interface."
+    [rowTitle]="'settings.languageTitle' | translate"
+    [rowDescription]="'settings.languageDescription' | translate"
   >
     <app-select-field
       class="general-settings__select"
@@ -22,8 +24,8 @@
   <app-settings-row
     rowId="settings-radio-mode"
     iconClass="bx bx-broadcast"
-    rowTitle="Radio-mode"
-    rowDescription="When enabled, the app works as a radio — you can only listen to curated stations. When disabled, you can also play any track from the library."
+    [rowTitle]="'settings.radioModeTitle' | translate"
+    [rowDescription]="'settings.radioModeDescription' | translate"
   >
     <app-toggle-switch
       name="radio-mode"
@@ -38,15 +40,15 @@
   <app-settings-row
     rowId="settings-profile-visibility"
     iconClass="bx bx-eye"
-    rowTitle="Profile Visibility"
-    rowDescription="Control what other users can see on your profile — your statistics and about information."
+    [rowTitle]="'settings.profileVisibilityTitle' | translate"
+    [rowDescription]="'settings.profileVisibilityDescription' | translate"
   >
     <app-select-field
       class="general-settings__select"
       name="profile-visibility"
       labelledBy="settings-profile-visibility-title"
       describedBy="settings-profile-visibility-description"
-      [options]="profileVisibilityOptions"
+      [options]="profileVisibilityOptions()"
       [value]="settings().profileVisibility"
       [disabled]="isDisabled()"
       (valueChange)="onSettingChange('profileVisibility', $event)"
@@ -56,8 +58,8 @@
   <app-settings-row
     rowId="settings-notifications"
     iconClass="bx bx-bell"
-    rowTitle="Notifications"
-    rowDescription="Receive updates about new followers, likes, and more."
+    [rowTitle]="'settings.notificationsTitle' | translate"
+    [rowDescription]="'settings.notificationsDescription' | translate"
   >
     <app-toggle-switch
       name="notifications"
@@ -72,15 +74,15 @@
   <app-settings-row
     rowId="settings-audio-quality"
     iconClass="bx bx-waveform"
-    rowTitle="Audio Quality"
-    rowDescription="Choose the quality of audio streaming."
+    [rowTitle]="'settings.audioQualityTitle' | translate"
+    [rowDescription]="'settings.audioQualityDescription' | translate"
   >
     <app-select-field
       class="general-settings__select"
       name="audio-quality"
       labelledBy="settings-audio-quality-title"
       describedBy="settings-audio-quality-description"
-      [options]="audioQualityOptions"
+      [options]="audioQualityOptions()"
       [value]="settings().audioQuality"
       [disabled]="isDisabled()"
       (valueChange)="onSettingChange('audioQuality', $event)"
@@ -90,8 +92,8 @@
   <app-settings-row
     rowId="settings-accent-color"
     iconClass="bx bx-palette"
-    rowTitle="Accent Color"
-    rowDescription="Personalize the look of your interface."
+    [rowTitle]="'settings.accentColorTitle' | translate"
+    [rowDescription]="'settings.accentColorDescription' | translate"
   >
     <app-accent-color-picker
       class="general-settings__picker"

@@ -3,6 +3,7 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { form, FormRoot, FormField } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
 import { Constants } from '../../../core/constants/constants';
 import { forgetPasswordSchema } from '../../schemas/forget-password/forget-password.schema';
 import { InputFieldComponent } from '../../../shared/components/input-field/input-field.component';
@@ -15,7 +16,7 @@ import type { IForgetPasswordForm } from '../../models/forget-password.model';
 
 @Component({
   selector: 'app-forget-password-modal',
-  imports: [ButtonComponent, FormRoot, InputFieldComponent, FormField],
+  imports: [ButtonComponent, FormRoot, InputFieldComponent, FormField, TranslatePipe],
   templateUrl: './forget-password-modal.component.html',
   styleUrl: './forget-password-modal.component.scss',
 })

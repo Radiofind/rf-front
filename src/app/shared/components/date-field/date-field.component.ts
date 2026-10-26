@@ -3,6 +3,7 @@ import { transformedValue } from '@angular/forms/signals';
 import { Constants } from '../../../core/constants/constants';
 import { AuthValidationMessages } from '../../../features/constants/auth-error-messages.constant';
 import { transformDateToString, transformStringToDate } from '../../helpers/date/date.helpers';
+import { TranslateErrorPipe } from '../../pipes/translate-error/translate-error.pipe';
 
 import type { OutputEmitterRef, InputSignal, ModelSignal, Signal } from '@angular/core';
 import type {
@@ -15,6 +16,7 @@ import type {
   selector: 'app-date-field',
   templateUrl: './date-field.component.html',
   styleUrl: './date-field.component.scss',
+  imports: [TranslateErrorPipe],
 })
 export class DateFieldComponent implements FormValueControl<Date | null> {
   public readonly value: ModelSignal<Date | null> = model<Date | null>(null);

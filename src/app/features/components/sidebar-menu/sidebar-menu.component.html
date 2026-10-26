@@ -3,17 +3,21 @@
     <button
       class="sidebar__toggle"
       type="button"
-      [attr.aria-label]="toggleAriaLabel()"
+      [attr.aria-label]="toggleAriaLabel() | translate"
       [attr.aria-expanded]="!isCollapsed()"
       aria-controls="sidebar-navigation"
-      [title]="toggleAriaLabel()"
+      [title]="toggleAriaLabel() | translate"
       (click)="onToggleCollapsed()"
     >
       <i [class]="toggleIconClass()"></i>
     </button>
   </div>
 
-  <nav class="sidebar__nav" id="sidebar-navigation" aria-label="Main navigation">
+  <nav
+    class="sidebar__nav"
+    id="sidebar-navigation"
+    [attr.aria-label]="'sidebar.mainNavigation' | translate"
+  >
     <ul class="sidebar__list">
       @for (item of visibleMenuItems(); track item.id) {
         <li>
@@ -23,10 +27,10 @@
             routerLinkActive="sidebar__item--active"
             [routerLink]="item.link"
             [attr.aria-current]="itemLink.isActive ? 'page' : null"
-            [title]="item.label"
+            [title]="item.label | translate"
           >
             <i class="sidebar__item-icon" [class]="item.iconClass"></i>
-            <span class="sidebar__item-label">{{ item.label }}</span>
+            <span class="sidebar__item-label">{{ item.label | translate }}</span>
           </a>
         </li>
       }
@@ -36,12 +40,16 @@
   <button
     class="sidebar__user"
     type="button"
-    aria-label="Open account settings"
+    [attr.aria-label]="'sidebar.openAccountSettings' | translate"
     (click)="onProfile()"
   >
     <span class="sidebar__user-avatar">
       @if (userAvatarUrl()) {
-        <img class="sidebar__user-image" [src]="userAvatarUrl()" alt="User avatar" />
+        <img
+          class="sidebar__user-image"
+          [src]="userAvatarUrl()"
+          [alt]="'common.userAvatar' | translate"
+        />
       } @else {
         <i class="bxf bx-user"></i>
       }

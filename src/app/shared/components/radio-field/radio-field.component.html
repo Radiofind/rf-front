@@ -3,18 +3,18 @@
     <span>{{ fieldLabel() }}</span>
   </div>
   <div class="radio-field__buttons">
-    @for (option of options(); track option) {
+    @for (option of options(); track option.value) {
       <label class="radio-field__buttons--option">
         <input
           type="radio"
-          [value]="option"
-          [checked]="value() === option"
+          [value]="option.value"
+          [checked]="value() === option.value"
           [attr.name]="name() || null"
           [disabled]="disabled()"
-          (change)="onChange(option)"
+          (change)="onChange(option.value)"
         />
         <span></span>
-        {{ option }}
+        {{ option.label }}
       </label>
     }
   </div>

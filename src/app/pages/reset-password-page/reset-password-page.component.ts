@@ -12,6 +12,7 @@ import { InputFieldComponent } from '../../shared/components/input-field/input-f
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { resetPasswordSchema } from '../../features/schemas/reset-password/reset-password-form.schema';
 import { SnackbarService } from '../../shared/services/snackbar-service/snackbar.service';
+import { TranslatePipe } from '../../shared/pipes/translate/translate.pipe';
 
 import type { OnInit, WritableSignal } from '@angular/core';
 import type { FieldTree } from '@angular/forms/signals';
@@ -20,7 +21,14 @@ import type { IResetPasswordForm } from '../../features/models/reset-password-fo
 
 @Component({
   selector: 'app-reset-password-page',
-  imports: [HeaderComponent, InputFieldComponent, ButtonComponent, FormRoot, FormField],
+  imports: [
+    HeaderComponent,
+    InputFieldComponent,
+    ButtonComponent,
+    FormRoot,
+    FormField,
+    TranslatePipe,
+  ],
   templateUrl: './reset-password-page.component.html',
   styleUrl: './reset-password-page.component.scss',
 })

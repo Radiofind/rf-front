@@ -6,54 +6,54 @@ import type { ITwoFactorModalData } from '../models/two-factor.model';
 import type { IAuthContent } from '../models/auth-content.model';
 
 export const AUTH_DESCRIPTION_CONTENT_LOGIN: IAuthContent = {
-  title: 'Welcome Back ',
-  titleColor: 'Artist',
+  title: 'auth.login.descriptionTitle',
+  titleColor: 'auth.login.descriptionAccent',
   smile: ' 👋',
-  instructions: 'Log in to your account and continue sharing your music with the world.',
+  instructions: 'auth.login.instructions',
   content: [
     {
       id: '1',
       iconClass: 'bx bx-equalizer',
-      contentTitle: 'Your Music, Worldwide',
-      overview: 'Upload, get reviewed and reach thousands of listeners.',
+      contentTitle: 'auth.features.worldwideTitle',
+      overview: 'auth.features.worldwideOverview',
     },
     {
       id: '2',
       iconClass: 'bx bx-trending-up',
-      contentTitle: 'Track Your Progress',
-      overview: 'See stats, plays, listeners and your music performance.',
+      contentTitle: 'auth.features.progressTitle',
+      overview: 'auth.features.progressOverview',
     },
     {
       id: '3',
       iconClass: 'bx bx-check-shield',
-      contentTitle: 'Secure & Private',
-      overview: 'Your data and your music are always protected.',
+      contentTitle: 'auth.features.secureTitle',
+      overview: 'auth.features.secureOverview',
     },
   ],
 };
 
 export const AUTH_DESCRIPTION_CONTENT_REGISTER: IAuthContent = {
-  title: 'Join RADIOFIND ',
-  titleColor: 'Start Your Journey',
-  instructions: 'Create your account and share your music with the world.',
+  title: 'auth.register.descriptionTitle',
+  titleColor: 'auth.register.descriptionAccent',
+  instructions: 'auth.register.instructions',
   content: [
     {
       id: '1',
       iconClass: 'bx bx-music',
-      contentTitle: 'Get Heard',
-      overview: 'Upload your tracks and reach real listeners.',
+      contentTitle: 'auth.features.heardTitle',
+      overview: 'auth.features.heardOverview',
     },
     {
       id: '2',
       iconClass: 'bx bx-trending-up',
-      contentTitle: 'Track Your Stats',
-      overview: 'See your plays, listeners and performance in real time.',
+      contentTitle: 'auth.features.statsTitle',
+      overview: 'auth.features.statsOverview',
     },
     {
       id: '3',
       iconClass: 'bx bx-check-shield',
-      contentTitle: 'Secure & Private',
-      overview: 'Your data and your music are always protected.',
+      contentTitle: 'auth.features.secureTitle',
+      overview: 'auth.features.secureOverview',
     },
   ],
 };
@@ -65,11 +65,11 @@ export const DEFAULT_ARTIST_TYPE: ArtistType = ARTIST_TYPES[0];
 export const TWO_FACTOR_MODAL_OPTIONS: IModalOptions<ITwoFactorModalData> = {
   size: ModalSizeEnum.MEDIUM,
   hasHeader: false,
-  ariaLabel: 'Two-Factor Authentication',
+  ariaLabel: 'twoFactor.title',
 };
 
 export const FORGET_PASSWORD_MODAL_OPTIONS: IModalOptions = {
   size: ModalSizeEnum.MEDIUM,
   hasHeader: false,
-  ariaLabel: 'Reset Password',
+  ariaLabel: 'forgotPassword.ariaLabel',
 };

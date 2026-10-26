@@ -2,6 +2,7 @@ import { Constants } from '../../constants/constants';
 import { ProfileValidationMessages } from '../../../features/constants/profile-error-messages.constant';
 
 import type { ValidationError } from '@angular/forms/signals';
+import type { ITranslatableValidationError } from '../../../shared/models/translation.model';
 
 const parseUrl = (link: string): URL | null => {
   try {
@@ -35,8 +36,11 @@ export const socialLinkError = (
     return undefined;
   }
 
-  return {
+  const error: ITranslatableValidationError = {
     kind: Constants.SOCIAL_LINK_PROPERTY,
-    message: `${ProfileValidationMessages.WRONG_SOCIAL_LINK} ${platform}`,
+    message: ProfileValidationMessages.WRONG_SOCIAL_LINK,
+    params: { platform: platform },
   };
+
+  return error;
 };

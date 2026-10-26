@@ -1,16 +1,16 @@
 import { Constants } from '../../../core/constants/constants';
 import { DateFormatEnum } from '../../../core/enums/date-format.enum';
 
-const DATE_FORMATTERS: Readonly<Record<DateFormatEnum, Intl.DateTimeFormat>> = {
-  [DateFormatEnum.MONTH_YEAR]: new Intl.DateTimeFormat('en-US', {
+const DATE_FORMAT_OPTIONS: Readonly<Record<DateFormatEnum, Intl.DateTimeFormatOptions>> = {
+  [DateFormatEnum.MONTH_YEAR]: {
     month: 'short',
     year: 'numeric',
-  }),
-  [DateFormatEnum.FULL_DATE]: new Intl.DateTimeFormat('en-US', {
+  },
+  [DateFormatEnum.FULL_DATE]: {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
-  }),
+  },
 };
 
 export function transformStringToDate(stringDate: string): Date {
@@ -32,7 +32,13 @@ export function transformDateToString(date: Date): string {
   return [year, month, day].join(Constants.DASH);
 }
 
-export function formatStringDate(stringDate: string, format: DateFormatEnum): string {
+export function formatStringDate(
+  stringDate: string,
+  format: DateFormatEnum,
+  locale: string,
+): string {
   const [datePart = stringDate]: string[] = stringDate.split(Constants.SPLIT_DATE_BY_T);
-  return DATE_FORMATTERS[format].format(transformStringToDate(datePart));
+  return new Intl.DateTimeFormat(locale, DATE_FORMAT_OPTIONS[format]).format(
+    transformStringToDate(datePart),
+  );
 }

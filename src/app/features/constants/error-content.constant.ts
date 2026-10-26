@@ -6,26 +6,23 @@ import type { IErrorContent } from '../models/error-content.model';
 export const ERROR_PAGE_CONTENT: Readonly<Record<ErrorType, IErrorContent>> = {
   [ErrorTypeEnum.NOT_FOUND]: {
     code: '404',
-    title: 'Page Not ',
-    titleColor: 'Found',
-    description:
-      'The page you are looking for does not exist or has been moved. Let us bring you back to the music.',
+    title: 'errorPage.notFoundTitle',
+    titleColor: 'errorPage.notFoundAccent',
+    description: 'errorPage.notFoundDescription',
     iconClass: 'bx bx-compass',
   },
   [ErrorTypeEnum.FORBIDDEN]: {
     code: '403',
-    title: 'Access ',
-    titleColor: 'Denied',
-    description:
-      'You do not have permission to open this page. Log in with another account or return to your workspace.',
+    title: 'errorPage.forbiddenTitle',
+    titleColor: 'errorPage.forbiddenAccent',
+    description: 'errorPage.forbiddenDescription',
     iconClass: 'bx bx-lock-keyhole',
   },
   [ErrorTypeEnum.SERVER_ERROR]: {
     code: '500',
-    title: 'Something Went ',
-    titleColor: 'Wrong',
-    description:
-      'Our servers hit a wrong note. We are already working on it, please try again in a few moments.',
+    title: 'errorPage.serverErrorTitle',
+    titleColor: 'errorPage.serverErrorAccent',
+    description: 'errorPage.serverErrorDescription',
     iconClass: 'bx bx-server',
   },
 };

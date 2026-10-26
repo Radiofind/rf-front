@@ -3,6 +3,7 @@ import { Constants } from '../../../core/constants/constants';
 
 import type { OutputEmitterRef, InputSignal, ModelSignal } from '@angular/core';
 import type { FormValueControl } from '@angular/forms/signals';
+import type { ISelectOption } from '../../models/select-option.model';
 
 @Component({
   selector: 'app-radio-field',
@@ -20,7 +21,9 @@ export class RadioFieldComponent<T extends string> implements FormValueControl<T
 
   public readonly fieldLabel: InputSignal<string | null> = input<string | null>(null);
 
-  public readonly options: InputSignal<readonly T[]> = input<readonly T[]>([]);
+  public readonly options: InputSignal<readonly ISelectOption<T>[]> = input<
+    readonly ISelectOption<T>[]
+  >([]);
 
   public readonly isCompact: InputSignal<boolean> = input<boolean>(false);
 

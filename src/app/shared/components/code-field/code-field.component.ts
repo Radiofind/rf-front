@@ -1,13 +1,17 @@
 import { Component, computed, input, model, output, viewChildren } from '@angular/core';
 import { Constants } from '../../../core/constants/constants';
+import { TranslatePipe } from '../../pipes/translate/translate.pipe';
+import { TranslateErrorPipe } from '../../pipes/translate-error/translate-error.pipe';
 
 import type { ElementRef, OutputEmitterRef, InputSignal, ModelSignal, Signal } from '@angular/core';
 import type { FormValueControl, ValidationError } from '@angular/forms/signals';
+import type { TranslationKey } from '../../../core/types/translation.type';
 
 @Component({
   selector: 'app-code-field',
   templateUrl: './code-field.component.html',
   styleUrl: './code-field.component.scss',
+  imports: [TranslatePipe, TranslateErrorPipe],
 })
 export class CodeFieldComponent implements FormValueControl<string> {
   public readonly value: ModelSignal<string> = model<string>(Constants.EMPTY_STRING);
@@ -34,7 +38,7 @@ export class CodeFieldComponent implements FormValueControl<string> {
     Constants.CODE_FIELD_PLACEHOLDER,
   );
 
-  public readonly cellAriaLabel: InputSignal<string> = input<string>(
+  public readonly cellAriaLabel: InputSignal<TranslationKey> = input<TranslationKey>(
     Constants.CODE_FIELD_CELL_AREA_LABEL,
   );
 

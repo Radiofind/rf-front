@@ -4,7 +4,9 @@
   <div class="activity__cover" aria-hidden="true"></div>
 
   <div class="activity__body">
-    <h2 class="activity__title" id="latest-activity-title">Latest Activity</h2>
+    <h2 class="activity__title" id="latest-activity-title">
+      {{ 'profile.latestActivity' | translate }}
+    </h2>
 
     @if (hasActivity) {
       <ul class="activity__list">
@@ -14,7 +16,9 @@
           </div>
           <div class="activity__info">
             <span class="activity__name">Midnight Dreams</span>
-            <span class="activity__date">Uploaded 2 days ago</span>
+            <span class="activity__date">{{
+              'profile.uploaded' | translate: { time: formatRelativeTime(-2, 'day') }
+            }}</span>
           </div>
         </li>
 
@@ -24,7 +28,9 @@
           </div>
           <div class="activity__info">
             <span class="activity__name">Neon Lights</span>
-            <span class="activity__date">Uploaded 5 days ago</span>
+            <span class="activity__date">{{
+              'profile.uploaded' | translate: { time: formatRelativeTime(-5, 'day') }
+            }}</span>
           </div>
         </li>
 
@@ -34,7 +40,9 @@
           </div>
           <div class="activity__info">
             <span class="activity__name">Lost in Space</span>
-            <span class="activity__date">Uploaded 1 week ago</span>
+            <span class="activity__date">{{
+              'profile.uploaded' | translate: { time: formatRelativeTime(-1, 'week') }
+            }}</span>
           </div>
         </li>
       </ul>
@@ -42,13 +50,13 @@
       <div class="activity__empty">
         <app-empty-state
           emptyIconClass="bx bx-pulse"
-          emptyTitle="No activity yet"
-          emptyDescription="Your uploads, reviews and radio picks will show up here."
+          [emptyTitle]="'profile.noActivityTitle' | translate"
+          [emptyDescription]="'profile.noActivityDescription' | translate"
         />
 
         <button class="activity__cta" (click)="onUploadFirstTrack()">
           <i class="bx bx-arrow-up-circle"></i>
-          <span>Upload your first track</span>
+          <span>{{ 'profile.uploadFirstTrack' | translate }}</span>
         </button>
       </div>
     }

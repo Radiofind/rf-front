@@ -1,13 +1,16 @@
 import { Component, computed, input, model, output } from '@angular/core';
 import { Constants } from '../../../core/constants/constants';
+import { TranslatePipe } from '../../pipes/translate/translate.pipe';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef, Signal } from '@angular/core';
 import type { FormCheckboxControl } from '@angular/forms/signals';
+import type { TranslationKey } from '../../../core/types/translation.type';
 
 @Component({
   selector: 'app-toggle-switch',
   templateUrl: './toggle-switch.component.html',
   styleUrl: './toggle-switch.component.scss',
+  imports: [TranslatePipe],
 })
 export class ToggleSwitchComponent implements FormCheckboxControl {
   public readonly checked: ModelSignal<boolean> = model<boolean>(false);
@@ -18,9 +21,11 @@ export class ToggleSwitchComponent implements FormCheckboxControl {
 
   public readonly touch: OutputEmitterRef<void> = output();
 
-  public readonly checkedText: InputSignal<string> = input<string>(Constants.TOGGLE_ENABLED_TEXT);
+  public readonly checkedText: InputSignal<TranslationKey> = input<TranslationKey>(
+    Constants.TOGGLE_ENABLED_TEXT,
+  );
 
-  public readonly uncheckedText: InputSignal<string> = input<string>(
+  public readonly uncheckedText: InputSignal<TranslationKey> = input<TranslationKey>(
     Constants.TOGGLE_DISABLED_TEXT,
   );
 
@@ -28,7 +33,7 @@ export class ToggleSwitchComponent implements FormCheckboxControl {
 
   public readonly describedBy: InputSignal<string | null> = input<string | null>(null);
 
-  protected readonly stateText: Signal<string> = computed<string>(() =>
+  protected readonly stateText: Signal<TranslationKey> = computed<TranslationKey>(() =>
     this.checked() ? this.checkedText() : this.uncheckedText(),
   );
 

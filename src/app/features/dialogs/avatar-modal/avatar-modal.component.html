@@ -2,7 +2,7 @@
   <div class="avatar-modal__preview">
     <div class="avatar-modal__ring">
       @if (displayedAvatarUrl(); as avatarUrl) {
-        <img class="avatar-modal__image" [src]="avatarUrl" alt="Avatar preview" />
+        <img class="avatar-modal__image" [src]="avatarUrl" [alt]="'avatar.preview' | translate" />
       } @else {
         <div class="avatar-modal__placeholder">
           <i class="bxf bx-user"></i>
@@ -18,7 +18,7 @@
         (click)="onRemove()"
       >
         <i class="bx bx-trash"></i>
-        <span>Remove photo</span>
+        <span>{{ 'avatar.removePhoto' | translate }}</span>
       </button>
     }
   </div>
@@ -48,14 +48,15 @@
     @if (selectedFile(); as file) {
       <span class="avatar-modal__dropzone-title">{{ file.name }}</span>
       <span class="avatar-modal__dropzone-hint" id="avatar-modal-hint">
-        Click or drop another image to replace it
+        {{ 'avatar.replaceHint' | translate }}
       </span>
     } @else {
       <span class="avatar-modal__dropzone-title">
-        <span class="avatar-modal__accent">Click to upload</span> or drag and drop
+        <span class="avatar-modal__accent">{{ 'avatar.clickToUpload' | translate }}</span
+        >{{ 'avatar.dragAndDrop' | translate }}
       </span>
       <span class="avatar-modal__dropzone-hint" id="avatar-modal-hint">
-        JPEG, PNG or WebP, up to {{ maxSizeMb }} MB
+        {{ 'avatar.formatsHint' | translate: { size: maxSizeMb } }}
       </span>
     }
   </label>
@@ -63,7 +64,7 @@
   @if (errorMessage(); as error) {
     <p class="avatar-modal__error" role="alert">
       <i class="bx bx-alert-circle"></i>
-      <span>{{ error }}</span>
+      <span>{{ error | translate: { size: maxSizeMb } }}</span>
     </p>
   }
 
@@ -74,20 +75,20 @@
       [disabled]="isPending()"
       (click)="onResetSelection()"
     >
-      Discard selected image
+      {{ 'avatar.discardSelection' | translate }}
     </button>
   }
 
   <div class="avatar-modal__actions">
     <app-button
-      contentText="Cancel"
+      [contentText]="'common.cancel' | translate"
       additionalClass="button--secondary"
       [disabled]="isPending()"
       (clickAction)="onCancel()"
     />
 
     <app-button
-      contentText="Save"
+      [contentText]="'common.save' | translate"
       [disabled]="!selectedFile() || isPending()"
       (clickAction)="onSave()"
     />

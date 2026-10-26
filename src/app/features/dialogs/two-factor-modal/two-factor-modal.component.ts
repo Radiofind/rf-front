@@ -7,6 +7,7 @@ import { Constants } from '../../../core/constants/constants';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { CodeFieldComponent } from '../../../shared/components/code-field/code-field.component';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 
@@ -15,10 +16,11 @@ import type { Subscription } from 'rxjs';
 import type { ValidationError } from '@angular/forms/signals';
 import type { ITwoFactorModalData } from '../../models/two-factor.model';
 import type { ITwoFactorData } from '../../../core/models/auth.model';
+import type { TranslationKey } from '../../../core/types/translation.type';
 
 @Component({
   selector: 'app-two-factor-modal',
-  imports: [ButtonComponent, CodeFieldComponent, SpinnerComponent],
+  imports: [ButtonComponent, CodeFieldComponent, SpinnerComponent, TranslatePipe],
   templateUrl: './two-factor-modal.component.html',
   styleUrl: './two-factor-modal.component.scss',
 })
@@ -141,13 +143,13 @@ export class TwoFactorModalComponent {
     }
   }
 
-  private lock(message: string): void {
+  private lock(message: TranslationKey): void {
     this.isLocked.set(true);
     this.countdownSubscription?.unsubscribe();
     this.setCodeError(message);
   }
 
-  private setCodeError(message: string): void {
+  private setCodeError(message: TranslationKey): void {
     this.codeErrors.set([{ kind: Constants.SERVER_ERROR, message: message }]);
   }
 

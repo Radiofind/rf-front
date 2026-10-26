@@ -19,19 +19,19 @@
     <div class="error-code">{{ content().code }}</div>
 
     <h1 class="error-title">
-      {{ content().title }}<span>{{ content().titleColor }}</span>
+      {{ content().title | translate }}<span>{{ content().titleColor | translate }}</span>
     </h1>
 
-    <p class="error-description">{{ content().description }}</p>
+    <p class="error-description">{{ content().description | translate }}</p>
 
     <div class="error-actions">
       <app-button
-        contentText="Back to Home"
+        [contentText]="'common.backToHome' | translate"
         contentIconClass="bx bx-home"
         (clickAction)="goHome()"
       />
     </div>
   </div>
 
-  <div class="rights">© 2026 RADIOFIND. All rights reserved.</div>
+  <div class="rights">{{ 'common.rightsReserved' | translate }}</div>
 </div>

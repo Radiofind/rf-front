@@ -1,5 +1,6 @@
 import { Component, input, model, output } from '@angular/core';
 import { ACCENT_COLOR_OPTIONS } from '../../../constants/settings.constant';
+import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
 import type { FormValueControl } from '@angular/forms/signals';
@@ -10,6 +11,7 @@ import type { IAccentColorOption } from '../../../models/accent-color-option.mod
   selector: 'app-accent-color-picker',
   templateUrl: './accent-color-picker.component.html',
   styleUrl: './accent-color-picker.component.scss',
+  imports: [TranslatePipe],
 })
 export class AccentColorPickerComponent implements FormValueControl<AccentColor> {
   public readonly value: ModelSignal<AccentColor> = model.required<AccentColor>();

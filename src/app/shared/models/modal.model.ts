@@ -1,25 +1,28 @@
 import type { DialogConfig } from '@angular/cdk/dialog';
 import type { ModalSize } from '../../core/types/modal-size.type';
+import type { TranslationKey } from '../../core/types/translation.type';
 
 export interface IModalOptions<D = unknown> {
-  title?: string | null;
-  subtitle?: string | null;
+  title?: TranslationKey | null;
+  subtitle?: TranslationKey | null;
   iconClass?: string | null;
   size?: ModalSize;
   hasHeader?: boolean;
   hasCloseButton?: boolean;
   disableClose?: boolean;
   panelClass?: string | string[];
-  ariaLabel?: string | null;
+  ariaLabel?: TranslationKey | null;
   data?: D | null;
 }
 
 export interface IModalDialogConfig<D = unknown, R = unknown>
-  extends DialogConfig<D, R>, IModalOptions<D> {}
+  extends DialogConfig<D, R>, IModalOptions<D> {
+  ariaLabel?: TranslationKey | null;
+}
 
 export interface IConfirmModalData {
-  message: string;
-  description?: string | null;
-  confirmText?: string;
-  cancelText?: string;
+  message: TranslationKey;
+  description?: TranslationKey | null;
+  confirmText?: TranslationKey;
+  cancelText?: TranslationKey;
 }

@@ -1,16 +1,18 @@
+import type { TranslationKey } from '../../core/types/translation.type';
+
 export interface IAuthContent {
-  title: string;
-  titleColor: string;
+  title: TranslationKey;
+  titleColor: TranslationKey;
   smile?: string;
-  instructions: string;
+  instructions: TranslationKey;
   content: IContentEntity[];
 }
 
 export interface IContentEntity {
   id: string;
   iconClass: string;
-  contentTitle: string;
-  overview: string;
+  contentTitle: TranslationKey;
+  overview: TranslationKey;
 }
 
 export interface ILoginData {

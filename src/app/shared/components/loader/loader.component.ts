@@ -11,12 +11,13 @@ import { isPlatformBrowser } from '@angular/common';
 import { Constants } from '../../../core/constants/constants';
 import { LoaderService } from '../../services/loader-service/loader.service';
 import { SpinnerComponent } from '../spinner/spinner.component';
+import { TranslatePipe } from '../../pipes/translate/translate.pipe';
 
 import type { Signal } from '@angular/core';
 
 @Component({
   selector: 'app-loader',
-  imports: [SpinnerComponent],
+  imports: [SpinnerComponent, TranslatePipe],
   templateUrl: './loader.component.html',
   styleUrl: './loader.component.scss',
 })

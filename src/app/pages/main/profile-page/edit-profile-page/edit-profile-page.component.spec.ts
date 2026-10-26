@@ -11,6 +11,7 @@ import { ProfileValidationMessages } from '../../../../features/constants/profil
 import { Constants } from '../../../../core/constants/constants';
 import { Links } from '../../../../core/constants/links';
 
+import { translate } from '../../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
 import type {
   ISocialLinksData,
@@ -238,7 +239,7 @@ describe('EditProfilePageComponent', () => {
 
       expect(saveButton(fixture).disabled).toBe(true);
       expect(element(fixture).textContent).toContain(
-        `${ProfileValidationMessages.WRONG_SOCIAL_LINK} Telegram`,
+        translate(ProfileValidationMessages.WRONG_SOCIAL_LINK, { platform: 'Telegram' }),
       );
     });
   });
@@ -335,7 +336,7 @@ describe('EditProfilePageComponent', () => {
 
       const emailField: HTMLElement = control(fixture, 'Email').closest('app-input-field')!;
 
-      expect(emailField.textContent).toContain(ProfileValidationMessages.EMAIL_TAKEN);
+      expect(emailField.textContent).toContain(translate(ProfileValidationMessages.EMAIL_TAKEN));
       expect(snackbar.error).not.toHaveBeenCalled();
       expect(navigate).not.toHaveBeenCalled();
     });

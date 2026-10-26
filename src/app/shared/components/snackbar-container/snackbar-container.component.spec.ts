@@ -35,17 +35,26 @@ describe('SnackbarContainerComponent', () => {
   });
 
   it('renders one snackbar per service message', async () => {
-    snackbarService.show('first', { duration: 0 });
-    snackbarService.error('second', { duration: 0 });
+    snackbarService.show('messages.settingsSaved', { duration: 0 });
+    snackbarService.error('messages.settingsSaveFailed', { duration: 0 });
     await fixture.whenStable();
 
     expect(snackbarsOf()).toHaveLength(2);
-    expect(fixture.nativeElement.textContent).toContain('first');
-    expect(fixture.nativeElement.textContent).toContain('second');
+    expect(fixture.nativeElement.textContent).toContain('Settings saved');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Could not save settings. Please try again.',
+    );
+  });
+
+  it('interpolates translation params into the message', async () => {
+    snackbarService.error('avatar.tooLarge', { duration: 0, params: { size: 5 } });
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.textContent).toContain('Image must not exceed 5 MB');
   });
 
   it('forwards type and icon to the rendered snackbar', async () => {
-    snackbarService.error('went wrong', { duration: 0 });
+    snackbarService.error('messages.profileSaveFailed', { duration: 0 });
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.snackbar').classList).toContain('snackbar--error');
@@ -55,7 +64,7 @@ describe('SnackbarContainerComponent', () => {
   });
 
   it('removes a snackbar once it is dismissed', async () => {
-    const id: number = snackbarService.show('first', { duration: 0 });
+    const id: number = snackbarService.show('messages.settingsSaved', { duration: 0 });
     await fixture.whenStable();
     expect(snackbarsOf()).toHaveLength(1);
 

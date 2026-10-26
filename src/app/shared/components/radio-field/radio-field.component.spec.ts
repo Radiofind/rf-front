@@ -4,9 +4,13 @@ import { RadioFieldComponent } from './radio-field.component';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { ArtistType } from '../../../core/types/artist-type.type';
+import type { ISelectOption } from '../../models/select-option.model';
 
 describe('RadioFieldComponent', () => {
-  const options: readonly ArtistType[] = ['Artist', 'Band'];
+  const options: readonly ISelectOption<ArtistType>[] = [
+    { value: 'Artist', label: 'Artist label' },
+    { value: 'Band', label: 'Band label' },
+  ];
 
   const createFixture = async (): Promise<ComponentFixture<RadioFieldComponent<ArtistType>>> => {
     await TestBed.configureTestingModule({ imports: [RadioFieldComponent] }).compileComponents();
@@ -28,6 +32,11 @@ describe('RadioFieldComponent', () => {
 
     expect(inputs).toHaveLength(2);
     expect(inputs.map((input) => input.value)).toEqual(['Artist', 'Band']);
+    expect(
+      Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('label')).map((label) =>
+        label.textContent.trim(),
+      ),
+    ).toEqual(['Artist label', 'Band label']);
   });
 
   it('checks only the selected option', async () => {
