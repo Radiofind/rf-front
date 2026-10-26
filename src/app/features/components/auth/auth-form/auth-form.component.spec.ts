@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { submit } from '@angular/forms/signals';
@@ -11,6 +12,7 @@ import { ForgetPasswordModalComponent } from '../../../dialogs/forget-password-m
 import { Links } from '../../../../core/constants/links';
 import { AUTH_TYPE } from '../../../enums/auth-type.enum';
 import { AuthValidationMessages } from '../../../constants/auth-error-messages.constant';
+import { Constants } from '../../../../core/constants/constants';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IModalOptions } from '../../../../shared/models/modal.model';
@@ -233,6 +235,25 @@ describe('AuthFormComponent', () => {
       await fixture.whenStable();
 
       expect(component.registerError()).toBe(AuthValidationMessages.REGISTRATION_FAILED);
+      expect(navigate).not.toHaveBeenCalled();
+    });
+
+    it('shows a taken email under the email field', async () => {
+      register.mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: Constants.HTTP_CONFLICT_STATUS })),
+      );
+      fillRegister();
+
+      await submit(component.registerForm);
+      await fixture.whenStable();
+
+      expect(
+        component.registerForm
+          .email()
+          .errors()
+          .map((error) => error.message),
+      ).toContain(AuthValidationMessages.EMAIL_TAKEN);
+      expect(component.registerError()).toBeUndefined();
       expect(navigate).not.toHaveBeenCalled();
     });
 

@@ -49,6 +49,18 @@ describe('resetPasswordSchema', () => {
     ).toContain(AuthValidationMessages.MIN_LENGTH);
   });
 
+  it('caps the password at the bcrypt limit', () => {
+    const password: string = 'Passw0rd!' + 'a'.repeat(Constants.MAX_LENGTH_FORM_PASSWORD);
+    const tree: FieldTree<IResetPasswordForm> = buildForm(password, password);
+
+    expect(
+      tree
+        .password()
+        .errors()
+        .map((error) => error.message),
+    ).toContain(AuthValidationMessages.MAX_LENGTH_PASSWORD);
+  });
+
   it('applies the shared password rules', () => {
     const tree: FieldTree<IResetPasswordForm> = buildForm('password', 'password');
 

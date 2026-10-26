@@ -1,5 +1,6 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { firstValueFrom, interval, map, takeWhile } from 'rxjs';
 import { Constants } from '../../../core/constants/constants';
@@ -34,6 +35,8 @@ export class TwoFactorModalComponent {
   public readonly code: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
 
   public readonly isResending: WritableSignal<boolean> = signal<boolean>(false);
+
+  public readonly isLocked: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly resendSeconds: WritableSignal<number> = signal<number>(
     Constants.RESEND_TIMEOUT_SECONDS,
@@ -72,10 +75,17 @@ export class TwoFactorModalComponent {
 
   public onCodeChange(code: string): void {
     this.code.set(code);
-    this.codeErrors.set([]);
+
+    if (!this.isLocked()) {
+      this.codeErrors.set([]);
+    }
   }
 
   public async onVerify(): Promise<void> {
+    if (this.isLocked()) {
+      return;
+    }
+
     const twoFactorData: ITwoFactorData = {
       challengeId: this.data.challengeId,
       code: this.code(),
@@ -84,15 +94,24 @@ export class TwoFactorModalComponent {
     try {
       await firstValueFrom(this.authService.twoFactorAuth(twoFactorData));
       this.dialogRef.close(this.code());
-    } catch {
-      this.codeErrors.set([
-        { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.INVALID_TWO_FACTOR_CODE },
-      ]);
+    } catch (error: unknown) {
+      const status: number | undefined = this.statusOf(error);
+
+      if (status === Constants.HTTP_TOO_MANY_REQUESTS_STATUS) {
+        this.lock(AuthValidationMessages.TOO_MANY_TWO_FACTOR_ATTEMPTS);
+        return;
+      }
+
+      this.setCodeError(
+        status === Constants.HTTP_BAD_REQUEST_STATUS
+          ? AuthValidationMessages.TWO_FACTOR_CODE_NO_LONGER_VALID
+          : AuthValidationMessages.INVALID_TWO_FACTOR_CODE,
+      );
     }
   }
 
   public async onResend(): Promise<void> {
-    if (this.isResending()) {
+    if (this.isResending() || this.isLocked()) {
       return;
     }
 
@@ -107,16 +126,33 @@ export class TwoFactorModalComponent {
         }),
       );
       this.startCountdown();
-    } catch {
-      this.codeErrors.set([
-        {
-          kind: Constants.SERVER_ERROR,
-          message: AuthValidationMessages.RESEND_TWO_FACTOR_CODE_FAILED,
-        },
-      ]);
+    } catch (error: unknown) {
+      const status: number | undefined = this.statusOf(error);
+
+      if (status === Constants.HTTP_TOO_MANY_REQUESTS_STATUS) {
+        this.lock(AuthValidationMessages.TOO_MANY_TWO_FACTOR_RESENDS);
+      } else if (status === Constants.HTTP_BAD_REQUEST_STATUS) {
+        this.lock(AuthValidationMessages.TWO_FACTOR_SESSION_EXPIRED);
+      } else {
+        this.setCodeError(AuthValidationMessages.RESEND_TWO_FACTOR_CODE_FAILED);
+      }
     } finally {
       this.isResending.set(false);
     }
+  }
+
+  private lock(message: string): void {
+    this.isLocked.set(true);
+    this.countdownSubscription?.unsubscribe();
+    this.setCodeError(message);
+  }
+
+  private setCodeError(message: string): void {
+    this.codeErrors.set([{ kind: Constants.SERVER_ERROR, message: message }]);
+  }
+
+  private statusOf(error: unknown): number | undefined {
+    return error instanceof HttpErrorResponse ? error.status : undefined;
   }
 
   private startCountdown(): void {

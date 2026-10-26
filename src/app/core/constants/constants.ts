@@ -190,6 +190,8 @@ export class Constants {
 
   public static readonly MIN_LINGTS_FORM_VALIDATION_PASSWORD: number = 8;
 
+  public static readonly MAX_LENGTH_FORM_PASSWORD: number = 72;
+
   public static readonly MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME: number = 50;
 
   public static readonly MAX_LENGTH_FORM_NAME: number = 100;
@@ -208,7 +210,13 @@ export class Constants {
 
   public static readonly DESCRIPTION_TEXTAREA_ROWS: number = 5;
 
+  public static readonly HTTP_BAD_REQUEST_STATUS: number = 400;
+
+  public static readonly HTTP_UNAUTHORIZED_STATUS: number = 401;
+
   public static readonly HTTP_CONFLICT_STATUS: number = 409;
+
+  public static readonly HTTP_TOO_MANY_REQUESTS_STATUS: number = 429;
 
   public static readonly MIN_BIRTH_DATE: number = 100;
 

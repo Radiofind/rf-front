@@ -8,6 +8,7 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth/auth.interceptor';
 import { loaderInterceptor } from './core/interceptors/loader/loader.interceptor';
+import { unauthorizedInterceptor } from './core/interceptors/unauthorized/unauthorized.interceptor';
 
 import type { ApplicationConfig } from '@angular/core';
 
@@ -19,6 +20,8 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideEffects(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideHttpClient(withInterceptors([loaderInterceptor, authInterceptor])),
+    provideHttpClient(
+      withInterceptors([loaderInterceptor, authInterceptor, unauthorizedInterceptor]),
+    ),
   ],
 };
