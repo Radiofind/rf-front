@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { SelectFieldComponent } from './select-field.component';
 
@@ -14,6 +14,10 @@ describe('SelectFieldComponent', () => {
     { value: 'plum', label: 'Plum' },
   ];
 
+  afterEach(() => {
+    document.querySelector('.cdk-overlay-container')?.remove();
+  });
+
   const createFixture = async (
     value: Fruit = 'pear',
   ): Promise<ComponentFixture<SelectFieldComponent<Fruit>>> => {
@@ -28,32 +32,49 @@ describe('SelectFieldComponent', () => {
     return fixture;
   };
 
-  const select = (fixture: ComponentFixture<SelectFieldComponent<Fruit>>): HTMLSelectElement =>
-    (fixture.nativeElement as HTMLElement).querySelector('select')!;
+  const control = (fixture: ComponentFixture<SelectFieldComponent<Fruit>>): HTMLButtonElement =>
+    (fixture.nativeElement as HTMLElement).querySelector('.select__control')!;
 
-  const choose = async (
-    fixture: ComponentFixture<SelectFieldComponent<Fruit>>,
-    value: string,
-  ): Promise<void> => {
-    select(fixture).value = value;
-    select(fixture).dispatchEvent(new Event('change'));
+  const displayedValue = (fixture: ComponentFixture<SelectFieldComponent<Fruit>>): string =>
+    (fixture.nativeElement as HTMLElement).querySelector('.select__value')!.textContent.trim();
+
+  const menuItems = (): HTMLButtonElement[] =>
+    Array.from(document.querySelectorAll<HTMLButtonElement>('.dropdown-menu__item'));
+
+  const open = async (fixture: ComponentFixture<SelectFieldComponent<Fruit>>): Promise<void> => {
+    control(fixture).click();
     await fixture.whenStable();
   };
 
-  it('renders every option with its label', async () => {
-    const fixture: ComponentFixture<SelectFieldComponent<Fruit>> = await createFixture();
+  const choose = async (
+    fixture: ComponentFixture<SelectFieldComponent<Fruit>>,
+    label: string,
+  ): Promise<void> => {
+    await open(fixture);
+    menuItems()
+      .find((item: HTMLButtonElement) => item.textContent.trim() === label)!
+      .click();
+    await fixture.whenStable();
+  };
 
-    const rendered: string[] = Array.from(select(fixture).options, (option) =>
-      option.textContent.trim(),
-    );
-
-    expect(rendered).toEqual(['Apple', 'Pear', 'Plum']);
-  });
-
-  it('selects the option matching the model', async () => {
+  it('shows the label of the selected option', async () => {
     const fixture: ComponentFixture<SelectFieldComponent<Fruit>> = await createFixture('plum');
 
-    expect(select(fixture).value).toBe('plum');
+    expect(displayedValue(fixture)).toBe('Plum');
+  });
+
+  it('opens a custom menu with every option and marks the selected one', async () => {
+    const fixture: ComponentFixture<SelectFieldComponent<Fruit>> = await createFixture();
+
+    await open(fixture);
+
+    expect(menuItems().map((item: HTMLButtonElement) => item.textContent.trim())).toEqual([
+      'Apple',
+      'Pear',
+      'Plum',
+    ]);
+    expect(menuItems()[1]!.getAttribute('aria-checked')).toBe('true');
+    expect(control(fixture).getAttribute('aria-expanded')).toBe('true');
   });
 
   it('follows model changes from the parent', async () => {
@@ -62,10 +83,10 @@ describe('SelectFieldComponent', () => {
     fixture.componentRef.setInput('value', 'apple');
     await fixture.whenStable();
 
-    expect(select(fixture).value).toBe('apple');
+    expect(displayedValue(fixture)).toBe('Apple');
   });
 
-  it('updates the model and emits touch when the user picks an option', async () => {
+  it('updates the model, closes the menu and emits touch when the user picks an option', async () => {
     const fixture: ComponentFixture<SelectFieldComponent<Fruit>> = await createFixture();
 
     const changes: Fruit[] = [];
@@ -75,28 +96,60 @@ describe('SelectFieldComponent', () => {
       touchCount += 1;
     });
 
-    await choose(fixture, 'plum');
+    await choose(fixture, 'Plum');
 
     expect(changes).toEqual(['plum']);
-    expect(fixture.componentInstance.value()).toBe('plum');
+    expect(displayedValue(fixture)).toBe('Plum');
+    expect(menuItems()).toHaveLength(0);
     expect(touchCount).toBe(1);
+  });
+
+  it('selects an option from a nested group', async () => {
+    const fixture: ComponentFixture<SelectFieldComponent<Fruit>> = await createFixture();
+
+    fixture.componentRef.setInput('options', [
+      { value: 'apple', label: 'Apple' },
+      {
+        value: 'pear',
+        label: 'Stone fruit',
+        children: [{ value: 'plum', label: 'Plum' }],
+      },
+    ]);
+    await fixture.whenStable();
+    await open(fixture);
+
+    menuItems()[1]!.click();
+    await fixture.whenStable();
+
+    expect(menuItems().map((item: HTMLButtonElement) => item.textContent.trim())).toEqual([
+      'Apple',
+      'Stone fruit',
+      'Plum',
+    ]);
+
+    menuItems()[2]!.click();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.value()).toBe('plum');
+    expect(displayedValue(fixture)).toBe('Plum');
+    expect(menuItems()).toHaveLength(0);
   });
 
   it('ignores a value that is not one of the options', async () => {
     const fixture: ComponentFixture<SelectFieldComponent<Fruit>> = await createFixture();
 
-    fixture.componentInstance.onChange({ target: { value: 'banana' } } as unknown as Event);
+    fixture.componentInstance.onSelect('banana' as Fruit);
 
     expect(fixture.componentInstance.value()).toBe('pear');
   });
 
-  it('disables the native control', async () => {
+  it('disables the control', async () => {
     const fixture: ComponentFixture<SelectFieldComponent<Fruit>> = await createFixture();
 
     fixture.componentRef.setInput('disabled', true);
     await fixture.whenStable();
 
-    expect(select(fixture).disabled).toBe(true);
+    expect(control(fixture).disabled).toBe(true);
     expect(fixture.nativeElement.querySelector('.select--disabled')).not.toBeNull();
   });
 
@@ -107,7 +160,9 @@ describe('SelectFieldComponent', () => {
     fixture.componentRef.setInput('describedBy', 'row-description');
     await fixture.whenStable();
 
-    expect(select(fixture).getAttribute('aria-labelledby')).toBe('row-title');
-    expect(select(fixture).getAttribute('aria-describedby')).toBe('row-description');
+    expect(control(fixture).getAttribute('aria-labelledby')).toBe(
+      `row-title ${control(fixture).id}`,
+    );
+    expect(control(fixture).getAttribute('aria-describedby')).toBe('row-description');
   });
 });

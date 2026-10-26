@@ -1,0 +1,102 @@
+.dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: max(200px, var(--dropdown-menu-trigger-width, 0px));
+  max-width: calc(100vw - 32px);
+  max-height: 320px;
+  padding: 6px;
+  border: 1px solid rgba(113, 43, 226, 0.45);
+  border-radius: 12px;
+  background: var(--second-bg-color);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.65),
+    0 0 32px rgba(113, 43, 226, 0.2);
+  overflow-y: auto;
+  animation: dropdown-menu-appearance 160ms ease;
+
+  &--nested {
+    animation-name: dropdown-menu-nested-appearance;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 15px;
+    text-align: left;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 200ms ease;
+
+    &:hover,
+    &:focus-visible,
+    &[aria-expanded='true'] {
+      background: rgba(106, 92, 255, 0.16);
+    }
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 1px var(--first-gradient-color);
+    }
+
+    &--active {
+      color: var(--icon-color);
+    }
+
+    > * {
+      pointer-events: none;
+    }
+  }
+
+  &__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__icon {
+    display: flex;
+    flex-shrink: 0;
+    font-size: 20px;
+  }
+
+  &__item--group &__icon {
+    color: var(--second-text-color);
+  }
+}
+
+@keyframes dropdown-menu-appearance {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dropdown-menu-nested-appearance {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 540px) {
+  .dropdown-menu__item {
+    font-size: 14px;
+  }
+}

@@ -1,5 +1,11 @@
 import { Component, computed, input, model, output } from '@angular/core';
 import { Constants } from '../../../core/constants/constants';
+import { DropdownMenuComponent } from '../dropdown-menu/dropdown-menu.component';
+import { DropdownTriggerDirective } from '../../directives/dropdown-trigger/dropdown-trigger.directive';
+import {
+  filterSelectOptions,
+  findSelectOption,
+} from '../../helpers/select-option/select-option.helpers';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef, Signal } from '@angular/core';
 import type { FormValueControl, ValidationError } from '@angular/forms/signals';
@@ -7,6 +13,7 @@ import type { ISelectOption } from '../../models/select-option.model';
 
 @Component({
   selector: 'app-chips-field',
+  imports: [DropdownMenuComponent, DropdownTriggerDirective],
   templateUrl: './chips-field.component.html',
   styleUrl: './chips-field.component.scss',
 })
@@ -46,7 +53,7 @@ export class ChipsFieldComponent<T extends string> implements FormValueControl<T
   public readonly selectedOptions: Signal<readonly ISelectOption<T>[]> = computed(() =>
     this.value().map(
       (value: T) =>
-        this.options().find((option: ISelectOption<T>) => option.value === value) ?? {
+        findSelectOption(this.options(), value) ?? {
           value: value,
           label: value,
         },
@@ -54,7 +61,8 @@ export class ChipsFieldComponent<T extends string> implements FormValueControl<T
   );
 
   public readonly availableOptions: Signal<readonly ISelectOption<T>[]> = computed(() =>
-    this.options().filter(
+    filterSelectOptions(
+      this.options(),
       (option: ISelectOption<T>) =>
         !this.value().includes(option.value) && !this.excludedValues().includes(option.value),
     ),
@@ -68,19 +76,10 @@ export class ChipsFieldComponent<T extends string> implements FormValueControl<T
   public readonly visibleErrors: Signal<readonly ValidationError.WithOptionalFieldTree[]> =
     computed(() => (this.touched() || this.dirty() ? this.errors() : []));
 
-  public onAdd(event: Event): void {
-    const select: HTMLSelectElement = event.target as HTMLSelectElement;
-    const option: ISelectOption<T> | undefined = this.availableOptions().find(
-      (candidate: ISelectOption<T>) => candidate.value === select.value,
-    );
-
-    select.value = Constants.EMPTY_STRING;
-
-    if (option && !this.isLimitReached()) {
-      this.value.update((values: T[]) => [...values, option.value]);
+  public onAdd(value: T): void {
+    if (findSelectOption(this.availableOptions(), value) && !this.isLimitReached()) {
+      this.value.update((values: T[]) => [...values, value]);
     }
-
-    this.touch.emit();
   }
 
   public onRemove(value: T): void {
