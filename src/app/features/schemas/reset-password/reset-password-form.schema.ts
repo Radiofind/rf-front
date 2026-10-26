@@ -1,4 +1,4 @@
-import { minLength, required, schema, validate } from '@angular/forms/signals';
+import { maxLength, minLength, required, schema, validate } from '@angular/forms/signals';
 import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 import { Constants } from '../../../core/constants/constants';
 import { passwordRuleErrors } from '../../../core/validators/password/password.validator';
@@ -11,6 +11,9 @@ export const resetPasswordSchema: Schema<IResetPasswordForm> = schema<IResetPass
     required(form.password, { message: AuthValidationMessages.REQUIRED });
     minLength(form.password, Constants.MIN_LINGTS_FORM_VALIDATION_PASSWORD, {
       message: AuthValidationMessages.MIN_LENGTH,
+    });
+    maxLength(form.password, Constants.MAX_LENGTH_FORM_PASSWORD, {
+      message: AuthValidationMessages.MAX_LENGTH_PASSWORD,
     });
     validate(form.password, ({ value }) => passwordRuleErrors(value()));
 

@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { LowerCasePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
@@ -164,7 +165,7 @@ export class AuthFormComponent {
     }
   }
 
-  private async register(): Promise<ValidationError | undefined> {
+  private async register(): Promise<ValidationError.WithOptionalFieldTree | undefined> {
     const model: IRegisterForm = this.registerModel();
     const dateOfBirth: Date | null = model.dateOfBirth;
 
@@ -176,7 +177,15 @@ export class AuthFormComponent {
       await firstValueFrom(this.authService.register(this.toRegisterData(model, dateOfBirth)));
       await this.router.navigate([Links.DEFAULT_PATH]);
       return undefined;
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof HttpErrorResponse && error.status === Constants.HTTP_CONFLICT_STATUS) {
+        return {
+          kind: Constants.SERVER_ERROR,
+          message: AuthValidationMessages.EMAIL_TAKEN,
+          fieldTree: this.registerForm.email,
+        };
+      }
+
       return { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.REGISTRATION_FAILED };
     }
   }

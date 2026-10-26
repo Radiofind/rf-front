@@ -157,6 +157,16 @@ describe('registerFormSchema', () => {
     expect(messagesOf(tree, 'password')).toContain(AuthValidationMessages.MIN_LENGTH);
   });
 
+  it('caps the password at the bcrypt limit', () => {
+    const password: string = 'Passw0rd!' + 'a'.repeat(Constants.MAX_LENGTH_FORM_PASSWORD);
+    const tree: FieldTree<IRegisterForm> = buildForm({
+      password: password,
+      confirmPassword: password,
+    });
+
+    expect(messagesOf(tree, 'password')).toContain(AuthValidationMessages.MAX_LENGTH_PASSWORD);
+  });
+
   it('applies the shared password rules', () => {
     const tree: FieldTree<IRegisterForm> = buildForm({
       password: 'password',
@@ -217,6 +227,17 @@ describe('registerFormSchema', () => {
     });
 
     expect(messagesOf(tree, 'artistOrBandName')).toContain(AuthValidationMessages.MAX_LENGTH);
+  });
+
+  it('caps the description length', () => {
+    const tree: FieldTree<IRegisterForm> = buildForm({
+      addInformation: true,
+      description: 'a'.repeat(Constants.MAX_LENGTH_FORM_DESCRIPTION + 1),
+    });
+
+    expect(messagesOf(tree, 'description')).toContain(
+      AuthValidationMessages.MAX_LENGTH_DESCRIPTION,
+    );
   });
 
   it('accepts artist details with spaces and punctuation', () => {

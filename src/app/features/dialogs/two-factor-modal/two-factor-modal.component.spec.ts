@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 import { TwoFactorModalComponent } from './two-factor-modal.component';
 import { AuthService } from '../../services/auth-service/auth.service';
@@ -158,6 +159,97 @@ describe('TwoFactorModalComponent', () => {
     ]);
     expect(component.canResend()).toBe(true);
     expect(component.isResending()).toBe(false);
+  });
+
+  it('asks for a new code when the current one is no longer valid', async () => {
+    twoFactorAuth.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: Constants.HTTP_BAD_REQUEST_STATUS })),
+    );
+    component.onCodeChange('123456');
+
+    await component.onVerify();
+
+    expect(component.codeErrors()).toEqual([
+      {
+        kind: Constants.SERVER_ERROR,
+        message: AuthValidationMessages.TWO_FACTOR_CODE_NO_LONGER_VALID,
+      },
+    ]);
+    expect(component.isLocked()).toBe(false);
+  });
+
+  it('locks the modal after too many attempts', async () => {
+    twoFactorAuth.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: Constants.HTTP_TOO_MANY_REQUESTS_STATUS })),
+    );
+    component.onCodeChange('123456');
+
+    await component.onVerify();
+    await fixture.whenStable();
+
+    const buttons = fixture.nativeElement.querySelectorAll(
+      'button',
+    ) as NodeListOf<HTMLButtonElement>;
+    expect(component.isLocked()).toBe(true);
+    expect(close).not.toHaveBeenCalled();
+    expect(buttons[0]?.disabled).toBe(true);
+    expect(fixture.nativeElement.querySelector('.code-field__errors').textContent).toContain(
+      AuthValidationMessages.TOO_MANY_TWO_FACTOR_ATTEMPTS,
+    );
+  });
+
+  it('keeps the lock message while the user keeps typing', async () => {
+    twoFactorAuth.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: Constants.HTTP_TOO_MANY_REQUESTS_STATUS })),
+    );
+    component.onCodeChange('123456');
+    await component.onVerify();
+
+    component.onCodeChange('654321');
+    await component.onVerify();
+
+    expect(twoFactorAuth).toHaveBeenCalledTimes(1);
+    expect(component.codeErrors()).toEqual([
+      {
+        kind: Constants.SERVER_ERROR,
+        message: AuthValidationMessages.TOO_MANY_TWO_FACTOR_ATTEMPTS,
+      },
+    ]);
+  });
+
+  it('locks the modal once the resend limit is reached', async () => {
+    resendTwoFactorAuth.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: Constants.HTTP_TOO_MANY_REQUESTS_STATUS })),
+    );
+    vi.advanceTimersByTime(Constants.TIMER_INTERVAL_MS * Constants.RESEND_TIMEOUT_SECONDS);
+
+    await component.onResend();
+    await component.onResend();
+    await fixture.whenStable();
+
+    expect(resendTwoFactorAuth).toHaveBeenCalledTimes(1);
+    expect(component.isLocked()).toBe(true);
+    expect(component.codeErrors()).toEqual([
+      { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.TOO_MANY_TWO_FACTOR_RESENDS },
+    ]);
+    expect(
+      (fixture.nativeElement.querySelector('.two-factor__resend-action') as HTMLButtonElement)
+        .disabled,
+    ).toBe(true);
+  });
+
+  it('locks the modal when the verification session has expired', async () => {
+    resendTwoFactorAuth.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: Constants.HTTP_BAD_REQUEST_STATUS })),
+    );
+    vi.advanceTimersByTime(Constants.TIMER_INTERVAL_MS * Constants.RESEND_TIMEOUT_SECONDS);
+
+    await component.onResend();
+
+    expect(component.isLocked()).toBe(true);
+    expect(component.codeErrors()).toEqual([
+      { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.TWO_FACTOR_SESSION_EXPIRED },
+    ]);
   });
 
   it('ignores a resend while one is already running', async () => {
