@@ -33,6 +33,7 @@ import type {
   IUpdateProfileData,
   IUserProfileData,
 } from '../../../../core/models/user.model';
+import type { IHasUnsavedChanges } from '../../../../core/models/unsaved-changes.model';
 import type { ArtistType } from '../../../../core/types/artist-type.type';
 import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';
 import type { ISelectOption } from '../../../../shared/models/select-option.model';
@@ -55,8 +56,11 @@ import type {
     InputFieldComponent,
     RadioFieldComponent,
   ],
+  host: {
+    '(window:beforeunload)': 'onBeforeUnload($event)',
+  },
 })
-export class EditProfilePageComponent implements OnInit {
+export class EditProfilePageComponent implements OnInit, IHasUnsavedChanges {
   private readonly userService: UserService = inject(UserService);
 
   private readonly authService: AuthService = inject(AuthService);
@@ -100,6 +104,8 @@ export class EditProfilePageComponent implements OnInit {
 
   protected readonly isLoaded: WritableSignal<boolean> = signal<boolean>(false);
 
+  private readonly isSaved: WritableSignal<boolean> = signal<boolean>(false);
+
   private readonly editProfileModel: WritableSignal<IEditProfileForm> = signal<IEditProfileForm>({
     name: Constants.EMPTY_STRING,
     surname: Constants.EMPTY_STRING,
@@ -138,6 +144,16 @@ export class EditProfilePageComponent implements OnInit {
     void this.router.navigate([Links.PROFILE_URL]);
   }
 
+  public hasUnsavedChanges(): boolean {
+    return !this.isSaved() && this.editProfileForm().dirty();
+  }
+
+  public onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.hasUnsavedChanges()) {
+      event.preventDefault();
+    }
+  }
+
   private async loadProfile(): Promise<void> {
     try {
       const profile: IUserProfileData = await firstValueFrom(this.userService.getUserProfileData());
@@ -153,6 +169,8 @@ export class EditProfilePageComponent implements OnInit {
       const result: IUpdatedProfileData = await firstValueFrom(
         this.userService.updateUserProfileData(this.toUpdateData(this.editProfileModel())),
       );
+
+      this.isSaved.set(true);
 
       if (result.requiresReauthentication) {
         this.snackbarService.info(Constants.EMAIL_CHANGED_SIGN_IN_AGAIN);

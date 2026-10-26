@@ -1,5 +1,5 @@
 import { provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withRouterConfig } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideStore } from '@ngrx/store';
@@ -15,7 +15,7 @@ import type { ApplicationConfig } from '@angular/core';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    provideRouter(routes, withRouterConfig({ canceledNavigationResolution: 'computed' })),
     provideClientHydration(withEventReplay()),
     provideStore(),
     provideEffects(),

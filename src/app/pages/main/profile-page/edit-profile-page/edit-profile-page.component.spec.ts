@@ -366,4 +366,63 @@ describe('EditProfilePageComponent', () => {
     expect(navigate).toHaveBeenCalledWith([Links.PROFILE_URL]);
     expect(updateUserProfileData).not.toHaveBeenCalled();
   });
+
+  describe('unsaved changes', () => {
+    const unloadEvent = (): BeforeUnloadEvent =>
+      new Event('beforeunload', { cancelable: true });
+
+    it('has none right after the profile is loaded', async () => {
+      const fixture: ComponentFixture<EditProfilePageComponent> = await createFixture();
+
+      expect(fixture.componentInstance.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('has some once a field is edited', async () => {
+      const fixture: ComponentFixture<EditProfilePageComponent> = await createFixture();
+
+      await type(fixture, 'Name', 'Grace');
+
+      expect(fixture.componentInstance.hasUnsavedChanges()).toBe(true);
+    });
+
+    it('has none after a successful save', async () => {
+      const fixture: ComponentFixture<EditProfilePageComponent> = await createFixture();
+
+      await type(fixture, 'Name', 'Grace');
+      await save(fixture);
+
+      expect(fixture.componentInstance.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('keeps them after a failed save', async () => {
+      updateUserProfileData.mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 500 })),
+      );
+      const fixture: ComponentFixture<EditProfilePageComponent> = await createFixture();
+
+      await type(fixture, 'Name', 'Grace');
+      await save(fixture);
+
+      expect(fixture.componentInstance.hasUnsavedChanges()).toBe(true);
+    });
+
+    it('asks the browser to confirm a reload or a typed url while there are changes', async () => {
+      const fixture: ComponentFixture<EditProfilePageComponent> = await createFixture();
+
+      await type(fixture, 'Name', 'Grace');
+      const event: BeforeUnloadEvent = unloadEvent();
+      window.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+    });
+
+    it('lets the browser unload the page without changes', async () => {
+      await createFixture();
+
+      const event: BeforeUnloadEvent = unloadEvent();
+      window.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(false);
+    });
+  });
 });
