@@ -1,4 +1,5 @@
 import { Links } from '../../core/constants/links';
+import { unsavedChangesGuard } from '../../core/guards/unsaved-changes/unsaved-changes.guard';
 
 import type { Routes } from '@angular/router';
 
@@ -21,6 +22,7 @@ export const MAIN_ROUTES: Routes = [
       import('./profile-page/edit-profile-page/edit-profile-page.component').then(
         (c) => c.EditProfilePageComponent,
       ),
+    canDeactivate: [unsavedChangesGuard],
   },
   {
     path: Links.MEDIA_LIBRARY_URL,

@@ -114,7 +114,7 @@ export class Constants {
 
   public static readonly SNACKBAR_ERROR_ICON_CLASS: string = 'bx bx-x-circle';
 
-  public static readonly SNACKBAR_WARNING_ICON_CLASS: string = 'bx bx-error';
+  public static readonly SNACKBAR_WARNING_ICON_CLASS: string = 'bx bx-alert-triangle';
 
   public static readonly SNACKBAR_INFO_ICON_CLASS: string = 'bx bx-info-circle';
 
@@ -183,6 +183,17 @@ export class Constants {
 
   public static readonly EMAIL_CHANGED_SIGN_IN_AGAIN: string =
     'Email changed. Please sign in with your new email.';
+
+  public static readonly UNSAVED_CHANGES_TITLE: string = 'Unsaved changes';
+
+  public static readonly UNSAVED_CHANGES_ICON_CLASS: string = 'bx bx-alert-triangle';
+
+  public static readonly UNSAVED_CHANGES_MESSAGE: string =
+    'You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.';
+
+  public static readonly YES: string = 'Yes';
+
+  public static readonly NO: string = 'No';
 
   public static readonly ADD_LABEL: string = 'Add';
 

@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { MAIN_ROUTES } from './main.routes';
 import { Links } from '../../core/constants/links';
+import { unsavedChangesGuard } from '../../core/guards/unsaved-changes/unsaved-changes.guard';
 import { ProfilePageComponent } from './profile-page/profile-page/profile-page.component';
 import { EditProfilePageComponent } from './profile-page/edit-profile-page/edit-profile-page.component';
 
@@ -45,6 +46,10 @@ describe('MAIN_ROUTES', () => {
     await expect(routeFor(Links.EDIT_PROFILE_URL).loadComponent?.()).resolves.toBe(
       EditProfilePageComponent,
     );
+  });
+
+  it('guards the profile editor against losing unsaved changes', () => {
+    expect(routeFor(Links.EDIT_PROFILE_URL).canDeactivate).toEqual([unsavedChangesGuard]);
   });
 
   it('nests the profile editor under the profile url', () => {
