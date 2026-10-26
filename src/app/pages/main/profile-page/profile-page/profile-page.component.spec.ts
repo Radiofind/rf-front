@@ -247,13 +247,22 @@ describe('ProfilePageComponent', () => {
       expect(fixture.nativeElement.querySelector('.hero__meta-dot')).not.toBeNull();
     });
 
-    it('replaces underscores with spaces and capitalizes every word', async () => {
+    it('shows the translated label of a known genre', async () => {
       const fixture: ComponentFixture<ProfilePageComponent> = await createFixtureWithGenres([
         'HIP_HOP',
-        'drum_and_bass',
+        'DRUM_AND_BASS',
       ]);
 
-      expect(heroMeta(fixture)[1]).toBe('Hip Hop / Drum And Bass');
+      expect(heroMeta(fixture)[1]).toBe('Hip-Hop / Drum & Bass');
+    });
+
+    it('capitalizes every word of an unknown genre', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixtureWithGenres([
+        'NEO_CLASSICAL',
+        'dark_wave',
+      ]);
+
+      expect(heroMeta(fixture)[1]).toBe('Neo Classical / Dark Wave');
     });
 
     it('joins several genres with a slash', async () => {

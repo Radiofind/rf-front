@@ -1,6 +1,8 @@
 import { Component, computed, input, model, output } from '@angular/core';
 import { Constants } from '../../../core/constants/constants';
 import { InputTypeEnum } from '../../../core/enums/input-type.enum';
+import { TranslatePipe } from '../../pipes/translate/translate.pipe';
+import { TranslateErrorPipe } from '../../pipes/translate-error/translate-error.pipe';
 
 import type { OutputEmitterRef, InputSignal, ModelSignal, Signal } from '@angular/core';
 import type { FormValueControl, ValidationError } from '@angular/forms/signals';
@@ -10,6 +12,7 @@ import type { InputType } from '../../../core/types/input-type.type';
   selector: 'app-input-field',
   templateUrl: './input-field.component.html',
   styleUrl: './input-field.component.scss',
+  imports: [TranslatePipe, TranslateErrorPipe],
 })
 export class InputFieldComponent implements FormValueControl<string> {
   public readonly value: ModelSignal<string> = model<string>(Constants.EMPTY_STRING);

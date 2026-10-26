@@ -1,4 +1,9 @@
-import { provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
+import {
+  inject,
+  isDevMode,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
 import { provideRouter, withRouterConfig } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
@@ -9,6 +14,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth/auth.interceptor';
 import { loaderInterceptor } from './core/interceptors/loader/loader.interceptor';
 import { unauthorizedInterceptor } from './core/interceptors/unauthorized/unauthorized.interceptor';
+import { TranslationService } from './shared/services/translation-service/translation.service';
 
 import type { ApplicationConfig } from '@angular/core';
 
@@ -23,5 +29,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([loaderInterceptor, authInterceptor, unauthorizedInterceptor]),
     ),
+    provideAppInitializer(() => inject(TranslationService).init()),
   ],
 };

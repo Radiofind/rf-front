@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { UserService } from '../user-service/user.service';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
+import { TranslationService } from '../../../shared/services/translation-service/translation.service';
 import { Constants } from '../../../core/constants/constants';
 import { ACCENT_COLORS, DEFAULT_GENERAL_SETTINGS } from '../../constants/settings.constant';
 
@@ -15,6 +16,8 @@ export class SettingsStateService {
   private readonly userService: UserService = inject(UserService);
 
   private readonly snackbarService: SnackbarService = inject(SnackbarService);
+
+  private readonly translationService: TranslationService = inject(TranslationService);
 
   private readonly document: Document = inject(DOCUMENT);
 
@@ -68,7 +71,10 @@ export class SettingsStateService {
 
   public clear(): void {
     this.sessionId += Constants.ONE;
-    this.savedSettings = { ...DEFAULT_GENERAL_SETTINGS };
+    this.savedSettings = {
+      ...DEFAULT_GENERAL_SETTINGS,
+      language: this.translationService.language(),
+    };
     this.isLoadedState.set(false);
     this.applySettings(this.savedSettings);
   }
@@ -136,9 +142,10 @@ export class SettingsStateService {
     const root: HTMLElement = this.document.documentElement;
     const accentColor: IAccentColorOption = ACCENT_COLORS[settings.accentColor];
 
-    root.lang = settings.language.toLowerCase();
     root.style.setProperty(Constants.FIRST_GRADIENT_COLOR_PROPERTY, accentColor.firstColor);
     root.style.setProperty(Constants.SECOND_GRADIENT_COLOR_PROPERTY, accentColor.secondColor);
     root.style.setProperty(Constants.MAIN_COLOR_PROPERTY, accentColor.mainColor);
+
+    void this.translationService.use(settings.language);
   }
 }

@@ -4,6 +4,7 @@ import { SnackbarService } from './snackbar.service';
 import { Constants } from '../../../core/constants/constants';
 import { SnackbarTypeEnum } from '../../../core/enums/snackbar-type.enum';
 
+import type { TranslationKey } from '../../../core/types/translation.type';
 import type { ISnackbarMessage } from '../../models/snackbar.model';
 
 describe('SnackbarService', () => {
@@ -24,25 +25,32 @@ describe('SnackbarService', () => {
   });
 
   it('shows a success message by default and returns its id', () => {
-    const id: number = service.show('Saved');
+    const id: number = service.show('messages.settingsSaved');
     const [message]: readonly ISnackbarMessage[] = service.messages();
 
     expect(id).toBe(1);
     expect(message).toEqual({
       id: 1,
-      content: 'Saved',
+      content: 'messages.settingsSaved',
+      params: null,
       type: SnackbarTypeEnum.SUCCESS,
       iconClass: null,
     });
   });
 
   it('hands out increasing ids', () => {
-    expect(service.show('first')).toBe(1);
-    expect(service.show('second')).toBe(2);
+    expect(service.show('messages.avatarUpdated')).toBe(1);
+    expect(service.show('messages.avatarRemoved')).toBe(2);
+  });
+
+  it('keeps translation params', () => {
+    service.show('avatar.tooLarge', { params: { size: 5 } });
+
+    expect(service.messages()[0]?.params).toEqual({ size: 5 });
   });
 
   it('keeps a custom icon class', () => {
-    service.show('Saved', { iconClass: 'bx bx-custom' });
+    service.show('messages.settingsSaved', { iconClass: 'bx bx-custom' });
 
     expect(service.messages()[0]?.iconClass).toBe('bx bx-custom');
   });
@@ -53,13 +61,13 @@ describe('SnackbarService', () => {
     ['warning' as const, SnackbarTypeEnum.WARNING],
     ['info' as const, SnackbarTypeEnum.INFO],
   ])('%s() tags the message with its type', (method, expectedType) => {
-    service[method]('message');
+    service[method]('messages.emailSent');
 
     expect(service.messages()[0]?.type).toBe(expectedType);
   });
 
   it('auto-dismisses a message after the default duration', () => {
-    service.show('Saved');
+    service.show('messages.settingsSaved');
 
     vi.advanceTimersByTime(Constants.SNACKBAR_DURATION_MS - 1);
     expect(service.messages()).toHaveLength(1);
@@ -69,7 +77,7 @@ describe('SnackbarService', () => {
   });
 
   it('honours a custom duration', () => {
-    service.show('Saved', { duration: 5000 });
+    service.show('messages.settingsSaved', { duration: 5000 });
 
     vi.advanceTimersByTime(Constants.SNACKBAR_DURATION_MS);
     expect(service.messages()).toHaveLength(1);
@@ -79,7 +87,7 @@ describe('SnackbarService', () => {
   });
 
   it('keeps a message forever when the duration is zero or negative', () => {
-    service.show('Sticky', { duration: 0 });
+    service.show('messages.passwordReset', { duration: 0 });
 
     vi.advanceTimersByTime(60_000);
 
@@ -87,16 +95,18 @@ describe('SnackbarService', () => {
   });
 
   it('dismisses a message by id', () => {
-    const first: number = service.show('first');
-    service.show('second');
+    const first: number = service.show('messages.avatarUpdated');
+    service.show('messages.avatarRemoved');
 
     service.dismiss(first);
 
-    expect(service.messages().map((message) => message.content)).toEqual(['second']);
+    expect(service.messages().map((message) => message.content)).toEqual([
+      'messages.avatarRemoved',
+    ]);
   });
 
   it('ignores dismissing an unknown id', () => {
-    service.show('first');
+    service.show('messages.avatarUpdated');
 
     service.dismiss(999);
 
@@ -104,24 +114,30 @@ describe('SnackbarService', () => {
   });
 
   it('drops the oldest message once the stack overflows', () => {
-    for (let index: number = 1; index <= Constants.SNACKBAR_MAX_STACK; index++) {
-      service.show(`message ${String(index)}`);
-    }
+    const keys: readonly TranslationKey[] = [
+      'messages.avatarUpdated',
+      'messages.avatarRemoved',
+      'messages.emailSent',
+    ];
+
+    keys.slice(0, Constants.SNACKBAR_MAX_STACK).forEach((key: TranslationKey) => {
+      service.show(key);
+    });
 
     expect(service.messages()).toHaveLength(Constants.SNACKBAR_MAX_STACK);
 
-    service.show('newest');
+    service.show('messages.passwordReset');
 
     expect(service.messages().map((message) => message.content)).toEqual([
-      'message 2',
-      'message 3',
-      'newest',
+      'messages.avatarRemoved',
+      'messages.emailSent',
+      'messages.passwordReset',
     ]);
   });
 
   it('clears every message and its timer', () => {
-    service.show('first');
-    service.show('second');
+    service.show('messages.avatarUpdated');
+    service.show('messages.avatarRemoved');
 
     service.clear();
     expect(service.messages()).toEqual([]);
@@ -131,7 +147,7 @@ describe('SnackbarService', () => {
   });
 
   it('clears everything when the injector is destroyed', () => {
-    service.show('first');
+    service.show('messages.avatarUpdated');
 
     TestBed.resetTestingModule();
 

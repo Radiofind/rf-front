@@ -12,11 +12,14 @@ import { UserService } from '../../../../features/services/user-service/user.ser
 import { AuthService } from '../../../../features/services/auth-service/auth.service';
 import { editProfileFormSchema } from '../../../../features/schemas/edit-profile/edit-profile.schema';
 import { ProfileValidationMessages } from '../../../../features/constants/profile-error-messages.constant';
+import { DEFAULT_ARTIST_TYPE } from '../../../../features/constants/auth-content.constant';
 import {
-  ARTIST_TYPES,
-  DEFAULT_ARTIST_TYPE,
-} from '../../../../features/constants/auth-content.constant';
-import { ARTIST_TYPE_LABELS } from '../../../../features/constants/artist-type.constant';
+  ARTIST_TYPE_LABELS,
+  ARTIST_TYPE_OPTIONS,
+  ARTIST_TYPE_TEXTS,
+} from '../../../../features/constants/artist-type.constant';
+import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
+import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 import {
   EMPTY_SOCIAL_LINKS_FORM,
   GENRE_OPTIONS,
@@ -43,6 +46,7 @@ import type {
   SocialLinkKey,
   SocialLinksForm,
 } from '../../../../features/models/edit-profile-form.model';
+import type { IArtistTypeTexts } from '../../../../features/models/artist-type-texts.model';
 
 @Component({
   selector: 'app-edit-profile-page',
@@ -55,6 +59,7 @@ import type {
     ChipsFieldComponent,
     InputFieldComponent,
     RadioFieldComponent,
+    TranslatePipe,
   ],
   host: {
     '(window:beforeunload)': 'onBeforeUnload($event)',
@@ -69,11 +74,18 @@ export class EditProfilePageComponent implements OnInit, IHasUnsavedChanges {
 
   private readonly router: Router = inject(Router);
 
-  protected readonly artistTypes: WritableSignal<readonly ArtistType[]> =
-    signal<readonly ArtistType[]>(ARTIST_TYPES);
+  private readonly translationService: TranslationService = inject(TranslationService);
 
-  protected readonly genreOptions: WritableSignal<readonly ISelectOption<string>[]> =
-    signal<readonly ISelectOption<string>[]>(GENRE_OPTIONS);
+  protected readonly artistTypeTexts: Readonly<Record<ArtistType, IArtistTypeTexts>> =
+    ARTIST_TYPE_TEXTS;
+
+  protected readonly artistTypeOptions: Signal<readonly ISelectOption<ArtistType>[]> = computed<
+    readonly ISelectOption<ArtistType>[]
+  >(() => this.translationService.translateOptions(ARTIST_TYPE_OPTIONS));
+
+  protected readonly genreOptions: Signal<readonly ISelectOption<string>[]> = computed<
+    readonly ISelectOption<string>[]
+  >(() => this.translationService.translateOptions(GENRE_OPTIONS));
 
   protected readonly socialLinks: WritableSignal<readonly ISocialLinkConfig[]> =
     signal<readonly ISocialLinkConfig[]>(SOCIAL_LINKS);

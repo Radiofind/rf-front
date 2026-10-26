@@ -1,5 +1,4 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { LowerCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { form, FormField, FormRoot } from '@angular/forms/signals';
@@ -17,7 +16,6 @@ import { AuthService } from '../../../services/auth-service/auth.service';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
 import { TwoFactorModalComponent } from '../../../dialogs/two-factor-modal/two-factor-modal.component';
 import {
-  ARTIST_TYPES,
   DEFAULT_ARTIST_TYPE,
   FORGET_PASSWORD_MODAL_OPTIONS,
   TWO_FACTOR_MODAL_OPTIONS,
@@ -25,6 +23,10 @@ import {
 import { AUTH_TYPE } from '../../../enums/auth-type.enum';
 import { ForgetPasswordModalComponent } from '../../../dialogs/forget-password-modal/forget-password-modal.component';
 import { transformDateToString } from '../../../../shared/helpers/date/date.helpers';
+import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
+import { TranslateErrorPipe } from '../../../../shared/pipes/translate-error/translate-error.pipe';
+import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
+import { ARTIST_TYPE_OPTIONS, ARTIST_TYPE_TEXTS } from '../../../constants/artist-type.constant';
 
 import type { InputSignal, Signal, WritableSignal } from '@angular/core';
 import type { DialogRef } from '@angular/cdk/dialog';
@@ -35,6 +37,8 @@ import type { IRegisterData } from '../../../models/auth-content.model';
 import type { ILoginForm, IRegisterForm } from '../../../models/auth-form.model';
 import type { ITwoFactorModalData } from '../../../models/two-factor.model';
 import type { IAuthResponse } from '../../../../core/models/auth.model';
+import type { ISelectOption } from '../../../../shared/models/select-option.model';
+import type { IArtistTypeTexts } from '../../../models/artist-type-texts.model';
 
 @Component({
   selector: 'app-auth-form',
@@ -42,7 +46,8 @@ import type { IAuthResponse } from '../../../../core/models/auth.model';
     FormRoot,
     FormField,
     ButtonComponent,
-    LowerCasePipe,
+    TranslatePipe,
+    TranslateErrorPipe,
     InputFieldComponent,
     DateFieldComponent,
     CheckboxFieldComponent,
@@ -58,6 +63,8 @@ export class AuthFormComponent {
 
   private readonly modalService: ModalService = inject(ModalService);
 
+  private readonly translationService: TranslationService = inject(TranslationService);
+
   public readonly authType: InputSignal<AuthType> = input<AuthType>(AUTH_TYPE.LOGIN);
 
   public readonly showPassword: WritableSignal<boolean> = signal<boolean>(false);
@@ -66,7 +73,12 @@ export class AuthFormComponent {
 
   private readonly challengeId: WritableSignal<string | null> = signal<string | null>(null);
 
-  public readonly artistTypes: readonly ArtistType[] = ARTIST_TYPES;
+  public readonly artistTypeTexts: Readonly<Record<ArtistType, IArtistTypeTexts>> =
+    ARTIST_TYPE_TEXTS;
+
+  public readonly artistTypeOptions: Signal<readonly ISelectOption<ArtistType>[]> = computed(() =>
+    this.translationService.translateOptions(ARTIST_TYPE_OPTIONS),
+  );
 
   private readonly loginModel: WritableSignal<ILoginForm> = signal<ILoginForm>({
     email: Constants.EMPTY_STRING,
@@ -103,11 +115,11 @@ export class AuthFormComponent {
     },
   );
 
-  public readonly loginError: Signal<string | undefined> = computed(() =>
+  public readonly loginError: Signal<ValidationError | undefined> = computed(() =>
     this.serverErrorOf(this.loginForm),
   );
 
-  public readonly registerError: Signal<string | undefined> = computed(() =>
+  public readonly registerError: Signal<ValidationError | undefined> = computed(() =>
     this.serverErrorOf(this.registerForm),
   );
 
@@ -142,10 +154,12 @@ export class AuthFormComponent {
     );
   }
 
-  private serverErrorOf(fieldTree: FieldTree<ILoginForm | IRegisterForm>): string | undefined {
+  private serverErrorOf(
+    fieldTree: FieldTree<ILoginForm | IRegisterForm>,
+  ): ValidationError | undefined {
     return fieldTree()
       .errors()
-      .find((error) => error.kind === Constants.SERVER_ERROR)?.message;
+      .find((error) => error.kind === Constants.SERVER_ERROR);
   }
 
   private async login(): Promise<ValidationError | undefined> {

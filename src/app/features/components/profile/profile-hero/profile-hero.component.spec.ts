@@ -98,7 +98,7 @@ describe('ProfileHeroComponent', () => {
       fixture.nativeElement.querySelectorAll('.hero__social, .hero__avatar-edit, .hero__edit'),
     ).map((element: HTMLElement) => element.getAttribute('aria-label'));
 
-    expect(labels).toEqual(['Change avatar', 'Spotify', 'Edit profile']);
+    expect(labels).toEqual(['Change avatar', 'Spotify', 'Edit Profile']);
   });
 
   describe('social links', () => {

@@ -1,6 +1,6 @@
 <header class="header" [class.header--extended]="isMainApplication()">
   <div class="header-brand">
-    <img class="header-logo" src="/assets/images/audiowave.png" alt="Logo" />
+    <img class="header-logo" src="/assets/images/audiowave.png" [alt]="'common.logo' | translate" />
     <span class="header-title">RADIOFIND</span>
   </div>
 
@@ -12,8 +12,8 @@
           class="header-search-input"
           type="text"
           name="search"
-          aria-label="Search artists, songs, genres"
-          placeholder="Search artists, songs, genres..."
+          [attr.aria-label]="'header.searchLabel' | translate"
+          [placeholder]="'header.searchPlaceholder' | translate"
           [value]="searchValue()"
           (input)="onSearchInput($event)"
         />
@@ -21,7 +21,7 @@
           <button
             class="header-search-clear"
             type="button"
-            aria-label="Clear search"
+            [attr.aria-label]="'header.clearSearch' | translate"
             (click)="onClearSearch()"
           >
             <i class="bx bx-x"></i>
@@ -33,17 +33,21 @@
         <div class="header-premium">
           <app-button
             additionalClass="button--premium"
-            contentText="Upgrade to Premium"
+            [contentText]="'header.upgrade' | translate"
             contentIconClass="bxf bx-star"
             (clickAction)="onUpgrade()"
           />
         </div>
 
-        <app-popover #messagesPopover="appPopover" popoverTitle="Messages" (opened)="onMessages()">
+        <app-popover
+          #messagesPopover="appPopover"
+          [popoverTitle]="'header.messages' | translate"
+          (opened)="onMessages()"
+        >
           <button
             class="header-action"
             type="button"
-            aria-label="Messages"
+            [attr.aria-label]="'header.messages' | translate"
             aria-haspopup="dialog"
             [attr.aria-expanded]="messagesPopover.isOpen()"
           >
@@ -56,21 +60,21 @@
           <ng-template appPopoverContent>
             <app-empty-state
               emptyIconClass="bx bx-inbox"
-              emptyTitle="No messages yet"
-              emptyDescription="Messages from listeners, labels and radio stations will show up here."
+              [emptyTitle]="'header.noMessagesTitle' | translate"
+              [emptyDescription]="'header.noMessagesDescription' | translate"
             />
           </ng-template>
         </app-popover>
 
         <app-popover
           #notificationsPopover="appPopover"
-          popoverTitle="Notifications"
+          [popoverTitle]="'header.notifications' | translate"
           (opened)="onNotifications()"
         >
           <button
             class="header-action"
             type="button"
-            aria-label="Notifications"
+            [attr.aria-label]="'header.notifications' | translate"
             aria-haspopup="dialog"
             [attr.aria-expanded]="notificationsPopover.isOpen()"
           >
@@ -83,8 +87,8 @@
           <ng-template appPopoverContent>
             <app-empty-state
               emptyIconClass="bx bx-bell"
-              emptyTitle="You are all caught up"
-              emptyDescription="Track reviews, radio picks and account updates will appear here."
+              [emptyTitle]="'header.caughtUpTitle' | translate"
+              [emptyDescription]="'header.caughtUpDescription' | translate"
             />
           </ng-template>
         </app-popover>
@@ -99,12 +103,16 @@
           <button
             class="header-profile"
             type="button"
-            aria-label="Profile"
+            [attr.aria-label]="'header.profile' | translate"
             aria-haspopup="menu"
             [attr.aria-expanded]="profilePopover.isOpen()"
           >
             @if (userAvatarUrl()) {
-              <img class="header-profile-image" [src]="userAvatarUrl()" alt="User avatar" />
+              <img
+                class="header-profile-image"
+                [src]="userAvatarUrl()"
+                [alt]="'common.userAvatar' | translate"
+              />
             } @else {
               <i class="bxf bx-user"></i>
             }
@@ -114,7 +122,11 @@
           </button>
 
           <ng-template appPopoverContent>
-            <ul class="header-menu" role="menu" aria-label="Account menu">
+            <ul
+              class="header-menu"
+              role="menu"
+              [attr.aria-label]="'header.accountMenu' | translate"
+            >
               @for (item of profileMenuItems; track item.id) {
                 <li [class]="item.visibilityClass">
                   <button
@@ -124,7 +136,7 @@
                     (click)="onProfileMenuItemSelect(item.id); profilePopover.close()"
                   >
                     <i class="header-menu-item-icon" [class]="item.iconClass"></i>
-                    <span class="header-menu-item-label">{{ item.label }}</span>
+                    <span class="header-menu-item-label">{{ item.label | translate }}</span>
                   </button>
                 </li>
               }

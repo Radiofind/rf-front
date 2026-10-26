@@ -12,7 +12,7 @@ import type { Observable } from 'rxjs';
 import type { IConfirmModalData, IModalDialogConfig } from '../../models/modal.model';
 
 describe('ModalService', () => {
-  const confirmData: IConfirmModalData = { message: 'Delete this track?' };
+  const confirmData: IConfirmModalData = { message: 'modals.unsavedChangesMessage' };
 
   let service: ModalService;
   let open: ReturnType<typeof vi.fn>;
@@ -81,7 +81,7 @@ describe('ModalService', () => {
       hasHeader: false,
       hasCloseButton: false,
       disableClose: true,
-      ariaLabel: 'Two-Factor Authentication',
+      ariaLabel: 'twoFactor.title',
     });
 
     const config: IModalDialogConfig = openedConfig();
@@ -90,7 +90,7 @@ describe('ModalService', () => {
     expect(config.hasHeader).toBe(false);
     expect(config.hasCloseButton).toBe(false);
     expect(config.disableClose).toBe(true);
-    expect(config.ariaLabel).toBe('Two-Factor Authentication');
+    expect(config.ariaLabel).toBe('twoFactor.title');
   });
 
   it('opens confirm dialogs as a small modal carrying the data', () => {

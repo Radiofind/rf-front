@@ -2,6 +2,7 @@ import { expect, test } from '../fixtures/test';
 import { API_URL, registerUser } from '../fixtures/api';
 import { HeaderPage } from '../pages/header.page';
 import { SettingsPage } from '../pages/settings.page';
+import { SidebarPage } from '../pages/sidebar.page';
 
 import type { APIResponse, Page } from '@playwright/test';
 import type { ITestUser } from '../fixtures/api';
@@ -174,12 +175,13 @@ test.describe('settings', () => {
 
       await authenticatedPage.goto('/settings/general');
 
+      await expect(settings.title()).toHaveText('Allgemeine Einstellungen');
       await expect(settings.language).toHaveText('Deutsch');
       await expect(settings.radioMode).not.toBeChecked();
-      await expect(settings.profileVisibility).toHaveText('Only me');
+      await expect(settings.profileVisibility).toHaveText('Nur ich');
       await expect(settings.notifications).not.toBeChecked();
-      await expect(settings.audioQuality).toHaveText('Low (96 kbps)');
-      await expect(settings.accentColor('Ocean')).toBeChecked();
+      await expect(settings.audioQuality).toHaveText('Niedrig (96 kbps)');
+      await expect(settings.accentColor('OCEAN')).toBeChecked();
     });
 
     test('saves every change and keeps it after a reload', async ({
@@ -193,10 +195,6 @@ test.describe('settings', () => {
       await expect(settings.language).toBeEnabled();
 
       let saved: Promise<unknown> = waitForSave(authenticatedPage);
-      await settings.choose(settings.language, 'Français');
-      await saved;
-
-      saved = waitForSave(authenticatedPage);
       await settings.radioMode.click();
       await saved;
 
@@ -213,10 +211,14 @@ test.describe('settings', () => {
       await saved;
 
       saved = waitForSave(authenticatedPage);
-      await settings.accentColor('Plum').click();
+      await settings.accentColor('PLUM').click();
       await saved;
 
       await expect(authenticatedPage.getByText('Settings saved').first()).toBeVisible();
+
+      saved = waitForSave(authenticatedPage);
+      await settings.choose(settings.language, 'Français');
+      await saved;
 
       const response: APIResponse = await request.get(GENERAL_SETTINGS_URL, {
         headers: bearer(user.token),
@@ -234,7 +236,8 @@ test.describe('settings', () => {
       await authenticatedPage.reload();
 
       await expect(settings.language).toHaveText('Français');
-      await expect(settings.accentColor('Plum')).toBeChecked();
+      await expect(settings.profileVisibility).toHaveText('Abonnés uniquement');
+      await expect(settings.accentColor('PLUM')).toBeChecked();
     });
 
     test('applies the accent color across the whole app', async ({ authenticatedPage }) => {
@@ -246,7 +249,7 @@ test.describe('settings', () => {
       expect(await settings.cssVariable('--first-gradient-color')).toBe('#6a5cff');
 
       const saved: Promise<unknown> = waitForSave(authenticatedPage);
-      await settings.accentColor('Ocean').click();
+      await settings.accentColor('OCEAN').click();
       await saved;
 
       expect(await settings.cssVariable('--first-gradient-color')).toBe('#0ea5e9');
@@ -288,6 +291,62 @@ test.describe('settings', () => {
       await saved;
 
       await expect(authenticatedPage.locator('html')).toHaveAttribute('lang', 'it');
+    });
+
+    test('switches the whole interface to the chosen language at once', async ({
+      authenticatedPage,
+    }) => {
+      const settings: SettingsPage = new SettingsPage(authenticatedPage);
+      const sidebar: SidebarPage = new SidebarPage(authenticatedPage);
+
+      await authenticatedPage.goto('/settings/general');
+      await expect(settings.language).toBeEnabled();
+      await expect(settings.title()).toHaveText('General Settings');
+
+      const saved: Promise<unknown> = waitForSave(authenticatedPage);
+      await settings.choose(settings.language, 'Italiano');
+      await saved;
+
+      await expect(settings.title()).toHaveText('Impostazioni generali');
+      await expect(sidebar.item('Libreria multimediale')).toBeVisible();
+      await expect(authenticatedPage.getByText('Impostazioni salvate').first()).toBeVisible();
+
+      await authenticatedPage.reload();
+
+      await expect(settings.title()).toHaveText('Impostazioni generali');
+      await expect(authenticatedPage).toHaveTitle(/RADIOFIND/);
+    });
+
+    test('saves Russian and keeps the interface in Russian after a reload', async ({
+      authenticatedPage,
+      request,
+      user,
+    }) => {
+      const settings: SettingsPage = new SettingsPage(authenticatedPage);
+      const sidebar: SidebarPage = new SidebarPage(authenticatedPage);
+
+      await authenticatedPage.goto('/settings/general');
+      await expect(settings.language).toBeEnabled();
+
+      const saved: Promise<unknown> = waitForSave(authenticatedPage);
+      await settings.choose(settings.language, 'Русский');
+      await saved;
+
+      await expect(settings.title()).toHaveText('Общие настройки');
+      await expect(sidebar.item('Медиатека')).toBeVisible();
+      await expect(authenticatedPage.getByText('Настройки сохранены').first()).toBeVisible();
+      await expect(authenticatedPage.locator('html')).toHaveAttribute('lang', 'ru');
+
+      const response: APIResponse = await request.get(GENERAL_SETTINGS_URL, {
+        headers: bearer(user.token),
+      });
+
+      expect(((await response.json()) as { language: string }).language).toBe('RU');
+
+      await authenticatedPage.reload();
+
+      await expect(settings.language).toHaveText('Русский');
+      await expect(settings.title()).toHaveText('Общие настройки');
     });
   });
 });

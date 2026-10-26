@@ -16,10 +16,15 @@ import { ArtistTypeRequestEnum } from '../../../../core/enums/artist-type.enum';
 import { DateFormatEnum } from '../../../../core/enums/date-format.enum';
 import { ModalSizeEnum } from '../../../../core/enums/modal-size.enum';
 import { formatStringDate } from '../../../../shared/helpers/date/date.helpers';
+import { findSelectOption } from '../../../../shared/helpers/select-option/select-option.helpers';
+import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
+import { GENRE_OPTIONS } from '../../../../features/constants/edit-profile.constant';
 
 import type { OnInit, Signal, WritableSignal } from '@angular/core';
 import type { ISocialLinksData, IUserProfileData } from '../../../../core/models/user.model';
 import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';
+import type { TranslationKey } from '../../../../core/types/translation.type';
+import type { ISelectOption } from '../../../../shared/models/select-option.model';
 import type {
   IAvatarModalData,
   IAvatarModalResult,
@@ -46,6 +51,8 @@ export class ProfilePageComponent implements OnInit {
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   private readonly router: Router = inject(Router);
+
+  private readonly translationService: TranslationService = inject(TranslationService);
 
   private readonly profile: WritableSignal<IUserProfileData | null> =
     signal<IUserProfileData | null>(null);
@@ -129,6 +136,15 @@ export class ProfilePageComponent implements OnInit {
   }
 
   private formatGenre(genre: string): string {
+    const option: ISelectOption<string, TranslationKey> | undefined = findSelectOption(
+      GENRE_OPTIONS,
+      genre,
+    );
+
+    if (option) {
+      return this.translationService.translate(option.label);
+    }
+
     return genre
       .split(Constants.UNDERSCORE)
       .map(
@@ -139,6 +155,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   private formatProfileDate(date: string | undefined, format: DateFormatEnum): string {
-    return date ? formatStringDate(date, format) : Constants.DASH;
+    return date ? formatStringDate(date, format, this.translationService.locale()) : Constants.DASH;
   }
 }

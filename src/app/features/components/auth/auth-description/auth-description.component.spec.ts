@@ -6,6 +6,7 @@ import {
   AUTH_DESCRIPTION_CONTENT_REGISTER,
 } from '../../../constants/auth-content.constant';
 
+import { translate } from '../../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
 
 describe('AuthDescriptionComponent', () => {
@@ -22,12 +23,12 @@ describe('AuthDescriptionComponent', () => {
 
     const title: HTMLElement = fixture.nativeElement.querySelector('.description-title');
 
-    expect(title.textContent).toContain(AUTH_DESCRIPTION_CONTENT_LOGIN.title.trim());
+    expect(title.textContent).toContain(translate(AUTH_DESCRIPTION_CONTENT_LOGIN.title).trim());
     expect(title.querySelector('span')?.textContent).toBe(
-      AUTH_DESCRIPTION_CONTENT_LOGIN.titleColor,
+      translate(AUTH_DESCRIPTION_CONTENT_LOGIN.titleColor),
     );
     expect(fixture.nativeElement.querySelector('.description-instructions').textContent).toBe(
-      AUTH_DESCRIPTION_CONTENT_LOGIN.instructions,
+      translate(AUTH_DESCRIPTION_CONTENT_LOGIN.instructions),
     );
   });
 
@@ -45,10 +46,10 @@ describe('AuthDescriptionComponent', () => {
       const entry = AUTH_DESCRIPTION_CONTENT_LOGIN.content[index];
 
       expect(block.querySelector('.description-content__text--title')?.textContent).toBe(
-        entry?.contentTitle,
+        entry && translate(entry.contentTitle),
       );
       expect(block.querySelector('.description-content__text--overview')?.textContent).toBe(
-        entry?.overview,
+        entry && translate(entry.overview),
       );
       expect(block.querySelector('.icon i')?.className).toBe(entry?.iconClass);
     });
@@ -61,10 +62,10 @@ describe('AuthDescriptionComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.description-title').textContent).toContain(
-      AUTH_DESCRIPTION_CONTENT_REGISTER.titleColor,
+      translate(AUTH_DESCRIPTION_CONTENT_REGISTER.titleColor),
     );
     expect(fixture.nativeElement.querySelector('.description-instructions').textContent).toBe(
-      AUTH_DESCRIPTION_CONTENT_REGISTER.instructions,
+      translate(AUTH_DESCRIPTION_CONTENT_REGISTER.instructions),
     );
   });
 

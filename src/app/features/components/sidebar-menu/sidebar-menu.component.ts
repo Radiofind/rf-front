@@ -10,17 +10,19 @@ import {
 } from '../../constants/sidebar-menu.constant';
 import { UserService } from '../../services/user-service/user.service';
 import { Links } from '../../../core/constants/links';
+import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
 
 import type { InputSignal, ModelSignal, OnInit, Signal } from '@angular/core';
 import type { BreakpointState } from '@angular/cdk/layout';
 import type { ISidebarMenuItem } from '../../models/sidebar-menu-item.model';
 import type { ICurrentUser } from '../../../core/models/user.model';
+import type { TranslationKey } from '../../../core/types/translation.type';
 
 @Component({
   selector: 'app-sidebar-menu',
   templateUrl: './sidebar-menu.component.html',
   styleUrl: './sidebar-menu.component.scss',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, TranslatePipe],
 })
 export class SidebarMenuComponent implements OnInit {
   private readonly userService: UserService = inject(UserService);
@@ -67,7 +69,7 @@ export class SidebarMenuComponent implements OnInit {
     this.isCollapsed() ? Constants.CHEVRON_RIGHT_ICON_CLASS : Constants.CHEVRON_LEFT_ICON_CLASS,
   );
 
-  public readonly toggleAriaLabel: Signal<string> = computed<string>(() =>
+  public readonly toggleAriaLabel: Signal<TranslationKey> = computed<TranslationKey>(() =>
     this.isCollapsed()
       ? Constants.SIDEBAR_EXPAND_ARIA_LABEL
       : Constants.SIDEBAR_COLLAPSE_ARIA_LABEL,

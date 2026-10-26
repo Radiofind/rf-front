@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth-service/auth.service';
 import { Constants } from '../../../core/constants/constants';
 import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 
+import { translate } from '../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
 
 describe('TwoFactorModalComponent', () => {
@@ -129,7 +130,7 @@ describe('TwoFactorModalComponent', () => {
       { kind: Constants.SERVER_ERROR, message: AuthValidationMessages.INVALID_TWO_FACTOR_CODE },
     ]);
     expect(fixture.nativeElement.querySelector('.code-field__errors').textContent).toContain(
-      AuthValidationMessages.INVALID_TWO_FACTOR_CODE,
+      translate(AuthValidationMessages.INVALID_TWO_FACTOR_CODE),
     );
   });
 
@@ -194,7 +195,7 @@ describe('TwoFactorModalComponent', () => {
     expect(close).not.toHaveBeenCalled();
     expect(buttons[0]?.disabled).toBe(true);
     expect(fixture.nativeElement.querySelector('.code-field__errors').textContent).toContain(
-      AuthValidationMessages.TOO_MANY_TWO_FACTOR_ATTEMPTS,
+      translate(AuthValidationMessages.TOO_MANY_TWO_FACTOR_ATTEMPTS),
     );
   });
 

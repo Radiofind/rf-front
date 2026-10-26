@@ -14,6 +14,7 @@ import { AUTH_TYPE } from '../../../enums/auth-type.enum';
 import { AuthValidationMessages } from '../../../constants/auth-error-messages.constant';
 import { Constants } from '../../../../core/constants/constants';
 
+import { translate } from '../../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IModalOptions } from '../../../../shared/models/modal.model';
 import type { IRegisterForm } from '../../../models/auth-form.model';
@@ -143,10 +144,10 @@ describe('AuthFormComponent', () => {
       await submit(component.loginForm);
       await fixture.whenStable();
 
-      expect(component.loginError()).toBe(AuthValidationMessages.INVALID_LOGIN_PASSWORD);
+      expect(component.loginError()?.message).toBe(AuthValidationMessages.INVALID_LOGIN_PASSWORD);
       expect(navigate).not.toHaveBeenCalled();
       expect(fixture.nativeElement.querySelector('.form-content__error').textContent).toBe(
-        AuthValidationMessages.INVALID_LOGIN_PASSWORD,
+        translate(AuthValidationMessages.INVALID_LOGIN_PASSWORD),
       );
     });
 
@@ -234,7 +235,7 @@ describe('AuthFormComponent', () => {
       await submit(component.registerForm);
       await fixture.whenStable();
 
-      expect(component.registerError()).toBe(AuthValidationMessages.REGISTRATION_FAILED);
+      expect(component.registerError()?.message).toBe(AuthValidationMessages.REGISTRATION_FAILED);
       expect(navigate).not.toHaveBeenCalled();
     });
 

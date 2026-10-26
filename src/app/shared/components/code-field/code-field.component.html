@@ -14,7 +14,7 @@
         [attr.name]="name() ? name() + '-' + ($index + 1) : null"
         [disabled]="disabled()"
         [required]="required()"
-        [attr.aria-label]="cellAriaLabel() + ' ' + ($index + 1)"
+        [attr.aria-label]="(cellAriaLabel() | translate) + ' ' + ($index + 1)"
         (input)="onInput($event, $index)"
         (keydown)="onKeydown($event, $index)"
         (paste)="onPaste($event, $index)"
@@ -27,7 +27,7 @@
   @if (isCodeInvalid()) {
     <div class="code-field__errors">
       @for (error of visibleErrors(); track error.kind) {
-        <div>{{ error.message }}</div>
+        <div>{{ error | translateError }}</div>
       }
     </div>
   }

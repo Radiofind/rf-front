@@ -1,9 +1,9 @@
-<ul class="stats" aria-label="Profile statistics">
+<ul class="stats" [attr.aria-label]="'profile.statistics' | translate">
   <li class="stats__item">
     <i class="stats__icon bx bx-user"></i>
     <div class="stats__content">
       <span class="stats__value">0</span>
-      <span class="stats__label">Followers</span>
+      <span class="stats__label">{{ 'profile.followers' | translate }}</span>
     </div>
   </li>
 
@@ -11,7 +11,7 @@
     <i class="stats__icon bx bx-arrow-up-circle"></i>
     <div class="stats__content">
       <span class="stats__value">0</span>
-      <span class="stats__label">Uploads</span>
+      <span class="stats__label">{{ 'profile.uploads' | translate }}</span>
     </div>
   </li>
 
@@ -19,7 +19,7 @@
     <i class="stats__icon bx bx-heart"></i>
     <div class="stats__content">
       <span class="stats__value">0</span>
-      <span class="stats__label">Likes</span>
+      <span class="stats__label">{{ 'profile.likes' | translate }}</span>
     </div>
   </li>
 
@@ -27,7 +27,7 @@
     <i class="stats__icon bx bx-calendar"></i>
     <div class="stats__content">
       <span class="stats__value">{{ registeredAt() }}</span>
-      <span class="stats__label">Joined</span>
+      <span class="stats__label">{{ 'profile.joined' | translate }}</span>
     </div>
   </li>
 </ul>

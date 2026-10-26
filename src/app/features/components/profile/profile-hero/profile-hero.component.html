@@ -1,8 +1,8 @@
-<section class="hero" aria-label="Profile overview">
+<section class="hero" [attr.aria-label]="'profile.overview' | translate">
   <div class="hero__avatar">
     <div class="hero__avatar-ring">
       @if (avatarUrl(); as avatarUrl) {
-        <img class="hero__avatar-photo" [src]="avatarUrl" alt="User avatar" />
+        <img class="hero__avatar-photo" [src]="avatarUrl" [alt]="'common.userAvatar' | translate" />
       } @else {
         <div class="hero__avatar-image">
           <i class="bxf bx-user"></i>
@@ -13,8 +13,8 @@
     <button
       class="hero__avatar-edit"
       type="button"
-      aria-label="Change avatar"
-      title="Change avatar"
+      [attr.aria-label]="'profile.changeAvatar' | translate"
+      [title]="'profile.changeAvatar' | translate"
       aria-haspopup="dialog"
       (click)="onAvatarEdit()"
     >
@@ -25,11 +25,14 @@
   <div class="hero__info">
     <div class="hero__name-row">
       <h1 class="hero__name">{{ userFullName() }}</h1>
-      <i class="hero__verified bxf bx-badge-check" title="Verified artist"></i>
+      <i
+        class="hero__verified bxf bx-badge-check"
+        [title]="'profile.verifiedArtist' | translate"
+      ></i>
     </div>
 
     <p class="hero__meta">
-      <span>{{ artistRoleLabel() }}</span>
+      <span>{{ artistRoleLabel() | translate }}</span>
       @if (mainGenres()) {
         <span class="hero__meta-dot" aria-hidden="true"></span>
         <span>{{ mainGenres() }}</span>
@@ -39,7 +42,7 @@
     <p class="hero__bio">{{ bio() }}</p>
 
     @if (visibleSocialLinks().length) {
-      <ul class="hero__socials" aria-label="Social links">
+      <ul class="hero__socials" [attr.aria-label]="'profile.socialLinks' | translate">
         @for (link of visibleSocialLinks(); track link.key) {
           <li>
             <a
@@ -58,8 +61,13 @@
     }
   </div>
 
-  <button class="hero__edit" type="button" aria-label="Edit profile" (click)="onProfileEdit()">
+  <button
+    class="hero__edit"
+    type="button"
+    [attr.aria-label]="'profile.editProfile' | translate"
+    (click)="onProfileEdit()"
+  >
     <i class="bx bx-pencil"></i>
-    <span>Edit Profile</span>
+    <span>{{ 'profile.editProfile' | translate }}</span>
   </button>
 </section>

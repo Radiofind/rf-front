@@ -3,6 +3,7 @@ import type {
   HorizontalConnectionPos,
   VerticalConnectionPos,
 } from '@angular/cdk/overlay';
+import type { TranslationKey } from '../types/translation.type';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Constants {
@@ -25,6 +26,8 @@ export class Constants {
   public static readonly SLASH_WITH_SPACES: string = ' / ';
 
   public static readonly TOKEN_KEY: string = 'radiofind_token';
+
+  public static readonly LANGUAGE_KEY: string = 'radiofind_language';
 
   public static readonly UPPERCASE: string = 'uppercase';
 
@@ -62,7 +65,7 @@ export class Constants {
 
   public static readonly SELECT_FIELD_ID_PREFIX: string = 'app-select-field-';
 
-  public static readonly CODE_FIELD_CELL_AREA_LABEL: string = 'Digit';
+  public static readonly CODE_FIELD_CELL_AREA_LABEL: TranslationKey = 'common.digit';
 
   public static readonly BACKSPACE_KEY: string = 'Backspace';
 
@@ -72,9 +75,9 @@ export class Constants {
 
   public static readonly CLIPBOARD_FORMAT: string = 'text';
 
-  public static readonly MODAL_DEFAULT_CONFIRM_TEXT: string = 'Confirm';
+  public static readonly MODAL_DEFAULT_CONFIRM_TEXT: TranslationKey = 'common.confirm';
 
-  public static readonly MODAL_DEFAULT_CANCEL_TEXT: string = 'Cancel';
+  public static readonly MODAL_DEFAULT_CANCEL_TEXT: TranslationKey = 'common.cancel';
 
   public static readonly MODAL_PANEL_CLASS: string = 'modal-panel';
 
@@ -106,7 +109,7 @@ export class Constants {
 
   public static readonly SPINNER_DEFAULT_THICKNESS: string = '3px';
 
-  public static readonly SPINNER_ARIA_LABEL: string = 'Loading';
+  public static readonly SPINNER_ARIA_LABEL: TranslationKey = 'common.loading';
 
   public static readonly LOADER_BODY_CLASS: string = 'is-loading';
 
@@ -122,17 +125,17 @@ export class Constants {
 
   public static readonly ERROR_TYPE_PROP: string = 'errorType';
 
-  public static readonly EMAIL_SENT_SUCCESSFULLY: string = 'Email sent successfully';
+  public static readonly EMAIL_SENT_SUCCESSFULLY: TranslationKey = 'messages.emailSent';
 
-  public static readonly PASSWORD_RESET_SUCCESSFULLY: string = 'Password reset successfully';
+  public static readonly PASSWORD_RESET_SUCCESSFULLY: TranslationKey = 'messages.passwordReset';
 
   public static readonly POPOVER_DEFAULT_WIDTH: string = '360px';
 
   public static readonly POPOVER_MAX_WIDTH: string = 'calc(100vw - 32px)';
 
-  public static readonly SIDEBAR_COLLAPSE_ARIA_LABEL: string = 'Collapse menu';
+  public static readonly SIDEBAR_COLLAPSE_ARIA_LABEL: TranslationKey = 'sidebar.collapse';
 
-  public static readonly SIDEBAR_EXPAND_ARIA_LABEL: string = 'Expand menu';
+  public static readonly SIDEBAR_EXPAND_ARIA_LABEL: TranslationKey = 'sidebar.expand';
 
   public static readonly CHEVRON_LEFT_ICON_CLASS: string = 'bx bx-chevron-left';
 
@@ -144,23 +147,21 @@ export class Constants {
 
   public static readonly FILE_FORM_DATA: string = 'file';
 
-  public static readonly PROFILE_PHOTO: string = 'Profile Photo';
+  public static readonly PROFILE_PHOTO: TranslationKey = 'avatar.title';
 
-  public static readonly AVATAR_SUBTITLE: string = 'Upload a new avatar or remove the current one';
+  public static readonly AVATAR_SUBTITLE: TranslationKey = 'avatar.subtitle';
 
   public static readonly CAMERA_ICON: string = 'bx bx-camera';
 
-  public static readonly SETTINGS_SAVED: string = 'Settings saved';
+  public static readonly SETTINGS_SAVED: TranslationKey = 'messages.settingsSaved';
 
-  public static readonly SETTINGS_SAVE_FAILED: string =
-    'Could not save settings. Please try again.';
+  public static readonly SETTINGS_SAVE_FAILED: TranslationKey = 'messages.settingsSaveFailed';
 
-  public static readonly SETTINGS_LOAD_FAILED: string =
-    'Could not load settings. Please reload the page.';
+  public static readonly SETTINGS_LOAD_FAILED: TranslationKey = 'messages.settingsLoadFailed';
 
-  public static readonly TOGGLE_ENABLED_TEXT: string = 'Enabled';
+  public static readonly TOGGLE_ENABLED_TEXT: TranslationKey = 'common.enabled';
 
-  public static readonly TOGGLE_DISABLED_TEXT: string = 'Disabled';
+  public static readonly TOGGLE_DISABLED_TEXT: TranslationKey = 'common.disabled';
 
   public static readonly FIRST_GRADIENT_COLOR_PROPERTY: string = '--first-gradient-color';
 
@@ -174,28 +175,26 @@ export class Constants {
 
   public static readonly SAME_EMAIL_PROPERTY: string = 'sameEmail';
 
-  public static readonly PROFILE_INFORMATION_SAVED: string = 'Profile information saved';
+  public static readonly PROFILE_INFORMATION_SAVED: TranslationKey = 'messages.profileSaved';
 
-  public static readonly PROFILE_SAVE_FAILED: string = 'Could not save profile. Please try again.';
+  public static readonly PROFILE_SAVE_FAILED: TranslationKey = 'messages.profileSaveFailed';
 
-  public static readonly PROFILE_LOAD_FAILED: string =
-    'Could not load profile. Please reload the page.';
+  public static readonly PROFILE_LOAD_FAILED: TranslationKey = 'messages.profileLoadFailed';
 
-  public static readonly EMAIL_CHANGED_SIGN_IN_AGAIN: string =
-    'Email changed. Please sign in with your new email.';
+  public static readonly EMAIL_CHANGED_SIGN_IN_AGAIN: TranslationKey =
+    'messages.emailChangedSignInAgain';
 
-  public static readonly UNSAVED_CHANGES_TITLE: string = 'Unsaved changes';
+  public static readonly UNSAVED_CHANGES_TITLE: TranslationKey = 'modals.unsavedChangesTitle';
 
   public static readonly UNSAVED_CHANGES_ICON_CLASS: string = 'bx bx-alert-triangle';
 
-  public static readonly UNSAVED_CHANGES_MESSAGE: string =
-    'You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.';
+  public static readonly UNSAVED_CHANGES_MESSAGE: TranslationKey = 'modals.unsavedChangesMessage';
 
-  public static readonly YES: string = 'Yes';
+  public static readonly YES: TranslationKey = 'common.yes';
 
-  public static readonly NO: string = 'No';
+  public static readonly NO: TranslationKey = 'common.no';
 
-  public static readonly ADD_LABEL: string = 'Add';
+  public static readonly ADD_LABEL: TranslationKey = 'common.add';
 
   public static readonly MENU_TEMPLATE_NAME: string = 'menu';
 
@@ -296,6 +295,8 @@ export class Constants {
     /^[0-9A-Za-z\s!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
 
   public static readonly SPACES_VALIDATOR_PATTERN: RegExp = /\s/;
+
+  public static readonly TRANSLATION_PARAM_PATTERN: RegExp = /\{(\w+)\}/g;
 
   public static readonly NOT_DIGIT_PATTERN: RegExp = /\D/g;
 

@@ -1,6 +1,8 @@
 import { Component, computed, input, model, output } from '@angular/core';
 import { Constants } from '../../../core/constants/constants';
 import { DropdownMenuComponent } from '../dropdown-menu/dropdown-menu.component';
+import { TranslatePipe } from '../../pipes/translate/translate.pipe';
+import { TranslateErrorPipe } from '../../pipes/translate-error/translate-error.pipe';
 import { DropdownTriggerDirective } from '../../directives/dropdown-trigger/dropdown-trigger.directive';
 import {
   filterSelectOptions,
@@ -9,11 +11,12 @@ import {
 
 import type { InputSignal, ModelSignal, OutputEmitterRef, Signal } from '@angular/core';
 import type { FormValueControl, ValidationError } from '@angular/forms/signals';
+import type { TranslationKey } from '../../../core/types/translation.type';
 import type { ISelectOption } from '../../models/select-option.model';
 
 @Component({
   selector: 'app-chips-field',
-  imports: [DropdownMenuComponent, DropdownTriggerDirective],
+  imports: [DropdownMenuComponent, DropdownTriggerDirective, TranslatePipe, TranslateErrorPipe],
   templateUrl: './chips-field.component.html',
   styleUrl: './chips-field.component.scss',
 })
@@ -38,7 +41,9 @@ export class ChipsFieldComponent<T extends string> implements FormValueControl<T
 
   public readonly fieldHint: InputSignal<string | null> = input<string | null>(null);
 
-  public readonly addLabel: InputSignal<string> = input<string>(Constants.ADD_LABEL);
+  public readonly addLabel: InputSignal<string | null> = input<string | null>(null);
+
+  protected readonly defaultAddLabel: TranslationKey = Constants.ADD_LABEL;
 
   public readonly options: InputSignal<readonly ISelectOption<T>[]> = input<
     readonly ISelectOption<T>[]

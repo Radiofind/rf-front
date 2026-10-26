@@ -5,6 +5,8 @@ import { SelectFieldComponent } from '../../../../shared/components/select-field
 import { ToggleSwitchComponent } from '../../../../shared/components/toggle-switch/toggle-switch.component';
 import { SettingsStateService } from '../../../../features/services/settings-state-service/settings-state.service';
 import { SnackbarService } from '../../../../shared/services/snackbar-service/snackbar.service';
+import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
+import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 import { Constants } from '../../../../core/constants/constants';
 import {
   AUDIO_QUALITY_OPTIONS,
@@ -28,6 +30,7 @@ import type { ISelectOption } from '../../../../shared/models/select-option.mode
     SelectFieldComponent,
     ToggleSwitchComponent,
     AccentColorPickerComponent,
+    TranslatePipe,
   ],
 })
 export class GeneralSettingsPageComponent implements OnInit {
@@ -35,20 +38,22 @@ export class GeneralSettingsPageComponent implements OnInit {
 
   private readonly snackbarService: SnackbarService = inject(SnackbarService);
 
+  private readonly translationService: TranslationService = inject(TranslationService);
+
   protected readonly settings: Signal<IGeneralSettings> = this.settingsStateService.settings;
 
-  // Controls stay locked until the real settings arrive, otherwise a save would overwrite them with defaults.
   protected readonly isDisabled: Signal<boolean> = computed<boolean>(
     () => !this.settingsStateService.isLoaded(),
   );
 
   protected readonly languageOptions: readonly ISelectOption<Language>[] = LANGUAGE_OPTIONS;
 
-  protected readonly profileVisibilityOptions: readonly ISelectOption<ProfileVisibility>[] =
-    PROFILE_VISIBILITY_OPTIONS;
+  protected readonly profileVisibilityOptions: Signal<readonly ISelectOption<ProfileVisibility>[]> =
+    computed(() => this.translationService.translateOptions(PROFILE_VISIBILITY_OPTIONS));
 
-  protected readonly audioQualityOptions: readonly ISelectOption<AudioQuality>[] =
-    AUDIO_QUALITY_OPTIONS;
+  protected readonly audioQualityOptions: Signal<readonly ISelectOption<AudioQuality>[]> = computed(
+    () => this.translationService.translateOptions(AUDIO_QUALITY_OPTIONS),
+  );
 
   public ngOnInit(): void {
     void this.loadSettings();

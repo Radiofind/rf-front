@@ -21,7 +21,7 @@
           <button
             class="chips-field__remove"
             type="button"
-            [attr.aria-label]="'Remove ' + chip.label"
+            [attr.aria-label]="'common.removeItem' | translate: { item: chip.label }"
             [disabled]="disabled()"
             (click)="onRemove(chip.value)"
           >
@@ -43,7 +43,7 @@
           (cdkMenuClosed)="touch.emit()"
         >
           <i class="chips-field__add-icon bx bx-plus" aria-hidden="true"></i>
-          <span>{{ addLabel() }}</span>
+          <span>{{ addLabel() ?? (defaultAddLabel | translate) }}</span>
         </button>
 
         <app-dropdown-menu
@@ -57,7 +57,7 @@
 
   <div class="chips-field__errors">
     @for (error of visibleErrors(); track error.kind) {
-      <div>{{ error.message }}</div>
+      <div>{{ error | translateError }}</div>
     }
   </div>
 </div>

@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AccentColorPickerComponent } from './accent-color-picker.component';
 import { ACCENT_COLOR_OPTIONS } from '../../../constants/settings.constant';
 
+import { translate } from '../../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { AccentColor } from '../../../../core/types/accent-color.type';
 
@@ -30,7 +31,7 @@ describe('AccentColorPickerComponent', () => {
     const fixture: ComponentFixture<AccentColorPickerComponent> = await createFixture();
 
     expect(radios(fixture).map((radio) => radio.getAttribute('aria-label'))).toEqual(
-      ACCENT_COLOR_OPTIONS.map((option) => option.label),
+      ACCENT_COLOR_OPTIONS.map((option) => translate(option.label)),
     );
     expect(fixture.nativeElement.querySelector('[role="radiogroup"]')).not.toBeNull();
   });

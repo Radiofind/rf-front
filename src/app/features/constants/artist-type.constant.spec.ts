@@ -1,15 +1,22 @@
 import { describe, expect, it } from 'vitest';
-import { ARTIST_ROLE_LABELS, ARTIST_TYPE_LABELS } from './artist-type.constant';
-import { ArtistTypeRequestEnum } from '../../core/enums/artist-type.enum';
+import { ARTIST_TYPE_LABELS, ARTIST_TYPE_OPTIONS, ARTIST_TYPE_TEXTS } from './artist-type.constant';
+import { ArtistTypeEnum, ArtistTypeRequestEnum } from '../../core/enums/artist-type.enum';
 
 describe('artist type labels', () => {
-  it('maps every backend artist type to a display label', () => {
+  it('maps every backend artist type to a form value', () => {
     expect(ARTIST_TYPE_LABELS[ArtistTypeRequestEnum.ARTIST]).toBe('Artist');
     expect(ARTIST_TYPE_LABELS[ArtistTypeRequestEnum.BAND]).toBe('Band');
   });
 
-  it('maps every backend artist type to a role label', () => {
-    expect(ARTIST_ROLE_LABELS[ArtistTypeRequestEnum.ARTIST]).toBe('Artist');
-    expect(ARTIST_ROLE_LABELS[ArtistTypeRequestEnum.BAND]).toBe('Member of band');
+  it('maps every artist type to its role translation key', () => {
+    expect(ARTIST_TYPE_TEXTS[ArtistTypeEnum.ARTIST].role).toBe('artistType.artistRole');
+    expect(ARTIST_TYPE_TEXTS[ArtistTypeEnum.BAND].role).toBe('artistType.bandRole');
+  });
+
+  it('offers an option for every artist type', () => {
+    expect(ARTIST_TYPE_OPTIONS.map((option) => option.value)).toEqual([
+      ArtistTypeEnum.ARTIST,
+      ArtistTypeEnum.BAND,
+    ]);
   });
 });

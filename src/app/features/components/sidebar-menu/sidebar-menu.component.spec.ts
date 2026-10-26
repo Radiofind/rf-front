@@ -14,6 +14,7 @@ import {
 import { Constants } from '../../../core/constants/constants';
 import { Links } from '../../../core/constants/links';
 
+import { translate } from '../../../../test-translate';
 import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { Routes } from '@angular/router';
@@ -87,7 +88,7 @@ describe('SidebarMenuComponent', () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
 
     expect(items(fixture).map((item) => item.textContent.trim())).toEqual(
-      SIDEBAR_MENU_ITEMS.map((item) => item.label),
+      SIDEBAR_MENU_ITEMS.map((item) => translate(item.label)),
     );
   });
 
@@ -147,7 +148,9 @@ describe('SidebarMenuComponent', () => {
     const toggle: HTMLButtonElement = fixture.nativeElement.querySelector('.sidebar__toggle');
 
     expect(sidebar.classList.contains('sidebar--collapsed')).toBe(false);
-    expect(toggle.getAttribute('aria-label')).toBe(Constants.SIDEBAR_COLLAPSE_ARIA_LABEL);
+    expect(toggle.getAttribute('aria-label')).toBe(
+      translate(Constants.SIDEBAR_COLLAPSE_ARIA_LABEL),
+    );
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
 
     toggle.click();
@@ -155,7 +158,7 @@ describe('SidebarMenuComponent', () => {
 
     expect(fixture.componentInstance.isCollapsed()).toBe(true);
     expect(sidebar.classList.contains('sidebar--collapsed')).toBe(true);
-    expect(toggle.getAttribute('aria-label')).toBe(Constants.SIDEBAR_EXPAND_ARIA_LABEL);
+    expect(toggle.getAttribute('aria-label')).toBe(translate(Constants.SIDEBAR_EXPAND_ARIA_LABEL));
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
 
     toggle.click();

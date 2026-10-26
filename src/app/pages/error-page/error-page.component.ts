@@ -9,6 +9,7 @@ import { ERROR_PAGE_CONTENT } from '../../features/constants/error-content.const
 import { Constants } from '../../core/constants/constants';
 import { Links } from '../../core/constants/links';
 import { ErrorTypeEnum } from '../../core/enums/error-type.enum';
+import { TranslatePipe } from '../../shared/pipes/translate/translate.pipe';
 
 import type { Signal } from '@angular/core';
 import type { Data } from '@angular/router';
@@ -17,7 +18,7 @@ import type { ErrorType } from '../../core/types/error-type.type';
 
 @Component({
   selector: 'app-error-page',
-  imports: [HeaderComponent, ButtonComponent, IconComponent],
+  imports: [HeaderComponent, ButtonComponent, IconComponent, TranslatePipe],
   templateUrl: './error-page.component.html',
   styleUrl: './error-page.component.scss',
 })

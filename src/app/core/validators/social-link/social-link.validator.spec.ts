@@ -29,7 +29,8 @@ describe('socialLinkError', () => {
   it('rejects a link of another platform', () => {
     expect(check('https://instagram.com/radiofind')).toEqual({
       kind: Constants.SOCIAL_LINK_PROPERTY,
-      message: `${ProfileValidationMessages.WRONG_SOCIAL_LINK} Telegram`,
+      message: ProfileValidationMessages.WRONG_SOCIAL_LINK,
+      params: { platform: 'Telegram' },
     });
   });
 
@@ -50,9 +51,7 @@ describe('socialLinkError', () => {
 
   it('accepts the placeholder example of every configured platform', () => {
     SOCIAL_LINKS.forEach((link: ISocialLinkConfig) => {
-      const example: string = link.placeholder.replace('e.g. ', '');
-
-      expect(socialLinkError(example, link.label, link.domains)).toBeUndefined();
+      expect(socialLinkError(link.placeholderExample, link.label, link.domains)).toBeUndefined();
     });
   });
 

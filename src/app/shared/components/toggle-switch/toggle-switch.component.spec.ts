@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ToggleSwitchComponent } from './toggle-switch.component';
 import { Constants } from '../../../core/constants/constants';
 
+import { translate } from '../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
 
 describe('ToggleSwitchComponent', () => {
@@ -28,7 +29,7 @@ describe('ToggleSwitchComponent', () => {
     expect(input(fixture).getAttribute('role')).toBe('switch');
     expect(input(fixture).checked).toBe(false);
     expect(input(fixture).disabled).toBe(false);
-    expect(stateText(fixture)).toBe(Constants.TOGGLE_DISABLED_TEXT);
+    expect(stateText(fixture)).toBe(translate(Constants.TOGGLE_DISABLED_TEXT));
   });
 
   it('reflects the checked model and shows the enabled text', async () => {
@@ -38,22 +39,22 @@ describe('ToggleSwitchComponent', () => {
     await fixture.whenStable();
 
     expect(input(fixture).checked).toBe(true);
-    expect(stateText(fixture)).toBe(Constants.TOGGLE_ENABLED_TEXT);
+    expect(stateText(fixture)).toBe(translate(Constants.TOGGLE_ENABLED_TEXT));
   });
 
   it('supports custom state texts', async () => {
     const fixture: ComponentFixture<ToggleSwitchComponent> = await createFixture();
 
-    fixture.componentRef.setInput('checkedText', 'On');
-    fixture.componentRef.setInput('uncheckedText', 'Off');
+    fixture.componentRef.setInput('checkedText', 'common.yes');
+    fixture.componentRef.setInput('uncheckedText', 'common.no');
     await fixture.whenStable();
 
-    expect(stateText(fixture)).toBe('Off');
+    expect(stateText(fixture)).toBe('No');
 
     fixture.componentRef.setInput('checked', true);
     await fixture.whenStable();
 
-    expect(stateText(fixture)).toBe('On');
+    expect(stateText(fixture)).toBe('Yes');
   });
 
   it('updates the model and emits touch when toggled', async () => {
@@ -71,7 +72,7 @@ describe('ToggleSwitchComponent', () => {
 
     expect(changes).toEqual([true]);
     expect(touchCount).toBe(1);
-    expect(stateText(fixture)).toBe(Constants.TOGGLE_ENABLED_TEXT);
+    expect(stateText(fixture)).toBe(translate(Constants.TOGGLE_ENABLED_TEXT));
   });
 
   it('cannot be toggled while disabled', async () => {

@@ -23,7 +23,7 @@ export interface ISocialLinkConfig {
   key: SocialLinkKey;
   label: string;
   iconClass: string;
-  placeholder: string;
+  placeholderExample: string;
   domains: readonly string[];
 }
 

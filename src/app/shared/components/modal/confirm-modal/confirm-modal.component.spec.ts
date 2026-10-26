@@ -33,12 +33,12 @@ describe('ConfirmModalComponent', () => {
 
   it('renders the message and falls back to the default button labels', async () => {
     const fixture: ComponentFixture<ConfirmModalComponent> = await createFixture({
-      message: 'Delete this track?',
+      message: 'modals.unsavedChangesMessage',
     });
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.confirm__message').textContent).toBe(
-      'Delete this track?',
+      'You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.',
     );
     expect(fixture.componentInstance.confirmText).toBe(Constants.MODAL_DEFAULT_CONFIRM_TEXT);
     expect(fixture.componentInstance.cancelText).toBe(Constants.MODAL_DEFAULT_CANCEL_TEXT);
@@ -46,7 +46,7 @@ describe('ConfirmModalComponent', () => {
 
   it('hides the description when none is given', async () => {
     const fixture: ComponentFixture<ConfirmModalComponent> = await createFixture({
-      message: 'Delete this track?',
+      message: 'modals.unsavedChangesMessage',
     });
     await fixture.whenStable();
 
@@ -55,23 +55,24 @@ describe('ConfirmModalComponent', () => {
 
   it('renders custom labels and the description', async () => {
     const fixture: ComponentFixture<ConfirmModalComponent> = await createFixture({
-      message: 'Delete this track?',
-      description: 'This cannot be undone.',
-      confirmText: 'Delete',
-      cancelText: 'Keep',
+      message: 'modals.unsavedChangesMessage',
+      description: 'modals.unsavedChangesTitle',
+      confirmText: 'common.yes',
+      cancelText: 'common.no',
     });
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.confirm__description').textContent).toBe(
-      'This cannot be undone.',
+      'Unsaved changes',
     );
-    expect(fixture.componentInstance.confirmText).toBe('Delete');
-    expect(fixture.componentInstance.cancelText).toBe('Keep');
+    expect(fixture.componentInstance.confirmText).toBe('common.yes');
+    expect(fixture.componentInstance.cancelText).toBe('common.no');
+    expect(buttonsOf(fixture).map((button) => button.textContent.trim())).toEqual(['No', 'Yes']);
   });
 
   it('closes with true from the confirm button', async () => {
     const fixture: ComponentFixture<ConfirmModalComponent> = await createFixture({
-      message: 'Delete this track?',
+      message: 'modals.unsavedChangesMessage',
     });
     await fixture.whenStable();
 
@@ -82,7 +83,7 @@ describe('ConfirmModalComponent', () => {
 
   it('closes with false from the cancel button', async () => {
     const fixture: ComponentFixture<ConfirmModalComponent> = await createFixture({
-      message: 'Delete this track?',
+      message: 'modals.unsavedChangesMessage',
     });
     await fixture.whenStable();
 

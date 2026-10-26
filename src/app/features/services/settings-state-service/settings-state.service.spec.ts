@@ -1,14 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { PLATFORM_ID } from '@angular/core';
+import { PLATFORM_ID, signal } from '@angular/core';
 import { of, Subject, throwError } from 'rxjs';
 import { SettingsStateService } from './settings-state.service';
 import { UserService } from '../user-service/user.service';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
+import { TranslationService } from '../../../shared/services/translation-service/translation.service';
 import { Constants } from '../../../core/constants/constants';
 import { DEFAULT_GENERAL_SETTINGS } from '../../constants/settings.constant';
 
+import type { WritableSignal } from '@angular/core';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
+import type { Language } from '../../../core/types/language.type';
 
 describe('SettingsStateService', () => {
   const storedSettings: IGeneralSettings = {
@@ -25,6 +28,8 @@ describe('SettingsStateService', () => {
   let updateGeneralSettings: ReturnType<typeof vi.fn>;
   let success: ReturnType<typeof vi.fn>;
   let error: ReturnType<typeof vi.fn>;
+  let useLanguage: ReturnType<typeof vi.fn>;
+  let deviceLanguage: WritableSignal<Language>;
 
   const root = (): HTMLElement => document.documentElement;
 
@@ -42,6 +47,10 @@ describe('SettingsStateService', () => {
           },
         },
         { provide: SnackbarService, useValue: { success: success, error: error } },
+        {
+          provide: TranslationService,
+          useValue: { use: useLanguage, language: deviceLanguage.asReadonly() },
+        },
       ],
     });
     service = TestBed.inject(SettingsStateService);
@@ -57,11 +66,12 @@ describe('SettingsStateService', () => {
     updateGeneralSettings = echoUpdate();
     success = vi.fn();
     error = vi.fn();
+    useLanguage = vi.fn().mockResolvedValue(undefined);
+    deviceLanguage = signal<Language>('EN');
   });
 
   afterEach(() => {
     root().removeAttribute('style');
-    root().removeAttribute('lang');
   });
 
   describe('loading', () => {
@@ -81,7 +91,7 @@ describe('SettingsStateService', () => {
       expect(service.isLoaded()).toBe(true);
     });
 
-    it('applies the loaded accent color and language to the document', async () => {
+    it('applies the loaded accent color and switches the interface language', async () => {
       createService();
 
       await service.loadSettings();
@@ -89,7 +99,7 @@ describe('SettingsStateService', () => {
       expect(cssVariable(Constants.FIRST_GRADIENT_COLOR_PROPERTY)).toBe('#0ea5e9');
       expect(cssVariable(Constants.SECOND_GRADIENT_COLOR_PROPERTY)).toBe('#22d3ee');
       expect(cssVariable(Constants.MAIN_COLOR_PROPERTY)).toBe('#0284c7');
-      expect(root().lang).toBe('de');
+      expect(useLanguage).toHaveBeenLastCalledWith('DE');
     });
 
     it('shares a single request between concurrent callers', async () => {
@@ -187,7 +197,7 @@ describe('SettingsStateService', () => {
       await service.updateSettings({ language: 'FR' });
 
       expect(service.settings().language).toBe('FR');
-      expect(root().lang).toBe('fr');
+      expect(useLanguage).toHaveBeenLastCalledWith('FR');
       expect(success).toHaveBeenCalledWith(Constants.SETTINGS_SAVED);
       expect(error).not.toHaveBeenCalled();
     });
@@ -325,7 +335,18 @@ describe('SettingsStateService', () => {
       expect(cssVariable(Constants.FIRST_GRADIENT_COLOR_PROPERTY)).toBe('#6a5cff');
       expect(cssVariable(Constants.SECOND_GRADIENT_COLOR_PROPERTY)).toBe('#a855f7');
       expect(cssVariable(Constants.MAIN_COLOR_PROPERTY)).toBe('#712be2');
-      expect(root().lang).toBe('en');
+      expect(useLanguage).toHaveBeenLastCalledWith('EN');
+    });
+
+    it('keeps the language of the device so the auth pages stay in it', async () => {
+      createService();
+      await service.loadSettings();
+      deviceLanguage.set('DE');
+
+      service.clear();
+
+      expect(service.settings()).toEqual({ ...DEFAULT_GENERAL_SETTINGS, language: 'DE' });
+      expect(useLanguage).toHaveBeenLastCalledWith('DE');
     });
 
     it('drops a save that finishes after the settings were cleared', async () => {

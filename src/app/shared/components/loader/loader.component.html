@@ -1,8 +1,14 @@
 @if (isLoading()) {
-  <div class="loader" role="status" aria-busy="true" aria-live="polite" aria-label="Loading">
+  <div
+    class="loader"
+    role="status"
+    aria-busy="true"
+    aria-live="polite"
+    [attr.aria-label]="'common.loading' | translate"
+  >
     <div class="loader__content">
-      <app-spinner size="64px" thickness="5px" ariaLabel="Loading" />
-      <p class="loader__text">Loading...</p>
+      <app-spinner size="64px" thickness="5px" />
+      <p class="loader__text">{{ 'common.loadingText' | translate }}</p>
     </div>
   </div>
 }
