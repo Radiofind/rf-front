@@ -10,6 +10,7 @@ import { ProfileMenuItemEnum } from '../../../core/enums/profile-menu-item.enum'
 import { PROFILE_MENU_ITEMS } from '../../constants/profile-menu.constant';
 import { AuthService } from '../../../features/services/auth-service/auth.service';
 import { Links } from '../../../core/constants/links';
+import { TranslatePipe } from '../../pipes/translate/translate.pipe';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
 import type { IProfileMenuItem } from '../../models/profile-menu-item.model';
@@ -20,7 +21,13 @@ import type { ProfileMenuItemType } from '../../../core/types/profile-menu-item.
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  imports: [ButtonComponent, PopoverComponent, PopoverContentDirective, EmptyStateComponent],
+  imports: [
+    ButtonComponent,
+    PopoverComponent,
+    PopoverContentDirective,
+    EmptyStateComponent,
+    TranslatePipe,
+  ],
 })
 export class HeaderComponent {
   private readonly authService: AuthService = inject(AuthService);

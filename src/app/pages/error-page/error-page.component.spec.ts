@@ -10,6 +10,7 @@ import { Constants } from '../../core/constants/constants';
 import { Links } from '../../core/constants/links';
 import { ErrorTypeEnum } from '../../core/enums/error-type.enum';
 
+import { translate } from '../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { Data } from '@angular/router';
 import type { ErrorType } from '../../core/types/error-type.type';
@@ -50,13 +51,13 @@ describe('ErrorPageComponent', () => {
       expect(fixture.componentInstance.errorType()).toBe(errorType);
       expect(fixture.nativeElement.querySelector('.error-code').textContent).toBe(expected.code);
       expect(fixture.nativeElement.querySelector('.error-title').textContent).toContain(
-        expected.title.trim(),
+        translate(expected.title).trim(),
       );
       expect(fixture.nativeElement.querySelector('.error-title span').textContent).toBe(
-        expected.titleColor,
+        translate(expected.titleColor),
       );
       expect(fixture.nativeElement.querySelector('.error-description').textContent).toBe(
-        expected.description,
+        translate(expected.description),
       );
       expect(fixture.nativeElement.querySelector('.error-badge .icon i').className).toBe(
         expected.iconClass,

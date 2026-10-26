@@ -1,5 +1,5 @@
 <section class="details">
-  <div class="details__tabs" role="tablist" aria-label="Profile sections">
+  <div class="details__tabs" role="tablist" [attr.aria-label]="'profile.sections' | translate">
     <button
       class="details__tab details__tab--active"
       id="profile-tab-about"
@@ -8,7 +8,7 @@
       aria-selected="true"
       aria-controls="profile-panel-about"
     >
-      About
+      {{ 'profile.about' | translate }}
     </button>
     <button
       class="details__tab"
@@ -18,7 +18,7 @@
       aria-selected="false"
       aria-controls="profile-panel-stats"
     >
-      Stats
+      {{ 'profile.stats' | translate }}
     </button>
   </div>
 
@@ -29,23 +29,23 @@
     aria-labelledby="profile-tab-about"
   >
     <div class="details__section">
-      <h2 class="details__title">About {{ artistTypeLabel() }}</h2>
+      <h2 class="details__title">{{ artistTypeTexts().about | translate }}</h2>
       <p class="details__text">{{ description() }}</p>
     </div>
 
     <dl class="details__list">
       <div class="details__field">
-        <dt class="details__label">{{ artistTypeLabel() }} Name</dt>
+        <dt class="details__label">{{ artistTypeTexts().name | translate }}</dt>
         <dd class="details__value">{{ artistName() }}</dd>
       </div>
 
       <div class="details__field">
-        <dt class="details__label">Date of Birth</dt>
+        <dt class="details__label">{{ 'profile.dateOfBirth' | translate }}</dt>
         <dd class="details__value">{{ birthdayDate() }}</dd>
       </div>
 
       <div class="details__field details__field--full">
-        <dt class="details__label">Additional Genres</dt>
+        <dt class="details__label">{{ 'profile.additionalGenres' | translate }}</dt>
         <dd class="details__value">
           @if (additionalGenres().length) {
             <app-chips-field
@@ -71,8 +71,8 @@
   >
     <app-empty-state
       emptyIconClass="bx bx-bar-chart"
-      emptyTitle="No stats yet"
-      emptyDescription="Plays, listeners and radio picks will appear here once your tracks go live."
+      [emptyTitle]="'profile.noStatsTitle' | translate"
+      [emptyDescription]="'profile.noStatsDescription' | translate"
     />
   </div>
 </section>

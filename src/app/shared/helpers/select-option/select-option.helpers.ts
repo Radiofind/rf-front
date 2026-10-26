@@ -1,20 +1,22 @@
 import type { ISelectOption } from '../../models/select-option.model';
 
-export function hasSelectOptionChildren<T extends string>(option: ISelectOption<T>): boolean {
+export function hasSelectOptionChildren<T extends string, L extends string = string>(
+  option: ISelectOption<T, L>,
+): boolean {
   return Boolean(option.children?.length);
 }
 
-export function findSelectOption<T extends string>(
-  options: readonly ISelectOption<T>[],
+export function findSelectOption<T extends string, L extends string = string>(
+  options: readonly ISelectOption<T, L>[],
   value: T | null,
-): ISelectOption<T> | undefined {
+): ISelectOption<T, L> | undefined {
   if (value === null) {
     return undefined;
   }
 
   for (const option of options) {
     if (hasSelectOptionChildren(option)) {
-      const found: ISelectOption<T> | undefined = findSelectOption(option.children ?? [], value);
+      const found: ISelectOption<T, L> | undefined = findSelectOption(option.children ?? [], value);
 
       if (found) {
         return found;

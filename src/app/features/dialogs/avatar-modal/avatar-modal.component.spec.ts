@@ -5,8 +5,13 @@ import { of, Subject, throwError } from 'rxjs';
 import { AvatarModalComponent } from './avatar-modal.component';
 import { UserService } from '../../services/user-service/user.service';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
-import { AVATAR_MAX_SIZE_BYTES, AVATAR_MESSAGES } from '../../constants/avatar.constant';
+import {
+  AVATAR_MAX_SIZE_BYTES,
+  AVATAR_MAX_SIZE_MB,
+  AVATAR_MESSAGES,
+} from '../../constants/avatar.constant';
 
+import { translate } from '../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IAvatarModalData } from '../../models/avatar-modal.model';
 
@@ -155,7 +160,9 @@ describe('AvatarModalComponent', () => {
     it('rejects an unsupported format', async () => {
       await chooseFile(createImage('image/gif', 1024, 'avatar.gif'));
 
-      expect(query('.avatar-modal__error')!.textContent.trim()).toBe(AVATAR_MESSAGES.invalidType);
+      expect(query('.avatar-modal__error')!.textContent.trim()).toBe(
+        translate(AVATAR_MESSAGES.invalidType),
+      );
       expect(createObjectURL).not.toHaveBeenCalled();
       expect(buttonByText('Save').disabled).toBe(true);
     });
@@ -163,7 +170,9 @@ describe('AvatarModalComponent', () => {
     it('rejects an image larger than the limit', async () => {
       await chooseFile(createImage('image/png', AVATAR_MAX_SIZE_BYTES + 1));
 
-      expect(query('.avatar-modal__error')!.textContent.trim()).toBe(AVATAR_MESSAGES.tooLarge);
+      expect(query('.avatar-modal__error')!.textContent.trim()).toBe(
+        translate(AVATAR_MESSAGES.tooLarge, { size: AVATAR_MAX_SIZE_MB }),
+      );
       expect(buttonByText('Save').disabled).toBe(true);
     });
 

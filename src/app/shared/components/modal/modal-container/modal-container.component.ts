@@ -4,14 +4,17 @@ import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { Constants } from '../../../../core/constants/constants';
 import { IconComponent } from '../../icon/icon.component';
 import { ModalSizeEnum } from '../../../../core/enums/modal-size.enum';
+import { TranslatePipe } from '../../../pipes/translate/translate.pipe';
+import { TranslationService } from '../../../services/translation-service/translation.service';
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { ModalSize } from '../../../../core/types/modal-size.type';
+import type { TranslationKey } from '../../../../core/types/translation.type';
 import type { IModalDialogConfig } from '../../../models/modal.model';
 
 @Component({
   selector: 'app-modal-container',
-  imports: [CdkPortalOutlet, IconComponent],
+  imports: [CdkPortalOutlet, IconComponent, TranslatePipe],
   templateUrl: './modal-container.component.html',
   styleUrl: './modal-container.component.scss',
   host: {
@@ -21,12 +24,14 @@ import type { IModalDialogConfig } from '../../../models/modal.model';
     '[attr.role]': '_config.role',
     '[attr.aria-modal]': '_config.ariaModal',
     '[attr.aria-labelledby]': '_config.ariaLabel ? null : _ariaLabelledByQueue[0]',
-    '[attr.aria-label]': '_config.ariaLabel',
+    '[attr.aria-label]': 'ariaLabel',
     '[attr.aria-describedby]': '_config.ariaDescribedBy || null',
   },
 })
 export class ModalContainerComponent extends CdkDialogContainer<IModalDialogConfig> {
   private readonly dialogRef: DialogRef = inject(DialogRef);
+
+  private readonly translationService: TranslationService = inject(TranslationService);
 
   private readonly hasHeaderByDefault: WritableSignal<boolean> = signal<boolean>(true);
 
@@ -46,11 +51,16 @@ export class ModalContainerComponent extends CdkDialogContainer<IModalDialogConf
     }
   }
 
-  public get title(): string | null {
+  public get ariaLabel(): string | null {
+    const ariaLabel: TranslationKey | null | undefined = this._config.ariaLabel;
+    return ariaLabel ? this.translationService.translate(ariaLabel) : null;
+  }
+
+  public get title(): TranslationKey | null {
     return this._config.title ?? null;
   }
 
-  public get subtitle(): string | null {
+  public get subtitle(): TranslationKey | null {
     return this._config.subtitle ?? null;
   }
 

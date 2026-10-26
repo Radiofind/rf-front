@@ -1,17 +1,17 @@
 <div class="confirm">
-  <p class="confirm__message">{{ data.message }}</p>
+  <p class="confirm__message">{{ data.message | translate }}</p>
 
   @if (data.description) {
-    <p class="confirm__description">{{ data.description }}</p>
+    <p class="confirm__description">{{ data.description | translate }}</p>
   }
 
   <div class="confirm__actions">
     <app-button
-      [contentText]="cancelText"
+      [contentText]="cancelText | translate"
       [additionalClass]="'button--secondary'"
       (clickAction)="onCancel()"
     />
 
-    <app-button [contentText]="confirmText" (clickAction)="onConfirm()" />
+    <app-button [contentText]="confirmText | translate" (clickAction)="onConfirm()" />
   </div>
 </div>

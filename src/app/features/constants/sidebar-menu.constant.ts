@@ -4,35 +4,35 @@ import type { ISidebarMenuItem } from '../models/sidebar-menu-item.model';
 
 const MEDIA_LIBRARY_ITEM: ISidebarMenuItem = {
   id: SidebarMenuItemEnum.MEDIA_LIBRARY,
-  label: 'Media Library',
+  label: 'sidebar.mediaLibrary',
   iconClass: 'bx bx-music-library',
   link: SidebarMenuItemEnum.MEDIA_LIBRARY,
 };
 
 const UPLOAD_TRACK_ITEM: ISidebarMenuItem = {
   id: SidebarMenuItemEnum.UPLOAD_TRACK,
-  label: 'Upload Track',
+  label: 'sidebar.uploadTrack',
   iconClass: 'bx bx-arrow-up-circle',
   link: SidebarMenuItemEnum.UPLOAD_TRACK,
 };
 
 const MY_UPLOADS_ITEM: ISidebarMenuItem = {
   id: SidebarMenuItemEnum.MY_UPLOADS,
-  label: 'My Uploads',
+  label: 'sidebar.myUploads',
   iconClass: 'bx bx-folder',
   link: SidebarMenuItemEnum.MY_UPLOADS,
 };
 
 const STATISTICS_ITEM: ISidebarMenuItem = {
   id: SidebarMenuItemEnum.STATISTICS,
-  label: 'Statistics',
+  label: 'sidebar.statistics',
   iconClass: 'bx bx-bar-chart',
   link: SidebarMenuItemEnum.STATISTICS,
 };
 
 const SUPPORT_ITEM: ISidebarMenuItem = {
   id: SidebarMenuItemEnum.SUPPORT,
-  label: 'Support',
+  label: 'sidebar.support',
   iconClass: 'bx bx-headphone',
   link: SidebarMenuItemEnum.SUPPORT,
 };

@@ -2,6 +2,7 @@ import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { firstValueFrom } from 'rxjs';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
 import { UserService } from '../../services/user-service/user.service';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
 import {
@@ -13,12 +14,13 @@ import {
 } from '../../constants/avatar.constant';
 
 import type { Signal, WritableSignal } from '@angular/core';
+import type { TranslationKey } from '../../../core/types/translation.type';
 import type { IAvatarModalData, IAvatarModalResult } from '../../models/avatar-modal.model';
 import { Constants } from '../../../core/constants/constants';
 
 @Component({
   selector: 'app-avatar-modal',
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, TranslatePipe],
   templateUrl: './avatar-modal.component.html',
   styleUrl: './avatar-modal.component.scss',
 })
@@ -40,7 +42,8 @@ export class AvatarModalComponent {
 
   protected readonly previewUrl: WritableSignal<string | null> = signal<string | null>(null);
 
-  protected readonly errorMessage: WritableSignal<string | null> = signal<string | null>(null);
+  protected readonly errorMessage: WritableSignal<TranslationKey | null> =
+    signal<TranslationKey | null>(null);
 
   protected readonly isDragOver: WritableSignal<boolean> = signal<boolean>(false);
 
@@ -137,7 +140,7 @@ export class AvatarModalComponent {
       return;
     }
 
-    const error: string | null = this.validate(file);
+    const error: TranslationKey | null = this.validate(file);
     this.errorMessage.set(error);
 
     if (error) {
@@ -149,7 +152,7 @@ export class AvatarModalComponent {
     this.previewUrl.set(URL.createObjectURL(file));
   }
 
-  private validate(file: File): string | null {
+  private validate(file: File): TranslationKey | null {
     if (!AVATAR_ALLOWED_TYPES.includes(file.type)) {
       return AVATAR_MESSAGES.invalidType;
     }

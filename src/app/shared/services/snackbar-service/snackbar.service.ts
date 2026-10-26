@@ -5,6 +5,7 @@ import { SnackbarTypeEnum } from '../../../core/enums/snackbar-type.enum';
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { SnackbarType } from '../../../core/types/snackbar-type.type';
+import type { TranslationKey } from '../../../core/types/translation.type';
 import type { ISnackbarMessage, ISnackbarOptions } from '../../models/snackbar.model';
 
 @Service()
@@ -34,7 +35,7 @@ export class SnackbarService {
     });
   }
 
-  public show(content: string, options: ISnackbarOptions = {}): number {
+  public show(content: TranslationKey, options: ISnackbarOptions = {}): number {
     this.lastId.update((id) => id + Constants.ONE);
 
     const id: number = this.lastId();
@@ -42,6 +43,7 @@ export class SnackbarService {
     const message: ISnackbarMessage = {
       id: id,
       content: content,
+      params: options.params ?? null,
       type: options.type ?? this.defaultType,
       iconClass: options.iconClass ?? null,
     };
@@ -54,19 +56,19 @@ export class SnackbarService {
     return id;
   }
 
-  public success(content: string, options: ISnackbarOptions = {}): number {
+  public success(content: TranslationKey, options: ISnackbarOptions = {}): number {
     return this.show(content, { ...options, type: SnackbarTypeEnum.SUCCESS });
   }
 
-  public error(content: string, options: ISnackbarOptions = {}): number {
+  public error(content: TranslationKey, options: ISnackbarOptions = {}): number {
     return this.show(content, { ...options, type: SnackbarTypeEnum.ERROR });
   }
 
-  public warning(content: string, options: ISnackbarOptions = {}): number {
+  public warning(content: TranslationKey, options: ISnackbarOptions = {}): number {
     return this.show(content, { ...options, type: SnackbarTypeEnum.WARNING });
   }
 
-  public info(content: string, options: ISnackbarOptions = {}): number {
+  public info(content: TranslationKey, options: ISnackbarOptions = {}): number {
     return this.show(content, { ...options, type: SnackbarTypeEnum.INFO });
   }
 

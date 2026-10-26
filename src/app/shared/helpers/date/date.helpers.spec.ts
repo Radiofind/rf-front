@@ -21,22 +21,29 @@ describe('date.helpers', () => {
 
   describe('formatStringDate', () => {
     it('formats a backend datetime string as short month and year', () => {
-      expect(formatStringDate('2026-10-08T14:49:13.480378', DateFormatEnum.MONTH_YEAR)).toBe(
-        'Oct 2026',
-      );
+      expect(
+        formatStringDate('2026-10-08T14:49:13.480378', DateFormatEnum.MONTH_YEAR, 'en-US'),
+      ).toBe('Oct 2026');
     });
 
     it('formats a plain date string as full date', () => {
-      expect(formatStringDate('1998-06-07', DateFormatEnum.FULL_DATE)).toBe('Jun 7, 1998');
+      expect(formatStringDate('1998-06-07', DateFormatEnum.FULL_DATE, 'en-US')).toBe('Jun 7, 1998');
+    });
+
+    it('formats the date in the given locale', () => {
+      expect(formatStringDate('1998-06-07', DateFormatEnum.FULL_DATE, 'de-DE')).toBe(
+        '7. Juni 1998',
+      );
+      expect(formatStringDate('2026-10-08', DateFormatEnum.MONTH_YEAR, 'ru-RU')).toContain('2026');
     });
 
     it('ignores the time part so dates near midnight keep their day', () => {
-      expect(formatStringDate('2025-12-31T23:59:59.999999', DateFormatEnum.FULL_DATE)).toBe(
-        'Dec 31, 2025',
-      );
-      expect(formatStringDate('2025-01-01T00:00:00.000000', DateFormatEnum.MONTH_YEAR)).toBe(
-        'Jan 2025',
-      );
+      expect(
+        formatStringDate('2025-12-31T23:59:59.999999', DateFormatEnum.FULL_DATE, 'en-US'),
+      ).toBe('Dec 31, 2025');
+      expect(
+        formatStringDate('2025-01-01T00:00:00.000000', DateFormatEnum.MONTH_YEAR, 'en-US'),
+      ).toBe('Jan 2025');
     });
   });
 });

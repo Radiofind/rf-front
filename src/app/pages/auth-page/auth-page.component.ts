@@ -10,6 +10,7 @@ import {
   AUTH_DESCRIPTION_CONTENT_REGISTER,
 } from '../../features/constants/auth-content.constant';
 import { Constants } from '../../core/constants/constants';
+import { TranslatePipe } from '../../shared/pipes/translate/translate.pipe';
 
 import type { Signal } from '@angular/core';
 import type { Data } from '@angular/router';
@@ -18,7 +19,7 @@ import type { AuthType } from '../../core/types/auth.type';
 
 @Component({
   selector: 'app-auth-page',
-  imports: [HeaderComponent, AuthDescriptionComponent, AuthFormComponent],
+  imports: [HeaderComponent, AuthDescriptionComponent, AuthFormComponent, TranslatePipe],
   templateUrl: './auth-page.component.html',
   styleUrl: './auth-page.component.scss',
 })

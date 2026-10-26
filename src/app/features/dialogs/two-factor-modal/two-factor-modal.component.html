@@ -6,12 +6,12 @@
     <i class="two-factor__lock bx bx-lock-keyhole"></i>
   </div>
 
-  <h2 class="two-factor__title">Two-Factor Authentication</h2>
+  <h2 class="two-factor__title">{{ 'twoFactor.title' | translate }}</h2>
 
   <p class="two-factor__description">
-    We've sent a 6-digit code to your email address
+    {{ 'twoFactor.descriptionStart' | translate }}
     <span class="two-factor__email">{{ data.email }}</span
-    >. Please enter the code below to continue.
+    >{{ 'twoFactor.descriptionEnd' | translate }}
   </p>
 
   <app-code-field
@@ -26,13 +26,13 @@
 
   <app-button
     contentIconClass="bx bx-arrow-right-stroke"
-    [contentText]="'Verify Code'"
+    [contentText]="'twoFactor.submit' | translate"
     [disabled]="!isCodeComplete() || isLocked()"
     (clickAction)="onVerify()"
   />
 
   <p class="two-factor__resend">
-    Didn't receive the code?
+    {{ 'twoFactor.noCode' | translate }}
     @if (isResending()) {
       <app-spinner class="two-factor__resend-spinner" size="20px" thickness="2px" />
     } @else {
@@ -42,7 +42,7 @@
         [disabled]="!canResend() || isLocked()"
         (click)="onResend()"
       >
-        Resend
+        {{ 'twoFactor.resend' | translate }}
         @if (!canResend() && !isLocked()) {
           ({{ resendTimer() }})
         }

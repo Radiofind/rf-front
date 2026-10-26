@@ -3,16 +3,16 @@
     <button
       class="edit-profile__back"
       type="button"
-      aria-label="Back to profile"
-      title="Back to profile"
+      [attr.aria-label]="'editProfile.back' | translate"
+      [title]="'editProfile.back' | translate"
       (click)="onBack()"
     >
       <i class="bx bx-chevron-left" aria-hidden="true"></i>
     </button>
 
     <div class="edit-profile__heading">
-      <h1 class="edit-profile__title">Edit Profile</h1>
-      <p class="edit-profile__subtitle">Update your personal and artist information.</p>
+      <h1 class="edit-profile__title">{{ 'editProfile.title' | translate }}</h1>
+      <p class="edit-profile__subtitle">{{ 'editProfile.subtitle' | translate }}</p>
     </div>
   </header>
 
@@ -20,23 +20,23 @@
     <div class="edit-profile__column">
       <section class="edit-profile__card" aria-labelledby="edit-profile-personal-title">
         <h2 class="edit-profile__card-title" id="edit-profile-personal-title">
-          Personal Information
+          {{ 'editProfile.personalTitle' | translate }}
         </h2>
         <p class="edit-profile__card-subtitle">
-          Basic information about you and your artist project.
+          {{ 'editProfile.personalSubtitle' | translate }}
         </p>
 
         <div class="edit-profile__row">
           <app-input-field
-            fieldLabel="Name"
-            inputPlaceholder="Enter your name"
+            [fieldLabel]="'editProfile.name' | translate"
+            [inputPlaceholder]="'auth.fields.namePlaceholder' | translate"
             [isCompact]="true"
             [formField]="editProfileForm.name"
           />
 
           <app-input-field
-            fieldLabel="Surname"
-            inputPlaceholder="Enter your surname"
+            [fieldLabel]="'editProfile.surname' | translate"
+            [inputPlaceholder]="'auth.fields.surnamePlaceholder' | translate"
             [isCompact]="true"
             [formField]="editProfileForm.surname"
           />
@@ -44,7 +44,7 @@
 
         <div class="edit-profile__row">
           <app-input-field
-            fieldLabel="Email"
+            [fieldLabel]="'editProfile.email' | translate"
             inputType="email"
             inputPlaceholder="you@example.com"
             [isCompact]="true"
@@ -52,7 +52,7 @@
           />
 
           <app-input-field
-            fieldLabel="Recovery email"
+            [fieldLabel]="'editProfile.recoveryEmail' | translate"
             inputType="email"
             inputPlaceholder="recovery@example.com"
             [isCompact]="true"
@@ -62,8 +62,8 @@
         </div>
 
         <app-input-field
-          inputPlaceholder="Enter artist/band name"
-          [fieldLabel]="editProfileForm.artistType().value() + ' name'"
+          [inputPlaceholder]="'editProfile.artistNamePlaceholder' | translate"
+          [fieldLabel]="artistTypeTexts[editProfileForm.artistType().value()].editName | translate"
           [isCompact]="true"
           [hasOptionalLabel]="true"
           [formField]="editProfileForm.artistName"
@@ -72,18 +72,18 @@
         <div class="edit-profile__identity">
           <app-radio-field
             class="edit-profile__artist-type"
-            fieldLabel="Who are you?"
+            [fieldLabel]="'auth.register.whoAreYou' | translate"
             [isCompact]="true"
-            [options]="artistTypes()"
+            [options]="artistTypeOptions()"
             [formField]="editProfileForm.artistType"
           />
 
           <app-chips-field
             class="edit-profile__main-genres"
             fieldId="edit-profile-main-genres"
-            fieldLabel="Choose main genres"
-            fieldHint="for your profile header"
-            addLabel="Add genre"
+            [fieldLabel]="'editProfile.mainGenres' | translate"
+            [fieldHint]="'editProfile.mainGenresHint' | translate"
+            [addLabel]="'editProfile.addGenre' | translate"
             [options]="genreOptions()"
             [maxItems]="maxMainGenres()"
             [excludedValues]="editProfileForm.additionalGenres().value()"
@@ -94,9 +94,9 @@
         <app-chips-field
           class="edit-profile__additional-genres"
           fieldId="edit-profile-additional-genres"
-          fieldLabel="Additional genres"
-          fieldHint="(optional)"
-          addLabel="Add genre"
+          [fieldLabel]="'editProfile.additionalGenres' | translate"
+          [fieldHint]="'common.optional' | translate"
+          [addLabel]="'editProfile.addGenre' | translate"
           [options]="genreOptions()"
           [maxItems]="maxAdditionalGenres()"
           [excludedValues]="editProfileForm.mainGenres().value()"
@@ -105,12 +105,16 @@
       </section>
 
       <section class="edit-profile__card" aria-labelledby="edit-profile-descriptions-title">
-        <h2 class="edit-profile__card-title" id="edit-profile-descriptions-title">Descriptions</h2>
-        <p class="edit-profile__card-subtitle">Tell others about yourself and your music.</p>
+        <h2 class="edit-profile__card-title" id="edit-profile-descriptions-title">
+          {{ 'editProfile.descriptionsTitle' | translate }}
+        </h2>
+        <p class="edit-profile__card-subtitle">
+          {{ 'editProfile.descriptionsSubtitle' | translate }}
+        </p>
 
         <app-input-field
-          fieldLabel="Profile header"
-          inputPlaceholder="A short description about yourself, your music and your style..."
+          [fieldLabel]="'editProfile.profileHeader' | translate"
+          [inputPlaceholder]="'editProfile.profileHeaderPlaceholder' | translate"
           [isCompact]="true"
           [isTextareaField]="true"
           [hasOptionalLabel]="true"
@@ -120,8 +124,10 @@
         />
 
         <app-input-field
-          [fieldLabel]="editProfileForm.artistType().value() + ' description'"
-          inputPlaceholder="Tell more about your journey, influences, sound, and what makes your music unique..."
+          [fieldLabel]="
+            artistTypeTexts[editProfileForm.artistType().value()].description | translate
+          "
+          [inputPlaceholder]="'editProfile.descriptionPlaceholder' | translate"
           [isCompact]="true"
           [isTextareaField]="true"
           [hasOptionalLabel]="true"
@@ -136,8 +142,10 @@
       class="edit-profile__card edit-profile__card--social"
       aria-labelledby="edit-profile-social-title"
     >
-      <h2 class="edit-profile__card-title" id="edit-profile-social-title">Social Links</h2>
-      <p class="edit-profile__card-subtitle">Add your social media and streaming links.</p>
+      <h2 class="edit-profile__card-title" id="edit-profile-social-title">
+        {{ 'editProfile.socialTitle' | translate }}
+      </h2>
+      <p class="edit-profile__card-subtitle">{{ 'editProfile.socialSubtitle' | translate }}</p>
 
       <ul class="edit-profile__social-list">
         @for (link of socialLinks(); track link.key) {
@@ -149,7 +157,9 @@
               class="edit-profile__social-field"
               inputType="url"
               [fieldLabel]="link.label"
-              [inputPlaceholder]="link.placeholder"
+              [inputPlaceholder]="
+                'common.examplePlaceholder' | translate: { example: link.placeholderExample }
+              "
               [isCompact]="true"
               [formField]="editProfileForm.socialLinks[link.key]"
             />
@@ -162,13 +172,13 @@
   <footer class="edit-profile__actions">
     <app-button
       class="edit-profile__action"
-      contentText="Cancel"
+      [contentText]="'common.cancel' | translate"
       additionalClass="button--secondary"
       (clickAction)="onBack()"
     />
     <app-button
       class="edit-profile__action"
-      contentText="Save Changes"
+      [contentText]="'common.saveChanges' | translate"
       buttonType="submit"
       [disabled]="isSaveDisabled()"
     />

@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { SnackbarComponent } from '../snackbar/snackbar.component';
+import { TranslatePipe } from '../../pipes/translate/translate.pipe';
 import { SnackbarService } from '../../services/snackbar-service/snackbar.service';
 
 import type { Signal } from '@angular/core';
@@ -7,7 +8,7 @@ import type { ISnackbarMessage } from '../../models/snackbar.model';
 
 @Component({
   selector: 'app-snackbar-container',
-  imports: [SnackbarComponent],
+  imports: [SnackbarComponent, TranslatePipe],
   templateUrl: './snackbar-container.component.html',
   styleUrl: './snackbar-container.component.scss',
 })

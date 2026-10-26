@@ -1,7 +1,9 @@
+import type { TranslationKey } from '../../core/types/translation.type';
+
 export interface IErrorContent {
   code: string;
-  title: string;
-  titleColor: string;
-  description: string;
+  title: TranslationKey;
+  titleColor: TranslationKey;
+  description: TranslationKey;
   iconClass: string;
 }

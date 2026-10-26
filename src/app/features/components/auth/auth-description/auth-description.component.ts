@@ -1,6 +1,7 @@
 import { Component, input } from '@angular/core';
 import { AUTH_DESCRIPTION_CONTENT_LOGIN } from '../../../constants/auth-content.constant';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
+import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 
 import type { InputSignal } from '@angular/core';
 import type { IAuthContent } from '../../../models/auth-content.model';
@@ -9,7 +10,7 @@ import type { IAuthContent } from '../../../models/auth-content.model';
   selector: 'app-auth-description',
   templateUrl: './auth-description.component.html',
   styleUrl: './auth-description.component.scss',
-  imports: [IconComponent],
+  imports: [IconComponent, TranslatePipe],
 })
 export class AuthDescriptionComponent {
   public content: InputSignal<IAuthContent> = input<IAuthContent>(AUTH_DESCRIPTION_CONTENT_LOGIN);

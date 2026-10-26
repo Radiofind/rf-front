@@ -12,6 +12,7 @@ import {
 } from '../../features/constants/auth-content.constant';
 import { Constants } from '../../core/constants/constants';
 
+import { translate } from '../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { Data } from '@angular/router';
 
@@ -50,7 +51,7 @@ describe('AuthPageComponent', () => {
     expect(fixture.nativeElement.querySelector('.login-bg')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('.register-bg')).toBeNull();
     expect(fixture.nativeElement.querySelector('.description-instructions').textContent).toBe(
-      AUTH_DESCRIPTION_CONTENT_LOGIN.instructions,
+      translate(AUTH_DESCRIPTION_CONTENT_LOGIN.instructions),
     );
     expect(fixture.nativeElement.querySelector('.auth-form.register-width')).toBeNull();
   });
@@ -63,7 +64,7 @@ describe('AuthPageComponent', () => {
     expect(fixture.nativeElement.querySelector('.register-bg')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('.login-bg')).toBeNull();
     expect(fixture.nativeElement.querySelector('.description-instructions').textContent).toBe(
-      AUTH_DESCRIPTION_CONTENT_REGISTER.instructions,
+      translate(AUTH_DESCRIPTION_CONTENT_REGISTER.instructions),
     );
     expect(fixture.nativeElement.querySelector('.auth-form.register-width')).not.toBeNull();
   });

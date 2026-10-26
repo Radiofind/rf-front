@@ -1,5 +1,5 @@
-export interface ISelectOption<T extends string> {
+export interface ISelectOption<T extends string, L extends string = string> {
   value: T;
-  label: string;
-  children?: readonly ISelectOption<T>[];
+  label: L;
+  children?: readonly ISelectOption<T, L>[];
 }

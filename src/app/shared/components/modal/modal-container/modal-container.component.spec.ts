@@ -45,7 +45,7 @@ describe('ModalContainerComponent', () => {
   });
 
   it('is focusable and marked as a modal for assistive technology', () => {
-    const container: HTMLElement = openModal({ title: 'Reset Password' });
+    const container: HTMLElement = openModal({ title: 'avatar.title' });
 
     expect(container.getAttribute('tabindex')).toBe(Constants.MODAL_TAB_INDEX);
     expect(container.getAttribute('aria-modal')).toBe('true');
@@ -53,20 +53,20 @@ describe('ModalContainerComponent', () => {
 
   it('renders the header with title, subtitle and icon', () => {
     const container: HTMLElement = openModal({
-      title: 'Reset Password',
-      subtitle: 'We will email you a link',
+      title: 'avatar.title',
+      subtitle: 'avatar.subtitle',
       iconClass: 'bx bx-shield',
     });
 
-    expect(container.querySelector('.modal__title')?.textContent).toBe('Reset Password');
+    expect(container.querySelector('.modal__title')?.textContent).toBe('Profile Photo');
     expect(container.querySelector('.modal__subtitle')?.textContent).toBe(
-      'We will email you a link',
+      'Upload a new avatar or remove the current one',
     );
     expect(container.querySelector('.modal__header .icon i')?.className).toBe('bx bx-shield');
   });
 
   it('omits the subtitle and icon when they are not configured', () => {
-    const container: HTMLElement = openModal({ title: 'Reset Password' });
+    const container: HTMLElement = openModal({ title: 'avatar.title' });
 
     expect(container.querySelector('.modal__subtitle')).toBeNull();
     expect(container.querySelector('.modal__header .icon')).toBeNull();
@@ -81,7 +81,7 @@ describe('ModalContainerComponent', () => {
   });
 
   it('drops the close button when it is disabled', () => {
-    const container: HTMLElement = openModal({ title: 'Reset Password', hasCloseButton: false });
+    const container: HTMLElement = openModal({ title: 'avatar.title', hasCloseButton: false });
 
     expect(container.querySelector('.modal__close')).toBeNull();
   });
@@ -93,7 +93,7 @@ describe('ModalContainerComponent', () => {
   });
 
   it('closes the dialog from the close button', () => {
-    const container: HTMLElement = openModal({ title: 'Reset Password' });
+    const container: HTMLElement = openModal({ title: 'avatar.title' });
 
     let closed: boolean = false;
     modalRef?.closed.subscribe(() => {

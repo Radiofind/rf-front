@@ -129,8 +129,11 @@ describe('editProfileFormSchema', () => {
       socialLinks: { ...EMPTY_SOCIAL_LINKS_FORM, telegram: 'https://instagram.com/ada' },
     });
 
-    expect(messagesOf(tree.socialLinks.telegram)).toEqual([
-      `${ProfileValidationMessages.WRONG_SOCIAL_LINK} Telegram`,
+    expect(tree.socialLinks.telegram().errors()).toEqual([
+      expect.objectContaining({
+        message: ProfileValidationMessages.WRONG_SOCIAL_LINK,
+        params: { platform: 'Telegram' },
+      }),
     ]);
     expect(tree().valid()).toBe(false);
   });

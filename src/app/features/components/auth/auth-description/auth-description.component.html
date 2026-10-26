@@ -1,8 +1,9 @@
 <div class="description">
   <h1 class="description-title">
-    {{ content().title }} <span>{{ content().titleColor }}</span> {{ content().smile }}
+    {{ content().title | translate }} <span>{{ content().titleColor | translate }}</span>
+    {{ content().smile }}
   </h1>
-  <div class="description-instructions">{{ content().instructions }}</div>
+  <div class="description-instructions">{{ content().instructions | translate }}</div>
   @for (content of content().content; track content.id) {
     <div class="description-content">
       <app-icon
@@ -13,8 +14,8 @@
         [iconClass]="content.iconClass"
       />
       <div class="description-content__text">
-        <div class="description-content__text--title">{{ content.contentTitle }}</div>
-        <div class="description-content__text--overview">{{ content.overview }}</div>
+        <div class="description-content__text--title">{{ content.contentTitle | translate }}</div>
+        <div class="description-content__text--overview">{{ content.overview | translate }}</div>
       </div>
     </div>
   }

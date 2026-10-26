@@ -3,7 +3,7 @@
     <span class="label">
       {{ fieldLabel() }}
       @if (hasOptionalLabel()) {
-        <span class="optional"> (optional)</span>
+        <span class="optional"> {{ 'common.optional' | translate }}</span>
       }
     </span>
     @if (additionalFieldLabel()) {
@@ -61,7 +61,7 @@
   }
   <div class="error-message">
     @for (error of visibleErrors(); track error.kind) {
-      <div>{{ error.message }}</div>
+      <div>{{ error | translateError }}</div>
     }
   </div>
 </div>

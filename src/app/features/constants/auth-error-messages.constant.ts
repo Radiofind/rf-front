@@ -1,61 +1,63 @@
+import type { TranslationKey } from '../../core/types/translation.type';
+
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AuthValidationMessages {
-  public static readonly REQUIRED: string = 'Field is required';
+  public static readonly REQUIRED: TranslationKey = 'validation.required';
 
-  public static readonly EMAIL: string = 'Invalid email';
+  public static readonly EMAIL: TranslationKey = 'validation.email';
 
-  public static readonly MIN_LENGTH: string = 'Must be at least 8 character long';
+  public static readonly MIN_LENGTH: TranslationKey = 'validation.minLength';
 
-  public static readonly MAX_LENGTH: string = 'Must not exceed 50 characters';
+  public static readonly MAX_LENGTH: TranslationKey = 'validation.maxLength';
 
-  public static readonly MAX_LENGTH_PASSWORD: string = 'Must not exceed 72 characters';
+  public static readonly MAX_LENGTH_PASSWORD: TranslationKey = 'validation.maxLengthPassword';
 
-  public static readonly MAX_LENGTH_DESCRIPTION: string = 'Must not exceed 1000 characters';
+  public static readonly MAX_LENGTH_DESCRIPTION: TranslationKey = 'validation.maxLengthDescription';
 
-  public static readonly PATTERN: string = 'Only English letters are allowed (without spaces)';
+  public static readonly PATTERN: TranslationKey = 'validation.pattern';
 
-  public static readonly PATTERN_WITH_SPACES_AND_SYMBOLS: string =
-    'Only English letters are allowed';
+  public static readonly PATTERN_WITH_SPACES_AND_SYMBOLS: TranslationKey =
+    'validation.patternWithSpacesAndSymbols';
 
-  public static readonly INVALID_DATE: string = 'Invalid date';
+  public static readonly INVALID_DATE: TranslationKey = 'validation.invalidDate';
 
-  public static readonly FUTURE_DATE: string = 'Date of birth cannot be in the future';
+  public static readonly FUTURE_DATE: TranslationKey = 'validation.futureDate';
 
-  public static readonly MAX_AGE: string = 'Age cannot exceed 100 years';
+  public static readonly MAX_AGE: TranslationKey = 'validation.maxAge';
 
-  public static readonly UPPERCASE: string = 'Must contain at least one uppercase letter';
+  public static readonly UPPERCASE: TranslationKey = 'validation.uppercase';
 
-  public static readonly LOWERCASE: string = 'Must contain at least one lowercase letter';
+  public static readonly LOWERCASE: TranslationKey = 'validation.lowercase';
 
-  public static readonly NUMBER: string = 'Must contain at least one number';
+  public static readonly NUMBER: TranslationKey = 'validation.number';
 
-  public static readonly SPECIAL_CHARACTER: string = 'Must contain at least one special character';
+  public static readonly SPECIAL_CHARACTER: TranslationKey = 'validation.specialCharacter';
 
-  public static readonly SPACES: string = 'Must not contain spaces';
+  public static readonly SPACES: TranslationKey = 'validation.spaces';
 
-  public static readonly PASSWORD_MISMATCH: string = 'Invalid password';
+  public static readonly PASSWORD_MISMATCH: TranslationKey = 'validation.passwordMismatch';
 
-  public static readonly INVALID_LOGIN_PASSWORD: string = 'Invalid login or password';
+  public static readonly INVALID_LOGIN_PASSWORD: TranslationKey = 'validation.invalidLoginPassword';
 
-  public static readonly REGISTRATION_FAILED: string = 'Registration failed, please try again';
+  public static readonly REGISTRATION_FAILED: TranslationKey = 'validation.registrationFailed';
 
-  public static readonly EMAIL_TAKEN: string = 'This email is already in use';
+  public static readonly EMAIL_TAKEN: TranslationKey = 'validation.emailTaken';
 
-  public static readonly INVALID_TWO_FACTOR_CODE: string =
-    'Invalid verification code, please try again';
+  public static readonly INVALID_TWO_FACTOR_CODE: TranslationKey =
+    'validation.invalidTwoFactorCode';
 
-  public static readonly RESEND_TWO_FACTOR_CODE_FAILED: string =
-    'Failed to resend the code, please try again';
+  public static readonly RESEND_TWO_FACTOR_CODE_FAILED: TranslationKey =
+    'validation.resendTwoFactorCodeFailed';
 
-  public static readonly TWO_FACTOR_CODE_NO_LONGER_VALID: string =
-    'This code is no longer valid, please request a new one';
+  public static readonly TWO_FACTOR_CODE_NO_LONGER_VALID: TranslationKey =
+    'validation.twoFactorCodeNoLongerValid';
 
-  public static readonly TOO_MANY_TWO_FACTOR_ATTEMPTS: string =
-    'Too many attempts, please log in again';
+  public static readonly TOO_MANY_TWO_FACTOR_ATTEMPTS: TranslationKey =
+    'validation.tooManyTwoFactorAttempts';
 
-  public static readonly TOO_MANY_TWO_FACTOR_RESENDS: string =
-    'Too many code requests, please log in again';
+  public static readonly TOO_MANY_TWO_FACTOR_RESENDS: TranslationKey =
+    'validation.tooManyTwoFactorResends';
 
-  public static readonly TWO_FACTOR_SESSION_EXPIRED: string =
-    'Your verification session has expired, please log in again';
+  public static readonly TWO_FACTOR_SESSION_EXPIRED: TranslationKey =
+    'validation.twoFactorSessionExpired';
 }
