@@ -33,7 +33,7 @@ describe('ProfileDetailsComponent', () => {
 
     expect(text(fixture, '.details__title')).toBe('About Artist');
     expect(text(fixture, '.details__text')).toBe(Constants.DASH);
-    expect(labels(fixture)).toEqual(['Artist Name', 'Date of Birth', 'Genres']);
+    expect(labels(fixture)).toEqual(['Artist Name', 'Date of Birth', 'Additional Genres']);
     expect(values(fixture)).toEqual([Constants.DASH, Constants.DASH]);
   });
 
