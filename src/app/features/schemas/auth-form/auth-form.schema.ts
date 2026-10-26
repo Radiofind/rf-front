@@ -55,6 +55,9 @@ export const registerFormSchema: Schema<IRegisterForm> = schema<IRegisterForm>((
   minLength(form.password, Constants.MIN_LINGTS_FORM_VALIDATION_PASSWORD, {
     message: AuthValidationMessages.MIN_LENGTH,
   });
+  maxLength(form.password, Constants.MAX_LENGTH_FORM_PASSWORD, {
+    message: AuthValidationMessages.MAX_LENGTH_PASSWORD,
+  });
   validate(form.password, ({ value }) => passwordRuleErrors(value()));
 
   required(form.confirmPassword, { message: AuthValidationMessages.REQUIRED });
@@ -75,6 +78,9 @@ export const registerFormSchema: Schema<IRegisterForm> = schema<IRegisterForm>((
       pattern(artist.artistOrBandName, Constants.EN_PLUS_SPACES_AND_SYMBOLS, {
         message: AuthValidationMessages.PATTERN_WITH_SPACES_AND_SYMBOLS,
         when: ({ value }) => !!value(),
+      });
+      maxLength(artist.description, Constants.MAX_LENGTH_FORM_DESCRIPTION, {
+        message: AuthValidationMessages.MAX_LENGTH_DESCRIPTION,
       });
       pattern(artist.description, Constants.EN_PLUS_SPACES_AND_SYMBOLS, {
         message: AuthValidationMessages.PATTERN_WITH_SPACES_AND_SYMBOLS,

@@ -8,6 +8,10 @@ export class AuthValidationMessages {
 
   public static readonly MAX_LENGTH: string = 'Must not exceed 50 characters';
 
+  public static readonly MAX_LENGTH_PASSWORD: string = 'Must not exceed 72 characters';
+
+  public static readonly MAX_LENGTH_DESCRIPTION: string = 'Must not exceed 1000 characters';
+
   public static readonly PATTERN: string = 'Only English letters are allowed (without spaces)';
 
   public static readonly PATTERN_WITH_SPACES_AND_SYMBOLS: string =
@@ -35,9 +39,23 @@ export class AuthValidationMessages {
 
   public static readonly REGISTRATION_FAILED: string = 'Registration failed, please try again';
 
+  public static readonly EMAIL_TAKEN: string = 'This email is already in use';
+
   public static readonly INVALID_TWO_FACTOR_CODE: string =
     'Invalid verification code, please try again';
 
   public static readonly RESEND_TWO_FACTOR_CODE_FAILED: string =
     'Failed to resend the code, please try again';
+
+  public static readonly TWO_FACTOR_CODE_NO_LONGER_VALID: string =
+    'This code is no longer valid, please request a new one';
+
+  public static readonly TOO_MANY_TWO_FACTOR_ATTEMPTS: string =
+    'Too many attempts, please log in again';
+
+  public static readonly TOO_MANY_TWO_FACTOR_RESENDS: string =
+    'Too many code requests, please log in again';
+
+  public static readonly TWO_FACTOR_SESSION_EXPIRED: string =
+    'Your verification session has expired, please log in again';
 }

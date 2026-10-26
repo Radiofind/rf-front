@@ -27,7 +27,7 @@
   <app-button
     contentIconClass="bx bx-arrow-right-stroke"
     [contentText]="'Verify Code'"
-    [disabled]="!isCodeComplete()"
+    [disabled]="!isCodeComplete() || isLocked()"
     (clickAction)="onVerify()"
   />
 
@@ -39,11 +39,11 @@
       <button
         class="two-factor__resend-action"
         type="button"
-        [disabled]="!canResend()"
+        [disabled]="!canResend() || isLocked()"
         (click)="onResend()"
       >
         Resend
-        @if (!canResend()) {
+        @if (!canResend() && !isLocked()) {
           ({{ resendTimer() }})
         }
       </button>

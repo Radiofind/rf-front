@@ -202,10 +202,19 @@ test.describe('registration', () => {
     expect(token).toBeTruthy();
   });
 
-  test('reports a failure when the email is already taken', async ({ user }) => {
+  test('shows a taken email under the email field', async ({ page, user }) => {
     await registerPage.fillRequired({ ...validInput(), email: user.email });
     await registerPage.submit.click();
 
-    await expect(registerPage.serverError).toHaveText('Registration failed, please try again');
+    await expect(registerPage.emailField.errors).toHaveText('This email is already in use');
+    await expect(registerPage.serverError).toBeHidden();
+    await expect(page).toHaveURL(/\/auth\/register$/);
+  });
+
+  test('treats the email as taken regardless of its case', async ({ user }) => {
+    await registerPage.fillRequired({ ...validInput(), email: user.email.toUpperCase() });
+    await registerPage.submit.click();
+
+    await expect(registerPage.emailField.errors).toHaveText('This email is already in use');
   });
 });
