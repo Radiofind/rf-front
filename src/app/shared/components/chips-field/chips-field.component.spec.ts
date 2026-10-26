@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { ChipsFieldComponent } from './chips-field.component';
 
@@ -13,6 +13,10 @@ describe('ChipsFieldComponent', () => {
     { value: 'JAZZ', label: 'Jazz' },
     { value: 'POP', label: 'Pop' },
   ];
+
+  afterEach(() => {
+    document.querySelector('.cdk-overlay-container')?.remove();
+  });
 
   const createFixture = async (
     value: string[] = [],
@@ -39,20 +43,30 @@ describe('ChipsFieldComponent', () => {
       chip.textContent.trim(),
     );
 
-  const select = (fixture: ComponentFixture<ChipsFieldComponent<string>>): HTMLSelectElement =>
-    element(fixture).querySelector('select')!;
+  const trigger = (fixture: ComponentFixture<ChipsFieldComponent<string>>): HTMLButtonElement =>
+    element(fixture).querySelector('.chips-field__trigger')!;
 
-  const selectableValues = (fixture: ComponentFixture<ChipsFieldComponent<string>>): string[] =>
-    Array.from(select(fixture).options)
-      .map((option) => option.value)
-      .filter(Boolean);
+  const menuItems = (): HTMLButtonElement[] =>
+    Array.from(document.querySelectorAll<HTMLButtonElement>('.dropdown-menu__item'));
+
+  const menuLabels = (): string[] =>
+    menuItems().map((item: HTMLButtonElement) => item.textContent.trim());
+
+  const openMenu = async (
+    fixture: ComponentFixture<ChipsFieldComponent<string>>,
+  ): Promise<void> => {
+    trigger(fixture).click();
+    await fixture.whenStable();
+  };
 
   const pick = async (
     fixture: ComponentFixture<ChipsFieldComponent<string>>,
-    value: string,
+    label: string,
   ): Promise<void> => {
-    select(fixture).value = value;
-    select(fixture).dispatchEvent(new Event('change'));
+    await openMenu(fixture);
+    menuItems()
+      .find((item: HTMLButtonElement) => item.textContent.trim() === label)!
+      .click();
     await fixture.whenStable();
   };
 
@@ -78,20 +92,21 @@ describe('ChipsFieldComponent', () => {
 
     fixture.componentRef.setInput('excludedValues', ['POP']);
     await fixture.whenStable();
+    await openMenu(fixture);
 
-    expect(selectableValues(fixture)).toEqual(['JAZZ']);
+    expect(menuLabels()).toEqual(['Jazz']);
   });
 
-  it('adds the picked option, resets the picker and emits touch', async () => {
+  it('adds the picked option, closes the menu and emits touch', async () => {
     const fixture: ComponentFixture<ChipsFieldComponent<string>> = await createFixture(['ROCK']);
     const touch: Mock<() => void> = vi.fn<() => void>();
     fixture.componentInstance.touch.subscribe(touch);
 
-    await pick(fixture, 'JAZZ');
+    await pick(fixture, 'Jazz');
 
     expect(fixture.componentInstance.value()).toEqual(['ROCK', 'JAZZ']);
     expect(chipLabels(fixture)).toEqual(['Rock', 'Jazz']);
-    expect(select(fixture).value).toBe('');
+    expect(menuItems()).toHaveLength(0);
     expect(touch).toHaveBeenCalled();
   });
 
@@ -115,9 +130,9 @@ describe('ChipsFieldComponent', () => {
 
     expect(element(fixture).querySelector('.chips-field__counter')!.textContent.trim()).toBe('1/2');
 
-    await pick(fixture, 'POP');
+    await pick(fixture, 'Pop');
 
-    expect(element(fixture).querySelector('select')).toBeNull();
+    expect(trigger(fixture)).toBeNull();
     expect(element(fixture).querySelector('.chips-field__counter')!.textContent.trim()).toBe('2/2');
   });
 
@@ -127,7 +142,7 @@ describe('ChipsFieldComponent', () => {
     fixture.componentRef.setInput('disabled', true);
     await fixture.whenStable();
 
-    expect(select(fixture).disabled).toBe(true);
+    expect(trigger(fixture).disabled).toBe(true);
     expect(
       element(fixture).querySelector<HTMLButtonElement>('.chips-field__remove')!.disabled,
     ).toBe(true);
@@ -160,7 +175,7 @@ describe('ChipsFieldComponent', () => {
 
     expect(chipLabels(fixture)).toEqual(['Rock']);
     expect(element(fixture).querySelector('.chips-field__remove')).toBeNull();
-    expect(element(fixture).querySelector('select')).toBeNull();
+    expect(trigger(fixture)).toBeNull();
   });
 
   it('renders no header when there is neither a label nor a limit', async () => {
@@ -173,5 +188,42 @@ describe('ChipsFieldComponent', () => {
     expect(
       element(fixture).querySelector('.chips-field__list')!.hasAttribute('aria-labelledby'),
     ).toBe(false);
+  });
+
+  it('picks a nested option and hides groups without available children', async () => {
+    const fixture: ComponentFixture<ChipsFieldComponent<string>> = await createFixture();
+
+    fixture.componentRef.setInput('options', [
+      { value: 'POP', label: 'Pop' },
+      {
+        value: 'METAL',
+        label: 'Metal',
+        children: [
+          { value: 'THRASH_METAL', label: 'Thrash Metal' },
+          { value: 'INDUSTRIAL_METAL', label: 'Industrial Metal' },
+        ],
+      },
+    ]);
+    fixture.componentRef.setInput('value', ['INDUSTRIAL_METAL']);
+    await fixture.whenStable();
+
+    expect(chipLabels(fixture)).toEqual(['Industrial Metal']);
+
+    await openMenu(fixture);
+    menuItems()
+      .find((item: HTMLButtonElement) => item.textContent.trim() === 'Metal')!
+      .click();
+    await fixture.whenStable();
+
+    expect(menuLabels()).toEqual(['Pop', 'Metal', 'Thrash Metal']);
+
+    menuItems()[2]!.click();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.value()).toEqual(['INDUSTRIAL_METAL', 'THRASH_METAL']);
+
+    await openMenu(fixture);
+
+    expect(menuLabels()).toEqual(['Pop']);
   });
 });

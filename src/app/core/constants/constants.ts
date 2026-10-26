@@ -1,4 +1,8 @@
-import type { HorizontalConnectionPos, VerticalConnectionPos } from '@angular/cdk/overlay';
+import type {
+  ConnectedPosition,
+  HorizontalConnectionPos,
+  VerticalConnectionPos,
+} from '@angular/cdk/overlay';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Constants {
@@ -55,6 +59,8 @@ export class Constants {
   public static readonly BEARER: string = 'Bearer';
 
   public static readonly CODE_FIELD_PLACEHOLDER: string = '0';
+
+  public static readonly SELECT_FIELD_ID_PREFIX: string = 'app-select-field-';
 
   public static readonly CODE_FIELD_CELL_AREA_LABEL: string = 'Digit';
 
@@ -180,6 +186,8 @@ export class Constants {
 
   public static readonly ADD_LABEL: string = 'Add';
 
+  public static readonly MENU_TEMPLATE_NAME: string = 'menu';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
@@ -244,6 +252,12 @@ export class Constants {
 
   public static readonly POPOVER_OFFSET: number = 12;
 
+  public static readonly DROPDOWN_OFFSET: number = 8;
+
+  public static readonly DROPDOWN_NESTED_OFFSET: number = 4;
+
+  public static readonly DROPDOWN_NESTED_INDENT: number = 24;
+
   public static readonly MILLISECONDS_IN_ONE_SECOND: number = 1000;
 
   // others
@@ -285,4 +299,67 @@ export class Constants {
   public static readonly TOP_VERTICAL_ALIGNMENT: VerticalConnectionPos = 'top';
 
   public static readonly BOTTOM_VERTICAL_ALIGNMENT: VerticalConnectionPos = 'bottom';
+
+  public static readonly DROPDOWN_POSITIONS: readonly ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+      offsetY: Constants.DROPDOWN_OFFSET,
+    },
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'bottom',
+      offsetY: -Constants.DROPDOWN_OFFSET,
+    },
+    {
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetY: Constants.DROPDOWN_OFFSET,
+    },
+    {
+      originX: 'end',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'bottom',
+      offsetY: -Constants.DROPDOWN_OFFSET,
+    },
+  ];
+
+  // Submenus open to the side; on narrow screens they fall back to below the parent item.
+  public static readonly DROPDOWN_NESTED_POSITIONS: readonly ConnectedPosition[] = [
+    {
+      originX: 'end',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'top',
+      offsetX: Constants.DROPDOWN_NESTED_OFFSET,
+    },
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetX: -Constants.DROPDOWN_NESTED_OFFSET,
+    },
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+      offsetX: Constants.DROPDOWN_NESTED_INDENT,
+    },
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'bottom',
+      offsetX: Constants.DROPDOWN_NESTED_INDENT,
+    },
+  ];
 }

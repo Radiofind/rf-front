@@ -188,15 +188,19 @@ describe('EditProfilePageComponent', () => {
     it('does not offer a genre that is already picked in the other list', async () => {
       const fixture: ComponentFixture<EditProfilePageComponent> = await createFixture();
 
-      const mainOptions: string[] = Array.from(
-        element(fixture).querySelectorAll<HTMLOptionElement>(
-          '.edit-profile__main-genres select option',
-        ),
-      ).map((option) => option.value);
+      element(fixture)
+        .querySelector<HTMLButtonElement>('.edit-profile__main-genres .chips-field__trigger')!
+        .click();
+      await fixture.whenStable();
 
-      expect(mainOptions).not.toContain('JAZZ');
-      expect(mainOptions).not.toContain('ELECTRONIC');
-      expect(mainOptions).toContain('ROCK');
+      const mainOptions: string[] = Array.from(
+        document.querySelectorAll<HTMLButtonElement>('.dropdown-menu__item'),
+      ).map((option) => option.textContent.trim());
+      document.querySelector('.cdk-overlay-container')?.remove();
+
+      expect(mainOptions).not.toContain('Jazz');
+      expect(mainOptions).not.toContain('Electronic');
+      expect(mainOptions).toContain('Rock');
     });
 
     it('reports a failed load and keeps saving locked', async () => {
@@ -293,12 +297,15 @@ describe('EditProfilePageComponent', () => {
           '.edit-profile__main-genres [aria-label="Remove Ambient"]',
         )!
         .click();
-      const select: HTMLSelectElement = element(fixture).querySelector(
-        '.edit-profile__additional-genres select',
-      )!;
-      select.value = 'ROCK';
-      select.dispatchEvent(new Event('change'));
+      element(fixture)
+        .querySelector<HTMLButtonElement>('.edit-profile__additional-genres .chips-field__trigger')!
+        .click();
       await fixture.whenStable();
+      Array.from(document.querySelectorAll<HTMLButtonElement>('.dropdown-menu__item'))
+        .find((option) => option.textContent.trim() === 'Rock')!
+        .click();
+      await fixture.whenStable();
+      document.querySelector('.cdk-overlay-container')?.remove();
       await save(fixture);
 
       expect(sentData().mainGenres).toEqual(['ELECTRONIC']);

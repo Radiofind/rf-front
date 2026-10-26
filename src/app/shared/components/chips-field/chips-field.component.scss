@@ -84,7 +84,6 @@
   }
 
   &__add {
-    position: relative;
     border-style: dashed;
     background: transparent;
     color: var(--second-text-color);
@@ -98,34 +97,31 @@
     }
   }
 
-  &__add-icon {
-    position: absolute;
-    left: 12px;
+  &__trigger {
     display: flex;
-    font-size: 18px;
-    pointer-events: none;
-  }
-
-  &__select {
+    align-items: center;
+    gap: 6px;
     height: 100%;
-    padding: 0 16px 0 34px;
+    padding: 0 16px 0 12px;
     border-radius: 999px;
     background: transparent;
     font-size: 14px;
     font-weight: 500;
     color: inherit;
-    color-scheme: dark;
-    appearance: none;
     cursor: pointer;
+
+    &[aria-expanded='true'] {
+      color: var(--text-color);
+    }
 
     &:disabled {
       cursor: not-allowed;
     }
+  }
 
-    option {
-      background: var(--surface-color);
-      color: var(--text-color);
-    }
+  &__add-icon {
+    display: flex;
+    font-size: 18px;
   }
 
   &__errors {
@@ -150,7 +146,7 @@
 
     &__chip,
     &__add,
-    &__select {
+    &__trigger {
       font-size: 13px;
     }
   }
