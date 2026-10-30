@@ -8,7 +8,11 @@
   height: 100%;
   border: 1px solid var(--header-element-border);
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(113, 43, 226, 0.06), rgba(113, 43, 226, 0.01));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--main-color) 6%, transparent),
+    color-mix(in srgb, var(--main-color) 1%, transparent)
+  );
   overflow: hidden;
 
   &__tabs {
@@ -35,7 +39,11 @@
     }
 
     &--active {
-      background: linear-gradient(180deg, transparent, rgba(106, 92, 255, 0.18));
+      background: linear-gradient(
+        180deg,
+        transparent,
+        color-mix(in srgb, var(--first-gradient-color) 18%, transparent)
+      );
       color: var(--text-color);
 
       &::after {
@@ -51,7 +59,7 @@
           var(--first-gradient-color),
           var(--second-gradient-color)
         );
-        box-shadow: 0 0 12px rgba(168, 85, 247, 0.8);
+        box-shadow: 0 0 12px color-mix(in srgb, var(--second-gradient-color) 80%, transparent);
       }
     }
   }
@@ -81,7 +89,7 @@
     max-width: 560px;
     font-size: 16px;
     line-height: 1.55;
-    color: #b7b0d8;
+    color: var(--muted-text-color);
   }
 
   &__list {
@@ -100,7 +108,7 @@
 
   &__label {
     font-size: 14px;
-    color: #b7b0d8;
+    color: var(--muted-text-color);
   }
 
   &__value {

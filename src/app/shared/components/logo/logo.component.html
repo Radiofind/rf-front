@@ -1,0 +1,26 @@
+<svg class="logo" [attr.viewBox]="viewBox()" role="img" [attr.aria-label]="ariaLabel()">
+  <defs>
+    <linearGradient
+      [attr.id]="gradientId()"
+      gradientUnits="userSpaceOnUse"
+      x1="0"
+      [attr.y1]="gradientTop()"
+      x2="0"
+      [attr.y2]="gradientBottom()"
+    >
+      <stop class="logo__stop logo__stop--top" offset="0" />
+      <stop class="logo__stop logo__stop--bottom" offset="1" />
+    </linearGradient>
+  </defs>
+  <g [attr.fill]="'url(#' + gradientId() + ')'">
+    @for (bar of bars(); track $index) {
+      <rect
+        [attr.x]="bar.x"
+        [attr.y]="bar.y"
+        [attr.width]="bar.width"
+        [attr.height]="bar.height"
+        [attr.rx]="bar.width / 2"
+      />
+    }
+  </g>
+</svg>

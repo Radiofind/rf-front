@@ -27,7 +27,7 @@
 
     &:hover,
     &:focus-visible {
-      background: rgba(113, 43, 226, 0.18);
+      background: color-mix(in srgb, var(--main-color) 18%, transparent);
       color: var(--text-color);
     }
   }
@@ -48,7 +48,7 @@
 
   &__subtitle {
     font-size: 16px;
-    color: #c9c3e6;
+    color: var(--soft-text-color);
   }
 
   &__grid {
@@ -70,8 +70,12 @@
     padding: 24px 24px 12px;
     border: 1px solid var(--header-element-border);
     border-radius: 16px;
-    background: linear-gradient(180deg, rgba(113, 43, 226, 0.06), rgba(113, 43, 226, 0.01));
-    box-shadow: 0 0 32px rgba(113, 43, 226, 0.08);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--main-color) 6%, transparent),
+      color-mix(in srgb, var(--main-color) 1%, transparent)
+    );
+    box-shadow: 0 0 32px color-mix(in srgb, var(--main-color) 8%, transparent);
   }
 
   &__card-title {
@@ -133,7 +137,7 @@
     font-size: 24px;
     border: 1px solid var(--header-element-border);
     color: var(--icon-color);
-    box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--second-gradient-color) 30%, transparent);
 
     i {
       display: flex;

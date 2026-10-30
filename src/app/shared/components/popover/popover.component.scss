@@ -7,11 +7,11 @@
   flex-direction: column;
   max-height: 70vh;
   background: var(--second-bg-color);
-  border: 1px solid rgba(113, 43, 226, 0.45);
+  border: 1px solid color-mix(in srgb, var(--main-color) 45%, transparent);
   border-radius: 16px;
   box-shadow:
     0 24px 64px rgba(0, 0, 0, 0.65),
-    0 0 40px rgba(113, 43, 226, 0.2);
+    0 0 40px color-mix(in srgb, var(--main-color) 20%, transparent);
   overflow: hidden;
   animation: popover-appearance 200ms ease;
 

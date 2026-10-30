@@ -6,7 +6,7 @@
     linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));
   background: var(--bg-round-color);
   color: var(--icon-color);
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--second-gradient-color) 40%, transparent);
 
   i {
     display: flex;

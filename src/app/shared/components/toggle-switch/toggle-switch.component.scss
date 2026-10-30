@@ -51,7 +51,7 @@
   &__input:checked + &__track {
     border-color: transparent;
     background: linear-gradient(90deg, var(--first-gradient-color), var(--second-gradient-color));
-    box-shadow: 0 0 14px rgba(168, 85, 247, 0.45);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--second-gradient-color) 45%, transparent);
 
     &::after {
       background: var(--text-color);

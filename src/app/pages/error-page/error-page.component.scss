@@ -30,14 +30,14 @@
     position: absolute;
     width: 130px;
     height: 130px;
-    border: 1px solid rgba(113, 43, 226, 0.5);
+    border: 1px solid color-mix(in srgb, var(--main-color) 50%, transparent);
     border-radius: 50%;
-    box-shadow: 0 0 24px rgba(168, 85, 247, 0.35);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--second-gradient-color) 35%, transparent);
 
     &--outer {
       width: 160px;
       height: 160px;
-      border-color: rgba(113, 43, 226, 0.25);
+      border-color: color-mix(in srgb, var(--main-color) 25%, transparent);
       border-style: dashed;
     }
   }

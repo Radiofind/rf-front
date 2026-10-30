@@ -13,7 +13,7 @@
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
-    rgba(113, 43, 226, 0) 0%,
+    color-mix(in srgb, var(--main-color) 0%, transparent) 0%,
     var(--main-color) 35%,
     var(--first-gradient-color) 70%,
     var(--second-gradient-color) 100%
@@ -28,7 +28,7 @@
     transparent calc(100% - var(--spinner-thickness)),
     #000 calc(100% - var(--spinner-thickness))
   );
-  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.55));
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--second-gradient-color) 55%, transparent));
   animation: spinner-rotation 800ms linear infinite;
 }
 

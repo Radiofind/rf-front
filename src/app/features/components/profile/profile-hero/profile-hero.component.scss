@@ -11,12 +11,22 @@
   padding: 28px 32px;
   border: 1px solid var(--header-element-border);
   border-radius: 20px;
-  background:
-    linear-gradient(90deg, rgba(3, 3, 14, 0.9) 0%, rgba(3, 3, 14, 0.35) 55%, transparent 100%),
-    url('/assets/images/profile-background.png') right center / cover no-repeat,
-    var(--second-bg-color);
-  box-shadow: 0 0 40px rgba(113, 43, 226, 0.18);
+  box-shadow: 0 0 40px color-mix(in srgb, var(--main-color) 18%, transparent);
   overflow: hidden;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(3, 3, 14, 0.9) 0%, rgba(3, 3, 14, 0.35) 55%, transparent 100%),
+      url('/assets/images/profile-background.png') right center / cover no-repeat,
+      var(--second-bg-color);
+    filter: hue-rotate(var(--accent-hue-shift));
+    pointer-events: none;
+  }
 
   &__avatar {
     position: relative;
@@ -31,10 +41,10 @@
       padding: 8px;
       border: 1px solid var(--header-element-border);
       border-radius: 50%;
-      background: rgba(14, 8, 32, 0.6);
+      background: color-mix(in srgb, var(--surface-color) 60%, transparent);
       box-shadow:
-        0 0 32px rgba(168, 85, 247, 0.35),
-        inset 0 0 20px rgba(106, 92, 255, 0.2);
+        0 0 32px color-mix(in srgb, var(--second-gradient-color) 35%, transparent),
+        inset 0 0 20px color-mix(in srgb, var(--first-gradient-color) 20%, transparent);
     }
 
     &-image,
@@ -78,7 +88,7 @@
 
       &:hover {
         border-color: var(--first-gradient-color);
-        box-shadow: 0 0 16px rgba(168, 85, 247, 0.5);
+        box-shadow: 0 0 16px color-mix(in srgb, var(--second-gradient-color) 50%, transparent);
       }
     }
   }
@@ -116,7 +126,7 @@
     flex-shrink: 0;
     font-size: 26px;
     color: var(--second-gradient-color);
-    filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--second-gradient-color) 60%, transparent));
   }
 
   &__meta {
@@ -125,7 +135,7 @@
     align-items: center;
     gap: 8px;
     font-size: 16px;
-    color: #c9c3e6;
+    color: var(--soft-text-color);
 
     &-dot {
       width: 4px;
@@ -138,7 +148,7 @@
   &__bio {
     font-size: 15px;
     line-height: 1.5;
-    color: #c9c3e6;
+    color: var(--soft-text-color);
   }
 
   &__socials {
@@ -161,9 +171,9 @@
     transition: all 300ms ease;
 
     &:hover {
-      background: rgba(113, 43, 226, 0.2);
+      background: color-mix(in srgb, var(--main-color) 20%, transparent);
       color: var(--icon-color);
-      box-shadow: 0 0 14px rgba(168, 85, 247, 0.35);
+      box-shadow: 0 0 14px color-mix(in srgb, var(--second-gradient-color) 35%, transparent);
     }
   }
 
@@ -179,7 +189,7 @@
     padding: 0 20px;
     border: 1px solid var(--header-element-border);
     border-radius: 999px;
-    background: rgba(14, 8, 32, 0.7);
+    background: color-mix(in srgb, var(--surface-color) 70%, transparent);
     backdrop-filter: blur(6px);
     font-size: 16px;
     font-weight: 500;
@@ -194,7 +204,7 @@
 
     &:hover {
       border-color: var(--first-gradient-color);
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.35);
+      box-shadow: 0 0 20px color-mix(in srgb, var(--second-gradient-color) 35%, transparent);
     }
   }
 }
@@ -225,10 +235,13 @@
     gap: 16px;
     padding: 72px 20px 24px;
     text-align: center;
-    background:
-      linear-gradient(180deg, transparent 0%, rgba(3, 3, 14, 0.75) 60%, rgba(3, 3, 14, 0.9) 100%),
-      url('/assets/images/profile-background.png') 80% center / cover no-repeat,
-      var(--second-bg-color);
+
+    &::before {
+      background:
+        linear-gradient(180deg, transparent 0%, rgba(3, 3, 14, 0.75) 60%, rgba(3, 3, 14, 0.9) 100%),
+        url('/assets/images/profile-background.png') 80% center / cover no-repeat,
+        var(--second-bg-color);
+    }
 
     &__info {
       align-items: center;

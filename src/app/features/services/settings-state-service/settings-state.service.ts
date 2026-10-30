@@ -1,15 +1,15 @@
-import { DOCUMENT, inject, PLATFORM_ID, Service, signal } from '@angular/core';
+import { inject, PLATFORM_ID, Service, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { UserService } from '../user-service/user.service';
+import { AccentThemeService } from '../accent-theme-service/accent-theme.service';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
 import { TranslationService } from '../../../shared/services/translation-service/translation.service';
 import { Constants } from '../../../core/constants/constants';
-import { ACCENT_COLORS, DEFAULT_GENERAL_SETTINGS } from '../../constants/settings.constant';
+import { DEFAULT_GENERAL_SETTINGS } from '../../constants/settings.constant';
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
-import type { IAccentColorOption } from '../../models/accent-color-option.model';
 
 @Service()
 export class SettingsStateService {
@@ -19,7 +19,7 @@ export class SettingsStateService {
 
   private readonly translationService: TranslationService = inject(TranslationService);
 
-  private readonly document: Document = inject(DOCUMENT);
+  private readonly accentThemeService: AccentThemeService = inject(AccentThemeService);
 
   private readonly isBrowser: boolean = isPlatformBrowser(inject(PLATFORM_ID));
 
@@ -74,6 +74,7 @@ export class SettingsStateService {
     this.savedSettings = {
       ...DEFAULT_GENERAL_SETTINGS,
       language: this.translationService.language(),
+      accentColor: this.accentThemeService.accentColor(),
     };
     this.isLoadedState.set(false);
     this.applySettings(this.savedSettings);
@@ -139,13 +140,7 @@ export class SettingsStateService {
   private applySettings(settings: IGeneralSettings): void {
     this.settingsState.set(settings);
 
-    const root: HTMLElement = this.document.documentElement;
-    const accentColor: IAccentColorOption = ACCENT_COLORS[settings.accentColor];
-
-    root.style.setProperty(Constants.FIRST_GRADIENT_COLOR_PROPERTY, accentColor.firstColor);
-    root.style.setProperty(Constants.SECOND_GRADIENT_COLOR_PROPERTY, accentColor.secondColor);
-    root.style.setProperty(Constants.MAIN_COLOR_PROPERTY, accentColor.mainColor);
-
+    this.accentThemeService.apply(settings.accentColor);
     void this.translationService.use(settings.language);
   }
 }

@@ -15,6 +15,7 @@ import { authInterceptor } from './core/interceptors/auth/auth.interceptor';
 import { loaderInterceptor } from './core/interceptors/loader/loader.interceptor';
 import { unauthorizedInterceptor } from './core/interceptors/unauthorized/unauthorized.interceptor';
 import { TranslationService } from './shared/services/translation-service/translation.service';
+import { AccentThemeService } from './features/services/accent-theme-service/accent-theme.service';
 
 import type { ApplicationConfig } from '@angular/core';
 
@@ -30,5 +31,8 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([loaderInterceptor, authInterceptor, unauthorizedInterceptor]),
     ),
     provideAppInitializer(() => inject(TranslationService).init()),
+    provideAppInitializer(() => {
+      inject(AccentThemeService).init();
+    }),
   ],
 };

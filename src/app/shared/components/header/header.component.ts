@@ -2,6 +2,7 @@ import { Component, inject, input, model, output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
 import { EmptyStateComponent } from '../empty-state/empty-state.component';
+import { LogoComponent } from '../logo/logo.component';
 import { PopoverComponent } from '../popover/popover.component';
 import { PopoverContentDirective } from '../../directives/popover-content/popover-content.directive';
 import { Constants } from '../../../core/constants/constants';
@@ -26,6 +27,7 @@ import type { ProfileMenuItemType } from '../../../core/types/profile-menu-item.
     PopoverComponent,
     PopoverContentDirective,
     EmptyStateComponent,
+    LogoComponent,
     TranslatePipe,
   ],
 })

@@ -56,7 +56,6 @@ describe('SettingsStateService', () => {
     service = TestBed.inject(SettingsStateService);
   };
 
-  // Echoes whatever the client sent, the way the real backend does.
   const echoUpdate = (): ReturnType<typeof vi.fn> =>
     vi.fn((settings: IGeneralSettings) => of(settings));
 
@@ -72,6 +71,7 @@ describe('SettingsStateService', () => {
 
   afterEach(() => {
     root().removeAttribute('style');
+    localStorage.removeItem(Constants.ACCENT_THEME_KEY);
   });
 
   describe('loading', () => {
@@ -324,18 +324,24 @@ describe('SettingsStateService', () => {
   });
 
   describe('clearing', () => {
-    it('restores the defaults on the document and requires a new load', async () => {
+    it('restores the account defaults and requires a new load', async () => {
       createService();
       await service.loadSettings();
 
       service.clear();
 
-      expect(service.settings()).toEqual(DEFAULT_GENERAL_SETTINGS);
+      expect(service.settings()).toEqual({ ...DEFAULT_GENERAL_SETTINGS, accentColor: 'OCEAN' });
       expect(service.isLoaded()).toBe(false);
-      expect(cssVariable(Constants.FIRST_GRADIENT_COLOR_PROPERTY)).toBe('#6a5cff');
-      expect(cssVariable(Constants.SECOND_GRADIENT_COLOR_PROPERTY)).toBe('#a855f7');
-      expect(cssVariable(Constants.MAIN_COLOR_PROPERTY)).toBe('#712be2');
       expect(useLanguage).toHaveBeenLastCalledWith('EN');
+    });
+
+    it('keeps the accent of the device so the auth pages stay in it', async () => {
+      createService();
+      await service.loadSettings();
+
+      service.clear();
+
+      expect(cssVariable(Constants.MAIN_COLOR_PROPERTY)).toBe('#0284c7');
     });
 
     it('keeps the language of the device so the auth pages stay in it', async () => {
@@ -345,7 +351,11 @@ describe('SettingsStateService', () => {
 
       service.clear();
 
-      expect(service.settings()).toEqual({ ...DEFAULT_GENERAL_SETTINGS, language: 'DE' });
+      expect(service.settings()).toEqual({
+        ...DEFAULT_GENERAL_SETTINGS,
+        language: 'DE',
+        accentColor: 'OCEAN',
+      });
       expect(useLanguage).toHaveBeenLastCalledWith('DE');
     });
 
@@ -367,7 +377,7 @@ describe('SettingsStateService', () => {
       response$.complete();
       await saving;
 
-      expect(service.settings()).toEqual(DEFAULT_GENERAL_SETTINGS);
+      expect(service.settings()).toEqual({ ...DEFAULT_GENERAL_SETTINGS, accentColor: 'PLUM' });
       expect(success).not.toHaveBeenCalled();
     });
 
@@ -391,7 +401,7 @@ describe('SettingsStateService', () => {
 
       expect(updateGeneralSettings).toHaveBeenCalledTimes(1);
       expect(error).not.toHaveBeenCalled();
-      expect(service.settings()).toEqual(DEFAULT_GENERAL_SETTINGS);
+      expect(service.settings()).toEqual({ ...DEFAULT_GENERAL_SETTINGS, accentColor: 'OCEAN' });
     });
   });
 });
