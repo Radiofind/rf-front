@@ -1,17 +1,27 @@
 .login-bg,
 .register-bg {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: 100%;
   padding: 15px 6%;
+}
+
+.login-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: url('/assets/images/login-bg.png') no-repeat;
+  filter: hue-rotate(var(--accent-hue-shift));
+  pointer-events: none;
 }
 
 .register-bg {
   justify-content: flex-start;
-  background: none;
 }
 
 .auth {

@@ -30,12 +30,10 @@
   --premium-color: #fbbf24;
   --online-color: #22c55e;
 
-  /* Accent base colors, overridden at runtime by SettingsStateService. */
   --main-color: #712be2;
   --first-gradient-color: #6a5cff;
   --second-gradient-color: #a855f7;
 
-  /* Derived from the accent base colors so that every surface follows the selected accent. */
   --info-color: var(--first-gradient-color);
   --icon-color: color-mix(in srgb, var(--second-gradient-color) 80%, var(--text-color));
   --soft-text-color: color-mix(in srgb, var(--text-color) 75%, var(--main-color));
@@ -46,6 +44,7 @@
   --second-gradient-bg: color-mix(in srgb, var(--main-color) 48%, #000000);
   --header-border-color: color-mix(in srgb, var(--main-color) 38%, #000000);
   --header-element-border: color-mix(in srgb, var(--main-color) 60%, #000000);
+  --accent-hue-shift: 0deg;
 }
 
 html {

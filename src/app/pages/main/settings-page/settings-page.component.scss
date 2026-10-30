@@ -5,6 +5,8 @@
   padding-bottom: 8px;
 
   &__hero {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,11 +15,21 @@
     padding: 24px 28px;
     border: 1px solid var(--header-element-border);
     border-radius: 20px;
-    background:
-      linear-gradient(90deg, rgba(3, 3, 14, 0.95) 0%, rgba(3, 3, 14, 0.4) 55%, transparent 100%),
-      url('/assets/images/profile-background.png') right center / cover no-repeat,
-      var(--second-bg-color);
     box-shadow: 0 0 40px color-mix(in srgb, var(--main-color) 18%, transparent);
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(3, 3, 14, 0.95) 0%, rgba(3, 3, 14, 0.4) 55%, transparent 100%),
+        url('/assets/images/profile-background.png') right center / cover no-repeat,
+        var(--second-bg-color);
+      filter: hue-rotate(var(--accent-hue-shift));
+      pointer-events: none;
+    }
   }
 
   &__title {

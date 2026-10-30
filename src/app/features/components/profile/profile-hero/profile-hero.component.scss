@@ -11,12 +11,22 @@
   padding: 28px 32px;
   border: 1px solid var(--header-element-border);
   border-radius: 20px;
-  background:
-    linear-gradient(90deg, rgba(3, 3, 14, 0.9) 0%, rgba(3, 3, 14, 0.35) 55%, transparent 100%),
-    url('/assets/images/profile-background.png') right center / cover no-repeat,
-    var(--second-bg-color);
   box-shadow: 0 0 40px color-mix(in srgb, var(--main-color) 18%, transparent);
   overflow: hidden;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(3, 3, 14, 0.9) 0%, rgba(3, 3, 14, 0.35) 55%, transparent 100%),
+      url('/assets/images/profile-background.png') right center / cover no-repeat,
+      var(--second-bg-color);
+    filter: hue-rotate(var(--accent-hue-shift));
+    pointer-events: none;
+  }
 
   &__avatar {
     position: relative;
@@ -225,10 +235,13 @@
     gap: 16px;
     padding: 72px 20px 24px;
     text-align: center;
-    background:
-      linear-gradient(180deg, transparent 0%, rgba(3, 3, 14, 0.75) 60%, rgba(3, 3, 14, 0.9) 100%),
-      url('/assets/images/profile-background.png') 80% center / cover no-repeat,
-      var(--second-bg-color);
+
+    &::before {
+      background:
+        linear-gradient(180deg, transparent 0%, rgba(3, 3, 14, 0.75) 60%, rgba(3, 3, 14, 0.9) 100%),
+        url('/assets/images/profile-background.png') 80% center / cover no-repeat,
+        var(--second-bg-color);
+    }
 
     &__info {
       align-items: center;

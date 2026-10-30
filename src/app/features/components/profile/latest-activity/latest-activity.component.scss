@@ -16,11 +16,19 @@
   overflow: hidden;
 
   &__cover {
+    position: relative;
     flex-shrink: 0;
     height: 190px;
     border-bottom: 1px solid var(--header-element-border);
-    background: url('/assets/images/latest-activity-section.jpeg') center / cover no-repeat;
     mask-image: linear-gradient(180deg, #000 70%, rgba(0, 0, 0, 0.6) 100%);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('/assets/images/latest-activity-section.jpeg') center / cover no-repeat;
+      filter: hue-rotate(var(--accent-hue-shift));
+    }
   }
 
   &__body {

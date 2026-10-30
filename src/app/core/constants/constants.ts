@@ -169,6 +169,14 @@ export class Constants {
 
   public static readonly MAIN_COLOR_PROPERTY: string = '--main-color';
 
+  public static readonly ACCENT_HUE_SHIFT_PROPERTY: string = '--accent-hue-shift';
+
+  public static readonly FAVICON_SELECTOR: string = 'link[rel="icon"]';
+
+  public static readonly SVG_MIME_TYPE: string = 'image/svg+xml';
+
+  public static readonly DEGREE_UNIT: string = 'deg';
+
   public static readonly URL_PROPERTY: string = 'url';
 
   public static readonly SOCIAL_LINK_PROPERTY: string = 'socialLink';
@@ -197,6 +205,8 @@ export class Constants {
   public static readonly ADD_LABEL: TranslationKey = 'common.add';
 
   public static readonly MENU_TEMPLATE_NAME: string = 'menu';
+
+  public static readonly LOGO_GRADIENT_ID: string = 'logo-gradient-';
 
   // magic numbers
 
