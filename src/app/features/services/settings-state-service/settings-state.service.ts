@@ -74,6 +74,7 @@ export class SettingsStateService {
     this.savedSettings = {
       ...DEFAULT_GENERAL_SETTINGS,
       language: this.translationService.language(),
+      accentColor: this.accentThemeService.accentColor(),
     };
     this.isLoadedState.set(false);
     this.applySettings(this.savedSettings);

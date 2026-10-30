@@ -29,6 +29,10 @@ export class Constants {
 
   public static readonly LANGUAGE_KEY: string = 'radiofind_language';
 
+  public static readonly ACCENT_THEME_KEY: string = 'radiofind_accent_theme';
+
+  public static readonly NULL_JSON: string = 'null';
+
   public static readonly UPPERCASE: string = 'uppercase';
 
   public static readonly LOWERCASE: string = 'lowercase';
