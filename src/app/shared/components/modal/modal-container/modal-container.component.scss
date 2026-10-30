@@ -11,11 +11,11 @@
   max-height: inherit;
   position: relative;
   background: var(--second-bg-color);
-  border: 1px solid rgba(113, 43, 226, 0.45);
+  border: 1px solid color-mix(in srgb, var(--main-color) 45%, transparent);
   border-radius: 16px;
   box-shadow:
     0 24px 64px rgba(0, 0, 0, 0.65),
-    0 0 48px rgba(113, 43, 226, 0.25);
+    0 0 48px color-mix(in srgb, var(--main-color) 25%, transparent);
   overflow: hidden;
   animation: modal-appearance 250ms ease;
 

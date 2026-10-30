@@ -6,12 +6,12 @@
   max-width: calc(100vw - 32px);
   max-height: 320px;
   padding: 6px;
-  border: 1px solid rgba(113, 43, 226, 0.45);
+  border: 1px solid color-mix(in srgb, var(--main-color) 45%, transparent);
   border-radius: 12px;
   background: var(--second-bg-color);
   box-shadow:
     0 24px 64px rgba(0, 0, 0, 0.65),
-    0 0 32px rgba(113, 43, 226, 0.2);
+    0 0 32px color-mix(in srgb, var(--main-color) 20%, transparent);
   overflow-y: auto;
   animation: dropdown-menu-appearance 160ms ease;
 
@@ -38,7 +38,7 @@
     &:hover,
     &:focus-visible,
     &[aria-expanded='true'] {
-      background: rgba(106, 92, 255, 0.16);
+      background: color-mix(in srgb, var(--first-gradient-color) 16%, transparent);
     }
 
     &:focus-visible {

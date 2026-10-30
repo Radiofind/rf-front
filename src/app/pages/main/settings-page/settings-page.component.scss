@@ -5,6 +5,8 @@
   padding-bottom: 8px;
 
   &__hero {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,11 +15,21 @@
     padding: 24px 28px;
     border: 1px solid var(--header-element-border);
     border-radius: 20px;
-    background:
-      linear-gradient(90deg, rgba(3, 3, 14, 0.95) 0%, rgba(3, 3, 14, 0.4) 55%, transparent 100%),
-      url('/assets/images/profile-background.png') right center / cover no-repeat,
-      var(--second-bg-color);
-    box-shadow: 0 0 40px rgba(113, 43, 226, 0.18);
+    box-shadow: 0 0 40px color-mix(in srgb, var(--main-color) 18%, transparent);
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(3, 3, 14, 0.95) 0%, rgba(3, 3, 14, 0.4) 55%, transparent 100%),
+        url('/assets/images/profile-background.png') right center / cover no-repeat,
+        var(--second-bg-color);
+      filter: hue-rotate(var(--accent-hue-shift));
+      pointer-events: none;
+    }
   }
 
   &__title {
@@ -28,7 +40,7 @@
 
   &__subtitle {
     font-size: 16px;
-    color: #c9c3e6;
+    color: var(--soft-text-color);
   }
 
   &__body {
@@ -38,7 +50,11 @@
     padding: 12px;
     border: 1px solid var(--header-element-border);
     border-radius: 20px;
-    background: linear-gradient(180deg, rgba(113, 43, 226, 0.06), rgba(113, 43, 226, 0.01));
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--main-color) 6%, transparent),
+      color-mix(in srgb, var(--main-color) 1%, transparent)
+    );
   }
 
   &__nav {
@@ -67,7 +83,7 @@
 
       &:hover {
         border-color: var(--header-border-color);
-        background: rgba(113, 43, 226, 0.12);
+        background: color-mix(in srgb, var(--main-color) 12%, transparent);
         color: var(--text-color);
       }
 
@@ -75,7 +91,7 @@
         border-color: var(--first-gradient-color);
         background: linear-gradient(90deg, var(--main-color), transparent 140%);
         color: var(--text-color);
-        box-shadow: 0 0 20px rgba(113, 43, 226, 0.3);
+        box-shadow: 0 0 20px color-mix(in srgb, var(--main-color) 30%, transparent);
       }
     }
 

@@ -1,0 +1,19 @@
+:host {
+  display: inline-block;
+}
+
+.logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  &__stop {
+    &--top {
+      stop-color: var(--second-gradient-color);
+    }
+
+    &--bottom {
+      stop-color: var(--main-color);
+    }
+  }
+}

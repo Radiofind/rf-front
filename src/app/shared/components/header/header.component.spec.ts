@@ -45,14 +45,13 @@ describe('HeaderComponent', () => {
     expect(fixture.nativeElement.querySelector('.header-title').textContent).toBe('RADIOFIND');
   });
 
-  it('renders the logo from the assets folder', async () => {
+  it('labels the logo with the translated brand name', async () => {
     const fixture: ComponentFixture<HeaderComponent> = await createFixture();
     await fixture.whenStable();
 
-    const logo: HTMLImageElement = fixture.nativeElement.querySelector('.header-logo');
+    const logo: SVGElement = fixture.nativeElement.querySelector('.header-logo svg');
 
-    expect(logo.getAttribute('src')).toBe('/assets/images/audiowave.png');
-    expect(logo.alt).toBe('Logo');
+    expect(logo.getAttribute('aria-label')).toBe('Logo');
   });
 
   it('renders the search and the actions only for the main application', async () => {

@@ -14,7 +14,7 @@
     align-self: flex-start;
     font-size: 32px;
     color: var(--icon-color);
-    filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.35));
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--second-gradient-color) 35%, transparent));
   }
 
   &__info {
@@ -35,7 +35,7 @@
     max-width: 420px;
     font-size: 14px;
     line-height: 1.5;
-    color: #b7b0d8;
+    color: var(--muted-text-color);
   }
 
   &__control {

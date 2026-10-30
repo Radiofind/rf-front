@@ -27,7 +27,7 @@
     &:hover:not(:disabled),
     &:focus-visible {
       border-color: var(--first-gradient-color);
-      box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--second-gradient-color) 30%, transparent);
     }
 
     &:disabled {
@@ -37,7 +37,7 @@
 
   &--open &__control {
     border-color: var(--first-gradient-color);
-    box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--second-gradient-color) 30%, transparent);
   }
 
   &__value {

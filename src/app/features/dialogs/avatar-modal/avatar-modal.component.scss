@@ -19,10 +19,10 @@
     padding: 8px;
     border: 1px solid var(--header-element-border);
     border-radius: 50%;
-    background: rgba(14, 8, 32, 0.6);
+    background: color-mix(in srgb, var(--surface-color) 60%, transparent);
     box-shadow:
-      0 0 32px rgba(168, 85, 247, 0.35),
-      inset 0 0 20px rgba(106, 92, 255, 0.2);
+      0 0 32px color-mix(in srgb, var(--second-gradient-color) 35%, transparent),
+      inset 0 0 20px color-mix(in srgb, var(--first-gradient-color) 20%, transparent);
   }
 
   &__image,
@@ -103,7 +103,7 @@
     padding: 24px 16px;
     border: 1px dashed var(--header-element-border);
     border-radius: 14px;
-    background: rgba(106, 92, 255, 0.06);
+    background: color-mix(in srgb, var(--first-gradient-color) 6%, transparent);
     text-align: center;
     cursor: pointer;
     transition: all 300ms ease;
@@ -112,8 +112,8 @@
     &:focus-within,
     &--active {
       border-color: var(--second-gradient-color);
-      background: rgba(106, 92, 255, 0.14);
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+      background: color-mix(in srgb, var(--first-gradient-color) 14%, transparent);
+      box-shadow: 0 0 20px color-mix(in srgb, var(--second-gradient-color) 25%, transparent);
     }
 
     &--active {

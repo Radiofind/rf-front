@@ -20,26 +20,31 @@
   --second-bg-color: #03030e;
   --text-color: #ededed;
   --second-text-color: #85859c;
-  --main-color: #712be2;
-  --icon-color: #ad79dd;
-  --bg-round-color: #180a31;
   --arrow-color: #545369;
-  --first-gradient-color: #6a5cff;
-  --second-gradient-color: #a855f7;
-  --first-gradient-bg: #1a0f2e;
-  --second-gradient-bg: #3b1a6b;
   --third-gradient-bg: #0b0b12;
   --additional-border: #011f1e;
   --invalid-border: #ff0000;
   --success-color: #00ff00;
   --error-color: #ff4d4f;
   --warning-color: #ffb020;
-  --info-color: #6a5cff;
   --premium-color: #fbbf24;
   --online-color: #22c55e;
-  --header-border-color: #2c1a55;
-  --header-element-border: #452a86;
-  --surface-color: #0e0820;
+
+  --main-color: #712be2;
+  --first-gradient-color: #6a5cff;
+  --second-gradient-color: #a855f7;
+
+  --info-color: var(--first-gradient-color);
+  --icon-color: color-mix(in srgb, var(--second-gradient-color) 80%, var(--text-color));
+  --soft-text-color: color-mix(in srgb, var(--text-color) 75%, var(--main-color));
+  --muted-text-color: color-mix(in srgb, var(--soft-text-color) 80%, var(--second-text-color));
+  --surface-color: color-mix(in srgb, var(--main-color) 13%, #000000);
+  --bg-round-color: color-mix(in srgb, var(--main-color) 21%, #000000);
+  --first-gradient-bg: color-mix(in srgb, var(--main-color) 21%, #000000);
+  --second-gradient-bg: color-mix(in srgb, var(--main-color) 48%, #000000);
+  --header-border-color: color-mix(in srgb, var(--main-color) 38%, #000000);
+  --header-element-border: color-mix(in srgb, var(--main-color) 60%, #000000);
+  --accent-hue-shift: 0deg;
 }
 
 html {

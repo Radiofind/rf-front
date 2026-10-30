@@ -45,8 +45,12 @@
   border-right: 1px solid var(--header-border-color);
   border-bottom: 1px solid var(--header-border-color);
   border-radius: 20px;
-  background: linear-gradient(180deg, rgba(113, 43, 226, 0.08), rgba(113, 43, 226, 0.02));
-  box-shadow: 0 0 40px rgba(113, 43, 226, 0.15);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--main-color) 8%, transparent),
+    color-mix(in srgb, var(--main-color) 2%, transparent)
+  );
+  box-shadow: 0 0 40px color-mix(in srgb, var(--main-color) 15%, transparent);
   overflow: hidden;
 
   &::before {
@@ -59,7 +63,7 @@
     background: repeating-radial-gradient(
       circle at 14% 112%,
       transparent 0 32px,
-      rgba(168, 85, 247, 0.14) 32px 34px
+      color-mix(in srgb, var(--second-gradient-color) 14%, transparent) 32px 34px
     );
     mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent 80%);
     pointer-events: none;
@@ -95,7 +99,7 @@
     &:hover {
       border-color: var(--first-gradient-color);
       color: var(--text-color);
-      box-shadow: 0 0 16px rgba(168, 85, 247, 0.35);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--second-gradient-color) 35%, transparent);
     }
   }
 
@@ -149,17 +153,21 @@
 
     &:hover {
       border-color: var(--header-border-color);
-      background: rgba(113, 43, 226, 0.12);
+      background: color-mix(in srgb, var(--main-color) 12%, transparent);
       color: var(--text-color);
     }
 
     &--active {
       border-color: var(--header-element-border);
-      background: linear-gradient(90deg, rgba(106, 92, 255, 0.28), rgba(168, 85, 247, 0.06));
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--first-gradient-color) 28%, transparent),
+        color-mix(in srgb, var(--second-gradient-color) 6%, transparent)
+      );
       color: var(--text-color);
       box-shadow:
-        inset 0 0 20px rgba(106, 92, 255, 0.12),
-        0 0 20px rgba(113, 43, 226, 0.2);
+        inset 0 0 20px color-mix(in srgb, var(--first-gradient-color) 12%, transparent),
+        0 0 20px color-mix(in srgb, var(--main-color) 20%, transparent);
 
       &::before {
         content: '';
@@ -174,7 +182,7 @@
           var(--first-gradient-color),
           var(--second-gradient-color)
         );
-        box-shadow: 0 0 12px rgba(168, 85, 247, 0.8);
+        box-shadow: 0 0 12px color-mix(in srgb, var(--second-gradient-color) 80%, transparent);
       }
 
       .sidebar__item-icon {
@@ -201,7 +209,7 @@
 
     &:hover {
       border-color: var(--header-element-border);
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+      box-shadow: 0 0 20px color-mix(in srgb, var(--second-gradient-color) 25%, transparent);
 
       .sidebar__user-arrow {
         color: var(--text-color);
@@ -225,7 +233,7 @@
       );
       font-size: 24px;
       color: var(--text-color);
-      box-shadow: 0 0 16px rgba(168, 85, 247, 0.45);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--second-gradient-color) 45%, transparent);
     }
 
     &-image {

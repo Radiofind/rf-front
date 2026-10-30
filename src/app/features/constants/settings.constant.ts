@@ -78,6 +78,8 @@ export const ACCENT_COLORS: Readonly<Record<AccentColor, IAccentColorOption>> = 
   },
 };
 
+export const ARTWORK_ACCENT_COLOR: AccentColor = AccentColorEnum.VIOLET;
+
 export const ACCENT_COLOR_OPTIONS: readonly IAccentColorOption[] = [
   ACCENT_COLORS[AccentColorEnum.VIOLET],
   ACCENT_COLORS[AccentColorEnum.OCEAN],
