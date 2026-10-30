@@ -40,14 +40,14 @@
     border: 1px solid var(--header-element-border);
     border-radius: 999px;
     background: var(--surface-color);
-    box-shadow: inset 0 0 20px rgba(106, 92, 255, 0.08);
+    box-shadow: inset 0 0 20px color-mix(in srgb, var(--first-gradient-color) 8%, transparent);
     transition: all 300ms ease;
 
     &:focus-within {
       border-color: var(--first-gradient-color);
       box-shadow:
-        inset 0 0 20px rgba(106, 92, 255, 0.12),
-        0 0 24px rgba(106, 92, 255, 0.25);
+        inset 0 0 20px color-mix(in srgb, var(--first-gradient-color) 12%, transparent),
+        0 0 24px color-mix(in srgb, var(--first-gradient-color) 25%, transparent);
     }
 
     &-icon {
@@ -113,7 +113,7 @@
     &:hover {
       border-color: var(--first-gradient-color);
       color: var(--text-color);
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.35);
+      box-shadow: 0 0 20px color-mix(in srgb, var(--second-gradient-color) 35%, transparent);
     }
 
     &-badge {
@@ -125,7 +125,7 @@
       border: 2px solid var(--bg-color);
       border-radius: 50%;
       background: var(--second-gradient-color);
-      box-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
+      box-shadow: 0 0 10px color-mix(in srgb, var(--second-gradient-color) 80%, transparent);
     }
   }
 
@@ -242,13 +242,13 @@
     background: linear-gradient(135deg, var(--first-gradient-color), var(--second-gradient-color));
     font-size: 28px;
     color: var(--text-color);
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.45);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--second-gradient-color) 45%, transparent);
     cursor: pointer;
     overflow: visible;
     transition: all 300ms ease;
 
     &:hover {
-      box-shadow: 0 0 28px rgba(168, 85, 247, 0.7);
+      box-shadow: 0 0 28px color-mix(in srgb, var(--second-gradient-color) 70%, transparent);
     }
 
     &-image {
@@ -277,8 +277,12 @@
   height: 80px;
   padding: 0 3%;
   border-bottom: 1px solid var(--header-border-color);
-  background: linear-gradient(180deg, rgba(113, 43, 226, 0.08), rgba(113, 43, 226, 0.02));
-  box-shadow: 0 0 40px rgba(113, 43, 226, 0.15);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--main-color) 8%, transparent),
+    color-mix(in srgb, var(--main-color) 2%, transparent)
+  );
+  box-shadow: 0 0 40px color-mix(in srgb, var(--main-color) 15%, transparent);
 
   .header-logo {
     width: 40px;

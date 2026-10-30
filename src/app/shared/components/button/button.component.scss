@@ -49,7 +49,7 @@
   font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
-  box-shadow: 0 0 24px rgba(168, 85, 247, 0.45);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--second-gradient-color) 45%, transparent);
 
   i {
     font-size: 20px;
@@ -59,5 +59,5 @@
 
 .button--premium:hover {
   opacity: 1;
-  box-shadow: 0 0 32px rgba(168, 85, 247, 0.7);
+  box-shadow: 0 0 32px color-mix(in srgb, var(--second-gradient-color) 70%, transparent);
 }

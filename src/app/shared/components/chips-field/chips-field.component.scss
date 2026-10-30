@@ -52,8 +52,8 @@
   &__chip {
     gap: 6px;
     padding: 0 8px 0 16px;
-    background: rgba(106, 92, 255, 0.16);
-    box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+    background: color-mix(in srgb, var(--first-gradient-color) 16%, transparent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--second-gradient-color) 20%, transparent);
   }
 
   &__chip--readonly {
@@ -75,7 +75,7 @@
 
     &:hover:not(:disabled),
     &:focus-visible {
-      background: rgba(168, 85, 247, 0.35);
+      background: color-mix(in srgb, var(--second-gradient-color) 35%, transparent);
     }
 
     &:disabled {
@@ -93,7 +93,7 @@
     &:focus-within {
       border-color: var(--first-gradient-color);
       color: var(--text-color);
-      box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--second-gradient-color) 30%, transparent);
     }
   }
 
