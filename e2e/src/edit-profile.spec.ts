@@ -56,8 +56,8 @@ const profileUpdate = (
   description: 'Debugging the charts since 1947.',
   shortDescription: 'Debuggers',
   socialLinks: { ...NO_SOCIAL_LINKS, telegram: 'https://t.me/compilers' },
-  mainGenres: ['ROCK'],
-  additionalGenres: ['JAZZ'],
+  mainGenres: ['CLASSIC_ROCK'],
+  additionalGenres: ['ACID_JAZZ'],
   ...overrides,
 });
 

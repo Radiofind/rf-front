@@ -1,45 +1,4 @@
-import { GenreEnum } from '../../core/enums/genre.enum';
-
-import type { TranslationKey } from '../../core/types/translation.type';
-import type { ISelectOption } from '../../shared/models/select-option.model';
 import type { ISocialLinkConfig, SocialLinksForm } from '../models/edit-profile-form.model';
-
-export const GENRE_OPTIONS: readonly ISelectOption<string, TranslationKey>[] = [
-  { value: GenreEnum.ALTERNATIVE, label: 'genres.alternative' },
-  { value: GenreEnum.AMBIENT, label: 'genres.ambient' },
-  { value: GenreEnum.BLUES, label: 'genres.blues' },
-  { value: GenreEnum.CHILLWAVE, label: 'genres.chillwave' },
-  { value: GenreEnum.CLASSICAL, label: 'genres.classical' },
-  { value: GenreEnum.COUNTRY, label: 'genres.country' },
-  { value: GenreEnum.DISCO, label: 'genres.disco' },
-  { value: GenreEnum.DRUM_AND_BASS, label: 'genres.drumAndBass' },
-  { value: GenreEnum.DUBSTEP, label: 'genres.dubstep' },
-  { value: GenreEnum.ELECTRONIC, label: 'genres.electronic' },
-  { value: GenreEnum.EXPERIMENTAL, label: 'genres.experimental' },
-  { value: GenreEnum.FOLK, label: 'genres.folk' },
-  { value: GenreEnum.FUNK, label: 'genres.funk' },
-  { value: GenreEnum.HIP_HOP, label: 'genres.hipHop' },
-  { value: GenreEnum.HOUSE, label: 'genres.house' },
-  { value: GenreEnum.INDIE, label: 'genres.indie' },
-  { value: GenreEnum.JAZZ, label: 'genres.jazz' },
-  { value: GenreEnum.K_POP, label: 'genres.kPop' },
-  { value: GenreEnum.LATIN, label: 'genres.latin' },
-  { value: GenreEnum.LO_FI, label: 'genres.loFi' },
-  { value: GenreEnum.METAL, label: 'genres.metal' },
-  { value: GenreEnum.POP, label: 'genres.pop' },
-  { value: GenreEnum.POST_PUNK, label: 'genres.postPunk' },
-  { value: GenreEnum.PUNK, label: 'genres.punk' },
-  { value: GenreEnum.RNB, label: 'genres.rnb' },
-  { value: GenreEnum.RAP, label: 'genres.rap' },
-  { value: GenreEnum.REGGAE, label: 'genres.reggae' },
-  { value: GenreEnum.ROCK, label: 'genres.rock' },
-  { value: GenreEnum.SOUL, label: 'genres.soul' },
-  { value: GenreEnum.SOUNDTRACK, label: 'genres.soundtrack' },
-  { value: GenreEnum.SYNTHWAVE, label: 'genres.synthwave' },
-  { value: GenreEnum.TECHNO, label: 'genres.techno' },
-  { value: GenreEnum.TRANCE, label: 'genres.trance' },
-  { value: GenreEnum.WORLD, label: 'genres.world' },
-];
 
 export const SOCIAL_LINKS: readonly ISocialLinkConfig[] = [
   {
