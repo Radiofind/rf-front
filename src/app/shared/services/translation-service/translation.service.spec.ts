@@ -4,7 +4,6 @@ import { PLATFORM_ID } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { TranslationService } from './translation.service';
 import { Constants } from '../../../core/constants/constants';
-import { GENRE_OPTIONS } from '../../../features/constants/edit-profile.constant';
 
 describe('TranslationService', () => {
   let service: TranslationService;
@@ -99,8 +98,20 @@ describe('TranslationService', () => {
     createService();
     await service.use('RU');
 
-    expect(service.translateOptions(GENRE_OPTIONS.slice(0, 1))).toEqual([
-      { value: 'ALTERNATIVE', label: 'Альтернатива', children: undefined },
+    expect(
+      service.translateOptions([
+        {
+          value: 'ROCK',
+          label: 'genreGroups.rock',
+          children: [{ value: 'CLASSIC_ROCK', label: 'genres.classicRock' }],
+        },
+      ]),
+    ).toEqual([
+      {
+        value: 'ROCK',
+        label: 'Рок',
+        children: [{ value: 'CLASSIC_ROCK', label: 'Классический рок', children: undefined }],
+      },
     ]);
   });
 

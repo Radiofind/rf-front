@@ -22,9 +22,9 @@ import { TranslationService } from '../../../../shared/services/translation-serv
 import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 import {
   EMPTY_SOCIAL_LINKS_FORM,
-  GENRE_OPTIONS,
   SOCIAL_LINKS,
 } from '../../../../features/constants/edit-profile.constant';
+import { GENRE_OPTIONS } from '../../../../features/constants/genre.constant';
 import { Constants } from '../../../../core/constants/constants';
 import { Links } from '../../../../core/constants/links';
 

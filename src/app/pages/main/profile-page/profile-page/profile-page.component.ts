@@ -18,7 +18,7 @@ import { ModalSizeEnum } from '../../../../core/enums/modal-size.enum';
 import { formatStringDate } from '../../../../shared/helpers/date/date.helpers';
 import { findSelectOption } from '../../../../shared/helpers/select-option/select-option.helpers';
 import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
-import { GENRE_OPTIONS } from '../../../../features/constants/edit-profile.constant';
+import { GENRE_OPTIONS } from '../../../../features/constants/genre.constant';
 
 import type { OnInit, Signal, WritableSignal } from '@angular/core';
 import type { ISocialLinksData, IUserProfileData } from '../../../../core/models/user.model';

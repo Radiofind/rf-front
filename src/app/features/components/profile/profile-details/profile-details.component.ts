@@ -6,7 +6,7 @@ import { ArtistTypeRequestEnum } from '../../../../core/enums/artist-type.enum';
 import { ARTIST_TYPE_LABELS, ARTIST_TYPE_TEXTS } from '../../../constants/artist-type.constant';
 import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
-import { GENRE_OPTIONS } from '../../../constants/edit-profile.constant';
+import { GENRE_OPTIONS } from '../../../constants/genre.constant';
 
 import type { InputSignal, Signal, WritableSignal } from '@angular/core';
 import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';

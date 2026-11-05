@@ -95,10 +95,10 @@ describe('ProfileDetailsComponent', () => {
     it('renders the additional genres as chips with readable labels', async () => {
       const fixture: ComponentFixture<ProfileDetailsComponent> = await createFixture();
 
-      fixture.componentRef.setInput('additionalGenres', ['JAZZ', 'DRUM_AND_BASS', 'Shoegaze']);
+      fixture.componentRef.setInput('additionalGenres', ['ACID_JAZZ', 'DEEP_HOUSE', 'Shoegaze']);
       await fixture.whenStable();
 
-      expect(chipLabels(fixture)).toEqual(['Jazz', 'Drum & Bass', 'Shoegaze']);
+      expect(chipLabels(fixture)).toEqual(['Acid Jazz', 'Deep House', 'Shoegaze']);
     });
 
     it('shows the genres read-only', async () => {

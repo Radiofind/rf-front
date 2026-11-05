@@ -45,8 +45,8 @@ describe('EditProfilePageComponent', () => {
     description: 'Analytical soundscapes',
     shortDescription: 'Engines in harmony',
     socialLinks: { ...noSocialLinks, telegram: 'https://t.me/engines' },
-    mainGenres: ['ELECTRONIC', 'AMBIENT'],
-    additionalGenres: ['JAZZ'],
+    mainGenres: ['DEEP_HOUSE', 'AMBIENT'],
+    additionalGenres: ['ACID_JAZZ'],
     registeredAt: '2026-01-15T10:00:00.000000',
     avatarUrl: null,
   };
@@ -167,8 +167,8 @@ describe('EditProfilePageComponent', () => {
         element(fixture).querySelector<HTMLInputElement>('input[type="radio"][value="Band"]')!
           .checked,
       ).toBe(true);
-      expect(chips(fixture, '.edit-profile__main-genres')).toEqual(['Electronic', 'Ambient']);
-      expect(chips(fixture, '.edit-profile__additional-genres')).toEqual(['Jazz']);
+      expect(chips(fixture, '.edit-profile__main-genres')).toEqual(['Deep House', 'Ambient']);
+      expect(chips(fixture, '.edit-profile__additional-genres')).toEqual(['Acid Jazz']);
     });
 
     it('leaves optional fields blank and defaults to an artist when nothing is stored', async () => {
@@ -193,15 +193,18 @@ describe('EditProfilePageComponent', () => {
         .querySelector<HTMLButtonElement>('.edit-profile__main-genres .chips-field__trigger')!
         .click();
       await fixture.whenStable();
+      Array.from(document.querySelectorAll<HTMLButtonElement>('.dropdown-menu__item'))
+        .find((option) => option.textContent.trim() === 'Jazz')!
+        .click();
+      await fixture.whenStable();
 
       const mainOptions: string[] = Array.from(
         document.querySelectorAll<HTMLButtonElement>('.dropdown-menu__item'),
       ).map((option) => option.textContent.trim());
       document.querySelector('.cdk-overlay-container')?.remove();
 
-      expect(mainOptions).not.toContain('Jazz');
-      expect(mainOptions).not.toContain('Electronic');
-      expect(mainOptions).toContain('Rock');
+      expect(mainOptions).not.toContain('Acid Jazz');
+      expect(mainOptions).toContain('Bebop');
     });
 
     it('reports a failed load and keeps saving locked', async () => {
@@ -266,8 +269,8 @@ describe('EditProfilePageComponent', () => {
           telegram: 'https://t.me/engines',
           instagram: 'https://instagram.com/engines',
         },
-        mainGenres: ['ELECTRONIC', 'AMBIENT'],
-        additionalGenres: ['JAZZ'],
+        mainGenres: ['DEEP_HOUSE', 'AMBIENT'],
+        additionalGenres: ['ACID_JAZZ'],
       });
       expect(snackbar.success).toHaveBeenCalledWith(Constants.PROFILE_INFORMATION_SAVED);
       expect(navigate).toHaveBeenCalledWith([Links.PROFILE_URL]);
@@ -306,11 +309,15 @@ describe('EditProfilePageComponent', () => {
         .find((option) => option.textContent.trim() === 'Rock')!
         .click();
       await fixture.whenStable();
+      Array.from(document.querySelectorAll<HTMLButtonElement>('.dropdown-menu__item'))
+        .find((option) => option.textContent.trim() === 'Classic Rock')!
+        .click();
+      await fixture.whenStable();
       document.querySelector('.cdk-overlay-container')?.remove();
       await save(fixture);
 
-      expect(sentData().mainGenres).toEqual(['ELECTRONIC']);
-      expect(sentData().additionalGenres).toEqual(['JAZZ', 'ROCK']);
+      expect(sentData().mainGenres).toEqual(['DEEP_HOUSE']);
+      expect(sentData().additionalGenres).toEqual(['ACID_JAZZ', 'CLASSIC_ROCK']);
     });
 
     it('signs the user out when the email change requires a new sign-in', async () => {
