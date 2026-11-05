@@ -40,7 +40,7 @@ describe('ProfilePageComponent', () => {
       tiktok: null,
     },
     mainGenres: ['ELECTRONIC'],
-    additionalGenres: ['JAZZ'],
+    additionalGenres: ['ACID_JAZZ'],
     registeredAt: '2026-01-15T10:00:00.000000',
     avatarUrl: null,
   };
@@ -197,7 +197,7 @@ describe('ProfilePageComponent', () => {
         Array.from<HTMLElement>(
           fixture.nativeElement.querySelectorAll('.details__field--full .chips-field__chip'),
         ).map((chip: HTMLElement) => chip.textContent.trim()),
-      ).toEqual(['Jazz']);
+      ).toEqual(['Acid Jazz']);
     });
 
     it('shows a dash when the profile has no additional genres', async () => {
@@ -249,11 +249,11 @@ describe('ProfilePageComponent', () => {
 
     it('shows the translated label of a known genre', async () => {
       const fixture: ComponentFixture<ProfilePageComponent> = await createFixtureWithGenres([
-        'HIP_HOP',
-        'DRUM_AND_BASS',
+        'LO_FI_HIP_HOP',
+        'TRAP_EDM',
       ]);
 
-      expect(heroMeta(fixture)[1]).toBe('Hip-Hop / Drum & Bass');
+      expect(heroMeta(fixture)[1]).toBe('Lo-Fi Hip-Hop / Trap (EDM)');
     });
 
     it('capitalizes every word of an unknown genre', async () => {
