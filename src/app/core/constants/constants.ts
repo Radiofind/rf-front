@@ -117,6 +117,8 @@ export class Constants {
 
   public static readonly LOADER_BODY_CLASS: string = 'is-loading';
 
+  public static readonly ICON_FONT_SIZE: string = '1em';
+
   public static readonly SNACKBAR_SUCCESS_ICON_CLASS: string = 'bx bx-badge-check';
 
   public static readonly SNACKBAR_ERROR_ICON_CLASS: string = 'bx bx-x-circle';
@@ -272,6 +274,8 @@ export class Constants {
 
   public static readonly SNACKBAR_DURATION_MS: number = 2000;
 
+  public static readonly ICON_FONT_LOAD_TIMEOUT_MS: number = 10000;
+
   public static readonly SNACKBAR_MAX_STACK: number = 3;
 
   public static readonly POPOVER_OFFSET: number = 12;
@@ -285,6 +289,12 @@ export class Constants {
   public static readonly MILLISECONDS_IN_ONE_SECOND: number = 1000;
 
   // others
+
+  public static readonly ICON_FONT_FAMILIES: readonly string[] = [
+    'boxicons',
+    'boxicons-filled',
+    'boxicons-brands',
+  ];
 
   public static readonly LOADER_BLOCKED_EVENTS: readonly string[] = [
     'keydown',
