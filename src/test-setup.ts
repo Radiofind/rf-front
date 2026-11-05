@@ -11,3 +11,9 @@ Object.defineProperty(globalThis, 'matchMedia', {
     dispatchEvent: () => false,
   }),
 });
+
+Object.defineProperty(document, 'fonts', {
+  configurable: true,
+  writable: true,
+  value: { load: () => Promise.resolve([]) },
+});

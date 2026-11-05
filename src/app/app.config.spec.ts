@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { HttpClient, HttpBackend, HttpResponse } from '@angular/common/http';
@@ -57,8 +57,11 @@ describe('appConfig', () => {
     localStorage.clear();
   });
 
-  it('runs the loader interceptor on outgoing requests', () => {
+  it('runs the loader interceptor on outgoing requests', async () => {
     const loaderService: LoaderService = TestBed.inject(LoaderService);
+    await vi.waitFor(() => {
+      expect(loaderService.isLoading()).toBe(false);
+    });
 
     TestBed.inject(HttpClient).get(`${environment.apiUrl}/tracks`).subscribe();
 
