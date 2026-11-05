@@ -7,6 +7,10 @@ export interface IUserEndpoints {
   avatar: string;
   settings: string;
   general: string;
+  activities: string;
+  notifications: string;
+  unreadCount: string;
+  readAll: string;
 }
 
 export interface ICurrentUser {

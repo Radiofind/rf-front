@@ -52,6 +52,15 @@
     opacity: 0.7;
   }
 
+  .trailing-icon {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    font-size: 28px;
+    color: var(--icon-color);
+    pointer-events: none;
+  }
+
   &-input,
   &-textarea {
     width: 100%;
@@ -107,7 +116,6 @@
   }
 }
 
-// Dense variant for multi-column forms (e.g. edit profile).
 .field--compact {
   .field-label {
     margin-bottom: 8px;
@@ -120,7 +128,8 @@
   }
 
   .default,
-  .action-icon {
+  .action-icon,
+  .trailing-icon {
     top: 38px;
     font-size: 22px;
   }
@@ -129,8 +138,14 @@
     left: 14px;
   }
 
-  .action-icon {
+  .action-icon,
+  .trailing-icon {
     right: 14px;
+  }
+
+  .field-input:read-only {
+    color: var(--soft-text-color);
+    cursor: not-allowed;
   }
 
   .field-input,
@@ -147,8 +162,8 @@
       color: var(--second-text-color);
     }
 
-    &:hover:not(:disabled),
-    &:focus-visible {
+    &:hover:not(:disabled, :read-only),
+    &:focus-visible:not(:read-only) {
       border-color: var(--first-gradient-color);
       box-shadow: 0 0 16px color-mix(in srgb, var(--second-gradient-color) 25%, transparent);
     }
@@ -176,6 +191,10 @@
   .field-input {
     padding: 0 14px;
   }
+}
+
+.field--compact.field--trailing-icon .field-input {
+  padding-right: 44px;
 }
 
 @media (max-width: 540px) {
@@ -235,7 +254,8 @@
     }
 
     .default,
-    .action-icon {
+    .action-icon,
+    .trailing-icon {
       top: 36px;
       font-size: 20px;
     }

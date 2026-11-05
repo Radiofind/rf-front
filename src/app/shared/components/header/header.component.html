@@ -74,7 +74,10 @@
           <button
             class="header-action"
             type="button"
-            [attr.aria-label]="'header.notifications' | translate"
+            [attr.aria-label]="
+              (hasUnreadNotifications() ? 'header.unreadNotifications' : 'header.notifications')
+                | translate
+            "
             aria-haspopup="dialog"
             [attr.aria-expanded]="notificationsPopover.isOpen()"
           >
@@ -85,11 +88,15 @@
           </button>
 
           <ng-template appPopoverContent>
-            <app-empty-state
-              emptyIconClass="bx bx-bell"
-              [emptyTitle]="'header.caughtUpTitle' | translate"
-              [emptyDescription]="'header.caughtUpDescription' | translate"
-            />
+            @if (notifications().length) {
+              <app-notification-list [notifications]="notifications()" />
+            } @else {
+              <app-empty-state
+                emptyIconClass="bx bx-bell"
+                [emptyTitle]="'header.caughtUpTitle' | translate"
+                [emptyDescription]="'header.caughtUpDescription' | translate"
+              />
+            }
           </ng-template>
         </app-popover>
 

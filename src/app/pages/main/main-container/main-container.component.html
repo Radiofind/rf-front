@@ -1,9 +1,11 @@
 <div class="main">
   <app-header
     [isMainApplication]="true"
-    [hasUnreadNotifications]="false"
+    [hasUnreadNotifications]="hasUnreadNotifications()"
+    [notifications]="notifications()"
     [isUserOnline]="true"
     [userAvatarUrl]="avatarUrl()"
+    (notificationsAction)="onNotificationsOpen()"
   />
 
   <div class="main__body">

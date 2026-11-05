@@ -1,0 +1,62 @@
+<div
+  class="dropzone"
+  [class.dropzone--active]="isDragOver()"
+  [class.dropzone--invalid]="visibleErrors().length"
+  [class.dropzone--disabled]="disabled()"
+>
+  <label
+    class="dropzone__area"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
+    <input
+      class="dropzone__input"
+      type="file"
+      [id]="fieldId()"
+      [accept]="accept()"
+      [disabled]="disabled()"
+      [attr.aria-describedby]="fieldId() + '-hint'"
+      [attr.aria-invalid]="visibleErrors().length ? true : null"
+      (change)="onFileChange($event)"
+    />
+
+    @if (previewUrl(); as url) {
+      <img class="dropzone__preview" [src]="url" [alt]="value()?.name ?? ''" />
+    } @else if (iconClass()) {
+      <i class="dropzone__icon" [class]="iconClass()" aria-hidden="true"></i>
+    }
+
+    @if (value(); as file) {
+      <span class="dropzone__title">{{ file.name }}</span>
+      <span class="dropzone__hint" [id]="fieldId() + '-hint'">
+        {{ 'fileDropzone.replaceHint' | translate: { size: fileSizeMb() ?? '' } }}
+      </span>
+    } @else {
+      <span class="dropzone__title">{{ dropzoneTitle() }}</span>
+      @if (dropzoneAction()) {
+        <span class="dropzone__action">{{ dropzoneAction() }}</span>
+      }
+      <span class="dropzone__hint" [id]="fieldId() + '-hint'">{{ dropzoneHint() }}</span>
+    }
+  </label>
+
+  @if (value(); as file) {
+    <button
+      class="dropzone__remove"
+      type="button"
+      [attr.aria-label]="'common.removeItem' | translate: { item: file.name }"
+      [title]="'common.removeItem' | translate: { item: file.name }"
+      [disabled]="disabled()"
+      (click)="onRemove()"
+    >
+      <i class="bx bx-trash" aria-hidden="true"></i>
+    </button>
+  }
+
+  <div class="dropzone__errors" role="alert">
+    @for (error of visibleErrors(); track error.kind) {
+      <div>{{ error | translateError }}</div>
+    }
+  </div>
+</div>

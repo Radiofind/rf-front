@@ -42,6 +42,7 @@ export const FR_TRANSLATIONS: Translations = {
       "Les évaluations de titres, sélections radio et mises à jour du compte s'afficheront ici.",
     profile: 'Profil',
     accountMenu: 'Menu du compte',
+    unreadNotifications: 'Notifications, non lues',
   },
   profileMenu: {
     account: 'Compte',
@@ -234,6 +235,45 @@ export const FR_TRANSLATIONS: Translations = {
       'Parlez de votre parcours, de vos influences, de votre son et de ce qui rend votre musique unique...',
     socialTitle: 'Liens sociaux',
     socialSubtitle: 'Ajoutez vos liens de réseaux sociaux et de streaming.',
+  },
+  uploadTrack: {
+    title: 'Importer un morceau',
+    subtitle:
+      'Partagez votre musique avec le monde. Remplissez les informations ci-dessous pour publier votre morceau.',
+    filesLabel: 'Fichiers du morceau',
+    detailsLabel: 'Détails du morceau',
+    audioTitle: 'Glissez-déposez votre fichier audio ici',
+    browse: 'ou cliquez pour parcourir',
+    audioHint: 'MP3, WAV, FLAC (max. {size} Mo)',
+    coverTitle: 'Importer la pochette',
+    coverHint: 'Taille recommandée : 1000 × 1000 (JPG, PNG, max. {size} Mo)',
+    trackTitle: 'Titre du morceau',
+    trackTitlePlaceholder: 'Saisissez le titre du morceau...',
+    artistHint: '(de votre compte)',
+    genres: 'Genres',
+    addGenre: 'Ajouter un genre',
+    description: 'Description',
+    descriptionPlaceholder: 'Parlez-nous de votre morceau...',
+    submit: 'Importer le morceau',
+    tipsTitle: 'Conseils pour un import réussi',
+    tipQualityTitle: 'Utilisez un audio de haute qualité',
+    tipQualityDescription:
+      'Nous recommandons le MP3 à 320 kbps ou des formats sans perte pour une qualité sonore optimale.',
+    tipGenreTitle: 'Choisissez le bon genre',
+    tipGenreDescription:
+      'Cela aide les auditeurs à trouver votre musique et à toucher le bon public.',
+    tipCoverTitle: 'Ajoutez une belle pochette',
+    tipCoverDescription: 'Utilisez des images haute résolution (au moins 1000 × 1000).',
+    tipDescriptionTitle: 'Rédigez une description captivante',
+    tipDescriptionDescription:
+      'Racontez votre histoire, partagez votre inspiration et créez un lien avec vos auditeurs.',
+  },
+  fileDropzone: {
+    replaceHint: '{size} Mo · Cliquez ou déposez un autre fichier pour le remplacer',
+  },
+  notifications: {
+    trackSubmittedForReview:
+      'Votre morceau « {title} » a été importé et envoyé au contrôle qualité',
   },
   settings: {
     title: 'Paramètres',
@@ -695,6 +735,11 @@ export const FR_TRANSLATIONS: Translations = {
     avatarRemoved: 'Avatar supprimé',
     avatarUploadFailed: "Impossible de téléverser l'avatar. Veuillez réessayer",
     avatarRemoveFailed: "Impossible de supprimer l'avatar. Veuillez réessayer",
+    trackUploaded: 'Morceau importé et envoyé au contrôle qualité',
+    trackUploadFailed: "Impossible d'importer le morceau. Veuillez réessayer.",
+    trackTooLarge: 'Le fichier est trop volumineux. Vérifiez les limites de taille et réessayez.',
+    trackUnsupportedFormat:
+      'Format de fichier non pris en charge. Utilisez un audio MP3, WAV ou FLAC et une pochette JPG ou PNG.',
   },
   validation: {
     required: 'Ce champ est obligatoire',
@@ -731,5 +776,13 @@ export const FR_TRANSLATIONS: Translations = {
     sameEmail: 'L’e-mail de récupération doit différer de votre e-mail',
     invalidUrl: 'Saisissez un lien complet commençant par https://',
     wrongSocialLink: 'Ce lien doit mener vers {platform}',
+    audioRequired: 'Choisissez un fichier audio',
+    audioType: 'Seuls les fichiers MP3, WAV et FLAC sont autorisés',
+    audioTooLarge: 'Le fichier audio ne doit pas dépasser {size} Mo',
+    coverType: 'Seules les images JPG et PNG sont autorisées',
+    coverTooLarge: 'La pochette ne doit pas dépasser {size} Mo',
+    genreRequired: 'Choisissez au moins un genre',
+    maxTrackGenres: "Choisissez jusqu'à 3 genres",
+    maxLengthTitle: 'Ne doit pas dépasser 150 caractères',
   },
 };

@@ -41,6 +41,7 @@ export const IT_TRANSLATIONS: Translations = {
       "Le recensioni dei brani, le selezioni radio e gli aggiornamenti dell'account appariranno qui.",
     profile: 'Profilo',
     accountMenu: 'Menu account',
+    unreadNotifications: 'Notifiche, non lette',
   },
   profileMenu: {
     account: 'Account',
@@ -232,6 +233,45 @@ export const IT_TRANSLATIONS: Translations = {
       'Racconta di più sul tuo percorso, le tue influenze, il tuo sound e cosa rende unica la tua musica...',
     socialTitle: 'Link social',
     socialSubtitle: 'Aggiungi i link ai tuoi social e alle piattaforme di streaming.',
+  },
+  uploadTrack: {
+    title: 'Carica brano',
+    subtitle:
+      'Condividi la tua musica con il mondo. Compila i dettagli qui sotto per pubblicare il tuo brano.',
+    filesLabel: 'File del brano',
+    detailsLabel: 'Dettagli del brano',
+    audioTitle: 'Trascina qui il tuo file audio',
+    browse: 'oppure fai clic per sfogliare',
+    audioHint: 'MP3, WAV, FLAC (max {size} MB)',
+    coverTitle: 'Carica la copertina',
+    coverHint: 'Dimensione consigliata: 1000 × 1000 (JPG, PNG, max {size} MB)',
+    trackTitle: 'Titolo del brano',
+    trackTitlePlaceholder: 'Inserisci il titolo del brano...',
+    artistHint: '(dal tuo account)',
+    genres: 'Generi',
+    addGenre: 'Aggiungi genere',
+    description: 'Descrizione',
+    descriptionPlaceholder: 'Raccontaci del tuo brano...',
+    submit: 'Carica brano',
+    tipsTitle: 'Consigli per un caricamento riuscito',
+    tipQualityTitle: 'Usa audio di alta qualità',
+    tipQualityDescription:
+      'Consigliamo MP3 a 320 kbps o formati lossless per la migliore qualità del suono.',
+    tipGenreTitle: 'Scegli il genere giusto',
+    tipGenreDescription:
+      'Aiuta gli ascoltatori a trovare la tua musica e a raggiungere il pubblico giusto.',
+    tipCoverTitle: 'Aggiungi una bella copertina',
+    tipCoverDescription: 'Usa immagini ad alta risoluzione (almeno 1000 × 1000).',
+    tipDescriptionTitle: 'Scrivi una descrizione coinvolgente',
+    tipDescriptionDescription:
+      'Racconta la tua storia, condividi la tua ispirazione e entra in contatto con gli ascoltatori.',
+  },
+  fileDropzone: {
+    replaceHint: '{size} MB · Fai clic o trascina un altro file per sostituirlo',
+  },
+  notifications: {
+    trackSubmittedForReview:
+      'Il tuo brano «{title}» è stato caricato e inviato al controllo qualità',
   },
   settings: {
     title: 'Impostazioni',
@@ -692,6 +732,11 @@ export const IT_TRANSLATIONS: Translations = {
     avatarRemoved: 'Avatar rimosso',
     avatarUploadFailed: "Impossibile caricare l'avatar. Riprova",
     avatarRemoveFailed: "Impossibile rimuovere l'avatar. Riprova",
+    trackUploaded: 'Brano caricato e inviato al controllo qualità',
+    trackUploadFailed: 'Impossibile caricare il brano. Riprova.',
+    trackTooLarge: 'Il file è troppo grande. Controlla i limiti di dimensione e riprova.',
+    trackUnsupportedFormat:
+      'Formato di file non supportato. Usa audio MP3, WAV o FLAC e una copertina JPG o PNG.',
   },
   validation: {
     required: 'Campo obbligatorio',
@@ -728,5 +773,13 @@ export const IT_TRANSLATIONS: Translations = {
     sameEmail: "L'email di recupero deve essere diversa dalla tua email",
     invalidUrl: 'Inserisci un link completo che inizi con https://',
     wrongSocialLink: 'Questo link deve portare a {platform}',
+    audioRequired: 'Scegli un file audio',
+    audioType: 'Sono consentiti solo file MP3, WAV e FLAC',
+    audioTooLarge: 'Il file audio non deve superare {size} MB',
+    coverType: 'Sono consentite solo immagini JPG e PNG',
+    coverTooLarge: 'La copertina non deve superare {size} MB',
+    genreRequired: 'Scegli almeno un genere',
+    maxTrackGenres: 'Scegli fino a 3 generi',
+    maxLengthTitle: 'Non deve superare 150 caratteri',
   },
 };

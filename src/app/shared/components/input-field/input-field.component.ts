@@ -41,6 +41,8 @@ export class InputFieldComponent implements FormValueControl<string> {
 
   public readonly hasOptionalLabel: InputSignal<boolean> = input<boolean>(false);
 
+  public readonly fieldHint: InputSignal<string | null> = input<string | null>(null);
+
   public readonly iconClass: InputSignal<string | null> = input<string | null>(null);
 
   public readonly inputClass: InputSignal<string | null> = input<string | null>(null);
@@ -60,6 +62,10 @@ export class InputFieldComponent implements FormValueControl<string> {
   );
 
   public readonly isCompact: InputSignal<boolean> = input<boolean>(false);
+
+  public readonly isReadonly: InputSignal<boolean> = input<boolean>(false);
+
+  public readonly trailingIconClass: InputSignal<string | null> = input<string | null>(null);
 
   public readonly characterLimit: InputSignal<number | null> = input<number | null>(null);
 

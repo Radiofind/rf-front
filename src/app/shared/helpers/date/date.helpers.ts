@@ -1,17 +1,26 @@
 import { Constants } from '../../../core/constants/constants';
-import { DateFormatEnum } from '../../../core/enums/date-format.enum';
+import { DATE_FORMAT_OPTIONS, RELATIVE_TIME_STEPS } from '../../constants/time.constants';
 
-const DATE_FORMAT_OPTIONS: Readonly<Record<DateFormatEnum, Intl.DateTimeFormatOptions>> = {
-  [DateFormatEnum.MONTH_YEAR]: {
-    month: 'short',
-    year: 'numeric',
-  },
-  [DateFormatEnum.FULL_DATE]: {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  },
-};
+import type { IRelativeTime, IRelativeTimeStep } from '../../models/relative-time.model';
+import type { DateFormatEnum } from '../../../core/enums/date-format.enum';
+
+export function toRelativeTime(isoDate: string, now: Date): IRelativeTime {
+  const date: Date = new Date(
+    isoDate.replace(Constants.EXTRA_FRACTION_DIGITS_PATTERN, Constants.ISO_DATE_REPLACEMENT),
+  );
+  const elapsedSeconds: number = Math.max(
+    Constants.ZERO,
+    Math.floor((now.getTime() - date.getTime()) / Constants.MILLISECONDS_IN_ONE_SECOND),
+  );
+
+  const step: IRelativeTimeStep | undefined = RELATIVE_TIME_STEPS.find(
+    ({ seconds }: IRelativeTimeStep) => elapsedSeconds >= seconds,
+  );
+
+  return step
+    ? { value: -Math.floor(elapsedSeconds / step.seconds), unit: step.unit }
+    : { value: Constants.ZERO - elapsedSeconds, unit: 'second' };
+}
 
 export function transformStringToDate(stringDate: string): Date {
   const [year, month, day]: string[] = stringDate.split(Constants.DASH);

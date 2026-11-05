@@ -1,1 +1,120 @@
-<p>upload-track-page works!</p>
+<form class="upload-track" [formRoot]="uploadTrackForm">
+  <header class="upload-track__header">
+    <span class="upload-track__header-icon" aria-hidden="true">
+      <i class="bx bx-arrow-up-circle"></i>
+    </span>
+
+    <div class="upload-track__heading">
+      <h1 class="upload-track__title">{{ 'uploadTrack.title' | translate }}</h1>
+      <p class="upload-track__subtitle">{{ 'uploadTrack.subtitle' | translate }}</p>
+    </div>
+  </header>
+
+  <div class="upload-track__grid">
+    <div class="upload-track__column">
+      <section
+        class="upload-track__card upload-track__files"
+        [attr.aria-label]="'uploadTrack.filesLabel' | translate"
+      >
+        <app-file-dropzone
+          class="upload-track__dropzone"
+          fieldId="upload-track-audio"
+          iconClass="bx bx-arrow-up-circle"
+          [accept]="audioAccept()"
+          [dropzoneTitle]="'uploadTrack.audioTitle' | translate"
+          [dropzoneAction]="'uploadTrack.browse' | translate"
+          [dropzoneHint]="'uploadTrack.audioHint' | translate: { size: audioMaxSizeMb() }"
+          [formField]="uploadTrackForm.audio"
+        />
+
+        <app-file-dropzone
+          class="upload-track__dropzone"
+          fieldId="upload-track-cover"
+          iconClass="bx bx-image"
+          [accept]="coverAccept()"
+          [hasImagePreview]="true"
+          [dropzoneTitle]="'uploadTrack.coverTitle' | translate"
+          [dropzoneHint]="'uploadTrack.coverHint' | translate: { size: coverMaxSizeMb() }"
+          [formField]="uploadTrackForm.cover"
+        />
+      </section>
+
+      <section
+        class="upload-track__card upload-track__details"
+        [attr.aria-label]="'uploadTrack.detailsLabel' | translate"
+      >
+        <div class="upload-track__row">
+          <app-input-field
+            [fieldLabel]="('uploadTrack.trackTitle' | translate) + ' *'"
+            [inputPlaceholder]="'uploadTrack.trackTitlePlaceholder' | translate"
+            [isCompact]="true"
+            [formField]="uploadTrackForm.title"
+          />
+
+          <app-input-field
+            name="artist"
+            trailingIconClass="bx bx-lock"
+            [fieldLabel]="(artistLabel() | translate) + ' *'"
+            [fieldHint]="'uploadTrack.artistHint' | translate"
+            [value]="artistName()"
+            [isCompact]="true"
+            [isReadonly]="true"
+          />
+        </div>
+
+        <app-chips-field
+          class="upload-track__genres"
+          fieldId="upload-track-genres"
+          [fieldLabel]="('uploadTrack.genres' | translate) + ' *'"
+          [addLabel]="'uploadTrack.addGenre' | translate"
+          [options]="genreOptions()"
+          [maxItems]="maxGenres()"
+          [formField]="uploadTrackForm.genres"
+        />
+
+        <app-input-field
+          [fieldLabel]="'uploadTrack.description' | translate"
+          [inputPlaceholder]="'uploadTrack.descriptionPlaceholder' | translate"
+          [isCompact]="true"
+          [isTextareaField]="true"
+          [hasOptionalLabel]="true"
+          [textareaRows]="descriptionRows()"
+          [characterLimit]="descriptionLimit()"
+          [formField]="uploadTrackForm.description"
+        />
+      </section>
+
+      <footer class="upload-track__actions">
+        <app-button
+          class="upload-track__action"
+          buttonType="submit"
+          contentIconClass="bx bx-arrow-up-circle"
+          [contentText]="'uploadTrack.submit' | translate"
+          [disabled]="isUploadDisabled()"
+        />
+      </footer>
+    </div>
+
+    <aside class="upload-track__card upload-track__tips" aria-labelledby="upload-track-tips-title">
+      <div class="upload-track__tips-cover" aria-hidden="true"></div>
+
+      <h2 class="upload-track__tips-title" id="upload-track-tips-title">
+        {{ 'uploadTrack.tipsTitle' | translate }}
+      </h2>
+
+      <ul class="upload-track__tips-list">
+        @for (tip of tips(); track tip.title) {
+          <li class="upload-track__tip">
+            <span class="upload-track__tip-icon" aria-hidden="true">
+              <i [class]="tip.iconClass"></i>
+            </span>
+            <div class="upload-track__tip-text">
+              <span class="upload-track__tip-title">{{ tip.title | translate }}</span>
+              <span class="upload-track__tip-description">{{ tip.description | translate }}</span>
+            </div>
+          </li>
+        }
+      </ul>
+    </aside>
+  </div>
+</form>

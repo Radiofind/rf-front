@@ -1,5 +1,5 @@
 import { inject, Service } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { tap } from 'rxjs';
 import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
@@ -30,6 +30,10 @@ import type {
   IUserProfileData,
 } from '../../models/user.model';
 import type { IGeneralSettings } from '../../models/settings.model';
+import type { ITrack, ITrackEndpoints, IUploadTrackData } from '../../models/track.model';
+import type { IActivity } from '../../models/activity.model';
+import type { INotification, IUnreadNotifications } from '../../models/notification.model';
+import type { IPage } from '../../models/page.model';
 
 @Service()
 export class ApiService {
@@ -44,6 +48,14 @@ export class ApiService {
   private readonly currentUserApi: string = `${this.userApi}${this.userEndpoints.me}`;
 
   private readonly generalSettingsApi: string = `${this.currentUserApi}${this.userEndpoints.settings}${this.userEndpoints.general}`;
+
+  private readonly trackEndpoints: ITrackEndpoints = EndpointConstants.TRACK_ENDPOINTS;
+
+  private readonly tracksApi: string = `${environment.apiUrl}${this.trackEndpoints.tracks}`;
+
+  private readonly activitiesApi: string = `${this.currentUserApi}${this.userEndpoints.activities}`;
+
+  private readonly notificationsApi: string = `${this.currentUserApi}${this.userEndpoints.notifications}`;
 
   private readonly http: HttpClient = inject(HttpClient);
 
@@ -139,5 +151,57 @@ export class ApiService {
     return this.http.put<IGeneralSettings>(this.generalSettingsApi, settings, {
       context: skipGlobalLoader(),
     });
+  }
+
+  public uploadTrack(data: IUploadTrackData): Observable<ITrack> {
+    const formData: FormData = new FormData();
+    formData.append(Constants.TITLE_FORM_DATA, data.title);
+    data.genres.forEach((genre: string) => {
+      formData.append(Constants.GENRES_FORM_DATA, genre);
+    });
+    formData.append(Constants.AUDIO_FORM_DATA, data.audio);
+
+    if (data.description) {
+      formData.append(Constants.DESCRIPTION_FORM_DATA, data.description);
+    }
+
+    if (data.cover) {
+      formData.append(Constants.COVER_FORM_DATA, data.cover);
+    }
+
+    return this.http.post<ITrack>(this.tracksApi, formData);
+  }
+
+  public getActivities(page: number, size: number): Observable<IPage<IActivity>> {
+    return this.http.get<IPage<IActivity>>(this.activitiesApi, {
+      params: this.pageParams(page, size),
+    });
+  }
+
+  public getNotifications(page: number, size: number): Observable<IPage<INotification>> {
+    return this.http.get<IPage<INotification>>(this.notificationsApi, {
+      params: this.pageParams(page, size),
+      context: skipGlobalLoader(),
+    });
+  }
+
+  public getUnreadNotifications(): Observable<IUnreadNotifications> {
+    return this.http.get<IUnreadNotifications>(
+      `${this.notificationsApi}${this.userEndpoints.unreadCount}`,
+      { context: skipGlobalLoader() },
+    );
+  }
+
+  public markAllNotificationsAsRead(): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.post<void>(`${this.notificationsApi}${this.userEndpoints.readAll}`, null, {
+      context: skipGlobalLoader(),
+    });
+  }
+
+  private pageParams(page: number, size: number): HttpParams {
+    return new HttpParams()
+      .set(Constants.PAGE_QUERY_PARAM, page)
+      .set(Constants.SIZE_QUERY_PARAM, size);
   }
 }

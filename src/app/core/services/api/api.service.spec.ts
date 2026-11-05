@@ -22,6 +22,8 @@ import type {
   IUserProfileData,
 } from '../../models/user.model';
 import type { IGeneralSettings } from '../../models/settings.model';
+import type { ITrack, IUploadTrackData } from '../../models/track.model';
+import type { IUnreadNotifications } from '../../models/notification.model';
 
 describe('ApiService', () => {
   const api: string = `${environment.apiUrl}${EndpointConstants.AUTH_ENDPOINTS.auth}`;
@@ -608,6 +610,115 @@ describe('ApiService', () => {
         .flush({ message: 'Bad Request' }, { status: 400, statusText: 'Bad Request' });
 
       expect(errorStatus).toBe(400);
+    });
+  });
+
+  describe('tracks', () => {
+    const tracksUrl: string = `${environment.apiUrl}${EndpointConstants.TRACK_ENDPOINTS.tracks}`;
+
+    const audio: File = new File(['audio'], 'song.mp3');
+
+    const trackData = (overrides: Partial<IUploadTrackData> = {}): IUploadTrackData => ({
+      title: 'Midnight Dreams',
+      genres: ['GRUNGE', 'INDIE_ROCK'],
+      description: null,
+      audio: audio,
+      cover: null,
+      ...overrides,
+    });
+
+    it('uploads only the given parts as multipart form data', () => {
+      let received: ITrack | undefined;
+      const track = { id: 42 } as ITrack;
+
+      service.uploadTrack(trackData()).subscribe((value) => {
+        received = value;
+      });
+
+      const request: TestRequest = httpMock.expectOne(tracksUrl);
+      const body: FormData = request.request.body as FormData;
+
+      expect(request.request.method).toBe('POST');
+      expect([...body.keys()]).toEqual([
+        Constants.TITLE_FORM_DATA,
+        Constants.GENRES_FORM_DATA,
+        Constants.GENRES_FORM_DATA,
+        Constants.AUDIO_FORM_DATA,
+      ]);
+      expect(body.getAll(Constants.GENRES_FORM_DATA)).toEqual(['GRUNGE', 'INDIE_ROCK']);
+      expect(body.get(Constants.TITLE_FORM_DATA)).toBe('Midnight Dreams');
+      expect((body.get(Constants.AUDIO_FORM_DATA) as File).name).toBe('song.mp3');
+
+      request.flush(track);
+
+      expect(received).toEqual(track);
+    });
+
+    it('adds the description and the cover when given', () => {
+      const cover: File = new File(['image'], 'cover.png');
+
+      service.uploadTrack(trackData({ description: 'Late night drive', cover: cover })).subscribe();
+
+      const body: FormData = httpMock.expectOne(tracksUrl).request.body as FormData;
+
+      expect(body.get(Constants.DESCRIPTION_FORM_DATA)).toBe('Late night drive');
+      expect((body.get(Constants.COVER_FORM_DATA) as File).name).toBe('cover.png');
+    });
+
+    it('shows the global loader while a track uploads', () => {
+      service.uploadTrack(trackData()).subscribe();
+
+      const request: TestRequest = httpMock.expectOne(tracksUrl);
+
+      expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(false);
+    });
+  });
+
+  describe('activities and notifications', () => {
+    it('requests a page of activities', () => {
+      service.getActivities(0, 5).subscribe();
+
+      const request: TestRequest = httpMock.expectOne(
+        (candidate) => candidate.url === '/api/users/me/activities',
+      );
+
+      expect(request.request.params.get(Constants.PAGE_QUERY_PARAM)).toBe('0');
+      expect(request.request.params.get(Constants.SIZE_QUERY_PARAM)).toBe('5');
+    });
+
+    it('requests a page of notifications in the background', () => {
+      service.getNotifications(1, 20).subscribe();
+
+      const request: TestRequest = httpMock.expectOne(
+        (candidate) => candidate.url === '/api/users/me/notifications',
+      );
+
+      expect(request.request.params.get(Constants.PAGE_QUERY_PARAM)).toBe('1');
+      expect(request.request.params.get(Constants.SIZE_QUERY_PARAM)).toBe('20');
+      expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(true);
+    });
+
+    it('requests the unread count in the background', () => {
+      let received: IUnreadNotifications | undefined;
+
+      service.getUnreadNotifications().subscribe((value) => {
+        received = value;
+      });
+
+      const request: TestRequest = httpMock.expectOne('/api/users/me/notifications/unread-count');
+      request.flush({ count: 3 });
+
+      expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(true);
+      expect(received).toEqual({ count: 3 });
+    });
+
+    it('marks every notification as read in the background', () => {
+      service.markAllNotificationsAsRead().subscribe();
+
+      const request: TestRequest = httpMock.expectOne('/api/users/me/notifications/read-all');
+
+      expect(request.request.method).toBe('POST');
+      expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(true);
     });
   });
 });

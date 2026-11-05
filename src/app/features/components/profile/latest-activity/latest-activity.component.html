@@ -1,5 +1,3 @@
-@let hasActivity = false;
-
 <section class="activity" aria-labelledby="latest-activity-title">
   <div class="activity__cover" aria-hidden="true"></div>
 
@@ -8,57 +6,44 @@
       {{ 'profile.latestActivity' | translate }}
     </h2>
 
-    @if (hasActivity) {
-      <ul class="activity__list">
-        <li class="activity__item">
-          <div class="activity__thumb activity__thumb--violet">
-            <i class="bx bx-disc"></i>
-          </div>
-          <div class="activity__info">
-            <span class="activity__name">Midnight Dreams</span>
-            <span class="activity__date">{{
-              'profile.uploaded' | translate: { time: formatRelativeTime(-2, 'day') }
-            }}</span>
-          </div>
-        </li>
+    @if (activities(); as activities) {
+      @if (activities.length) {
+        <ul class="activity__list">
+          @for (activity of activities; track activity.id) {
+            <li class="activity__item">
+              @if (activity.track?.coverUrl; as coverUrl) {
+                <img class="activity__thumb" [src]="coverUrl" alt="" />
+              } @else {
+                <div class="activity__thumb activity__thumb--placeholder" aria-hidden="true">
+                  <i class="bx bx-music"></i>
+                </div>
+              }
+              <div class="activity__info">
+                <span class="activity__name">{{ activity.track?.title }}</span>
+                <span class="activity__meta">
+                  <span class="activity__artist">{{ activity.track?.artistName }}</span>
+                  <span class="activity__date">{{
+                    'profile.uploaded' | translate: { time: (activity.createdAt | relativeTime) }
+                  }}</span>
+                </span>
+              </div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <div class="activity__empty">
+          <app-empty-state
+            emptyIconClass="bx bx-pulse"
+            [emptyTitle]="'profile.noActivityTitle' | translate"
+            [emptyDescription]="'profile.noActivityDescription' | translate"
+          />
 
-        <li class="activity__item">
-          <div class="activity__thumb activity__thumb--pink">
-            <i class="bx bx-music"></i>
-          </div>
-          <div class="activity__info">
-            <span class="activity__name">Neon Lights</span>
-            <span class="activity__date">{{
-              'profile.uploaded' | translate: { time: formatRelativeTime(-5, 'day') }
-            }}</span>
-          </div>
-        </li>
-
-        <li class="activity__item">
-          <div class="activity__thumb activity__thumb--blue">
-            <i class="bx bx-pulse"></i>
-          </div>
-          <div class="activity__info">
-            <span class="activity__name">Lost in Space</span>
-            <span class="activity__date">{{
-              'profile.uploaded' | translate: { time: formatRelativeTime(-1, 'week') }
-            }}</span>
-          </div>
-        </li>
-      </ul>
-    } @else {
-      <div class="activity__empty">
-        <app-empty-state
-          emptyIconClass="bx bx-pulse"
-          [emptyTitle]="'profile.noActivityTitle' | translate"
-          [emptyDescription]="'profile.noActivityDescription' | translate"
-        />
-
-        <button class="activity__cta" (click)="onUploadFirstTrack()">
-          <i class="bx bx-arrow-up-circle"></i>
-          <span>{{ 'profile.uploadFirstTrack' | translate }}</span>
-        </button>
-      </div>
+          <button class="activity__cta" type="button" (click)="onUploadFirstTrack()">
+            <i class="bx bx-arrow-up-circle"></i>
+            <span>{{ 'profile.uploadFirstTrack' | translate }}</span>
+          </button>
+        </div>
+      }
     }
   </div>
 </section>

@@ -13,6 +13,9 @@ import type {
   IUserProfileData,
 } from '../../../core/models/user.model';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
+import type { IActivity } from '../../../core/models/activity.model';
+import type { INotification, IUnreadNotifications } from '../../../core/models/notification.model';
+import type { IPage } from '../../../core/models/page.model';
 import { Constants } from '../../../core/constants/constants';
 
 @Service()
@@ -88,6 +91,22 @@ export class UserService {
 
   public updateGeneralSettings(settings: IGeneralSettings): Observable<IGeneralSettings> {
     return this.apiService.updateGeneralSettings(settings);
+  }
+
+  public getActivities(page: number, size: number): Observable<IPage<IActivity>> {
+    return this.apiService.getActivities(page, size);
+  }
+
+  public getNotifications(page: number, size: number): Observable<IPage<INotification>> {
+    return this.apiService.getNotifications(page, size);
+  }
+
+  public getUnreadNotifications(): Observable<IUnreadNotifications> {
+    return this.apiService.getUnreadNotifications();
+  }
+
+  public markAllNotificationsAsRead(): Observable<void> {
+    return this.apiService.markAllNotificationsAsRead();
   }
 
   private resetCurrentUser(): void {
