@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NotificationListComponent } from './notification-list.component';
 
@@ -73,6 +74,16 @@ describe('NotificationListComponent', () => {
       ...submittedTrack,
       track: { ...submittedTrack.track!, coverUrl: null },
     });
+
+    expect(item.querySelector('img')).toBeNull();
+    expect(item.querySelector('.notification-list__thumb--icon')).not.toBeNull();
+  });
+
+  it('falls back to the placeholder when the cover cannot be loaded', async () => {
+    const item: HTMLElement = await renderItem(submittedTrack);
+
+    item.querySelector('img')!.dispatchEvent(new Event('error'));
+    await TestBed.inject(ApplicationRef).whenStable();
 
     expect(item.querySelector('img')).toBeNull();
     expect(item.querySelector('.notification-list__thumb--icon')).not.toBeNull();

@@ -99,4 +99,14 @@ describe('LatestActivityComponent', () => {
     expect(item.querySelector('img')).toBeNull();
     expect(item.querySelector('.activity__thumb--placeholder')).not.toBeNull();
   });
+
+  it('falls back to the placeholder when the cover cannot be loaded', async () => {
+    const fixture: ComponentFixture<LatestActivityComponent> = await createFixture([uploadedTrack]);
+
+    element(fixture).querySelector('img')!.dispatchEvent(new Event('error'));
+    await fixture.whenStable();
+
+    expect(element(fixture).querySelector('img')).toBeNull();
+    expect(element(fixture).querySelector('.activity__thumb--placeholder')).not.toBeNull();
+  });
 });

@@ -11,8 +11,14 @@
         <ul class="activity__list">
           @for (activity of activities; track activity.id) {
             <li class="activity__item">
-              @if (activity.track?.coverUrl; as coverUrl) {
-                <img class="activity__thumb" [src]="coverUrl" alt="" />
+              @let coverUrl = activity.track?.coverUrl;
+              @if (coverUrl && !brokenCovers().has(coverUrl)) {
+                <img
+                  class="activity__thumb"
+                  [src]="coverUrl"
+                  alt=""
+                  (error)="onCoverError(coverUrl)"
+                />
               } @else {
                 <div class="activity__thumb activity__thumb--placeholder" aria-hidden="true">
                   <i class="bx bx-music"></i>
