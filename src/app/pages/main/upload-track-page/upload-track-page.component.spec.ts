@@ -286,6 +286,7 @@ describe('UploadTrackPageComponent', () => {
     it.each([
       [413, UPLOAD_TRACK_MESSAGES.tooLarge],
       [415, UPLOAD_TRACK_MESSAGES.unsupportedFormat],
+      [409, UPLOAD_TRACK_MESSAGES.alreadyUploaded],
       [500, UPLOAD_TRACK_MESSAGES.uploadFailed],
     ])('explains a %i response and stays on the page', async (status, message) => {
       uploadTrack.mockReturnValue(throwError(() => new HttpErrorResponse({ status: status })));

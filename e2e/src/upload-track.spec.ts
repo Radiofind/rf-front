@@ -1,5 +1,6 @@
 import { expect, test } from '../fixtures/test';
-import { API_URL } from '../fixtures/api';
+import { API_URL, registerUser } from '../fixtures/api';
+import { melodyWav, randomSeed } from '../fixtures/audio';
 import { fillWhenHydrated } from '../pages/field';
 import { LatestActivityPage } from '../pages/latest-activity.page';
 import { SidebarPage } from '../pages/sidebar.page';
@@ -12,11 +13,8 @@ const TRACKS_URL: string = `${API_URL}/tracks`;
 const ACTIVITIES_URL: string = `${API_URL}/users/me/activities`;
 
 const NOTIFICATIONS_URL: string = `${API_URL}/users/me/notifications`;
+const FAKE_MP3_BYTES: Buffer = Buffer.concat([Buffer.from('ID3'), Buffer.alloc(64)]);
 
-// An ID3 tag header is enough for the backend to recognise the content as MP3.
-const MP3_BYTES: Buffer = Buffer.concat([Buffer.from('ID3'), Buffer.alloc(64)]);
-
-// The smallest valid PNG: a single red pixel.
 const PNG_BYTES: Buffer = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC',
   'base64',
@@ -28,12 +26,13 @@ const uploadTrack = (
   request: APIRequestContext,
   token: string,
   fields: Record<string, string> = { title: 'Midnight Dreams', genres: 'GRUNGE' },
+  audio: Buffer = melodyWav(randomSeed()),
 ): Promise<APIResponse> =>
   request.post(TRACKS_URL, {
     headers: bearer(token),
     multipart: {
       ...fields,
-      audio: { name: 'song.mp3', mimeType: 'audio/mpeg', buffer: MP3_BYTES },
+      audio: { name: 'song.wav', mimeType: 'audio/wav', buffer: audio },
       cover: { name: 'cover.png', mimeType: 'image/png', buffer: PNG_BYTES },
     },
   });
@@ -49,7 +48,8 @@ test.describe('upload track', () => {
         artistName: 'Ada Lovelace',
         genres: ['GRUNGE'],
         status: 'PENDING_REVIEW',
-        audioFormat: 'MP3',
+        audioFormat: 'WAV',
+        durationSeconds: 20,
       });
     });
 
@@ -104,6 +104,62 @@ test.describe('upload track', () => {
     });
   });
 
+  test.describe('duplicates', () => {
+    test('rejects a track the user has already uploaded', async ({ request, user }) => {
+      const song: Buffer = melodyWav(randomSeed());
+      await uploadTrack(request, user.token, undefined, song);
+
+      const response: APIResponse = await uploadTrack(request, user.token, undefined, song);
+
+      expect(response.status()).toBe(409);
+    });
+
+    test('recognises the same track in another sample rate', async ({ request, user }) => {
+      const seed: number = randomSeed();
+      await uploadTrack(request, user.token, undefined, melodyWav(seed, 22050));
+
+      const response: APIResponse = await uploadTrack(
+        request,
+        user.token,
+        undefined,
+        melodyWav(seed, 16000),
+      );
+
+      expect(response.status()).toBe(409);
+    });
+
+    test('accepts a different track of the same user', async ({ request, user }) => {
+      await uploadTrack(request, user.token);
+
+      const response: APIResponse = await uploadTrack(request, user.token);
+
+      expect(response.status()).toBe(201);
+    });
+
+    test('accepts the same track from another user for review', async ({ request, user }) => {
+      const song: Buffer = melodyWav(randomSeed());
+      const otherUser = await registerUser();
+      await uploadTrack(request, user.token, undefined, song);
+
+      const response: APIResponse = await uploadTrack(request, otherUser.token, undefined, song);
+
+      expect(response.status()).toBe(201);
+    });
+
+    test('rejects a file that only looks like audio', async ({ request, user }) => {
+      const response: APIResponse = await request.post(TRACKS_URL, {
+        headers: bearer(user.token),
+        multipart: {
+          title: 'Midnight Dreams',
+          genres: 'GRUNGE',
+          audio: { name: 'song.mp3', mimeType: 'audio/mpeg', buffer: FAKE_MP3_BYTES },
+        },
+      });
+
+      expect(response.status()).toBe(415);
+    });
+  });
+
   test.describe('in the application shell', () => {
     test('uploads a track and shows it in the latest activity and the notifications', async ({
       authenticatedPage,
@@ -114,9 +170,9 @@ test.describe('upload track', () => {
       await authenticatedPage.goto('/upload-track');
       await expect(uploadPage.artist).toHaveValue('Ada Lovelace');
       await uploadPage.audioInput.setInputFiles({
-        name: 'song.mp3',
-        mimeType: 'audio/mpeg',
-        buffer: MP3_BYTES,
+        name: 'song.wav',
+        mimeType: 'audio/wav',
+        buffer: melodyWav(randomSeed()),
       });
       await uploadPage.coverInput.setInputFiles({
         name: 'cover.png',

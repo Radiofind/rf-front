@@ -731,6 +731,7 @@ export const EN_TRANSLATIONS = {
     trackTooLarge: 'The file is too large. Check the size limits and try again.',
     trackUnsupportedFormat:
       'Unsupported file format. Use MP3, WAV or FLAC audio and a JPG or PNG cover.',
+    trackAlreadyUploaded: 'You have already uploaded this track',
   },
   validation: {
     required: 'Field is required',

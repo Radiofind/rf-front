@@ -740,6 +740,7 @@ export const FR_TRANSLATIONS: Translations = {
     trackTooLarge: 'Le fichier est trop volumineux. Vérifiez les limites de taille et réessayez.',
     trackUnsupportedFormat:
       'Format de fichier non pris en charge. Utilisez un audio MP3, WAV ou FLAC et une pochette JPG ou PNG.',
+    trackAlreadyUploaded: 'Vous avez déjà importé ce morceau',
   },
   validation: {
     required: 'Ce champ est obligatoire',

@@ -195,6 +195,8 @@ export class UploadTrackPageComponent implements OnInit, IHasUnsavedChanges {
         return UPLOAD_TRACK_MESSAGES.tooLarge;
       case Constants.HTTP_UNSUPPORTED_MEDIA_TYPE_STATUS:
         return UPLOAD_TRACK_MESSAGES.unsupportedFormat;
+      case Constants.HTTP_CONFLICT_STATUS:
+        return UPLOAD_TRACK_MESSAGES.alreadyUploaded;
       default:
         return UPLOAD_TRACK_MESSAGES.uploadFailed;
     }

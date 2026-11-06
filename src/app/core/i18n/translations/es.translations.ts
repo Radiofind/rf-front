@@ -737,6 +737,7 @@ export const ES_TRANSLATIONS: Translations = {
       'El archivo es demasiado grande. Revisa los límites de tamaño e inténtalo de nuevo.',
     trackUnsupportedFormat:
       'Formato de archivo no compatible. Usa audio MP3, WAV o FLAC y una portada JPG o PNG.',
+    trackAlreadyUploaded: 'Ya has subido esta canción',
   },
   validation: {
     required: 'Este campo es obligatorio',

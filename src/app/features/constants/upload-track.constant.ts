@@ -42,6 +42,7 @@ export const UPLOAD_TRACK_MESSAGES = {
   uploadFailed: 'messages.trackUploadFailed',
   tooLarge: 'messages.trackTooLarge',
   unsupportedFormat: 'messages.trackUnsupportedFormat',
+  alreadyUploaded: 'messages.trackAlreadyUploaded',
 } as const satisfies Readonly<Record<string, TranslationKey>>;
 
 export const UPLOAD_TIPS: readonly IUploadTip[] = [

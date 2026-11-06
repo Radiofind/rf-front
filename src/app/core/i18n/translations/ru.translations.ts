@@ -732,6 +732,7 @@ export const RU_TRANSLATIONS: Translations = {
     trackTooLarge: 'Файл слишком большой. Проверьте ограничения по размеру и попробуйте ещё раз.',
     trackUnsupportedFormat:
       'Неподдерживаемый формат файла. Используйте аудио MP3, WAV или FLAC и обложку JPG или PNG.',
+    trackAlreadyUploaded: 'Вы уже загрузили этот трек',
   },
   validation: {
     required: 'Обязательное поле',
