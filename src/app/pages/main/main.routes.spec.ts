@@ -52,6 +52,10 @@ describe('MAIN_ROUTES', () => {
     expect(routeFor(Links.EDIT_PROFILE_URL).canDeactivate).toEqual([unsavedChangesGuard]);
   });
 
+  it('guards the track upload against losing unsaved changes', () => {
+    expect(routeFor(Links.UPLOAD_TRACK_URL).canDeactivate).toEqual([unsavedChangesGuard]);
+  });
+
   it('nests the profile editor under the profile url', () => {
     expect(Links.EDIT_PROFILE_URL).toBe(`${Links.PROFILE_URL}/edit`);
   });

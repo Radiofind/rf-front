@@ -13,6 +13,11 @@ describe('artist type labels', () => {
     expect(ARTIST_TYPE_TEXTS[ArtistTypeEnum.BAND].role).toBe('artistType.bandRole');
   });
 
+  it('maps every artist type to its field label translation key', () => {
+    expect(ARTIST_TYPE_TEXTS[ArtistTypeEnum.ARTIST].label).toBe('artistType.artist');
+    expect(ARTIST_TYPE_TEXTS[ArtistTypeEnum.BAND].label).toBe('artistType.band');
+  });
+
   it('offers an option for every artist type', () => {
     expect(ARTIST_TYPE_OPTIONS.map((option) => option.value)).toEqual([
       ArtistTypeEnum.ARTIST,

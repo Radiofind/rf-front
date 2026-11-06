@@ -12,4 +12,6 @@ import type { InputSignal } from '@angular/core';
 })
 export class ProfileStatsComponent {
   public readonly registeredAt: InputSignal<string> = input<string>(Constants.DASH);
+
+  public readonly uploadsCount: InputSignal<string> = input<string>(Constants.DASH);
 }

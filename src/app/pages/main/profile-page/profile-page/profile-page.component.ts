@@ -19,9 +19,12 @@ import { formatStringDate } from '../../../../shared/helpers/date/date.helpers';
 import { findSelectOption } from '../../../../shared/helpers/select-option/select-option.helpers';
 import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
 import { GENRE_OPTIONS } from '../../../../features/constants/genre.constant';
+import { LATEST_ACTIVITY_SIZE } from '../../../../features/constants/notification.constant';
 
 import type { OnInit, Signal, WritableSignal } from '@angular/core';
 import type { ISocialLinksData, IUserProfileData } from '../../../../core/models/user.model';
+import type { IActivity } from '../../../../core/models/activity.model';
+import type { IPage } from '../../../../core/models/page.model';
 import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';
 import type { TranslationKey } from '../../../../core/types/translation.type';
 import type { ISelectOption } from '../../../../shared/models/select-option.model';
@@ -56,6 +59,10 @@ export class ProfilePageComponent implements OnInit {
 
   private readonly profile: WritableSignal<IUserProfileData | null> =
     signal<IUserProfileData | null>(null);
+
+  protected readonly activities: WritableSignal<readonly IActivity[] | null> = signal<
+    readonly IActivity[] | null
+  >(null);
 
   protected readonly avatarUrl: Signal<string | null> = this.avatarStateService.avatarUrl;
 
@@ -101,12 +108,18 @@ export class ProfilePageComponent implements OnInit {
     this.formatProfileDate(this.profile()?.dateOfBirth, DateFormatEnum.FULL_DATE),
   );
 
+  protected readonly uploadsCount: Signal<string> = computed<string>(() => {
+    const profile: IUserProfileData | null = this.profile();
+    return profile ? String(profile.uploadsCount) : Constants.DASH;
+  });
+
   protected readonly registeredAt: Signal<string> = computed<string>(() =>
     this.formatProfileDate(this.profile()?.registeredAt, DateFormatEnum.MONTH_YEAR),
   );
 
   public ngOnInit(): void {
     void this.getUserProfileData();
+    void this.getActivities();
   }
 
   public onAvatarEdit(): void {
@@ -133,6 +146,17 @@ export class ProfilePageComponent implements OnInit {
   private async getUserProfileData(): Promise<void> {
     const profile: IUserProfileData = await firstValueFrom(this.userService.getUserProfileData());
     this.profile.set(profile);
+  }
+
+  private async getActivities(): Promise<void> {
+    try {
+      const page: IPage<IActivity> = await firstValueFrom(
+        this.userService.getActivities(Constants.ZERO, LATEST_ACTIVITY_SIZE),
+      );
+      this.activities.set(page.items);
+    } catch {
+      // Without data the section stays empty rather than claiming there is no activity.
+    }
   }
 
   private formatGenre(genre: string): string {

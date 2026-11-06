@@ -38,6 +38,7 @@ export const EN_TRANSLATIONS = {
     caughtUpDescription: 'Track reviews, radio picks and account updates will appear here.',
     profile: 'Profile',
     accountMenu: 'Account menu',
+    unreadNotifications: 'Notifications, unread',
   },
   profileMenu: {
     account: 'Account',
@@ -228,6 +229,43 @@ export const EN_TRANSLATIONS = {
       'Tell more about your journey, influences, sound, and what makes your music unique...',
     socialTitle: 'Social Links',
     socialSubtitle: 'Add your social media and streaming links.',
+  },
+  uploadTrack: {
+    title: 'Upload Track',
+    subtitle:
+      'Share your music with the world. Fill in the details below to get your track published.',
+    filesLabel: 'Track files',
+    detailsLabel: 'Track details',
+    audioTitle: 'Drag and drop your audio file here',
+    browse: 'or click to browse',
+    audioHint: 'MP3, WAV, FLAC (max {size} MB)',
+    coverTitle: 'Upload cover art',
+    coverHint: 'Recommended size: 1000 × 1000 (JPG, PNG, max {size} MB)',
+    trackTitle: 'Track Title',
+    trackTitlePlaceholder: 'Enter track title...',
+    artistHint: '(from your account)',
+    genres: 'Genres',
+    addGenre: 'Add genre',
+    description: 'Description',
+    descriptionPlaceholder: 'Tell us about your track...',
+    submit: 'Upload Track',
+    tipsTitle: 'Tips for a successful upload',
+    tipQualityTitle: 'Use high quality audio',
+    tipQualityDescription:
+      'We recommend 320 kbps MP3 or lossless formats for the best sound quality.',
+    tipGenreTitle: 'Choose the right genre',
+    tipGenreDescription: 'This helps listeners find your music and reach the right audience.',
+    tipCoverTitle: 'Add a great cover art',
+    tipCoverDescription: 'Use high-resolution images (at least 1000 × 1000).',
+    tipDescriptionTitle: 'Write a compelling description',
+    tipDescriptionDescription:
+      'Tell your story, share your inspiration, and connect with listeners.',
+  },
+  fileDropzone: {
+    replaceHint: '{size} MB · Click or drop another file to replace it',
+  },
+  notifications: {
+    trackSubmittedForReview: 'Your track "{title}" was uploaded and sent for quality review',
   },
   settings: {
     title: 'Settings',
@@ -688,6 +726,12 @@ export const EN_TRANSLATIONS = {
     avatarRemoved: 'Avatar removed',
     avatarUploadFailed: 'Could not upload the avatar. Please try again',
     avatarRemoveFailed: 'Could not remove the avatar. Please try again',
+    trackUploaded: 'Track uploaded and sent for quality review',
+    trackUploadFailed: 'Could not upload the track. Please try again.',
+    trackTooLarge: 'The file is too large. Check the size limits and try again.',
+    trackUnsupportedFormat:
+      'Unsupported file format. Use MP3, WAV or FLAC audio and a JPG or PNG cover.',
+    trackAlreadyUploaded: 'You have already uploaded this track',
   },
   validation: {
     required: 'Field is required',
@@ -724,5 +768,13 @@ export const EN_TRANSLATIONS = {
     sameEmail: 'Recovery email must differ from your email',
     invalidUrl: 'Enter a full link starting with https://',
     wrongSocialLink: 'This link must lead to {platform}',
+    audioRequired: 'Choose an audio file',
+    audioType: 'Only MP3, WAV and FLAC files are allowed',
+    audioTooLarge: 'Audio file must not exceed {size} MB',
+    coverType: 'Only JPG and PNG images are allowed',
+    coverTooLarge: 'Cover art must not exceed {size} MB',
+    genreRequired: 'Choose at least one genre',
+    maxTrackGenres: 'Choose up to 3 genres',
+    maxLengthTitle: 'Must not exceed 150 characters',
   },
 };

@@ -7,6 +7,10 @@ export interface IUserEndpoints {
   avatar: string;
   settings: string;
   general: string;
+  activities: string;
+  notifications: string;
+  unreadCount: string;
+  readAll: string;
 }
 
 export interface ICurrentUser {
@@ -31,6 +35,7 @@ export interface IUserProfileData {
   additionalGenres: string[];
   registeredAt: string;
   avatarUrl: string | null;
+  uploadsCount: number;
 }
 
 export interface IUpdateProfileData {

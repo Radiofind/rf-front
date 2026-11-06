@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { ProfilePageComponent } from './profile-page.component';
 import { UserService } from '../../../../features/services/user-service/user.service';
 import { AvatarStateService } from '../../../../features/services/avatar-state-service/avatar-state.service';
@@ -10,10 +10,12 @@ import { ModalService } from '../../../../shared/services/modal-service/modal.se
 import { AvatarModalComponent } from '../../../../features/dialogs/avatar-modal/avatar-modal.component';
 import { Constants } from '../../../../core/constants/constants';
 import { Links } from '../../../../core/constants/links';
+import { LATEST_ACTIVITY_SIZE } from '../../../../features/constants/notification.constant';
 
 import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IUserProfileData } from '../../../../core/models/user.model';
+import type { IActivity } from '../../../../core/models/activity.model';
 import type { IAvatarModalResult } from '../../../../features/models/avatar-modal.model';
 
 describe('ProfilePageComponent', () => {
@@ -42,10 +44,12 @@ describe('ProfilePageComponent', () => {
     mainGenres: ['ELECTRONIC'],
     additionalGenres: ['ACID_JAZZ'],
     registeredAt: '2026-01-15T10:00:00.000000',
+    uploadsCount: 2,
     avatarUrl: null,
   };
 
   let getUserProfileData: ReturnType<typeof vi.fn>;
+  let getActivities: ReturnType<typeof vi.fn>;
   let open: ReturnType<typeof vi.fn>;
   let modalClosed$: Subject<IAvatarModalResult | undefined>;
   let avatarUrl: WritableSignal<string | null>;
@@ -56,7 +60,10 @@ describe('ProfilePageComponent', () => {
       imports: [ProfilePageComponent],
       providers: [
         provideRouter([]),
-        { provide: UserService, useValue: { getUserProfileData: getUserProfileData } },
+        {
+          provide: UserService,
+          useValue: { getUserProfileData: getUserProfileData, getActivities: getActivities },
+        },
         { provide: ModalService, useValue: { open: open } },
         {
           provide: AvatarStateService,
@@ -83,6 +90,11 @@ describe('ProfilePageComponent', () => {
   beforeEach(() => {
     TestBed.resetTestingModule();
     getUserProfileData = vi.fn().mockReturnValue(of(profileData));
+    getActivities = vi
+      .fn()
+      .mockReturnValue(
+        of({ items: [], page: 0, size: LATEST_ACTIVITY_SIZE, totalElements: 0, hasNext: false }),
+      );
     modalClosed$ = new Subject<IAvatarModalResult | undefined>();
     open = vi.fn().mockReturnValue({ closed: modalClosed$ });
     avatarUrl = signal<string | null>(null);
@@ -116,6 +128,7 @@ describe('ProfilePageComponent', () => {
     expect(text(fixture, '.hero__name')).toBe(Constants.DASH);
     expect(text(fixture, '.hero__meta span')).toBe('Artist');
     expect(text(fixture, '.stats__item:last-child .stats__value')).toBe(Constants.DASH);
+    expect(text(fixture, '.stats__item:nth-child(2) .stats__value')).toBe(Constants.DASH);
     expect(detailValues(fixture)).toEqual([Constants.DASH, Constants.DASH]);
 
     profile$.next(profileData);
@@ -133,6 +146,7 @@ describe('ProfilePageComponent', () => {
     expect(text(fixture, '.hero__meta span')).toBe('Member of band');
     expect(text(fixture, '.hero__bio')).toBe('Engines in harmony');
     expect(text(fixture, '.stats__item:last-child .stats__value')).toBe('Jan 2026');
+    expect(text(fixture, '.stats__item:nth-child(2) .stats__value')).toBe('2');
     expect(text(fixture, '.details__title')).toBe('About Band');
     expect(text(fixture, '.details__text')).toBe('Analytical soundscapes');
     expect(detailValues(fixture)).toEqual(['The Engines', 'Mar 7, 1994']);
@@ -346,5 +360,49 @@ describe('ProfilePageComponent', () => {
     (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('.hero__edit')!.click();
 
     expect(navigate).toHaveBeenCalledWith([Links.EDIT_PROFILE_URL]);
+  });
+
+  describe('latest activity', () => {
+    const activity: IActivity = {
+      id: 3,
+      type: 'TRACK_UPLOADED',
+      createdAt: '2026-11-05T10:00:00Z',
+      track: {
+        id: 42,
+        title: 'Midnight Dreams',
+        artistName: 'The Engines',
+        coverUrl: null,
+        status: 'PENDING_REVIEW',
+      },
+    };
+
+    it('requests the latest activities once on init', async () => {
+      await createFixture();
+
+      expect(getActivities).toHaveBeenCalledExactlyOnceWith(0, LATEST_ACTIVITY_SIZE);
+    });
+
+    it('lists the loaded activities', async () => {
+      getActivities.mockReturnValue(
+        of({
+          items: [activity],
+          page: 0,
+          size: LATEST_ACTIVITY_SIZE,
+          totalElements: 1,
+          hasNext: false,
+        }),
+      );
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      expect(text(fixture, '.activity__name')).toBe('Midnight Dreams');
+    });
+
+    it('shows neither activities nor the empty state when loading fails', async () => {
+      getActivities.mockReturnValue(throwError(() => new Error('offline')));
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+
+      expect((fixture.nativeElement as HTMLElement).querySelector('.activity__list')).toBeNull();
+      expect((fixture.nativeElement as HTMLElement).querySelector('.activity__empty')).toBeNull();
+    });
   });
 });

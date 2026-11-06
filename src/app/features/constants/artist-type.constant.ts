@@ -13,6 +13,7 @@ export const ARTIST_TYPE_LABELS: Readonly<Record<ArtistTypeRequest, ArtistType>>
 
 export const ARTIST_TYPE_TEXTS: Readonly<Record<ArtistType, IArtistTypeTexts>> = {
   [ArtistTypeEnum.ARTIST]: {
+    label: 'artistType.artist',
     role: 'artistType.artistRole',
     name: 'artistType.artistName',
     namePlaceholder: 'artistType.artistNamePlaceholder',
@@ -21,6 +22,7 @@ export const ARTIST_TYPE_TEXTS: Readonly<Record<ArtistType, IArtistTypeTexts>> =
     description: 'artistType.artistDescription',
   },
   [ArtistTypeEnum.BAND]: {
+    label: 'artistType.band',
     role: 'artistType.bandRole',
     name: 'artistType.bandName',
     namePlaceholder: 'artistType.bandNamePlaceholder',

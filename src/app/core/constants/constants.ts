@@ -153,6 +153,20 @@ export class Constants {
 
   public static readonly FILE_FORM_DATA: string = 'file';
 
+  public static readonly AUDIO_FORM_DATA: string = 'audio';
+
+  public static readonly COVER_FORM_DATA: string = 'cover';
+
+  public static readonly TITLE_FORM_DATA: string = 'title';
+
+  public static readonly GENRES_FORM_DATA: string = 'genres';
+
+  public static readonly DESCRIPTION_FORM_DATA: string = 'description';
+
+  public static readonly PAGE_QUERY_PARAM: string = 'page';
+
+  public static readonly SIZE_QUERY_PARAM: string = 'size';
+
   public static readonly PROFILE_PHOTO: TranslationKey = 'avatar.title';
 
   public static readonly AVATAR_SUBTITLE: TranslationKey = 'avatar.subtitle';
@@ -187,6 +201,10 @@ export class Constants {
 
   public static readonly SOCIAL_LINK_PROPERTY: string = 'socialLink';
 
+  public static readonly FILE_TYPE_PROPERTY: string = 'fileType';
+
+  public static readonly FILE_SIZE_PROPERTY: string = 'fileSize';
+
   public static readonly SAME_EMAIL_PROPERTY: string = 'sameEmail';
 
   public static readonly PROFILE_INFORMATION_SAVED: TranslationKey = 'messages.profileSaved';
@@ -213,6 +231,8 @@ export class Constants {
   public static readonly MENU_TEMPLATE_NAME: string = 'menu';
 
   public static readonly LOGO_GRADIENT_ID: string = 'logo-gradient-';
+
+  public static readonly ISO_DATE_REPLACEMENT: string = '$1';
 
   // magic numbers
 
@@ -249,6 +269,10 @@ export class Constants {
   public static readonly HTTP_UNAUTHORIZED_STATUS: number = 401;
 
   public static readonly HTTP_CONFLICT_STATUS: number = 409;
+
+  public static readonly HTTP_CONTENT_TOO_LARGE_STATUS: number = 413;
+
+  public static readonly HTTP_UNSUPPORTED_MEDIA_TYPE_STATUS: number = 415;
 
   public static readonly HTTP_TOO_MANY_REQUESTS_STATUS: number = 429;
 
@@ -287,6 +311,10 @@ export class Constants {
   public static readonly DROPDOWN_NESTED_INDENT: number = 24;
 
   public static readonly MILLISECONDS_IN_ONE_SECOND: number = 1000;
+
+  public static readonly BYTES_IN_MEGABYTE: number = 1024 * 1024;
+
+  public static readonly EXTRA_FRACTION_DIGITS_PATTERN: RegExp = /(\.\d{3})\d+/;
 
   // others
 

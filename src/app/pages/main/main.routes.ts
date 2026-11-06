@@ -37,6 +37,7 @@ export const MAIN_ROUTES: Routes = [
       import('./upload-track-page/upload-track-page.component').then(
         (c) => c.UploadTrackPageComponent,
       ),
+    canDeactivate: [unsavedChangesGuard],
   },
   {
     path: Links.MY_UPLOADS_URL,
