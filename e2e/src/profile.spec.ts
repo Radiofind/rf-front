@@ -81,6 +81,7 @@ test.describe('profile', () => {
           'additionalGenres',
           'registeredAt',
           'avatarUrl',
+          'uploadsCount',
         ].sort(),
       );
     });

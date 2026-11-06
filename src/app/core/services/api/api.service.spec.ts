@@ -74,6 +74,7 @@ describe('ApiService', () => {
     mainGenres: ['ELECTRONIC'],
     additionalGenres: [],
     registeredAt: '2026-01-15T10:00:00Z',
+    uploadsCount: 0,
     avatarUrl: '/api/users/me/avatar',
   };
 

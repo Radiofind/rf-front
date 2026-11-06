@@ -31,6 +31,7 @@ describe('UploadTrackPageComponent', () => {
     mainGenres: [],
     additionalGenres: [],
     registeredAt: '2026-01-15T10:00:00Z',
+    uploadsCount: 0,
     avatarUrl: null,
   };
 
@@ -271,7 +272,7 @@ describe('UploadTrackPageComponent', () => {
       });
     });
 
-    it('confirms the upload, refreshes the notifications and opens the profile', async () => {
+    it('confirms the upload, refreshes the notifications and opens my uploads', async () => {
       const fixture: ComponentFixture<UploadTrackPageComponent> = await createFixture();
       await fillRequired(fixture);
 
@@ -279,7 +280,7 @@ describe('UploadTrackPageComponent', () => {
 
       expect(snackbar.success).toHaveBeenCalledWith(UPLOAD_TRACK_MESSAGES.uploaded);
       expect(loadNotifications).toHaveBeenCalledOnce();
-      expect(navigate).toHaveBeenCalledWith([Links.PROFILE_URL]);
+      expect(navigate).toHaveBeenCalledWith([Links.MY_UPLOADS_URL]);
     });
 
     it.each([

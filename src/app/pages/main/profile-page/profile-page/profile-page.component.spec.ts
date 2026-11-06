@@ -44,6 +44,7 @@ describe('ProfilePageComponent', () => {
     mainGenres: ['ELECTRONIC'],
     additionalGenres: ['ACID_JAZZ'],
     registeredAt: '2026-01-15T10:00:00.000000',
+    uploadsCount: 2,
     avatarUrl: null,
   };
 
@@ -127,6 +128,7 @@ describe('ProfilePageComponent', () => {
     expect(text(fixture, '.hero__name')).toBe(Constants.DASH);
     expect(text(fixture, '.hero__meta span')).toBe('Artist');
     expect(text(fixture, '.stats__item:last-child .stats__value')).toBe(Constants.DASH);
+    expect(text(fixture, '.stats__item:nth-child(2) .stats__value')).toBe(Constants.DASH);
     expect(detailValues(fixture)).toEqual([Constants.DASH, Constants.DASH]);
 
     profile$.next(profileData);
@@ -144,6 +146,7 @@ describe('ProfilePageComponent', () => {
     expect(text(fixture, '.hero__meta span')).toBe('Member of band');
     expect(text(fixture, '.hero__bio')).toBe('Engines in harmony');
     expect(text(fixture, '.stats__item:last-child .stats__value')).toBe('Jan 2026');
+    expect(text(fixture, '.stats__item:nth-child(2) .stats__value')).toBe('2');
     expect(text(fixture, '.details__title')).toBe('About Band');
     expect(text(fixture, '.details__text')).toBe('Analytical soundscapes');
     expect(detailValues(fixture)).toEqual(['The Engines', 'Mar 7, 1994']);

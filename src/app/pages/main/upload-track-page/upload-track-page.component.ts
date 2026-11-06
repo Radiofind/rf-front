@@ -177,7 +177,7 @@ export class UploadTrackPageComponent implements OnInit, IHasUnsavedChanges {
       this.isSaved.set(true);
       this.snackbarService.success(UPLOAD_TRACK_MESSAGES.uploaded);
       void this.notificationStateService.loadNotifications();
-      await this.router.navigate([Links.PROFILE_URL]);
+      await this.router.navigate([Links.MY_UPLOADS_URL]);
     } catch (error: unknown) {
       this.snackbarService.error(this.uploadErrorMessage(error));
     }

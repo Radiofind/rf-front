@@ -108,6 +108,11 @@ export class ProfilePageComponent implements OnInit {
     this.formatProfileDate(this.profile()?.dateOfBirth, DateFormatEnum.FULL_DATE),
   );
 
+  protected readonly uploadsCount: Signal<string> = computed<string>(() => {
+    const profile: IUserProfileData | null = this.profile();
+    return profile ? String(profile.uploadsCount) : Constants.DASH;
+  });
+
   protected readonly registeredAt: Signal<string> = computed<string>(() =>
     this.formatProfileDate(this.profile()?.registeredAt, DateFormatEnum.MONTH_YEAR),
   );

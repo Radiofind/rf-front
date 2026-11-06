@@ -130,7 +130,12 @@ test.describe('upload track', () => {
       await expect(authenticatedPage.locator('.snackbar__text')).toHaveText(
         'Track uploaded and sent for quality review',
       );
-      await expect(authenticatedPage).toHaveURL(/\/profile$/);
+      await expect(authenticatedPage).toHaveURL(/\/my-uploads$/);
+
+      await authenticatedPage.goto('/profile');
+      await expect(authenticatedPage.locator('.stats__item', { hasText: 'Uploads' })).toContainText(
+        '1',
+      );
       await expect(activity.root.locator('.activity__name')).toHaveText('Midnight Dreams');
       await expect(activity.root.locator('.activity__artist')).toHaveText('Ada Lovelace');
 

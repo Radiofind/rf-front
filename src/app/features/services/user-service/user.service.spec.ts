@@ -49,6 +49,7 @@ describe('UserService', () => {
     mainGenres: [],
     additionalGenres: [],
     registeredAt: '2026-01-15T10:00:00Z',
+    uploadsCount: 0,
     avatarUrl: null,
   };
 
