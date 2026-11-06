@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Links } from '../../../core/constants/links';
 
 import type { ComponentFixture } from '@angular/core/testing';
+import type { INotification } from '../../../core/models/notification.model';
 
 describe('HeaderComponent', () => {
   let activeFixture: ComponentFixture<HeaderComponent> | undefined;
@@ -109,6 +110,40 @@ describe('HeaderComponent', () => {
     expect(popoverPanel()?.querySelector('.empty__title')?.textContent).toBe(
       'You are all caught up',
     );
+  });
+
+  describe('notifications', () => {
+    const submittedTrack: INotification = {
+      id: 5,
+      type: 'TRACK_SUBMITTED_FOR_REVIEW',
+      read: false,
+      createdAt: '2026-11-05T11:58:00Z',
+      track: null,
+    };
+
+    it('marks the bell while there are unread notifications', async () => {
+      const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
+      fixture.componentRef.setInput('hasUnreadNotifications', true);
+      await fixture.whenStable();
+
+      const bell: HTMLButtonElement = fixture.nativeElement.querySelector(
+        '[aria-label="Notifications, unread"]',
+      );
+
+      expect(bell.querySelector('.header-action-badge')).not.toBeNull();
+    });
+
+    it('lists the notifications instead of the empty state', async () => {
+      const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
+      fixture.componentRef.setInput('notifications', [submittedTrack]);
+      await fixture.whenStable();
+
+      fixture.nativeElement.querySelector('[aria-label="Notifications"]').click();
+      await fixture.whenStable();
+
+      expect(popoverPanel()?.querySelectorAll('.notification-list__item')).toHaveLength(1);
+      expect(popoverPanel()?.querySelector('.empty__title')).toBeNull();
+    });
   });
 
   it('places the account item before profile and the premium item after it', async () => {

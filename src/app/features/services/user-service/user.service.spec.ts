@@ -14,6 +14,7 @@ import type {
   IUserProfileData,
 } from '../../../core/models/user.model';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
+import type { IPage } from '../../../core/models/page.model';
 
 describe('UserService', () => {
   const currentUser: ICurrentUser = {
@@ -48,6 +49,7 @@ describe('UserService', () => {
     mainGenres: [],
     additionalGenres: [],
     registeredAt: '2026-01-15T10:00:00Z',
+    uploadsCount: 0,
     avatarUrl: null,
   };
 
@@ -86,6 +88,14 @@ describe('UserService', () => {
 
   const avatarFile: File = new File(['avatar-bytes'], 'avatar.png', { type: 'image/png' });
 
+  const emptyPage: IPage<never> = {
+    items: [],
+    page: 0,
+    size: 5,
+    totalElements: 0,
+    hasNext: false,
+  };
+
   let service: UserService;
   let token: string | null;
   let apiMock: Record<
@@ -96,7 +106,11 @@ describe('UserService', () => {
     | 'getCurrentAvatar'
     | 'deleteAvatar'
     | 'getGeneralSettings'
-    | 'updateGeneralSettings',
+    | 'updateGeneralSettings'
+    | 'getActivities'
+    | 'getNotifications'
+    | 'getUnreadNotifications'
+    | 'markAllNotificationsAsRead',
     ReturnType<typeof vi.fn>
   >;
 
@@ -114,6 +128,10 @@ describe('UserService', () => {
       deleteAvatar: vi.fn().mockReturnValue(of(undefined)),
       getGeneralSettings: vi.fn().mockReturnValue(of(generalSettings)),
       updateGeneralSettings: vi.fn().mockReturnValue(of(generalSettings)),
+      getActivities: vi.fn().mockReturnValue(of(emptyPage)),
+      getNotifications: vi.fn().mockReturnValue(of(emptyPage)),
+      getUnreadNotifications: vi.fn().mockReturnValue(of({ count: 2 })),
+      markAllNotificationsAsRead: vi.fn().mockReturnValue(of(undefined)),
     };
 
     TestBed.configureTestingModule({
@@ -505,6 +523,37 @@ describe('UserService', () => {
       });
 
       expect(errorStatus).toBe(500);
+    });
+  });
+
+  describe('activities and notifications', () => {
+    it('requests the given page of activities from the api service', () => {
+      let received: unknown;
+
+      service.getActivities(0, 5).subscribe((value) => {
+        received = value;
+      });
+
+      expect(apiMock.getActivities).toHaveBeenCalledExactlyOnceWith(0, 5);
+      expect(received).toBe(emptyPage);
+    });
+
+    it('requests the given page of notifications from the api service', () => {
+      service.getNotifications(1, 20).subscribe();
+
+      expect(apiMock.getNotifications).toHaveBeenCalledExactlyOnceWith(1, 20);
+    });
+
+    it('delegates the unread count and marking everything read to the api service', () => {
+      let unread: unknown;
+
+      service.getUnreadNotifications().subscribe((value) => {
+        unread = value;
+      });
+      service.markAllNotificationsAsRead().subscribe();
+
+      expect(unread).toEqual({ count: 2 });
+      expect(apiMock.markAllNotificationsAsRead).toHaveBeenCalledOnce();
     });
   });
 });

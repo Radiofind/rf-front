@@ -1,0 +1,31 @@
+<ul class="notification-list">
+  @for (notification of notifications(); track notification.id) {
+    <li
+      class="notification-list__item"
+      [class.notification-list__item--unread]="!notification.read"
+    >
+      @let coverUrl = notification.track?.coverUrl;
+      @if (coverUrl && !brokenCovers().has(coverUrl)) {
+        <img
+          class="notification-list__thumb"
+          [src]="coverUrl"
+          alt=""
+          (error)="onCoverError(coverUrl)"
+        />
+      } @else {
+        <span class="notification-list__thumb notification-list__thumb--icon" aria-hidden="true">
+          <i class="bx bx-music"></i>
+        </span>
+      }
+      <div class="notification-list__body">
+        <p class="notification-list__text">
+          {{ messages[notification.type] | translate: { title: notification.track?.title ?? '' } }}
+        </p>
+        <span class="notification-list__time">{{ notification.createdAt | relativeTime }}</span>
+      </div>
+      @if (!notification.read) {
+        <span class="notification-list__dot" aria-hidden="true"></span>
+      }
+    </li>
+  }
+</ul>

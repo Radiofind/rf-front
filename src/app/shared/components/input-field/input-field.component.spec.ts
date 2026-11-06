@@ -222,4 +222,39 @@ describe('InputFieldComponent', () => {
       expect(counter(fixture)!.classList).toContain('field-counter--exceeded');
     });
   });
+
+  it('renders a read-only input with a decorative trailing icon', async () => {
+    const fixture: ComponentFixture<InputFieldComponent> = await createFixture();
+
+    fixture.componentRef.setInput('isReadonly', true);
+    fixture.componentRef.setInput('trailingIconClass', 'bx bx-lock');
+    await fixture.whenStable();
+
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('.field-input');
+    const icon: HTMLElement = fixture.nativeElement.querySelector('.trailing-icon');
+
+    expect(input.readOnly).toBe(true);
+    expect(icon.classList).toContain('bx-lock');
+    expect(icon.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('renders an editable input without a trailing icon by default', async () => {
+    const fixture: ComponentFixture<InputFieldComponent> = await createFixture();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.field-input').readOnly).toBe(false);
+    expect(fixture.nativeElement.querySelector('.trailing-icon')).toBeNull();
+  });
+
+  it('renders a hint after the label', async () => {
+    const fixture: ComponentFixture<InputFieldComponent> = await createFixture();
+
+    fixture.componentRef.setInput('fieldLabel', 'Artist / Band');
+    fixture.componentRef.setInput('fieldHint', '(from your account information)');
+    await fixture.whenStable();
+
+    expect(
+      fixture.nativeElement.querySelector('.label').textContent.replace(/\s+/g, ' ').trim(),
+    ).toBe('Artist / Band (from your account information)');
+  });
 });

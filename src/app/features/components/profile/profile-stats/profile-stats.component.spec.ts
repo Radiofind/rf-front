@@ -19,13 +19,13 @@ describe('ProfileStatsComponent', () => {
       ],
     );
 
-  it('renders every stat with a placeholder join date by default', async () => {
+  it('renders every stat with placeholder uploads and join date by default', async () => {
     const fixture: ComponentFixture<ProfileStatsComponent> = await createFixture();
     await fixture.whenStable();
 
     expect(stats(fixture)).toEqual([
       ['0', 'Followers'],
-      ['0', 'Uploads'],
+      [Constants.DASH, 'Uploads'],
       ['0', 'Likes'],
       [Constants.DASH, 'Joined'],
     ]);
@@ -38,5 +38,14 @@ describe('ProfileStatsComponent', () => {
     await fixture.whenStable();
 
     expect(stats(fixture)[3]).toEqual(['Oct 2026', 'Joined']);
+  });
+
+  it('shows the number of uploads', async () => {
+    const fixture: ComponentFixture<ProfileStatsComponent> = await createFixture();
+
+    fixture.componentRef.setInput('uploadsCount', '3');
+    await fixture.whenStable();
+
+    expect(stats(fixture)[1]).toEqual(['3', 'Uploads']);
   });
 });

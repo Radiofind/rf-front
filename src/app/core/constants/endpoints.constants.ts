@@ -1,4 +1,5 @@
 import type { IAuthEndpoints } from '../models/auth.model';
+import type { ITrackEndpoints } from '../models/track.model';
 import type { IUserEndpoints } from '../models/user.model';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
@@ -21,5 +22,13 @@ export class EndpointConstants {
     avatar: '/avatar',
     settings: '/settings',
     general: '/general',
+    activities: '/activities',
+    notifications: '/notifications',
+    unreadCount: '/unread-count',
+    readAll: '/read-all',
+  };
+
+  public static readonly TRACK_ENDPOINTS: ITrackEndpoints = {
+    tracks: '/tracks',
   };
 }

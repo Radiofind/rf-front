@@ -12,11 +12,13 @@ import { PROFILE_MENU_ITEMS } from '../../constants/profile-menu.constant';
 import { AuthService } from '../../../features/services/auth-service/auth.service';
 import { Links } from '../../../core/constants/links';
 import { TranslatePipe } from '../../pipes/translate/translate.pipe';
+import { NotificationListComponent } from '../notification-list/notification-list.component';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
 import type { IProfileMenuItem } from '../../models/profile-menu-item.model';
 import type { PopoverPosition } from '../../../core/types/popover-position.type';
 import type { ProfileMenuItemType } from '../../../core/types/profile-menu-item.type';
+import type { INotification } from '../../../core/models/notification.model';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +31,7 @@ import type { ProfileMenuItemType } from '../../../core/types/profile-menu-item.
     EmptyStateComponent,
     LogoComponent,
     TranslatePipe,
+    NotificationListComponent,
   ],
 })
 export class HeaderComponent {
@@ -43,6 +46,10 @@ export class HeaderComponent {
   public readonly hasUnreadMessages: InputSignal<boolean> = input<boolean>(false);
 
   public readonly hasUnreadNotifications: InputSignal<boolean> = input<boolean>(false);
+
+  public readonly notifications: InputSignal<readonly INotification[]> = input<
+    readonly INotification[]
+  >([]);
 
   public readonly isUserOnline: InputSignal<boolean> = input<boolean>(false);
 

@@ -1,9 +1,17 @@
-<div class="field" [class.field--compact]="isCompact()" [class.field--no-icon]="!iconClass()">
+<div
+  class="field"
+  [class.field--compact]="isCompact()"
+  [class.field--no-icon]="!iconClass()"
+  [class.field--trailing-icon]="trailingIconClass()"
+>
   <div class="field-label" [class]="additionalClass()">
     <span class="label">
       {{ fieldLabel() }}
       @if (hasOptionalLabel()) {
         <span class="optional"> {{ 'common.optional' | translate }}</span>
+      }
+      @if (fieldHint()) {
+        <span class="optional"> {{ fieldHint() }}</span>
       }
     </span>
     @if (additionalFieldLabel()) {
@@ -49,10 +57,14 @@
       [value]="value()"
       [attr.name]="name() || null"
       [disabled]="disabled()"
+      [readOnly]="isReadonly()"
       [required]="required()"
       (input)="onInput($event)"
       (blur)="touch.emit()"
     />
+  }
+  @if (trailingIconClass()) {
+    <i class="trailing-icon" [class]="trailingIconClass()" aria-hidden="true"></i>
   }
   @if (hasInputAction()) {
     <button class="action-icon" type="button" (click)="onHandleInputAction()">
