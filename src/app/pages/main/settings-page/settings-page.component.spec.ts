@@ -1,12 +1,11 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { signal } from '@angular/core';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { SettingsPageComponent } from './settings-page.component';
 import { SETTINGS_ROUTES } from './settings.routes';
-import { SettingsStateService } from '../../../features/services/settings-state-service/settings-state.service';
-import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { settingsFeature } from '../../../store/settings/settings.feature';
 import { DEFAULT_GENERAL_SETTINGS } from '../../../features/constants/settings.constant';
 import { Links } from '../../../core/constants/links';
 
@@ -21,6 +20,10 @@ describe('SettingsPageComponent', () => {
   const activeLink = (): HTMLAnchorElement | null =>
     element().querySelector<HTMLAnchorElement>('.settings__nav-item--active');
 
+  afterEach(() => {
+    TestBed.inject(MockStore).resetSelectors();
+  });
+
   beforeEach(async () => {
     TestBed.resetTestingModule();
 
@@ -33,16 +36,12 @@ describe('SettingsPageComponent', () => {
             children: SETTINGS_ROUTES,
           },
         ]),
-        {
-          provide: SettingsStateService,
-          useValue: {
-            settings: signal(DEFAULT_GENERAL_SETTINGS).asReadonly(),
-            isLoaded: signal(true).asReadonly(),
-            loadSettings: vi.fn().mockResolvedValue(true),
-            updateSettings: vi.fn().mockResolvedValue(undefined),
-          },
-        },
-        { provide: SnackbarService, useValue: { error: vi.fn(), success: vi.fn() } },
+        provideMockStore({
+          selectors: [
+            { selector: settingsFeature.selectSettings, value: DEFAULT_GENERAL_SETTINGS },
+            { selector: settingsFeature.selectIsLoaded, value: true },
+          ],
+        }),
       ],
     });
 

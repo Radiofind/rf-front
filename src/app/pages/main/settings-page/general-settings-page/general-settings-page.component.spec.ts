@@ -1,12 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { GeneralSettingsPageComponent } from './general-settings-page.component';
-import { SettingsStateService } from '../../../../features/services/settings-state-service/settings-state.service';
-import { SnackbarService } from '../../../../shared/services/snackbar-service/snackbar.service';
-import { Constants } from '../../../../core/constants/constants';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { GeneralSettingsPageActions } from '../../../../store/ui/general-settings-page.actions';
+import { settingsFeature } from '../../../../store/settings/settings.feature';
 
-import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IGeneralSettings } from '../../../../core/models/settings.model';
 
@@ -20,28 +18,25 @@ describe('GeneralSettingsPageComponent', () => {
     accentColor: 'ORCHID',
   };
 
-  let settings: WritableSignal<IGeneralSettings>;
-  let isLoaded: WritableSignal<boolean>;
-  let loadSettings: ReturnType<typeof vi.fn>;
-  let updateSettings: ReturnType<typeof vi.fn>;
-  let error: ReturnType<typeof vi.fn>;
+  let isLoaded: boolean;
+  let store: MockStore;
+  let dispatch: ReturnType<typeof vi.spyOn>;
 
   const createFixture = async (): Promise<ComponentFixture<GeneralSettingsPageComponent>> => {
     await TestBed.configureTestingModule({
       imports: [GeneralSettingsPageComponent],
       providers: [
-        {
-          provide: SettingsStateService,
-          useValue: {
-            settings: settings.asReadonly(),
-            isLoaded: isLoaded.asReadonly(),
-            loadSettings: loadSettings,
-            updateSettings: updateSettings,
-          },
-        },
-        { provide: SnackbarService, useValue: { error: error } },
+        provideMockStore({
+          selectors: [
+            { selector: settingsFeature.selectSettings, value: storedSettings },
+            { selector: settingsFeature.selectIsLoaded, value: isLoaded },
+          ],
+        }),
       ],
     }).compileComponents();
+
+    store = TestBed.inject(MockStore);
+    dispatch = vi.spyOn(store, 'dispatch');
 
     const fixture: ComponentFixture<GeneralSettingsPageComponent> = TestBed.createComponent(
       GeneralSettingsPageComponent,
@@ -91,13 +86,13 @@ describe('GeneralSettingsPageComponent', () => {
     document.querySelector('.cdk-overlay-container')?.remove();
   });
 
+  afterEach(() => {
+    TestBed.inject(MockStore).resetSelectors();
+  });
+
   beforeEach(() => {
     TestBed.resetTestingModule();
-    settings = signal<IGeneralSettings>(storedSettings);
-    isLoaded = signal<boolean>(true);
-    loadSettings = vi.fn().mockResolvedValue(true);
-    updateSettings = vi.fn().mockResolvedValue(undefined);
-    error = vi.fn();
+    isLoaded = true;
   });
 
   it('renders every general setting from the mockup in order', async () => {
@@ -132,7 +127,12 @@ describe('GeneralSettingsPageComponent', () => {
   it('follows changes of the shared settings state', async () => {
     const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
 
-    settings.set({ ...storedSettings, language: 'IT', notificationsEnabled: true });
+    store.overrideSelector(settingsFeature.selectSettings, {
+      ...storedSettings,
+      language: 'IT',
+      notificationsEnabled: true,
+    });
+    store.refreshState();
     await fixture.whenStable();
 
     expect(selectedLabel(fixture, 'settings-language')).toBe('Italiano');
@@ -156,7 +156,9 @@ describe('GeneralSettingsPageComponent', () => {
 
       await choose(fixture, 'settings-language', 'Français');
 
-      expect(updateSettings).toHaveBeenCalledWith({ language: 'FR' });
+      expect(dispatch).toHaveBeenLastCalledWith(
+        GeneralSettingsPageActions.settingChanged({ changes: { language: 'FR' } }),
+      );
     });
 
     it('saves the radio-mode toggle', async () => {
@@ -165,7 +167,9 @@ describe('GeneralSettingsPageComponent', () => {
       toggle(fixture, 'settings-radio-mode').click();
       await fixture.whenStable();
 
-      expect(updateSettings).toHaveBeenCalledWith({ radioMode: false });
+      expect(dispatch).toHaveBeenLastCalledWith(
+        GeneralSettingsPageActions.settingChanged({ changes: { radioMode: false } }),
+      );
     });
 
     it('saves a new profile visibility', async () => {
@@ -173,7 +177,9 @@ describe('GeneralSettingsPageComponent', () => {
 
       await choose(fixture, 'settings-profile-visibility', 'Only me');
 
-      expect(updateSettings).toHaveBeenCalledWith({ profileVisibility: 'ONLY_ME' });
+      expect(dispatch).toHaveBeenLastCalledWith(
+        GeneralSettingsPageActions.settingChanged({ changes: { profileVisibility: 'ONLY_ME' } }),
+      );
     });
 
     it('saves the notifications toggle', async () => {
@@ -182,7 +188,9 @@ describe('GeneralSettingsPageComponent', () => {
       toggle(fixture, 'settings-notifications').click();
       await fixture.whenStable();
 
-      expect(updateSettings).toHaveBeenCalledWith({ notificationsEnabled: true });
+      expect(dispatch).toHaveBeenLastCalledWith(
+        GeneralSettingsPageActions.settingChanged({ changes: { notificationsEnabled: true } }),
+      );
     });
 
     it('saves a new audio quality', async () => {
@@ -190,7 +198,9 @@ describe('GeneralSettingsPageComponent', () => {
 
       await choose(fixture, 'settings-audio-quality', 'High (320 kbps)');
 
-      expect(updateSettings).toHaveBeenCalledWith({ audioQuality: 'HIGH' });
+      expect(dispatch).toHaveBeenLastCalledWith(
+        GeneralSettingsPageActions.settingChanged({ changes: { audioQuality: 'HIGH' } }),
+      );
     });
 
     it('saves a new accent color', async () => {
@@ -201,7 +211,9 @@ describe('GeneralSettingsPageComponent', () => {
         .click();
       await fixture.whenStable();
 
-      expect(updateSettings).toHaveBeenCalledWith({ accentColor: 'PLUM' });
+      expect(dispatch).toHaveBeenLastCalledWith(
+        GeneralSettingsPageActions.settingChanged({ changes: { accentColor: 'PLUM' } }),
+      );
     });
 
     it('does not save a value that did not change', async () => {
@@ -209,53 +221,33 @@ describe('GeneralSettingsPageComponent', () => {
 
       fixture.componentInstance.onSettingChange('language', 'DE');
 
-      expect(updateSettings).not.toHaveBeenCalled();
+      expect(dispatch).not.toHaveBeenCalledWith(
+        expect.objectContaining({ type: GeneralSettingsPageActions.settingChanged.type }),
+      );
     });
   });
 
-  describe('loading', () => {
-    it('does not request the settings again when they are already loaded', async () => {
-      await createFixture();
+  it('reports the page as opened on init', async () => {
+    await createFixture();
 
-      expect(loadSettings).not.toHaveBeenCalled();
-    });
+    expect(dispatch).toHaveBeenCalledExactlyOnceWith(GeneralSettingsPageActions.opened());
+  });
 
-    it('loads the settings when the page is opened before they arrive', async () => {
-      isLoaded.set(false);
+  it('locks every control until the settings are loaded', async () => {
+    isLoaded = false;
 
-      await createFixture();
+    const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
+    const controls: (HTMLInputElement | HTMLButtonElement)[] = Array.from(
+      fixture.nativeElement.querySelectorAll('.select__control, input'),
+    );
 
-      expect(loadSettings).toHaveBeenCalledTimes(1);
-      expect(error).not.toHaveBeenCalled();
-    });
+    expect(controls).toHaveLength(9);
+    expect(controls.every((control) => control.disabled)).toBe(true);
 
-    it('locks every control until the settings are loaded', async () => {
-      isLoaded.set(false);
-      loadSettings.mockReturnValue(new Promise<boolean>(() => undefined));
+    store.overrideSelector(settingsFeature.selectIsLoaded, true);
+    store.refreshState();
+    await fixture.whenStable();
 
-      const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
-      const controls: (HTMLInputElement | HTMLButtonElement)[] = Array.from(
-        fixture.nativeElement.querySelectorAll('.select__control, input'),
-      );
-
-      expect(controls).toHaveLength(9);
-      expect(controls.every((control) => control.disabled)).toBe(true);
-
-      isLoaded.set(true);
-      await fixture.whenStable();
-
-      expect(controls.every((control) => !control.disabled)).toBe(true);
-    });
-
-    it('reports a failed load', async () => {
-      isLoaded.set(false);
-      loadSettings.mockResolvedValue(false);
-
-      await createFixture();
-
-      await vi.waitFor(() => {
-        expect(error).toHaveBeenCalledWith(Constants.SETTINGS_LOAD_FAILED);
-      });
-    });
+    expect(controls.every((control) => !control.disabled)).toBe(true);
   });
 });

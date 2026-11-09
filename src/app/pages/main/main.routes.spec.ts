@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { MAIN_ROUTES } from './main.routes';
 import { Links } from '../../core/constants/links';
 import { unsavedChangesGuard } from '../../core/guards/unsaved-changes/unsaved-changes.guard';
@@ -61,7 +62,9 @@ describe('MAIN_ROUTES', () => {
   });
 
   it('opens the profile editor rather than the profile view for the edit url', async () => {
-    TestBed.configureTestingModule({ providers: [provideRouter(MAIN_ROUTES)] });
+    TestBed.configureTestingModule({
+      providers: [provideRouter(MAIN_ROUTES), provideMockStore()],
+    });
 
     const harness: RouterTestingHarness = await RouterTestingHarness.create();
 

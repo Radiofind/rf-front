@@ -1,6 +1,7 @@
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
+import { Store } from '@ngrx/store';
+import { authFeature } from '../../../store/auth/auth.feature';
 import { Constants } from '../../constants/constants';
 
 import type { HttpRequest, HttpHandlerFn, HttpInterceptorFn } from '@angular/common/http';
@@ -15,8 +16,7 @@ export const authInterceptor: HttpInterceptorFn = (
     return next(req);
   }
 
-  const authState: AuthStateService = inject(AuthStateService);
-  const token: string | null | undefined = authState.getToken();
+  const token: string | null = inject(Store).selectSignal(authFeature.selectToken)();
 
   if (!token) {
     return next(req);

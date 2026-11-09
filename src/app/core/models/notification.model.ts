@@ -12,3 +12,8 @@ export interface INotification {
 export interface IUnreadNotifications {
   count: number;
 }
+
+export interface INotificationFeed {
+  notifications: readonly INotification[];
+  unreadCount: number;
+}

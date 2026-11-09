@@ -3,6 +3,7 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { firstValueFrom, interval, map, takeWhile } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Constants } from '../../../core/constants/constants';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { CodeFieldComponent } from '../../../shared/components/code-field/code-field.component';
@@ -10,12 +11,13 @@ import { SpinnerComponent } from '../../../shared/components/spinner/spinner.com
 import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
+import { TwoFactorModalActions } from '../../../store/ui/two-factor-modal.actions';
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { Subscription } from 'rxjs';
 import type { ValidationError } from '@angular/forms/signals';
 import type { ITwoFactorModalData } from '../../models/two-factor.model';
-import type { ITwoFactorData } from '../../../core/models/auth.model';
+import type { ITwoFactorData, ITwoFactorResponse } from '../../../core/models/auth.model';
 import type { TranslationKey } from '../../../core/types/translation.type';
 
 @Component({
@@ -31,6 +33,8 @@ export class TwoFactorModalComponent {
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   private readonly authService: AuthService = inject(AuthService);
+
+  private readonly store: Store = inject(Store);
 
   public readonly data: ITwoFactorModalData = inject<ITwoFactorModalData>(DIALOG_DATA);
 
@@ -94,7 +98,10 @@ export class TwoFactorModalComponent {
     };
 
     try {
-      await firstValueFrom(this.authService.twoFactorAuth(twoFactorData));
+      const response: ITwoFactorResponse = await firstValueFrom(
+        this.authService.twoFactorAuth(twoFactorData),
+      );
+      this.store.dispatch(TwoFactorModalActions.verified({ token: response.token }));
       this.dialogRef.close(this.code());
     } catch (error: unknown) {
       const status: number | undefined = this.statusOf(error);

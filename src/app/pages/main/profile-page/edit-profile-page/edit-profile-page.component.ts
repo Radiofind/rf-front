@@ -3,13 +3,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { ChipsFieldComponent } from '../../../../shared/components/chips-field/chips-field.component';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { RadioFieldComponent } from '../../../../shared/components/radio-field/radio-field.component';
 import { SnackbarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { UserService } from '../../../../features/services/user-service/user.service';
-import { AuthService } from '../../../../features/services/auth-service/auth.service';
 import { editProfileFormSchema } from '../../../../features/schemas/edit-profile/edit-profile.schema';
 import { ProfileValidationMessages } from '../../../../features/constants/profile-error-messages.constant';
 import { DEFAULT_ARTIST_TYPE } from '../../../../features/constants/auth-content.constant';
@@ -27,6 +27,7 @@ import {
 import { GENRE_OPTIONS } from '../../../../features/constants/genre.constant';
 import { Constants } from '../../../../core/constants/constants';
 import { Links } from '../../../../core/constants/links';
+import { EditProfilePageActions } from '../../../../store/ui/edit-profile-page.actions';
 
 import type { OnInit, Signal, WritableSignal } from '@angular/core';
 import type { FieldTree, ValidationError } from '@angular/forms/signals';
@@ -68,7 +69,7 @@ import type { IArtistTypeTexts } from '../../../../features/models/artist-type-t
 export class EditProfilePageComponent implements OnInit, IHasUnsavedChanges {
   private readonly userService: UserService = inject(UserService);
 
-  private readonly authService: AuthService = inject(AuthService);
+  private readonly store: Store = inject(Store);
 
   private readonly snackbarService: SnackbarService = inject(SnackbarService);
 
@@ -186,10 +187,11 @@ export class EditProfilePageComponent implements OnInit, IHasUnsavedChanges {
 
       if (result.requiresReauthentication) {
         this.snackbarService.info(Constants.EMAIL_CHANGED_SIGN_IN_AGAIN);
-        this.authService.logout();
+        this.store.dispatch(EditProfilePageActions.reauthenticationRequired());
         return undefined;
       }
 
+      this.store.dispatch(EditProfilePageActions.profileSaved({ profile: result.profile }));
       this.snackbarService.success(Constants.PROFILE_INFORMATION_SAVED);
       await this.router.navigate([Links.PROFILE_URL]);
       return undefined;

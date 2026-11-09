@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { submit } from '@angular/forms/signals';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AuthFormComponent } from './auth-form.component';
 import { AuthService } from '../../../services/auth-service/auth.service';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
@@ -13,6 +14,7 @@ import { Links } from '../../../../core/constants/links';
 import { AUTH_TYPE } from '../../../enums/auth-type.enum';
 import { AuthValidationMessages } from '../../../constants/auth-error-messages.constant';
 import { Constants } from '../../../../core/constants/constants';
+import { AuthFormActions } from '../../../../store/ui/auth-form.actions';
 
 import { translate } from '../../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
@@ -26,6 +28,7 @@ describe('AuthFormComponent', () => {
   let register: ReturnType<typeof vi.fn>;
   let navigate: ReturnType<typeof vi.fn>;
   let open: ReturnType<typeof vi.fn>;
+  let dispatch: ReturnType<typeof vi.spyOn>;
 
   const createFixture = async (authType: string = AUTH_TYPE.LOGIN): Promise<void> => {
     await TestBed.configureTestingModule({
@@ -34,8 +37,11 @@ describe('AuthFormComponent', () => {
         { provide: AuthService, useValue: { login: login, register: register } },
         { provide: Router, useValue: { navigate: navigate } },
         { provide: ModalService, useValue: { open: open } },
+        provideMockStore(),
       ],
     }).compileComponents();
+
+    dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
 
     fixture = TestBed.createComponent(AuthFormComponent);
     component = fixture.componentInstance;
@@ -205,6 +211,25 @@ describe('AuthFormComponent', () => {
         },
       });
       expect(navigate).toHaveBeenCalledWith([Links.DEFAULT_PATH]);
+    });
+
+    it('hands the issued token to the store after registration', async () => {
+      fillRegister();
+
+      await submit(component.registerForm);
+
+      expect(dispatch).toHaveBeenCalledExactlyOnceWith(
+        AuthFormActions.registered({ token: 'jwt' }),
+      );
+    });
+
+    it('hands nothing to the store when registration issues no token', async () => {
+      register.mockReturnValue(of({ challengeId: null, requiresTwoFactor: false, token: null }));
+      fillRegister();
+
+      await submit(component.registerForm);
+
+      expect(dispatch).not.toHaveBeenCalled();
     });
 
     it('forwards the optional artist details when they are filled in', async () => {

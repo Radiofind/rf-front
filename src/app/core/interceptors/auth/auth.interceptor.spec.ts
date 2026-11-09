@@ -4,7 +4,7 @@ import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { PLATFORM_ID } from '@angular/core';
 import { of } from 'rxjs';
 import { authInterceptor } from './auth.interceptor';
-import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
+import { provideMockStore } from '@ngrx/store/testing';
 import { Constants } from '../../constants/constants';
 import { environment } from '../../../../environments/environment';
 
@@ -17,14 +17,11 @@ describe('authInterceptor', () => {
 
   let next: ReturnType<typeof vi.fn>;
 
-  const configure = (platform: string, token: string | null | undefined): void => {
+  const configure = (platform: string, token: string | null): void => {
     TestBed.configureTestingModule({
       providers: [
         { provide: PLATFORM_ID, useValue: platform },
-        {
-          provide: AuthStateService,
-          useValue: { getToken: (): string | null | undefined => token },
-        },
+        provideMockStore({ initialState: { auth: { token: token } } }),
       ],
     });
   };

@@ -2,7 +2,8 @@ import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
-import { AuthService } from '../../../features/services/auth-service/auth.service';
+import { Store } from '@ngrx/store';
+import { AuthApiActions } from '../../../store/auth/auth.actions';
 import { Constants } from '../../constants/constants';
 
 import type { HttpRequest, HttpHandlerFn, HttpInterceptorFn } from '@angular/common/http';
@@ -17,7 +18,7 @@ export const unauthorizedInterceptor: HttpInterceptorFn = (
     return next(req);
   }
 
-  const authService: AuthService = inject(AuthService);
+  const store: Store = inject(Store);
 
   return next(req).pipe(
     catchError((error: unknown) => {
@@ -25,7 +26,7 @@ export const unauthorizedInterceptor: HttpInterceptorFn = (
         error instanceof HttpErrorResponse &&
         error.status === Constants.HTTP_UNAUTHORIZED_STATUS
       ) {
-        authService.logout();
+        store.dispatch(AuthApiActions.sessionRejected());
       }
 
       return throwError(() => error);
