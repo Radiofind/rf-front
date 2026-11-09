@@ -269,6 +269,24 @@ export const IT_TRANSLATIONS: Translations = {
   fileDropzone: {
     replaceHint: '{size} MB · Fai clic o trascina un altro file per sostituirlo',
   },
+  player: {
+    label: 'Lettore audio',
+    nothingPlaying: 'Nessuna riproduzione',
+    libraryHint: 'Scegli un brano per iniziare l’ascolto',
+    radioHint: 'Qui apparirà la radio in diretta',
+    radioModeActive: 'La modalità radio è attiva',
+    play: 'Riproduci',
+    pause: 'Pausa',
+    previous: 'Brano precedente',
+    next: 'Brano successivo',
+    shuffle: 'Riproduzione casuale',
+    repeatOff: 'Ripeti: disattivato',
+    repeatAll: 'Ripeti: tutti',
+    repeatOne: 'Ripeti: un brano',
+    seek: 'Posizione di riproduzione',
+    like: 'Mi piace',
+    moreOptions: 'Altre opzioni',
+  },
   notifications: {
     trackSubmittedForReview:
       'Il tuo brano «{title}» è stato caricato e inviato al controllo qualità',
@@ -738,6 +756,7 @@ export const IT_TRANSLATIONS: Translations = {
     trackUnsupportedFormat:
       'Formato di file non supportato. Usa audio MP3, WAV o FLAC e una copertina JPG o PNG.',
     trackAlreadyUploaded: 'Hai già caricato questo brano',
+    playbackFailed: 'Impossibile riprodurre il brano. Riprova.',
   },
   validation: {
     required: 'Campo obbligatorio',

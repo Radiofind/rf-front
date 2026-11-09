@@ -264,6 +264,24 @@ export const EN_TRANSLATIONS = {
   fileDropzone: {
     replaceHint: '{size} MB · Click or drop another file to replace it',
   },
+  player: {
+    label: 'Audio player',
+    nothingPlaying: 'Nothing playing',
+    libraryHint: 'Pick a track to start listening',
+    radioHint: 'Live radio will appear here',
+    radioModeActive: 'Radio mode is active',
+    play: 'Play',
+    pause: 'Pause',
+    previous: 'Previous track',
+    next: 'Next track',
+    shuffle: 'Shuffle',
+    repeatOff: 'Repeat: off',
+    repeatAll: 'Repeat: all',
+    repeatOne: 'Repeat: one track',
+    seek: 'Playback position',
+    like: 'Like',
+    moreOptions: 'More options',
+  },
   notifications: {
     trackSubmittedForReview: 'Your track "{title}" was uploaded and sent for quality review',
   },
@@ -732,6 +750,7 @@ export const EN_TRANSLATIONS = {
     trackUnsupportedFormat:
       'Unsupported file format. Use MP3, WAV or FLAC audio and a JPG or PNG cover.',
     trackAlreadyUploaded: 'You have already uploaded this track',
+    playbackFailed: 'Could not play the track. Please try again.',
   },
   validation: {
     required: 'Field is required',

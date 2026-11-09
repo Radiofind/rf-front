@@ -265,6 +265,24 @@ export const RU_TRANSLATIONS: Translations = {
   fileDropzone: {
     replaceHint: '{size} МБ · Нажмите или перетащите другой файл, чтобы заменить его',
   },
+  player: {
+    label: 'Аудиоплеер',
+    nothingPlaying: 'Ничего не играет',
+    libraryHint: 'Выберите трек, чтобы начать слушать',
+    radioHint: 'Здесь появится эфир радио',
+    radioModeActive: 'Режим радио активен',
+    play: 'Воспроизвести',
+    pause: 'Пауза',
+    previous: 'Предыдущий трек',
+    next: 'Следующий трек',
+    shuffle: 'Перемешать',
+    repeatOff: 'Повтор: выключен',
+    repeatAll: 'Повтор: все',
+    repeatOne: 'Повтор: один трек',
+    seek: 'Позиция воспроизведения',
+    like: 'Нравится',
+    moreOptions: 'Ещё',
+  },
   notifications: {
     trackSubmittedForReview: 'Ваш трек «{title}» загружен и передан на проверку качества',
   },
@@ -733,6 +751,7 @@ export const RU_TRANSLATIONS: Translations = {
     trackUnsupportedFormat:
       'Неподдерживаемый формат файла. Используйте аудио MP3, WAV или FLAC и обложку JPG или PNG.',
     trackAlreadyUploaded: 'Вы уже загрузили этот трек',
+    playbackFailed: 'Не удалось воспроизвести трек. Попробуйте ещё раз.',
   },
   validation: {
     required: 'Обязательное поле',

@@ -266,6 +266,24 @@ export const DE_TRANSLATIONS: Translations = {
   fileDropzone: {
     replaceHint: '{size} MB · Klicke oder ziehe eine andere Datei hierher, um sie zu ersetzen',
   },
+  player: {
+    label: 'Audioplayer',
+    nothingPlaying: 'Es läuft nichts',
+    libraryHint: 'Wähle einen Track, um loszuhören',
+    radioHint: 'Hier erscheint das Live-Radio',
+    radioModeActive: 'Radiomodus ist aktiv',
+    play: 'Abspielen',
+    pause: 'Pause',
+    previous: 'Vorheriger Track',
+    next: 'Nächster Track',
+    shuffle: 'Zufallswiedergabe',
+    repeatOff: 'Wiederholen: aus',
+    repeatAll: 'Wiederholen: alle',
+    repeatOne: 'Wiederholen: ein Track',
+    seek: 'Wiedergabeposition',
+    like: 'Gefällt mir',
+    moreOptions: 'Weitere Optionen',
+  },
   notifications: {
     trackSubmittedForReview:
       'Dein Track «{title}» wurde hochgeladen und zur Qualitätsprüfung weitergeleitet',
@@ -735,6 +753,7 @@ export const DE_TRANSLATIONS: Translations = {
     trackUnsupportedFormat:
       'Nicht unterstütztes Dateiformat. Verwende MP3, WAV oder FLAC als Audio und JPG oder PNG als Cover.',
     trackAlreadyUploaded: 'Du hast diesen Track bereits hochgeladen',
+    playbackFailed: 'Der Track konnte nicht abgespielt werden. Bitte versuche es erneut.',
   },
   validation: {
     required: 'Pflichtfeld',

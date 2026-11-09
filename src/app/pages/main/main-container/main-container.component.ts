@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { SidebarMenuComponent } from '../../../features/components/sidebar-menu/sidebar-menu.component';
+import { AudioPlayerComponent } from '../../../features/components/audio-player/audio-player.component';
 import { MainLayoutActions } from '../../../store/ui/main-layout.actions';
 import { avatarFeature } from '../../../store/avatar/avatar.feature';
 import { notificationsFeature } from '../../../store/notifications/notifications.feature';
@@ -14,7 +15,7 @@ import type { INotification } from '../../../core/models/notification.model';
   selector: 'app-main-container',
   templateUrl: './main-container.component.html',
   styleUrl: './main-container.component.scss',
-  imports: [HeaderComponent, SidebarMenuComponent, RouterOutlet],
+  imports: [HeaderComponent, SidebarMenuComponent, AudioPlayerComponent, RouterOutlet],
 })
 export class MainContainerComponent implements OnInit, OnDestroy {
   private readonly store: Store = inject(Store);
