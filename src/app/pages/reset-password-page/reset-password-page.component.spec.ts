@@ -4,6 +4,7 @@ import { DeferBlockBehavior } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ResetPasswordPageComponent } from './reset-password-page.component';
+import { provideMockStore } from '@ngrx/store/testing';
 import { AuthService } from '../../features/services/auth-service/auth.service';
 import { SnackbarService } from '../../shared/services/snackbar-service/snackbar.service';
 import { Constants } from '../../core/constants/constants';
@@ -25,6 +26,7 @@ describe('ResetPasswordPageComponent', () => {
       imports: [ResetPasswordPageComponent],
       deferBlockBehavior: DeferBlockBehavior.Playthrough,
       providers: [
+        provideMockStore(),
         {
           provide: ActivatedRoute,
           useValue: { queryParamMap: of(convertToParamMap(queryParams)) },

@@ -3,6 +3,7 @@ import { Links } from './core/constants/links';
 import { Constants } from './core/constants/constants';
 import { noLoginGuard } from './core/guards/auto-login/auto-login.guard';
 import { ErrorTypeEnum } from './core/enums/error-type.enum';
+import { provideMainLayoutStore } from './store/app-store.providers';
 
 import type { Routes } from '@angular/router';
 
@@ -10,6 +11,7 @@ export const routes: Routes = [
   {
     path: Links.DEFAULT_PATH,
     canActivate: [authGuard],
+    providers: [provideMainLayoutStore()],
     loadComponent: () =>
       import('./pages/main/main-container/main-container.component').then(
         (c) => c.MainContainerComponent,

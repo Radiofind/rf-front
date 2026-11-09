@@ -1,10 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { PLATFORM_ID } from '@angular/core';
 import { ApiService } from './api.service';
-import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
 import { EndpointConstants } from '../../constants/endpoints.constants';
 import { SKIP_GLOBAL_LOADER } from '../../tokens/loader/loader.token';
 import { environment } from '../../../../environments/environment';
@@ -102,18 +101,14 @@ describe('ApiService', () => {
 
   let service: ApiService;
   let httpMock: HttpTestingController;
-  let setToken: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    setToken = vi.fn();
-
     TestBed.configureTestingModule({
       providers: [
         ApiService,
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: PLATFORM_ID, useValue: 'browser' },
-        { provide: AuthStateService, useValue: { setToken: setToken } },
       ],
     });
 
@@ -125,7 +120,7 @@ describe('ApiService', () => {
     httpMock.verify();
   });
 
-  it('posts registration data and stores the returned token', () => {
+  it('posts registration data and returns the auth response', () => {
     const response: IAuthResponse = { challengeId: null, requiresTwoFactor: false, token: 'jwt' };
     let received: IAuthResponse | undefined;
 
@@ -143,20 +138,9 @@ describe('ApiService', () => {
     request.flush(response);
 
     expect(received).toEqual(response);
-    expect(setToken).toHaveBeenCalledWith('jwt');
   });
 
-  it('stringifies a missing registration token instead of crashing', () => {
-    service.register(registerData).subscribe();
-
-    httpMock
-      .expectOne(`${api}${EndpointConstants.AUTH_ENDPOINTS.register}`)
-      .flush({ challengeId: null, requiresTwoFactor: false, token: null });
-
-    expect(setToken).toHaveBeenCalledWith('null');
-  });
-
-  it('posts login data without storing a token', () => {
+  it('posts login data and returns the challenge', () => {
     const response: IAuthResponse = {
       challengeId: 'challenge',
       requiresTwoFactor: true,
@@ -171,21 +155,30 @@ describe('ApiService', () => {
     httpMock.expectOne(`${api}${EndpointConstants.AUTH_ENDPOINTS.login}`).flush(response);
 
     expect(received).toEqual(response);
-    expect(setToken).not.toHaveBeenCalled();
   });
 
-  it('stores the token returned by the two-factor verification', () => {
+  it('posts the two-factor code and returns the issued token', () => {
     const response: ITwoFactorResponse = {
       token: 'jwt',
       requiresTwoFactor: false,
       challengeId: null,
     };
 
-    service.twoFactorAuth({ challengeId: 'challenge', code: '123456' }).subscribe();
+    let received: ITwoFactorResponse | undefined;
 
-    httpMock.expectOne(`${api}${EndpointConstants.AUTH_ENDPOINTS.twoFactorAuth}`).flush(response);
+    service.twoFactorAuth({ challengeId: 'challenge', code: '123456' }).subscribe((value) => {
+      received = value;
+    });
 
-    expect(setToken).toHaveBeenCalledWith('jwt');
+    const request: TestRequest = httpMock.expectOne(
+      `${api}${EndpointConstants.AUTH_ENDPOINTS.twoFactorAuth}`,
+    );
+
+    expect(request.request.body).toEqual({ challengeId: 'challenge', code: '123456' });
+
+    request.flush(response);
+
+    expect(received).toEqual(response);
   });
 
   it('skips the global loader when resending the two-factor code', () => {

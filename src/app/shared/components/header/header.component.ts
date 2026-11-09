@@ -9,10 +9,11 @@ import { Constants } from '../../../core/constants/constants';
 import { PopoverPositionEnum } from '../../../core/enums/popover-position.enum';
 import { ProfileMenuItemEnum } from '../../../core/enums/profile-menu-item.enum';
 import { PROFILE_MENU_ITEMS } from '../../constants/profile-menu.constant';
-import { AuthService } from '../../../features/services/auth-service/auth.service';
+import { Store } from '@ngrx/store';
 import { Links } from '../../../core/constants/links';
 import { TranslatePipe } from '../../pipes/translate/translate.pipe';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
+import { HeaderActions } from '../../../store/ui/header.actions';
 
 import type { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
 import type { IProfileMenuItem } from '../../models/profile-menu-item.model';
@@ -35,7 +36,7 @@ import type { INotification } from '../../../core/models/notification.model';
   ],
 })
 export class HeaderComponent {
-  private readonly authService: AuthService = inject(AuthService);
+  private readonly store: Store = inject(Store);
 
   private readonly router: Router = inject(Router);
 
@@ -129,6 +130,6 @@ export class HeaderComponent {
   }
 
   public onLogOut(): void {
-    this.authService.logout();
+    this.store.dispatch(HeaderActions.logOutClicked());
   }
 }

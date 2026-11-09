@@ -3,10 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TwoFactorModalComponent } from './two-factor-modal.component';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { Constants } from '../../../core/constants/constants';
 import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
+import { TwoFactorModalActions } from '../../../store/ui/two-factor-modal.actions';
 
 import { translate } from '../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
@@ -17,6 +19,7 @@ describe('TwoFactorModalComponent', () => {
   let close: ReturnType<typeof vi.fn>;
   let twoFactorAuth: ReturnType<typeof vi.fn>;
   let resendTwoFactorAuth: ReturnType<typeof vi.fn>;
+  let dispatch: ReturnType<typeof vi.spyOn>;
 
   const createFixture = async (): Promise<void> => {
     await TestBed.configureTestingModule({
@@ -28,8 +31,11 @@ describe('TwoFactorModalComponent', () => {
           provide: AuthService,
           useValue: { twoFactorAuth: twoFactorAuth, resendTwoFactorAuth: resendTwoFactorAuth },
         },
+        provideMockStore(),
       ],
     }).compileComponents();
+
+    dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
 
     fixture = TestBed.createComponent(TwoFactorModalComponent);
     component = fixture.componentInstance;
@@ -116,6 +122,25 @@ describe('TwoFactorModalComponent', () => {
 
     expect(twoFactorAuth).toHaveBeenCalledWith({ challengeId: 'challenge', code: '123456' });
     expect(close).toHaveBeenCalledWith('123456');
+  });
+
+  it('hands the issued token to the store once the code is verified', async () => {
+    component.onCodeChange('123456');
+
+    await component.onVerify();
+
+    expect(dispatch).toHaveBeenCalledExactlyOnceWith(
+      TwoFactorModalActions.verified({ token: 'jwt' }),
+    );
+  });
+
+  it('hands nothing to the store when verification fails', async () => {
+    twoFactorAuth.mockReturnValue(throwError(() => new Error('401')));
+    component.onCodeChange('123456');
+
+    await component.onVerify();
+
+    expect(dispatch).not.toHaveBeenCalled();
   });
 
   it('shows an error and stays open when verification fails', async () => {

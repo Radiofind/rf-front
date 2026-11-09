@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { FileDropzoneComponent } from '../../../shared/components/file-dropzone/file-dropzone.component';
 import { InputFieldComponent } from '../../../shared/components/input-field/input-field.component';
@@ -10,9 +11,7 @@ import { ChipsFieldComponent } from '../../../shared/components/chips-field/chip
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
 import { TranslationService } from '../../../shared/services/translation-service/translation.service';
 import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
-import { UserService } from '../../../features/services/user-service/user.service';
 import { TrackService } from '../../../features/services/track-service/track.service';
-import { NotificationStateService } from '../../../features/services/notification-state-service/notification-state.service';
 import { uploadTrackFormSchema } from '../../../features/schemas/upload-track/upload-track.schema';
 import { GENRE_OPTIONS } from '../../../features/constants/genre.constant';
 import {
@@ -30,13 +29,13 @@ import {
   ARTIST_TYPE_LABELS,
   ARTIST_TYPE_TEXTS,
 } from '../../../features/constants/artist-type.constant';
-import { ArtistTypeRequestEnum } from '../../../core/enums/artist-type.enum';
 import { Constants } from '../../../core/constants/constants';
 import { Links } from '../../../core/constants/links';
+import { UploadTrackPageActions } from '../../../store/ui/upload-track-page.actions';
+import { profileFeature } from '../../../store/profile/profile.feature';
 
 import type { OnInit, Signal, WritableSignal } from '@angular/core';
 import type { FieldTree } from '@angular/forms/signals';
-import type { IUserProfileData } from '../../../core/models/user.model';
 import type { IUploadTrackData } from '../../../core/models/track.model';
 import type { IHasUnsavedChanges } from '../../../core/models/unsaved-changes.model';
 import type { TranslationKey } from '../../../core/types/translation.type';
@@ -65,12 +64,9 @@ import type {
   },
 })
 export class UploadTrackPageComponent implements OnInit, IHasUnsavedChanges {
-  private readonly userService: UserService = inject(UserService);
+  private readonly store: Store = inject(Store);
 
   private readonly trackService: TrackService = inject(TrackService);
-
-  private readonly notificationStateService: NotificationStateService =
-    inject(NotificationStateService);
 
   private readonly snackbarService: SnackbarService = inject(SnackbarService);
 
@@ -102,10 +98,12 @@ export class UploadTrackPageComponent implements OnInit, IHasUnsavedChanges {
 
   protected readonly maxGenres: WritableSignal<number> = signal<number>(MAX_TRACK_GENRES);
 
-  protected readonly artistName: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+  protected readonly artistName: Signal<string> = this.store.selectSignal(
+    profileFeature.selectArtistDisplayName,
+  );
 
-  private readonly artistType: WritableSignal<ArtistTypeRequest> = signal<ArtistTypeRequest>(
-    ArtistTypeRequestEnum.ARTIST,
+  private readonly artistType: Signal<ArtistTypeRequest> = this.store.selectSignal(
+    profileFeature.selectArtistType,
   );
 
   protected readonly artistLabel: Signal<TranslationKey> = computed<TranslationKey>(
@@ -139,7 +137,7 @@ export class UploadTrackPageComponent implements OnInit, IHasUnsavedChanges {
   );
 
   public ngOnInit(): void {
-    void this.loadArtistName();
+    this.store.dispatch(UploadTrackPageActions.opened());
   }
 
   public hasUnsavedChanges(): boolean {
@@ -149,19 +147,6 @@ export class UploadTrackPageComponent implements OnInit, IHasUnsavedChanges {
   public onBeforeUnload(event: BeforeUnloadEvent): void {
     if (this.hasUnsavedChanges()) {
       event.preventDefault();
-    }
-  }
-
-  private async loadArtistName(): Promise<void> {
-    try {
-      const profile: IUserProfileData = await firstValueFrom(this.userService.getUserProfileData());
-      const artistName: string = profile.artistName?.trim() ?? Constants.EMPTY_STRING;
-      this.artistType.set(profile.artistType ?? ArtistTypeRequestEnum.ARTIST);
-      this.artistName.set(
-        artistName ? artistName : profile.name + Constants.EMPTY_SPACE_STRING + profile.surname,
-      );
-    } catch {
-      this.snackbarService.error(Constants.PROFILE_LOAD_FAILED);
     }
   }
 
@@ -176,7 +161,7 @@ export class UploadTrackPageComponent implements OnInit, IHasUnsavedChanges {
       await firstValueFrom(this.trackService.uploadTrack(data));
       this.isSaved.set(true);
       this.snackbarService.success(UPLOAD_TRACK_MESSAGES.uploaded);
-      void this.notificationStateService.loadNotifications();
+      this.store.dispatch(UploadTrackPageActions.trackUploaded());
       await this.router.navigate([Links.MY_UPLOADS_URL]);
     } catch (error: unknown) {
       this.snackbarService.error(this.uploadErrorMessage(error));

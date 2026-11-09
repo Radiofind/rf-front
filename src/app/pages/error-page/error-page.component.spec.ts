@@ -4,6 +4,7 @@ import { DeferBlockBehavior } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { of } from 'rxjs';
+import { provideMockStore } from '@ngrx/store/testing';
 import { ErrorPageComponent } from './error-page.component';
 import { ERROR_PAGE_CONTENT } from '../../features/constants/error-content.constant';
 import { Constants } from '../../core/constants/constants';
@@ -23,6 +24,7 @@ describe('ErrorPageComponent', () => {
       imports: [ErrorPageComponent],
       deferBlockBehavior: DeferBlockBehavior.Playthrough,
       providers: [
+        provideMockStore(),
         { provide: ActivatedRoute, useValue: { data: of(data) } },
         { provide: Router, useValue: { navigate: navigate } },
         { provide: Location, useValue: { back: vi.fn() } },

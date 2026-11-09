@@ -1,11 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { ApiService } from '../../../core/services/api/api.service';
-import { AuthStateService } from '../auth-state-service/auth-state.service';
-import { Links } from '../../../core/constants/links';
 
 import type { Observable } from 'rxjs';
 import type { IAuthResponse } from '../../../core/models/auth.model';
@@ -24,8 +21,6 @@ describe('AuthService', () => {
 
   let service: AuthService;
   let apiMock: Record<string, ReturnType<typeof vi.fn>>;
-  let clearToken: ReturnType<typeof vi.fn>;
-  let navigate: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     const authResponse$: Observable<IAuthResponse> = of(authResponse);
@@ -40,16 +35,8 @@ describe('AuthService', () => {
       resetPassword: vi.fn().mockReturnValue(of({})),
     };
 
-    clearToken = vi.fn();
-    navigate = vi.fn().mockResolvedValue(true);
-
     TestBed.configureTestingModule({
-      providers: [
-        AuthService,
-        { provide: ApiService, useValue: apiMock },
-        { provide: AuthStateService, useValue: { clearToken: clearToken } },
-        { provide: Router, useValue: { navigate: navigate } },
-      ],
+      providers: [AuthService, { provide: ApiService, useValue: apiMock }],
     });
 
     service = TestBed.inject(AuthService);
@@ -112,12 +99,5 @@ describe('AuthService', () => {
       token: 'reset-token',
       newPassword: 'Passw0rd!',
     });
-  });
-
-  it('clears the stored token and returns to the login page on logout', () => {
-    service.logout();
-
-    expect(clearToken).toHaveBeenCalledTimes(1);
-    expect(navigate).toHaveBeenCalledWith([Links.LOGIN_URL]);
   });
 });

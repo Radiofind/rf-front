@@ -27,6 +27,8 @@ export class Constants {
 
   public static readonly TOKEN_KEY: string = 'radiofind_token';
 
+  public static readonly STORAGE_EVENT: string = 'storage';
+
   public static readonly LANGUAGE_KEY: string = 'radiofind_language';
 
   public static readonly ACCENT_THEME_KEY: string = 'radiofind_accent_theme';

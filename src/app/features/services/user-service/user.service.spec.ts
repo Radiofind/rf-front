@@ -1,559 +1,103 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { defer, of, Subject, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { UserService } from './user.service';
 import { ApiService } from '../../../core/services/api/api.service';
-import { AuthStateService } from '../auth-state-service/auth-state.service';
 
 import type { Observable } from 'rxjs';
-import type {
-  IAvatarResponse,
-  ICurrentUser,
-  IUpdatedProfileData,
-  IUpdateProfileData,
-  IUserProfileData,
-} from '../../../core/models/user.model';
-import type { IGeneralSettings } from '../../../core/models/settings.model';
-import type { IPage } from '../../../core/models/page.model';
 
 describe('UserService', () => {
-  const currentUser: ICurrentUser = {
-    name: 'Ada',
-    surname: 'Lovelace',
-    email: 'ada@example.com',
-    avatarUrl: null,
-  };
-
-  const profileData: IUserProfileData = {
-    name: 'Ada',
-    surname: 'Lovelace',
-    email: 'ada@example.com',
-    recoveryEmail: null,
-    dateOfBirth: '1994-03-07',
-    artistType: 'BAND',
-    artistName: 'The Engines',
-    description: null,
-    shortDescription: 'Analytical soundscapes',
-    socialLinks: {
-      telegram: null,
-      instagram: null,
-      youtube: null,
-      facebook: null,
-      spotify: null,
-      appleMusic: null,
-      soundcloud: null,
-      bandcamp: null,
-      icloud: null,
-      tiktok: null,
-    },
-    mainGenres: [],
-    additionalGenres: [],
-    registeredAt: '2026-01-15T10:00:00Z',
-    uploadsCount: 0,
-    avatarUrl: null,
-  };
-
-  const updateData: IUpdateProfileData = {
-    name: 'Grace',
-    surname: 'Hopper',
-    email: 'grace@example.com',
-    recoveryEmail: null,
-    artistType: 'ARTIST',
-    artistName: null,
-    description: null,
-    shortDescription: 'Debugging the charts',
-    socialLinks: profileData.socialLinks,
-    mainGenres: ['ROCK'],
-    additionalGenres: [],
-  };
-
-  const updatedProfile: IUpdatedProfileData = {
-    profile: { ...profileData, ...updateData },
-    emailChanged: true,
-    requiresReauthentication: true,
-  };
-
-  const avatarResponse: IAvatarResponse = { avatarUrl: '/api/users/me/avatar' };
-
-  const avatarBlob: Blob = new Blob(['avatar-bytes'], { type: 'image/png' });
-
-  const generalSettings: IGeneralSettings = {
-    language: 'EN',
-    radioMode: true,
-    profileVisibility: 'EVERYONE',
-    notificationsEnabled: true,
-    audioQuality: 'HIGH',
-    accentColor: 'VIOLET',
-  };
-
   const avatarFile: File = new File(['avatar-bytes'], 'avatar.png', { type: 'image/png' });
 
-  const emptyPage: IPage<never> = {
-    items: [],
-    page: 0,
-    size: 5,
-    totalElements: 0,
-    hasNext: false,
-  };
-
-  let service: UserService;
-  let token: string | null;
-  let apiMock: Record<
-    | 'getCurrentUserData'
-    | 'getUserProfileData'
-    | 'updateUserProfileData'
-    | 'uploadNewAvatar'
-    | 'getCurrentAvatar'
-    | 'deleteAvatar'
-    | 'getGeneralSettings'
-    | 'updateGeneralSettings'
-    | 'getActivities'
-    | 'getNotifications'
-    | 'getUnreadNotifications'
-    | 'markAllNotificationsAsRead',
-    ReturnType<typeof vi.fn>
-  >;
-
-  const createService = (
-    getCurrentUserData: ReturnType<typeof vi.fn> = vi.fn().mockReturnValue(of(currentUser)),
-  ): void => {
-    TestBed.resetTestingModule();
-
-    apiMock = {
-      getCurrentUserData: getCurrentUserData,
-      getUserProfileData: vi.fn().mockReturnValue(of(profileData)),
-      updateUserProfileData: vi.fn().mockReturnValue(of(updatedProfile)),
-      uploadNewAvatar: vi.fn().mockReturnValue(of(avatarResponse)),
-      getCurrentAvatar: vi.fn().mockReturnValue(of(avatarBlob)),
-      deleteAvatar: vi.fn().mockReturnValue(of(undefined)),
-      getGeneralSettings: vi.fn().mockReturnValue(of(generalSettings)),
-      updateGeneralSettings: vi.fn().mockReturnValue(of(generalSettings)),
-      getActivities: vi.fn().mockReturnValue(of(emptyPage)),
-      getNotifications: vi.fn().mockReturnValue(of(emptyPage)),
-      getUnreadNotifications: vi.fn().mockReturnValue(of({ count: 2 })),
-      markAllNotificationsAsRead: vi.fn().mockReturnValue(of(undefined)),
-    };
-
-    TestBed.configureTestingModule({
-      providers: [
-        UserService,
-        { provide: ApiService, useValue: apiMock },
-        { provide: AuthStateService, useValue: { getToken: () => token } },
-      ],
-    });
-
-    service = TestBed.inject(UserService);
-  };
-
-  beforeEach(() => {
-    token = 'jwt-ada';
-    createService();
-  });
-
-  it('delegates the current user request to the api service', () => {
-    service.getCurrentUserData().subscribe();
-
-    expect(apiMock.getCurrentUserData).toHaveBeenCalledTimes(1);
-    expect(apiMock.getCurrentUserData).toHaveBeenCalledWith();
-  });
-
-  it('emits the current user returned by the api service', () => {
-    let received: ICurrentUser | undefined;
-
-    service.getCurrentUserData().subscribe((value) => {
-      received = value;
-    });
-
-    expect(received).toEqual(currentUser);
-  });
-
-  it('passes the response through untouched', () => {
-    let received: ICurrentUser | undefined;
-
-    service.getCurrentUserData().subscribe((value) => {
-      received = value;
-    });
-
-    expect(received).toBe(currentUser);
-  });
-
-  it('completes after a single emission', () => {
-    const emissions: ICurrentUser[] = [];
-    let completed: boolean = false;
-
-    service.getCurrentUserData().subscribe({
-      next: (value) => emissions.push(value),
-      complete: () => {
-        completed = true;
-      },
-    });
-
-    expect(emissions).toHaveLength(1);
-    expect(completed).toBe(true);
-  });
-
-  it('does not touch the backend before the caller subscribes', () => {
-    let subscriptions: number = 0;
-
-    createService(
-      vi.fn().mockReturnValue(
-        defer((): Observable<ICurrentUser> => {
-          subscriptions += 1;
-          return of(currentUser);
-        }),
-      ),
-    );
-
-    const currentUser$: Observable<ICurrentUser> = service.getCurrentUserData();
-
-    expect(subscriptions).toBe(0);
-
-    currentUser$.subscribe();
-
-    expect(subscriptions).toBe(1);
-  });
-
-  describe('current user cache', () => {
-    let subscriptions: number;
-
-    beforeEach(() => {
-      subscriptions = 0;
-
-      createService(
-        vi.fn().mockImplementation(() =>
-          defer((): Observable<ICurrentUser> => {
-            subscriptions += 1;
-            return of(currentUser);
-          }),
-        ),
-      );
-    });
-
-    it('asks the backend once and shares the user with every later caller', () => {
-      const received: ICurrentUser[] = [];
-
-      service.getCurrentUserData().subscribe((value) => received.push(value));
-      service.getCurrentUserData().subscribe((value) => received.push(value));
-
-      expect(subscriptions).toBe(1);
-      expect(received).toEqual([currentUser, currentUser]);
-    });
-
-    it('shares a request that is still in flight', () => {
-      const pending$: Subject<ICurrentUser> = new Subject<ICurrentUser>();
-      const received: ICurrentUser[] = [];
-
-      createService(vi.fn().mockReturnValue(pending$));
-
-      service.getCurrentUserData().subscribe((value) => received.push(value));
-      service.getCurrentUserData().subscribe((value) => received.push(value));
-
-      pending$.next(currentUser);
-      pending$.complete();
-
-      expect(apiMock.getCurrentUserData).toHaveBeenCalledTimes(1);
-      expect(received).toEqual([currentUser, currentUser]);
-    });
-
-    it('asks again once a different user has signed in', () => {
-      service.getCurrentUserData().subscribe();
-
-      token = 'jwt-grace';
-      service.getCurrentUserData().subscribe();
-
-      expect(subscriptions).toBe(2);
-    });
-
-    it('asks again after signing out and back in', () => {
-      service.getCurrentUserData().subscribe();
-
-      token = null;
-      service.getCurrentUserData().subscribe();
-      token = 'jwt-ada';
-      service.getCurrentUserData().subscribe();
-
-      expect(subscriptions).toBe(3);
-    });
-
-    it('does not keep a failed request', () => {
-      let attempts: number = 0;
-
-      createService(
-        vi.fn().mockImplementation(() =>
-          defer((): Observable<ICurrentUser> => {
-            attempts += 1;
-            return attempts === 1 ? throwError(() => ({ status: 500 })) : of(currentUser);
-          }),
-        ),
-      );
-
-      let errorStatus: number | undefined;
-      let received: ICurrentUser | undefined;
-
-      service.getCurrentUserData().subscribe({
-        error: (error: { status: number }) => {
-          errorStatus = error.status;
-        },
+  it.each([
+    [
+      'the current user',
+      'getCurrentUserData',
+      [],
+      (service: UserService) => service.getCurrentUserData(),
+    ],
+    [
+      'the profile',
+      'getUserProfileData',
+      [],
+      (service: UserService) => service.getUserProfileData(),
+    ],
+    [
+      'a profile update',
+      'updateUserProfileData',
+      [{ name: 'Grace' }],
+      (service: UserService) => service.updateUserProfileData({ name: 'Grace' } as never),
+    ],
+    [
+      'an avatar upload',
+      'uploadNewAvatar',
+      [avatarFile],
+      (service: UserService) => service.uploadNewAvatar(avatarFile),
+    ],
+    [
+      'the avatar download',
+      'getCurrentAvatar',
+      [],
+      (service: UserService) => service.getCurrentAvatar(),
+    ],
+    ['the avatar removal', 'deleteAvatar', [], (service: UserService) => service.deleteAvatar()],
+    [
+      'the general settings',
+      'getGeneralSettings',
+      [],
+      (service: UserService) => service.getGeneralSettings(),
+    ],
+    [
+      'a settings save',
+      'updateGeneralSettings',
+      [{ language: 'DE' }],
+      (service: UserService) => service.updateGeneralSettings({ language: 'DE' } as never),
+    ],
+    [
+      'a page of activities',
+      'getActivities',
+      [0, 5],
+      (service: UserService) => service.getActivities(0, 5),
+    ],
+    [
+      'a page of notifications',
+      'getNotifications',
+      [1, 20],
+      (service: UserService) => service.getNotifications(1, 20),
+    ],
+    [
+      'the unread count',
+      'getUnreadNotifications',
+      [],
+      (service: UserService) => service.getUnreadNotifications(),
+    ],
+    [
+      'marking everything read',
+      'markAllNotificationsAsRead',
+      [],
+      (service: UserService) => service.markAllNotificationsAsRead(),
+    ],
+  ])(
+    'passes %s through to the api untouched',
+    (
+      _: string,
+      method: string,
+      args: unknown[],
+      call: (service: UserService) => Observable<unknown>,
+    ) => {
+      const response: unknown = { marker: method };
+      const apiMethod: ReturnType<typeof vi.fn> = vi.fn().mockReturnValue(of(response));
+      TestBed.configureTestingModule({
+        providers: [{ provide: ApiService, useValue: { [method]: apiMethod } }],
       });
-      service.getCurrentUserData().subscribe((value) => {
-        received = value;
-      });
-
-      expect(errorStatus).toBe(500);
-      expect(received).toBe(currentUser);
-      expect(attempts).toBe(2);
-    });
-
-    it.each([
-      ['a profile update', (): Observable<unknown> => service.updateUserProfileData(updateData)],
-      ['an avatar upload', (): Observable<unknown> => service.uploadNewAvatar(avatarFile)],
-      ['an avatar removal', (): Observable<unknown> => service.deleteAvatar()],
-    ])('asks again after %s', (_, change) => {
-      service.getCurrentUserData().subscribe();
-
-      change().subscribe();
-      service.getCurrentUserData().subscribe();
-
-      expect(subscriptions).toBe(2);
-    });
-
-    it('keeps the cached user when a change fails', () => {
-      apiMock.updateUserProfileData.mockReturnValue(throwError(() => ({ status: 409 })));
-
-      service.getCurrentUserData().subscribe();
-      service.updateUserProfileData(updateData).subscribe({ error: () => undefined });
-      service.getCurrentUserData().subscribe();
-
-      expect(subscriptions).toBe(1);
-    });
-  });
-
-  it('surfaces api errors to the caller', () => {
-    createService(vi.fn().mockReturnValue(throwError(() => ({ status: 401 }))));
-
-    let errorStatus: number | undefined;
-    let received: ICurrentUser | undefined;
-
-    service.getCurrentUserData().subscribe({
-      next: (value) => {
-        received = value;
-      },
-      error: (error: { status: number }) => {
-        errorStatus = error.status;
-      },
-    });
-
-    expect(errorStatus).toBe(401);
-    expect(received).toBeUndefined();
-  });
-
-  describe('profile', () => {
-    it('delegates the profile request to the api service', () => {
-      let received: IUserProfileData | undefined;
-
-      service.getUserProfileData().subscribe((value) => {
-        received = value;
-      });
-
-      expect(apiMock.getUserProfileData).toHaveBeenCalledTimes(1);
-      expect(apiMock.getUserProfileData).toHaveBeenCalledWith();
-      expect(received).toBe(profileData);
-    });
-
-    it('surfaces profile errors to the caller', () => {
-      apiMock.getUserProfileData.mockReturnValue(throwError(() => ({ status: 401 })));
-
-      let errorStatus: number | undefined;
-
-      service.getUserProfileData().subscribe({
-        error: (error: { status: number }) => {
-          errorStatus = error.status;
-        },
-      });
-
-      expect(errorStatus).toBe(401);
-    });
-  });
-
-  describe('current user state', () => {
-    it('is empty until the current user is loaded', () => {
-      expect(service.currentUser()).toBeNull();
-    });
-
-    it('holds the loaded current user', () => {
-      service.getCurrentUserData().subscribe();
-
-      expect(service.currentUser()).toEqual(currentUser);
-    });
-
-    it('takes the name, surname and email from a saved profile', () => {
-      service.getCurrentUserData().subscribe();
-      service.updateUserProfileData(updateData).subscribe();
-
-      expect(service.currentUser()).toEqual({
-        name: updatedProfile.profile.name,
-        surname: updatedProfile.profile.surname,
-        email: updatedProfile.profile.email,
-        avatarUrl: updatedProfile.profile.avatarUrl,
-      });
-    });
-
-    it('keeps the current user when a profile update fails', () => {
-      apiMock.updateUserProfileData.mockReturnValue(throwError(() => ({ status: 409 })));
-
-      service.getCurrentUserData().subscribe();
-      service.updateUserProfileData(updateData).subscribe({ error: () => undefined });
-
-      expect(service.currentUser()).toEqual(currentUser);
-    });
-  });
-
-  describe('profile update', () => {
-    it('passes the update payload to the api service unchanged', () => {
-      let received: IUpdatedProfileData | undefined;
-
-      service.updateUserProfileData(updateData).subscribe((value) => {
-        received = value;
-      });
-
-      expect(apiMock.updateUserProfileData).toHaveBeenCalledTimes(1);
-      expect(apiMock.updateUserProfileData).toHaveBeenCalledWith(updateData);
-      expect(received).toBe(updatedProfile);
-    });
-
-    it('surfaces a rejected update to the caller', () => {
-      apiMock.updateUserProfileData.mockReturnValue(throwError(() => ({ status: 409 })));
-
-      let errorStatus: number | undefined;
-
-      service.updateUserProfileData(updateData).subscribe({
-        error: (error: { status: number }) => {
-          errorStatus = error.status;
-        },
-      });
-
-      expect(errorStatus).toBe(409);
-    });
-  });
-
-  describe('avatar', () => {
-    it('passes the selected file to the api service unchanged', () => {
-      let received: IAvatarResponse | undefined;
-
-      service.uploadNewAvatar(avatarFile).subscribe((value) => {
-        received = value;
-      });
-
-      expect(apiMock.uploadNewAvatar).toHaveBeenCalledTimes(1);
-      expect(apiMock.uploadNewAvatar).toHaveBeenCalledWith(avatarFile);
-      expect(received).toBe(avatarResponse);
-    });
-
-    it('surfaces a rejected upload to the caller', () => {
-      apiMock.uploadNewAvatar.mockReturnValue(throwError(() => ({ status: 413 })));
-
-      let errorStatus: number | undefined;
-
-      service.uploadNewAvatar(avatarFile).subscribe({
-        error: (error: { status: number }) => {
-          errorStatus = error.status;
-        },
-      });
-
-      expect(errorStatus).toBe(413);
-    });
-
-    it('delegates the avatar download to the api service', () => {
-      let received: Blob | undefined;
-
-      service.getCurrentAvatar().subscribe((value) => {
-        received = value;
-      });
-
-      expect(apiMock.getCurrentAvatar).toHaveBeenCalledTimes(1);
-      expect(received).toBe(avatarBlob);
-    });
-
-    it('delegates the avatar removal to the api service and completes', () => {
-      let completed: boolean = false;
-
-      service.deleteAvatar().subscribe({
-        complete: () => {
-          completed = true;
-        },
-      });
-
-      expect(apiMock.deleteAvatar).toHaveBeenCalledTimes(1);
-      expect(completed).toBe(true);
-    });
-  });
-
-  describe('general settings', () => {
-    it('delegates the settings request to the api service', () => {
-      let received: IGeneralSettings | undefined;
-
-      service.getGeneralSettings().subscribe((value) => {
-        received = value;
-      });
-
-      expect(apiMock.getGeneralSettings).toHaveBeenCalledTimes(1);
-      expect(received).toBe(generalSettings);
-    });
-
-    it('passes the settings to save to the api service unchanged', () => {
-      let received: IGeneralSettings | undefined;
-
-      service.updateGeneralSettings(generalSettings).subscribe((value) => {
-        received = value;
-      });
-
-      expect(apiMock.updateGeneralSettings).toHaveBeenCalledWith(generalSettings);
-      expect(received).toBe(generalSettings);
-    });
-
-    it('surfaces a failed save to the caller', () => {
-      apiMock.updateGeneralSettings.mockReturnValue(throwError(() => ({ status: 500 })));
-
-      let errorStatus: number | undefined;
-
-      service.updateGeneralSettings(generalSettings).subscribe({
-        error: (error: { status: number }) => {
-          errorStatus = error.status;
-        },
-      });
-
-      expect(errorStatus).toBe(500);
-    });
-  });
-
-  describe('activities and notifications', () => {
-    it('requests the given page of activities from the api service', () => {
       let received: unknown;
 
-      service.getActivities(0, 5).subscribe((value) => {
+      call(TestBed.inject(UserService)).subscribe((value: unknown) => {
         received = value;
       });
 
-      expect(apiMock.getActivities).toHaveBeenCalledExactlyOnceWith(0, 5);
-      expect(received).toBe(emptyPage);
-    });
-
-    it('requests the given page of notifications from the api service', () => {
-      service.getNotifications(1, 20).subscribe();
-
-      expect(apiMock.getNotifications).toHaveBeenCalledExactlyOnceWith(1, 20);
-    });
-
-    it('delegates the unread count and marking everything read to the api service', () => {
-      let unread: unknown;
-
-      service.getUnreadNotifications().subscribe((value) => {
-        unread = value;
-      });
-      service.markAllNotificationsAsRead().subscribe();
-
-      expect(unread).toEqual({ count: 2 });
-      expect(apiMock.markAllNotificationsAsRead).toHaveBeenCalledOnce();
-    });
-  });
+      expect(apiMethod).toHaveBeenCalledExactlyOnceWith(...args);
+      expect(received).toBe(response);
+    },
+  );
 });

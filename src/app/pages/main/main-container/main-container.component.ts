@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { SidebarMenuComponent } from '../../../features/components/sidebar-menu/sidebar-menu.component';
-import { AvatarStateService } from '../../../features/services/avatar-state-service/avatar-state.service';
-import { SettingsStateService } from '../../../features/services/settings-state-service/settings-state.service';
-import { NotificationStateService } from '../../../features/services/notification-state-service/notification-state.service';
+import { MainLayoutActions } from '../../../store/ui/main-layout.actions';
+import { avatarFeature } from '../../../store/avatar/avatar.feature';
+import { notificationsFeature } from '../../../store/notifications/notifications.feature';
 
 import type { OnDestroy, OnInit, Signal } from '@angular/core';
 import type { INotification } from '../../../core/models/notification.model';
@@ -16,35 +17,29 @@ import type { INotification } from '../../../core/models/notification.model';
   imports: [HeaderComponent, SidebarMenuComponent, RouterOutlet],
 })
 export class MainContainerComponent implements OnInit, OnDestroy {
-  private readonly avatarStateService: AvatarStateService = inject(AvatarStateService);
+  private readonly store: Store = inject(Store);
 
-  private readonly settingsStateService: SettingsStateService = inject(SettingsStateService);
+  protected readonly avatarUrl: Signal<string | null> = this.store.selectSignal(
+    avatarFeature.selectUrl,
+  );
 
-  private readonly notificationStateService: NotificationStateService =
-    inject(NotificationStateService);
+  protected readonly notifications: Signal<readonly INotification[]> = this.store.selectSignal(
+    notificationsFeature.selectNotifications,
+  );
 
-  protected readonly avatarUrl: Signal<string | null> = this.avatarStateService.avatarUrl;
-
-  protected readonly notifications: Signal<readonly INotification[]> =
-    this.notificationStateService.notifications;
-
-  protected readonly hasUnreadNotifications: Signal<boolean> =
-    this.notificationStateService.hasUnread;
+  protected readonly hasUnreadNotifications: Signal<boolean> = this.store.selectSignal(
+    notificationsFeature.selectHasUnread,
+  );
 
   public ngOnInit(): void {
-    void this.avatarStateService.loadAvatar();
-    void this.settingsStateService.loadSettings();
-    void this.notificationStateService.loadNotifications();
+    this.store.dispatch(MainLayoutActions.opened());
   }
 
   public ngOnDestroy(): void {
-    this.avatarStateService.clear();
-    this.settingsStateService.clear();
-    this.notificationStateService.clear();
+    this.store.dispatch(MainLayoutActions.closed());
   }
 
-  public async onNotificationsOpen(): Promise<void> {
-    await this.notificationStateService.loadNotifications();
-    await this.notificationStateService.markAllAsRead();
+  public onNotificationsOpen(): void {
+    this.store.dispatch(MainLayoutActions.notificationsOpened());
   }
 }

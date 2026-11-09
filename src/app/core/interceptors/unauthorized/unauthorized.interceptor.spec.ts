@@ -1,10 +1,11 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { HttpErrorResponse, HttpRequest, HttpResponse } from '@angular/common/http';
 import { PLATFORM_ID } from '@angular/core';
 import { firstValueFrom, of, throwError } from 'rxjs';
 import { unauthorizedInterceptor } from './unauthorized.interceptor';
-import { AuthService } from '../../../features/services/auth-service/auth.service';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { AuthApiActions } from '../../../store/auth/auth.actions';
 import { Constants } from '../../constants/constants';
 import { environment } from '../../../../environments/environment';
 
@@ -15,15 +16,13 @@ describe('unauthorizedInterceptor', () => {
   const apiRequest = new HttpRequest<unknown>('GET', `${environment.apiUrl}/users/me`);
   const authRequest = new HttpRequest<unknown>('POST', `${environment.apiUrl}/auth/login`, {});
 
-  let logout: ReturnType<typeof vi.fn>;
+  let dispatch: ReturnType<typeof vi.spyOn>;
 
   const configure = (platform: string): void => {
     TestBed.configureTestingModule({
-      providers: [
-        { provide: PLATFORM_ID, useValue: platform },
-        { provide: AuthService, useValue: { logout: logout } },
-      ],
+      providers: [{ provide: PLATFORM_ID, useValue: platform }, provideMockStore()],
     });
+    dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
   };
 
   const intercept = (
@@ -37,18 +36,14 @@ describe('unauthorizedInterceptor', () => {
   const failWith = (status: number): Observable<HttpEvent<unknown>> =>
     throwError(() => new HttpErrorResponse({ status: status }));
 
-  beforeEach(() => {
-    logout = vi.fn();
-  });
-
-  it('logs out and rethrows when the api rejects the token', async () => {
+  it('reports the rejected session and rethrows when the api rejects the token', async () => {
     configure('browser');
 
     await expect(
       intercept(apiRequest, failWith(Constants.HTTP_UNAUTHORIZED_STATUS)),
     ).rejects.toBeInstanceOf(HttpErrorResponse);
 
-    expect(logout).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledExactlyOnceWith(AuthApiActions.sessionRejected());
   });
 
   it('keeps the session for any other error', async () => {
@@ -56,7 +51,7 @@ describe('unauthorizedInterceptor', () => {
 
     await expect(intercept(apiRequest, failWith(500))).rejects.toBeInstanceOf(HttpErrorResponse);
 
-    expect(logout).not.toHaveBeenCalled();
+    expect(dispatch).not.toHaveBeenCalled();
   });
 
   it('ignores a 401 from the auth endpoints', async () => {
@@ -66,7 +61,7 @@ describe('unauthorizedInterceptor', () => {
       intercept(authRequest, failWith(Constants.HTTP_UNAUTHORIZED_STATUS)),
     ).rejects.toBeInstanceOf(HttpErrorResponse);
 
-    expect(logout).not.toHaveBeenCalled();
+    expect(dispatch).not.toHaveBeenCalled();
   });
 
   it('passes successful responses through', async () => {
@@ -75,7 +70,7 @@ describe('unauthorizedInterceptor', () => {
 
     await expect(intercept(apiRequest, of(response))).resolves.toBe(response);
 
-    expect(logout).not.toHaveBeenCalled();
+    expect(dispatch).not.toHaveBeenCalled();
   });
 
   it('does nothing on the server', async () => {
@@ -85,6 +80,6 @@ describe('unauthorizedInterceptor', () => {
       intercept(apiRequest, failWith(Constants.HTTP_UNAUTHORIZED_STATUS)),
     ).rejects.toBeInstanceOf(HttpErrorResponse);
 
-    expect(logout).not.toHaveBeenCalled();
+    expect(dispatch).not.toHaveBeenCalled();
   });
 });

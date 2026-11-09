@@ -1,18 +1,17 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { signal } from '@angular/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { of, Subject, throwError } from 'rxjs';
+import { Subject } from 'rxjs';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { ProfilePageComponent } from './profile-page.component';
-import { UserService } from '../../../../features/services/user-service/user.service';
-import { AvatarStateService } from '../../../../features/services/avatar-state-service/avatar-state.service';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
 import { AvatarModalComponent } from '../../../../features/dialogs/avatar-modal/avatar-modal.component';
 import { Constants } from '../../../../core/constants/constants';
 import { Links } from '../../../../core/constants/links';
-import { LATEST_ACTIVITY_SIZE } from '../../../../features/constants/notification.constant';
+import { ProfilePageActions } from '../../../../store/ui/profile-page.actions';
+import { profileFeature } from '../../../../store/profile/profile.feature';
+import { avatarFeature } from '../../../../store/avatar/avatar.feature';
 
-import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IUserProfileData } from '../../../../core/models/user.model';
 import type { IActivity } from '../../../../core/models/activity.model';
@@ -48,30 +47,30 @@ describe('ProfilePageComponent', () => {
     avatarUrl: null,
   };
 
-  let getUserProfileData: ReturnType<typeof vi.fn>;
-  let getActivities: ReturnType<typeof vi.fn>;
+  let profile: IUserProfileData | null;
+  let activities: readonly IActivity[] | null;
+  let avatarUrl: string | null;
   let open: ReturnType<typeof vi.fn>;
   let modalClosed$: Subject<IAvatarModalResult | undefined>;
-  let avatarUrl: WritableSignal<string | null>;
-  let setAvatar: ReturnType<typeof vi.fn>;
+  let dispatch: ReturnType<typeof vi.spyOn>;
 
   const createFixture = async (): Promise<ComponentFixture<ProfilePageComponent>> => {
     await TestBed.configureTestingModule({
       imports: [ProfilePageComponent],
       providers: [
         provideRouter([]),
-        {
-          provide: UserService,
-          useValue: { getUserProfileData: getUserProfileData, getActivities: getActivities },
-        },
         { provide: ModalService, useValue: { open: open } },
-        {
-          provide: AvatarStateService,
-          useValue: { avatarUrl: avatarUrl.asReadonly(), setAvatar: setAvatar },
-        },
+        provideMockStore({
+          selectors: [
+            { selector: profileFeature.selectProfile, value: profile },
+            { selector: profileFeature.selectActivities, value: activities },
+            { selector: avatarFeature.selectUrl, value: avatarUrl },
+          ],
+        }),
       ],
     }).compileComponents();
 
+    dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
     const fixture: ComponentFixture<ProfilePageComponent> =
       TestBed.createComponent(ProfilePageComponent);
     await fixture.whenStable();
@@ -87,18 +86,17 @@ describe('ProfilePageComponent', () => {
       fixture.nativeElement.querySelectorAll('.details__field:not(.details__field--full) dd'),
     ).map((value: HTMLElement) => value.textContent.trim());
 
+  afterEach(() => {
+    TestBed.inject(MockStore).resetSelectors();
+  });
+
   beforeEach(() => {
     TestBed.resetTestingModule();
-    getUserProfileData = vi.fn().mockReturnValue(of(profileData));
-    getActivities = vi
-      .fn()
-      .mockReturnValue(
-        of({ items: [], page: 0, size: LATEST_ACTIVITY_SIZE, totalElements: 0, hasNext: false }),
-      );
+    profile = profileData;
+    activities = [];
+    avatarUrl = null;
     modalClosed$ = new Subject<IAvatarModalResult | undefined>();
     open = vi.fn().mockReturnValue({ closed: modalClosed$ });
-    avatarUrl = signal<string | null>(null);
-    setAvatar = vi.fn();
   });
 
   const avatarSrc = (fixture: ComponentFixture<ProfilePageComponent>): string | null =>
@@ -113,15 +111,14 @@ describe('ProfilePageComponent', () => {
     await fixture.whenStable();
   };
 
-  it('requests the profile once on init', async () => {
+  it('reports the page as opened on init', async () => {
     await createFixture();
 
-    expect(getUserProfileData).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledExactlyOnceWith(ProfilePageActions.opened());
   });
 
   it('shows placeholders until the profile arrives', async () => {
-    const profile$: Subject<IUserProfileData> = new Subject<IUserProfileData>();
-    getUserProfileData = vi.fn().mockReturnValue(profile$);
+    profile = null;
 
     const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
@@ -130,13 +127,6 @@ describe('ProfilePageComponent', () => {
     expect(text(fixture, '.stats__item:last-child .stats__value')).toBe(Constants.DASH);
     expect(text(fixture, '.stats__item:nth-child(2) .stats__value')).toBe(Constants.DASH);
     expect(detailValues(fixture)).toEqual([Constants.DASH, Constants.DASH]);
-
-    profile$.next(profileData);
-    profile$.complete();
-
-    await vi.waitFor(() => {
-      expect(text(fixture, '.hero__name')).toBe('Ada Lovelace');
-    });
   });
 
   it('passes the formatted profile to the hero, stats and details', async () => {
@@ -153,15 +143,13 @@ describe('ProfilePageComponent', () => {
   });
 
   it('falls back to artist wording and placeholders for missing optional fields', async () => {
-    getUserProfileData = vi.fn().mockReturnValue(
-      of({
-        ...profileData,
-        artistType: null,
-        artistName: null,
-        description: null,
-        shortDescription: null,
-      }),
-    );
+    profile = {
+      ...profileData,
+      artistType: null,
+      artistName: null,
+      description: null,
+      shortDescription: null,
+    };
 
     const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
@@ -179,12 +167,10 @@ describe('ProfilePageComponent', () => {
       );
 
     it('shows the saved social links in the hero', async () => {
-      getUserProfileData = vi.fn().mockReturnValue(
-        of({
-          ...profileData,
-          socialLinks: { ...profileData.socialLinks!, youtube: 'https://youtube.com/@engines' },
-        }),
-      );
+      profile = {
+        ...profileData,
+        socialLinks: { ...profileData.socialLinks!, youtube: 'https://youtube.com/@engines' },
+      };
 
       const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
@@ -192,7 +178,7 @@ describe('ProfilePageComponent', () => {
     });
 
     it('shows no social links when none are saved', async () => {
-      getUserProfileData = vi.fn().mockReturnValue(of({ ...profileData, socialLinks: null }));
+      profile = { ...profileData, socialLinks: null };
 
       const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
@@ -215,7 +201,7 @@ describe('ProfilePageComponent', () => {
     });
 
     it('shows a dash when the profile has no additional genres', async () => {
-      getUserProfileData = vi.fn().mockReturnValue(of({ ...profileData, additionalGenres: [] }));
+      profile = { ...profileData, additionalGenres: [] };
 
       const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
@@ -232,12 +218,12 @@ describe('ProfilePageComponent', () => {
     const createFixtureWithGenres = (
       genres: string[],
     ): Promise<ComponentFixture<ProfilePageComponent>> => {
-      getUserProfileData = vi.fn().mockReturnValue(of({ ...profileData, mainGenres: genres }));
+      profile = { ...profileData, mainGenres: genres };
       return createFixture();
     };
 
     it('hides the genres until the profile arrives', async () => {
-      getUserProfileData = vi.fn().mockReturnValue(new Subject<IUserProfileData>());
+      profile = null;
 
       const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
@@ -296,14 +282,15 @@ describe('ProfilePageComponent', () => {
 
       expect(avatarSrc(fixture)).toBeNull();
 
-      avatarUrl.set('blob:avatar');
+      TestBed.inject(MockStore).overrideSelector(avatarFeature.selectUrl, 'blob:avatar');
+      TestBed.inject(MockStore).refreshState();
       await fixture.whenStable();
 
       expect(avatarSrc(fixture)).toBe('blob:avatar');
     });
 
     it('opens the avatar modal with the current avatar', async () => {
-      avatarUrl.set('blob:avatar');
+      avatarUrl = 'blob:avatar';
       const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
       await editAvatar(fixture);
@@ -321,7 +308,9 @@ describe('ProfilePageComponent', () => {
       await editAvatar(fixture);
       modalClosed$.next({ avatar: uploaded });
 
-      expect(setAvatar).toHaveBeenCalledWith(uploaded);
+      expect(dispatch).toHaveBeenLastCalledWith(
+        ProfilePageActions.avatarChanged({ avatar: uploaded }),
+      );
     });
 
     it('shares the removal with the rest of the app', async () => {
@@ -330,7 +319,7 @@ describe('ProfilePageComponent', () => {
       await editAvatar(fixture);
       modalClosed$.next({ avatar: null });
 
-      expect(setAvatar).toHaveBeenCalledWith(null);
+      expect(dispatch).toHaveBeenLastCalledWith(ProfilePageActions.avatarChanged({ avatar: null }));
     });
 
     it('keeps the avatar when the modal is dismissed', async () => {
@@ -339,7 +328,9 @@ describe('ProfilePageComponent', () => {
       await editAvatar(fixture);
       modalClosed$.next(undefined);
 
-      expect(setAvatar).not.toHaveBeenCalled();
+      expect(dispatch).not.toHaveBeenCalledWith(
+        expect.objectContaining({ type: ProfilePageActions.avatarChanged.type }),
+      );
     });
 
     it('stops listening to the modal once the page is destroyed', async () => {
@@ -349,7 +340,9 @@ describe('ProfilePageComponent', () => {
       fixture.destroy();
       modalClosed$.next({ avatar: null });
 
-      expect(setAvatar).not.toHaveBeenCalled();
+      expect(dispatch).not.toHaveBeenCalledWith(
+        expect.objectContaining({ type: ProfilePageActions.avatarChanged.type }),
+      );
     });
   });
 
@@ -376,29 +369,15 @@ describe('ProfilePageComponent', () => {
       },
     };
 
-    it('requests the latest activities once on init', async () => {
-      await createFixture();
-
-      expect(getActivities).toHaveBeenCalledExactlyOnceWith(0, LATEST_ACTIVITY_SIZE);
-    });
-
     it('lists the loaded activities', async () => {
-      getActivities.mockReturnValue(
-        of({
-          items: [activity],
-          page: 0,
-          size: LATEST_ACTIVITY_SIZE,
-          totalElements: 1,
-          hasNext: false,
-        }),
-      );
+      activities = [activity];
       const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
       expect(text(fixture, '.activity__name')).toBe('Midnight Dreams');
     });
 
-    it('shows neither activities nor the empty state when loading fails', async () => {
-      getActivities.mockReturnValue(throwError(() => new Error('offline')));
+    it('shows neither activities nor the empty state while they are unknown', async () => {
+      activities = null;
       const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
 
       expect((fixture.nativeElement as HTMLElement).querySelector('.activity__list')).toBeNull();
