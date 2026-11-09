@@ -1,18 +1,18 @@
 import { Component, computed, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { SettingsRowComponent } from '../../../../features/components/settings/settings-row/settings-row.component';
 import { AccentColorPickerComponent } from '../../../../features/components/settings/accent-color-picker/accent-color-picker.component';
 import { SelectFieldComponent } from '../../../../shared/components/select-field/select-field.component';
 import { ToggleSwitchComponent } from '../../../../shared/components/toggle-switch/toggle-switch.component';
-import { SettingsStateService } from '../../../../features/services/settings-state-service/settings-state.service';
-import { SnackbarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
 import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
-import { Constants } from '../../../../core/constants/constants';
 import {
   AUDIO_QUALITY_OPTIONS,
   LANGUAGE_OPTIONS,
   PROFILE_VISIBILITY_OPTIONS,
 } from '../../../../features/constants/settings.constant';
+import { GeneralSettingsPageActions } from '../../../../store/ui/general-settings-page.actions';
+import { settingsFeature } from '../../../../store/settings/settings.feature';
 
 import type { OnInit, Signal } from '@angular/core';
 import type { IGeneralSettings } from '../../../../core/models/settings.model';
@@ -34,17 +34,19 @@ import type { ISelectOption } from '../../../../shared/models/select-option.mode
   ],
 })
 export class GeneralSettingsPageComponent implements OnInit {
-  private readonly settingsStateService: SettingsStateService = inject(SettingsStateService);
-
-  private readonly snackbarService: SnackbarService = inject(SnackbarService);
+  private readonly store: Store = inject(Store);
 
   private readonly translationService: TranslationService = inject(TranslationService);
 
-  protected readonly settings: Signal<IGeneralSettings> = this.settingsStateService.settings;
-
-  protected readonly isDisabled: Signal<boolean> = computed<boolean>(
-    () => !this.settingsStateService.isLoaded(),
+  protected readonly settings: Signal<IGeneralSettings> = this.store.selectSignal(
+    settingsFeature.selectSettings,
   );
+
+  private readonly isLoaded: Signal<boolean> = this.store.selectSignal(
+    settingsFeature.selectIsLoaded,
+  );
+
+  protected readonly isDisabled: Signal<boolean> = computed<boolean>(() => !this.isLoaded());
 
   protected readonly languageOptions: readonly ISelectOption<Language>[] = LANGUAGE_OPTIONS;
 
@@ -56,7 +58,7 @@ export class GeneralSettingsPageComponent implements OnInit {
   );
 
   public ngOnInit(): void {
-    void this.loadSettings();
+    this.store.dispatch(GeneralSettingsPageActions.opened());
   }
 
   public onSettingChange<K extends keyof IGeneralSettings>(
@@ -67,18 +69,6 @@ export class GeneralSettingsPageComponent implements OnInit {
       return;
     }
 
-    void this.settingsStateService.updateSettings({ [key]: value });
-  }
-
-  private async loadSettings(): Promise<void> {
-    if (this.settingsStateService.isLoaded()) {
-      return;
-    }
-
-    const isLoaded: boolean = await this.settingsStateService.loadSettings();
-
-    if (!isLoaded) {
-      this.snackbarService.error(Constants.SETTINGS_LOAD_FAILED);
-    }
+    this.store.dispatch(GeneralSettingsPageActions.settingChanged({ changes: { [key]: value } }));
   }
 }

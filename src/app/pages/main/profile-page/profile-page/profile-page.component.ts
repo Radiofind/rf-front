@@ -1,13 +1,11 @@
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { ProfileHeroComponent } from '../../../../features/components/profile/profile-hero/profile-hero.component';
 import { ProfileStatsComponent } from '../../../../features/components/profile/profile-stats/profile-stats.component';
 import { ProfileDetailsComponent } from '../../../../features/components/profile/profile-details/profile-details.component';
 import { LatestActivityComponent } from '../../../../features/components/profile/latest-activity/latest-activity.component';
-import { UserService } from '../../../../features/services/user-service/user.service';
-import { AvatarStateService } from '../../../../features/services/avatar-state-service/avatar-state.service';
 import { AvatarModalComponent } from '../../../../features/dialogs/avatar-modal/avatar-modal.component';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
 import { Constants } from '../../../../core/constants/constants';
@@ -19,12 +17,13 @@ import { formatStringDate } from '../../../../shared/helpers/date/date.helpers';
 import { findSelectOption } from '../../../../shared/helpers/select-option/select-option.helpers';
 import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
 import { GENRE_OPTIONS } from '../../../../features/constants/genre.constant';
-import { LATEST_ACTIVITY_SIZE } from '../../../../features/constants/notification.constant';
+import { ProfilePageActions } from '../../../../store/ui/profile-page.actions';
+import { profileFeature } from '../../../../store/profile/profile.feature';
+import { avatarFeature } from '../../../../store/avatar/avatar.feature';
 
-import type { OnInit, Signal, WritableSignal } from '@angular/core';
+import type { OnInit, Signal } from '@angular/core';
 import type { ISocialLinksData, IUserProfileData } from '../../../../core/models/user.model';
 import type { IActivity } from '../../../../core/models/activity.model';
-import type { IPage } from '../../../../core/models/page.model';
 import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';
 import type { TranslationKey } from '../../../../core/types/translation.type';
 import type { ISelectOption } from '../../../../shared/models/select-option.model';
@@ -45,11 +44,9 @@ import type {
   ],
 })
 export class ProfilePageComponent implements OnInit {
-  private readonly userService: UserService = inject(UserService);
+  private readonly store: Store = inject(Store);
 
   private readonly modalService: ModalService = inject(ModalService);
-
-  private readonly avatarStateService: AvatarStateService = inject(AvatarStateService);
 
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
@@ -57,14 +54,17 @@ export class ProfilePageComponent implements OnInit {
 
   private readonly translationService: TranslationService = inject(TranslationService);
 
-  private readonly profile: WritableSignal<IUserProfileData | null> =
-    signal<IUserProfileData | null>(null);
+  private readonly profile: Signal<IUserProfileData | null> = this.store.selectSignal(
+    profileFeature.selectProfile,
+  );
 
-  protected readonly activities: WritableSignal<readonly IActivity[] | null> = signal<
-    readonly IActivity[] | null
-  >(null);
+  protected readonly activities: Signal<readonly IActivity[] | null> = this.store.selectSignal(
+    profileFeature.selectActivities,
+  );
 
-  protected readonly avatarUrl: Signal<string | null> = this.avatarStateService.avatarUrl;
+  protected readonly avatarUrl: Signal<string | null> = this.store.selectSignal(
+    avatarFeature.selectUrl,
+  );
 
   protected readonly fullName: Signal<string> = computed<string>(() => {
     const profile: IUserProfileData | null = this.profile();
@@ -118,8 +118,7 @@ export class ProfilePageComponent implements OnInit {
   );
 
   public ngOnInit(): void {
-    void this.getUserProfileData();
-    void this.getActivities();
+    this.store.dispatch(ProfilePageActions.opened());
   }
 
   public onAvatarEdit(): void {
@@ -134,29 +133,13 @@ export class ProfilePageComponent implements OnInit {
       .closed.pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((result: IAvatarModalResult | undefined) => {
         if (result) {
-          this.avatarStateService.setAvatar(result.avatar);
+          this.store.dispatch(ProfilePageActions.avatarChanged({ avatar: result.avatar }));
         }
       });
   }
 
   public onProfileEdit(): void {
     void this.router.navigate([Links.EDIT_PROFILE_URL]);
-  }
-
-  private async getUserProfileData(): Promise<void> {
-    const profile: IUserProfileData = await firstValueFrom(this.userService.getUserProfileData());
-    this.profile.set(profile);
-  }
-
-  private async getActivities(): Promise<void> {
-    try {
-      const page: IPage<IActivity> = await firstValueFrom(
-        this.userService.getActivities(Constants.ZERO, LATEST_ACTIVITY_SIZE),
-      );
-      this.activities.set(page.items);
-    } catch {
-      // Without data the section stays empty rather than claiming there is no activity.
-    }
   }
 
   private formatGenre(genre: string): string {

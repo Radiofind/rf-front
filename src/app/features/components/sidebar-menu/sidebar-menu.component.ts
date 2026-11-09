@@ -2,20 +2,20 @@ import { Component, computed, inject, input, model } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { firstValueFrom, map } from 'rxjs';
+import { map } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Constants } from '../../../core/constants/constants';
 import {
   MOBILE_SIDEBAR_MENU_ITEMS,
   SIDEBAR_MENU_ITEMS,
 } from '../../constants/sidebar-menu.constant';
-import { UserService } from '../../services/user-service/user.service';
 import { Links } from '../../../core/constants/links';
 import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
+import { userFeature } from '../../../store/user/user.feature';
 
-import type { InputSignal, ModelSignal, OnInit, Signal } from '@angular/core';
+import type { InputSignal, ModelSignal, Signal } from '@angular/core';
 import type { BreakpointState } from '@angular/cdk/layout';
 import type { ISidebarMenuItem } from '../../models/sidebar-menu-item.model';
-import type { ICurrentUser } from '../../../core/models/user.model';
 import type { TranslationKey } from '../../../core/types/translation.type';
 
 @Component({
@@ -24,8 +24,8 @@ import type { TranslationKey } from '../../../core/types/translation.type';
   styleUrl: './sidebar-menu.component.scss',
   imports: [RouterLink, RouterLinkActive, TranslatePipe],
 })
-export class SidebarMenuComponent implements OnInit {
-  private readonly userService: UserService = inject(UserService);
+export class SidebarMenuComponent {
+  private readonly store: Store = inject(Store);
 
   private readonly router: Router = inject(Router);
 
@@ -52,18 +52,9 @@ export class SidebarMenuComponent implements OnInit {
 
   public readonly isUserOnline: InputSignal<boolean> = input<boolean>(false);
 
-  private readonly currentUser: Signal<ICurrentUser | null> = this.userService.currentUser;
+  public readonly userName: Signal<string> = this.store.selectSignal(userFeature.selectFullName);
 
-  public readonly userName: Signal<string> = computed<string>(() => {
-    const currentUser: ICurrentUser | null = this.currentUser();
-    return currentUser
-      ? currentUser.name + Constants.EMPTY_SPACE_STRING + currentUser.surname
-      : Constants.EMPTY_STRING;
-  });
-
-  public readonly userEmail: Signal<string> = computed<string>(
-    () => this.currentUser()?.email ?? Constants.EMPTY_STRING,
-  );
+  public readonly userEmail: Signal<string> = this.store.selectSignal(userFeature.selectEmail);
 
   public readonly toggleIconClass: Signal<string> = computed<string>(() =>
     this.isCollapsed() ? Constants.CHEVRON_RIGHT_ICON_CLASS : Constants.CHEVRON_LEFT_ICON_CLASS,
@@ -75,19 +66,11 @@ export class SidebarMenuComponent implements OnInit {
       : Constants.SIDEBAR_COLLAPSE_ARIA_LABEL,
   );
 
-  public ngOnInit(): void {
-    void this.getCurrentUserData();
-  }
-
   public onToggleCollapsed(): void {
     this.isCollapsed.update((isCollapsed: boolean) => !isCollapsed);
   }
 
   public onProfile(): void {
     void this.router.navigate([Links.SETTINGS_URL, Links.ACCOUNT_SETTINGS_PATH]);
-  }
-
-  private async getCurrentUserData(): Promise<void> {
-    await firstValueFrom(this.userService.getCurrentUserData());
   }
 }

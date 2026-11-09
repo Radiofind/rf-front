@@ -5,11 +5,12 @@ import { provideRouter, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { EditProfilePageComponent } from './edit-profile-page.component';
 import { UserService } from '../../../../features/services/user-service/user.service';
-import { AuthService } from '../../../../features/services/auth-service/auth.service';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { SnackbarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { ProfileValidationMessages } from '../../../../features/constants/profile-error-messages.constant';
 import { Constants } from '../../../../core/constants/constants';
 import { Links } from '../../../../core/constants/links';
+import { EditProfilePageActions } from '../../../../store/ui/edit-profile-page.actions';
 
 import { translate } from '../../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
@@ -72,7 +73,7 @@ describe('EditProfilePageComponent', () => {
 
   let getUserProfileData: ReturnType<typeof vi.fn>;
   let updateUserProfileData: ReturnType<typeof vi.fn>;
-  let logout: ReturnType<typeof vi.fn>;
+  let dispatch: ReturnType<typeof vi.spyOn>;
   let snackbar: Record<'success' | 'error' | 'info', ReturnType<typeof vi.fn>>;
   let navigate: ReturnType<typeof vi.spyOn>;
 
@@ -88,12 +89,13 @@ describe('EditProfilePageComponent', () => {
             updateUserProfileData: updateUserProfileData,
           },
         },
-        { provide: AuthService, useValue: { logout: logout } },
+        provideMockStore(),
         { provide: SnackbarService, useValue: snackbar },
       ],
     }).compileComponents();
 
     navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
 
     const fixture: ComponentFixture<EditProfilePageComponent> =
       TestBed.createComponent(EditProfilePageComponent);
@@ -146,7 +148,6 @@ describe('EditProfilePageComponent', () => {
     TestBed.resetTestingModule();
     getUserProfileData = vi.fn().mockReturnValue(of(profileData));
     updateUserProfileData = vi.fn().mockReturnValue(of(updatedProfile()));
-    logout = vi.fn();
     snackbar = { success: vi.fn(), error: vi.fn(), info: vi.fn() };
   });
 
@@ -277,6 +278,17 @@ describe('EditProfilePageComponent', () => {
       expect(navigate).toHaveBeenCalledWith([Links.PROFILE_URL]);
     });
 
+    it('shares the saved profile with the rest of the app', async () => {
+      const fixture: ComponentFixture<EditProfilePageComponent> = await createFixture();
+
+      await type(fixture, 'Name', 'Grace');
+      await save(fixture);
+
+      expect(dispatch).toHaveBeenCalledExactlyOnceWith(
+        EditProfilePageActions.profileSaved({ profile: profileData }),
+      );
+    });
+
     it('sends cleared optional fields as null', async () => {
       const fixture: ComponentFixture<EditProfilePageComponent> = await createFixture();
 
@@ -329,7 +341,9 @@ describe('EditProfilePageComponent', () => {
       await save(fixture);
 
       expect(snackbar.info).toHaveBeenCalledWith(Constants.EMAIL_CHANGED_SIGN_IN_AGAIN);
-      expect(logout).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledExactlyOnceWith(
+        EditProfilePageActions.reauthenticationRequired(),
+      );
       expect(navigate).not.toHaveBeenCalledWith([Links.PROFILE_URL]);
     });
 

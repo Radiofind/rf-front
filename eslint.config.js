@@ -2,6 +2,7 @@ const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const prettier = require('eslint-config-prettier/flat');
+const ngrx = require('@ngrx/eslint-plugin');
 
 module.exports = tseslint.config(
   {
@@ -108,6 +109,12 @@ module.exports = tseslint.config(
 
       'prefer-const': 'error',
     },
+  },
+
+  {
+    files: ['**/*.ts'],
+
+    extends: [...ngrx.configs.store, ...ngrx.configs.effectsTypeChecked, ...ngrx.configs.operators],
   },
 
   {

@@ -1,6 +1,4 @@
 import { inject, Service } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthStateService } from '../auth-state-service/auth-state.service';
 import { ApiService } from '../../../core/services/api/api.service';
 
 import type { Observable } from 'rxjs';
@@ -13,17 +11,13 @@ import type {
   IResetTokenValidData,
   IResetTokenValidResponse,
   ITwoFactorData,
+  ITwoFactorResponse,
 } from '../../../core/models/auth.model';
 import type { IRegisterData } from '../../models/auth-content.model';
-import { Links } from '../../../core/constants/links';
 
 @Service()
 export class AuthService {
-  private readonly router: Router = inject(Router);
-
   private readonly apiService: ApiService = inject(ApiService);
-
-  private readonly authStateService: AuthStateService = inject(AuthStateService);
 
   public register(data: IRegisterData): Observable<IAuthResponse> {
     return this.apiService.register(data);
@@ -33,7 +27,7 @@ export class AuthService {
     return this.apiService.login(data);
   }
 
-  public twoFactorAuth(data: ITwoFactorData): Observable<IAuthResponse> {
+  public twoFactorAuth(data: ITwoFactorData): Observable<ITwoFactorResponse> {
     return this.apiService.twoFactorAuth(data);
   }
 
@@ -51,10 +45,5 @@ export class AuthService {
 
   public resetPassword(data: IResetPasswordData): Observable<unknown> {
     return this.apiService.resetPassword(data);
-  }
-
-  public logout(): void {
-    this.authStateService.clearToken();
-    void this.router.navigate([Links.LOGIN_URL]);
   }
 }

@@ -1,12 +1,12 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { signal } from '@angular/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Observable, of, tap } from 'rxjs';
+import { of } from 'rxjs';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { SidebarMenuComponent } from './sidebar-menu.component';
-import { UserService } from '../../services/user-service/user.service';
+import { userFeature } from '../../../store/user/user.feature';
 import {
   MOBILE_SIDEBAR_MENU_ITEMS,
   SIDEBAR_MENU_ITEMS,
@@ -15,27 +15,11 @@ import { Constants } from '../../../core/constants/constants';
 import { Links } from '../../../core/constants/links';
 
 import { translate } from '../../../../test-translate';
-import type { WritableSignal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
 import type { Routes } from '@angular/router';
-import type { ICurrentUser } from '../../../core/models/user.model';
 
 describe('SidebarMenuComponent', () => {
   const routes: Routes = SIDEBAR_MENU_ITEMS.map((item) => ({ path: item.link, children: [] }));
-
-  const currentUser: ICurrentUser = {
-    name: 'Ada',
-    surname: 'Lovelace',
-    email: 'ada@example.com',
-    avatarUrl: null,
-  };
-
-  let getCurrentUserData: ReturnType<typeof vi.fn>;
-
-  let currentUserState: WritableSignal<ICurrentUser | null>;
-
-  const serve = (user$: Observable<ICurrentUser>): Observable<ICurrentUser> =>
-    user$.pipe(tap((user: ICurrentUser) => currentUserState.set(user)));
 
   let isMobile: boolean;
 
@@ -45,13 +29,12 @@ describe('SidebarMenuComponent', () => {
       providers: [
         provideRouter(routes),
         provideLocationMocks(),
-        {
-          provide: UserService,
-          useValue: {
-            getCurrentUserData: getCurrentUserData,
-            currentUser: currentUserState.asReadonly(),
-          },
-        },
+        provideMockStore({
+          selectors: [
+            { selector: userFeature.selectFullName, value: 'Ada Lovelace' },
+            { selector: userFeature.selectEmail, value: 'ada@example.com' },
+          ],
+        }),
         {
           provide: BreakpointObserver,
           useValue: { observe: () => of({ matches: isMobile, breakpoints: {} }) },
@@ -77,10 +60,12 @@ describe('SidebarMenuComponent', () => {
     await fixture.whenStable();
   };
 
+  afterEach(() => {
+    TestBed.inject(MockStore).resetSelectors();
+  });
+
   beforeEach(() => {
     TestBed.resetTestingModule();
-    currentUserState = signal<ICurrentUser | null>(null);
-    getCurrentUserData = vi.fn().mockReturnValue(serve(of(currentUser)));
     isMobile = false;
   });
 
@@ -179,54 +164,23 @@ describe('SidebarMenuComponent', () => {
     expect(fixture.nativeElement.querySelector('.sidebar__user-status')).not.toBeNull();
   });
 
-  it('asks the user service for the signed-in user once on init', async () => {
-    await createFixture();
-
-    expect(getCurrentUserData).toHaveBeenCalledTimes(1);
-  });
-
   it('shows the full name and the email of the signed-in user', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
 
-    expect(fixture.componentInstance.userName()).toBe('Ada Lovelace');
-    expect(fixture.componentInstance.userEmail()).toBe(currentUser.email);
     expect(fixture.nativeElement.querySelector('.sidebar__user-name').textContent).toBe(
       'Ada Lovelace',
     );
     expect(fixture.nativeElement.querySelector('.sidebar__user-email').textContent).toBe(
-      currentUser.email,
+      'ada@example.com',
     );
   });
 
-  it('leaves the user card empty until the request resolves', async () => {
-    let resolveUser: (user: ICurrentUser) => void = () => undefined;
-
-    getCurrentUserData = vi.fn().mockReturnValue(
-      serve(
-        new Observable<ICurrentUser>((subscriber) => {
-          resolveUser = (user: ICurrentUser): void => {
-            subscriber.next(user);
-            subscriber.complete();
-          };
-        }),
-      ),
-    );
-
+  it('follows changes of the signed-in user', async () => {
     const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
+    const store: MockStore = TestBed.inject(MockStore);
 
-    expect(fixture.componentInstance.userName()).toBe(Constants.EMPTY_STRING);
-    expect(fixture.componentInstance.userEmail()).toBe(Constants.EMPTY_STRING);
-
-    resolveUser(currentUser);
-    await fixture.whenStable();
-
-    expect(fixture.componentInstance.userName()).toBe('Ada Lovelace');
-  });
-
-  it('follows changes of the current user without reloading', async () => {
-    const fixture: ComponentFixture<SidebarMenuComponent> = await createFixture();
-
-    currentUserState.set({ ...currentUser, name: 'Grace', surname: 'Hopper' });
+    store.overrideSelector(userFeature.selectFullName, 'Grace Hopper');
+    store.refreshState();
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.sidebar__user-name').textContent).toBe(

@@ -4,6 +4,7 @@ import { DeferBlockBehavior } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthPageComponent } from './auth-page.component';
+import { provideMockStore } from '@ngrx/store/testing';
 import { AuthService } from '../../features/services/auth-service/auth.service';
 import { ModalService } from '../../shared/services/modal-service/modal.service';
 import {
@@ -22,6 +23,7 @@ describe('AuthPageComponent', () => {
       imports: [AuthPageComponent],
       deferBlockBehavior: DeferBlockBehavior.Playthrough,
       providers: [
+        provideMockStore(),
         { provide: ActivatedRoute, useValue: { data: of(data) } },
         { provide: Router, useValue: { navigate: (): Promise<boolean> => Promise.resolve(true) } },
         { provide: AuthService, useValue: {} },

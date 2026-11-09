@@ -4,6 +4,8 @@ import { HeaderComponent } from './header.component';
 import { Constants } from '../../../core/constants/constants';
 import { Router } from '@angular/router';
 import { Links } from '../../../core/constants/links';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { HeaderActions } from '../../../store/ui/header.actions';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { INotification } from '../../../core/models/notification.model';
@@ -12,7 +14,10 @@ describe('HeaderComponent', () => {
   let activeFixture: ComponentFixture<HeaderComponent> | undefined;
 
   const createFixture = async (): Promise<ComponentFixture<HeaderComponent>> => {
-    await TestBed.configureTestingModule({ imports: [HeaderComponent] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [HeaderComponent],
+      providers: [provideMockStore()],
+    }).compileComponents();
 
     activeFixture = TestBed.createComponent(HeaderComponent);
 
@@ -241,5 +246,19 @@ describe('HeaderComponent', () => {
 
     expect(navigateSpy).toHaveBeenCalledWith(['settings/general']);
     expect(popoverPanel()).toBeNull();
+  });
+
+  it('reports the log out from the rendered profile menu', async () => {
+    const fixture: ComponentFixture<HeaderComponent> = await createMainFixture();
+    const dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
+
+    fixture.nativeElement.querySelector('[aria-label="Profile"]').click();
+    await fixture.whenStable();
+    Array.from(document.querySelectorAll<HTMLButtonElement>('.header-menu-item'))
+      .find((item) => item.textContent.trim() === 'Log out')!
+      .click();
+    await fixture.whenStable();
+
+    expect(dispatch).toHaveBeenCalledWith(HeaderActions.logOutClicked());
   });
 });

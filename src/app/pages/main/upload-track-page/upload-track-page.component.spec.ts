@@ -4,40 +4,22 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { provideRouter, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { UploadTrackPageComponent } from './upload-track-page.component';
-import { UserService } from '../../../features/services/user-service/user.service';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { TrackService } from '../../../features/services/track-service/track.service';
-import { NotificationStateService } from '../../../features/services/notification-state-service/notification-state.service';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
 import { UPLOAD_TRACK_MESSAGES } from '../../../features/constants/upload-track.constant';
-import { Constants } from '../../../core/constants/constants';
+import { UploadTrackPageActions } from '../../../store/ui/upload-track-page.actions';
+import { profileFeature } from '../../../store/profile/profile.feature';
 import { Links } from '../../../core/constants/links';
 
 import type { ComponentFixture } from '@angular/core/testing';
-import type { IUserProfileData } from '../../../core/models/user.model';
+import type { ArtistTypeRequest } from '../../../core/types/artist-type-request.type';
 import type { IUploadTrackData } from '../../../core/models/track.model';
 
 describe('UploadTrackPageComponent', () => {
-  const profileData: IUserProfileData = {
-    name: 'Ada',
-    surname: 'Lovelace',
-    email: 'ada@example.com',
-    recoveryEmail: null,
-    dateOfBirth: '1994-03-07',
-    artistType: 'BAND',
-    artistName: 'The Engines',
-    description: null,
-    shortDescription: null,
-    socialLinks: null,
-    mainGenres: [],
-    additionalGenres: [],
-    registeredAt: '2026-01-15T10:00:00Z',
-    uploadsCount: 0,
-    avatarUrl: null,
-  };
-
-  let getUserProfileData: ReturnType<typeof vi.fn>;
+  let artistType: ArtistTypeRequest;
   let uploadTrack: ReturnType<typeof vi.fn>;
-  let loadNotifications: ReturnType<typeof vi.fn>;
+  let dispatch: ReturnType<typeof vi.spyOn>;
   let snackbar: Record<'success' | 'error', ReturnType<typeof vi.fn>>;
   let navigate: ReturnType<typeof vi.spyOn>;
 
@@ -46,17 +28,19 @@ describe('UploadTrackPageComponent', () => {
       imports: [UploadTrackPageComponent],
       providers: [
         provideRouter([]),
-        { provide: UserService, useValue: { getUserProfileData: getUserProfileData } },
         { provide: TrackService, useValue: { uploadTrack: uploadTrack } },
-        {
-          provide: NotificationStateService,
-          useValue: { loadNotifications: loadNotifications },
-        },
+        provideMockStore({
+          selectors: [
+            { selector: profileFeature.selectArtistDisplayName, value: 'The Engines' },
+            { selector: profileFeature.selectArtistType, value: artistType },
+          ],
+        }),
         { provide: SnackbarService, useValue: snackbar },
       ],
     }).compileComponents();
 
     navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
 
     const fixture: ComponentFixture<UploadTrackPageComponent> =
       TestBed.createComponent(UploadTrackPageComponent);
@@ -153,11 +137,14 @@ describe('UploadTrackPageComponent', () => {
 
   const sentData = (): IUploadTrackData => uploadTrack.mock.calls[0]![0] as IUploadTrackData;
 
+  afterEach(() => {
+    TestBed.inject(MockStore).resetSelectors();
+  });
+
   beforeEach(() => {
     TestBed.resetTestingModule();
-    getUserProfileData = vi.fn().mockReturnValue(of(profileData));
+    artistType = 'BAND';
     uploadTrack = vi.fn().mockReturnValue(of({ id: 42 }));
-    loadNotifications = vi.fn().mockResolvedValue(undefined);
     snackbar = { success: vi.fn(), error: vi.fn() };
   });
 
@@ -176,29 +163,18 @@ describe('UploadTrackPageComponent', () => {
       expect(label).toContain('(from your account)');
     });
 
-    it.each([
-      ['ARTIST' as const, 'Artist *'],
-      [null, 'Artist *'],
-    ])('labels the field as artist for the account type %s', async (artistType, label) => {
-      getUserProfileData.mockReturnValue(of({ ...profileData, artistType: artistType }));
+    it('labels the field as artist for an artist account', async () => {
+      artistType = 'ARTIST';
       const fixture: ComponentFixture<UploadTrackPageComponent> = await createFixture();
 
-      expect(control(fixture, label).value).toBe('The Engines');
+      expect(control(fixture, 'Artist *').value).toBe('The Engines');
     });
+  });
 
-    it('falls back to the full name when the account has no artist name', async () => {
-      getUserProfileData.mockReturnValue(of({ ...profileData, artistName: '  ' }));
-      const fixture: ComponentFixture<UploadTrackPageComponent> = await createFixture();
+  it('reports the page as opened on init', async () => {
+    await createFixture();
 
-      expect(control(fixture, 'Band *').value).toBe('Ada Lovelace');
-    });
-
-    it('reports a failed profile load', async () => {
-      getUserProfileData.mockReturnValue(throwError(() => new Error('offline')));
-      await createFixture();
-
-      expect(snackbar.error).toHaveBeenCalledWith(Constants.PROFILE_LOAD_FAILED);
-    });
+    expect(dispatch).toHaveBeenCalledExactlyOnceWith(UploadTrackPageActions.opened());
   });
 
   describe('genres', () => {
@@ -272,14 +248,14 @@ describe('UploadTrackPageComponent', () => {
       });
     });
 
-    it('confirms the upload, refreshes the notifications and opens my uploads', async () => {
+    it('confirms the upload, reports it and opens my uploads', async () => {
       const fixture: ComponentFixture<UploadTrackPageComponent> = await createFixture();
       await fillRequired(fixture);
 
       await upload(fixture);
 
       expect(snackbar.success).toHaveBeenCalledWith(UPLOAD_TRACK_MESSAGES.uploaded);
-      expect(loadNotifications).toHaveBeenCalledOnce();
+      expect(dispatch).toHaveBeenCalledWith(UploadTrackPageActions.trackUploaded());
       expect(navigate).toHaveBeenCalledWith([Links.MY_UPLOADS_URL]);
     });
 
@@ -297,7 +273,7 @@ describe('UploadTrackPageComponent', () => {
 
       expect(snackbar.error).toHaveBeenCalledWith(message);
       expect(navigate).not.toHaveBeenCalled();
-      expect(loadNotifications).not.toHaveBeenCalled();
+      expect(dispatch).not.toHaveBeenCalledWith(UploadTrackPageActions.trackUploaded());
     });
   });
 

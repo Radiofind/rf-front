@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Constants } from '../../../../core/constants/constants';
 import { Links } from '../../../../core/constants/links';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -27,6 +28,7 @@ import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe
 import { TranslateErrorPipe } from '../../../../shared/pipes/translate-error/translate-error.pipe';
 import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
 import { ARTIST_TYPE_OPTIONS, ARTIST_TYPE_TEXTS } from '../../../constants/artist-type.constant';
+import { AuthFormActions } from '../../../../store/ui/auth-form.actions';
 
 import type { InputSignal, Signal, WritableSignal } from '@angular/core';
 import type { DialogRef } from '@angular/cdk/dialog';
@@ -58,6 +60,8 @@ import type { IArtistTypeTexts } from '../../../models/artist-type-texts.model';
 })
 export class AuthFormComponent {
   private readonly authService: AuthService = inject(AuthService);
+
+  private readonly store: Store = inject(Store);
 
   private readonly router: Router = inject(Router);
 
@@ -188,7 +192,14 @@ export class AuthFormComponent {
     }
 
     try {
-      await firstValueFrom(this.authService.register(this.toRegisterData(model, dateOfBirth)));
+      const response: IAuthResponse = await firstValueFrom(
+        this.authService.register(this.toRegisterData(model, dateOfBirth)),
+      );
+
+      if (response.token) {
+        this.store.dispatch(AuthFormActions.registered({ token: response.token }));
+      }
+
       await this.router.navigate([Links.DEFAULT_PATH]);
       return undefined;
     } catch (error: unknown) {

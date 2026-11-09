@@ -7,7 +7,6 @@ import { of } from 'rxjs';
 import { appConfig } from './app.config';
 import { config as serverConfig } from './app.config.server';
 import { routes } from './app.routes';
-import { AuthStateService } from './features/services/auth-state-service/auth-state.service';
 import { LoaderService } from './shared/services/loader-service/loader.service';
 import { Constants } from './core/constants/constants';
 import { environment } from '../environments/environment';
@@ -47,9 +46,8 @@ describe('appConfig', () => {
     expect(TestBed.inject(HttpClient)).toBeInstanceOf(HttpClient);
   });
 
-  it('runs the auth interceptor on outgoing requests', () => {
+  it('sends the token stored before start-up with outgoing requests', () => {
     localStorage.setItem(Constants.TOKEN_KEY, 'jwt');
-    TestBed.inject(AuthStateService);
 
     TestBed.inject(HttpClient).get(`${environment.apiUrl}/tracks`).subscribe();
 

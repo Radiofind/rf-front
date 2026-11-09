@@ -1,8 +1,6 @@
 import { inject, Service } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { tap } from 'rxjs';
-import { AuthStateService } from '../../../features/services/auth-state-service/auth-state.service';
 import { EndpointConstants } from '../../constants/endpoints.constants';
 import { skipGlobalLoader } from '../../tokens/loader/loader.token';
 import { Constants } from '../../constants/constants';
@@ -59,30 +57,19 @@ export class ApiService {
 
   private readonly http: HttpClient = inject(HttpClient);
 
-  private readonly authStateService: AuthStateService = inject(AuthStateService);
-
   public register(data: IRegisterData): Observable<IAuthResponse> {
-    return this.http
-      .post<IAuthResponse>(`${this.authApi}${this.authEndpoints.register}`, data)
-      .pipe(
-        tap((response: IAuthResponse) => {
-          this.authStateService.setToken(String(response.token));
-        }),
-      );
+    return this.http.post<IAuthResponse>(`${this.authApi}${this.authEndpoints.register}`, data);
   }
 
   public login(data: ILoginData): Observable<IAuthResponse> {
     return this.http.post<IAuthResponse>(`${this.authApi}${this.authEndpoints.login}`, data);
   }
 
-  public twoFactorAuth(data: ITwoFactorData): Observable<IAuthResponse> {
-    return this.http
-      .post<ITwoFactorResponse>(`${this.authApi}${this.authEndpoints.twoFactorAuth}`, data)
-      .pipe(
-        tap((response: ITwoFactorResponse) => {
-          this.authStateService.setToken(response.token);
-        }),
-      );
+  public twoFactorAuth(data: ITwoFactorData): Observable<ITwoFactorResponse> {
+    return this.http.post<ITwoFactorResponse>(
+      `${this.authApi}${this.authEndpoints.twoFactorAuth}`,
+      data,
+    );
   }
 
   public resendTwoFactorAuth(data: IResendTwoFactorData): Observable<IAuthResponse> {
