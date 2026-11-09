@@ -236,6 +236,22 @@ export class Constants {
 
   public static readonly ISO_DATE_REPLACEMENT: string = '$1';
 
+  public static readonly PLAYER_PLAY_ICON_CLASS: string = 'bxf bx-play';
+
+  public static readonly PLAYER_PAUSE_ICON_CLASS: string = 'bxf bx-pause';
+
+  public static readonly PLAYER_LIKE_ICON_CLASS: string = 'bx bx-heart';
+
+  public static readonly PLAYER_LIKED_ICON_CLASS: string = 'bxf bx-heart';
+
+  public static readonly PLAYER_PLAY_LABEL: TranslationKey = 'player.play';
+
+  public static readonly PLAYER_PAUSE_LABEL: TranslationKey = 'player.pause';
+
+  public static readonly PLAYBACK_FAILED: TranslationKey = 'messages.playbackFailed';
+
+  public static readonly ABORT_ERROR_NAME: string = 'AbortError';
+
   // magic numbers
 
   public static readonly ZERO: number = 0;
@@ -315,6 +331,10 @@ export class Constants {
   public static readonly MILLISECONDS_IN_ONE_SECOND: number = 1000;
 
   public static readonly BYTES_IN_MEGABYTE: number = 1024 * 1024;
+
+  public static readonly PLAYER_RESTART_THRESHOLD_SECONDS: number = 3;
+
+  public static readonly PERCENT: number = 100;
 
   public static readonly EXTRA_FRACTION_DIGITS_PATTERN: RegExp = /(\.\d{3})\d+/;
 
