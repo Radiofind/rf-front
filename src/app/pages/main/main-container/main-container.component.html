@@ -11,8 +11,12 @@
   <div class="main__body">
     <app-sidebar-menu [isUserOnline]="true" [userAvatarUrl]="avatarUrl()" />
 
-    <section class="main__content">
-      <router-outlet></router-outlet>
-    </section>
+    <div class="main__column">
+      <section class="main__content">
+        <router-outlet></router-outlet>
+      </section>
+
+      <app-audio-player />
+    </div>
   </div>
 </div>

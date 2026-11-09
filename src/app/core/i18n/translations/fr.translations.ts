@@ -271,6 +271,24 @@ export const FR_TRANSLATIONS: Translations = {
   fileDropzone: {
     replaceHint: '{size} Mo · Cliquez ou déposez un autre fichier pour le remplacer',
   },
+  player: {
+    label: 'Lecteur audio',
+    nothingPlaying: 'Aucune lecture en cours',
+    libraryHint: 'Choisissez un titre pour commencer l’écoute',
+    radioHint: 'La radio en direct apparaîtra ici',
+    radioModeActive: 'Le mode radio est actif',
+    play: 'Lire',
+    pause: 'Pause',
+    previous: 'Titre précédent',
+    next: 'Titre suivant',
+    shuffle: 'Lecture aléatoire',
+    repeatOff: 'Répéter : désactivé',
+    repeatAll: 'Répéter : tout',
+    repeatOne: 'Répéter : un titre',
+    seek: 'Position de lecture',
+    like: 'J’aime',
+    moreOptions: 'Plus d’options',
+  },
   notifications: {
     trackSubmittedForReview:
       'Votre morceau « {title} » a été importé et envoyé au contrôle qualité',
@@ -741,6 +759,7 @@ export const FR_TRANSLATIONS: Translations = {
     trackUnsupportedFormat:
       'Format de fichier non pris en charge. Utilisez un audio MP3, WAV ou FLAC et une pochette JPG ou PNG.',
     trackAlreadyUploaded: 'Vous avez déjà importé ce morceau',
+    playbackFailed: 'Impossible de lire le titre. Veuillez réessayer.',
   },
   validation: {
     required: 'Ce champ est obligatoire',

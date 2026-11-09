@@ -8,6 +8,8 @@ import { MainLayoutActions } from '../../../store/ui/main-layout.actions';
 import { avatarFeature } from '../../../store/avatar/avatar.feature';
 import { notificationsFeature } from '../../../store/notifications/notifications.feature';
 import { userFeature } from '../../../store/user/user.feature';
+import { initialPlayerState } from '../../../store/player/player.feature';
+import { initialSettingsState } from '../../../store/settings/settings.feature';
 
 import type { ComponentFixture } from '@angular/core/testing';
 
@@ -36,6 +38,7 @@ describe('MainContainerComponent', () => {
         provideRouter([]),
         provideLocationMocks(),
         provideMockStore({
+          initialState: { player: initialPlayerState, settings: initialSettingsState },
           selectors: [
             { selector: avatarFeature.selectUrl, value: null },
             { selector: notificationsFeature.selectNotifications, value: [] },
@@ -73,6 +76,12 @@ describe('MainContainerComponent', () => {
     await fixture.whenStable();
 
     expect(avatarSources()).toEqual(['blob:avatar', 'blob:avatar']);
+  });
+
+  it('shows the audio player below the page content', () => {
+    expect(
+      (fixture.nativeElement as HTMLElement).querySelector('.main__column app-audio-player'),
+    ).not.toBeNull();
   });
 
   it('marks the bell in the header while notifications are unread', async () => {

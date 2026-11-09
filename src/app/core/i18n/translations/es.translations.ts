@@ -269,6 +269,24 @@ export const ES_TRANSLATIONS: Translations = {
   fileDropzone: {
     replaceHint: '{size} MB · Haz clic o arrastra otro archivo para reemplazarlo',
   },
+  player: {
+    label: 'Reproductor de audio',
+    nothingPlaying: 'No se está reproduciendo nada',
+    libraryHint: 'Elige una pista para empezar a escuchar',
+    radioHint: 'Aquí aparecerá la radio en directo',
+    radioModeActive: 'El modo radio está activo',
+    play: 'Reproducir',
+    pause: 'Pausa',
+    previous: 'Pista anterior',
+    next: 'Pista siguiente',
+    shuffle: 'Aleatorio',
+    repeatOff: 'Repetir: desactivado',
+    repeatAll: 'Repetir: todo',
+    repeatOne: 'Repetir: una pista',
+    seek: 'Posición de reproducción',
+    like: 'Me gusta',
+    moreOptions: 'Más opciones',
+  },
   notifications: {
     trackSubmittedForReview: 'Tu canción «{title}» se ha subido y enviado al control de calidad',
   },
@@ -738,6 +756,7 @@ export const ES_TRANSLATIONS: Translations = {
     trackUnsupportedFormat:
       'Formato de archivo no compatible. Usa audio MP3, WAV o FLAC y una portada JPG o PNG.',
     trackAlreadyUploaded: 'Ya has subido esta canción',
+    playbackFailed: 'No se pudo reproducir la pista. Inténtalo de nuevo.',
   },
   validation: {
     required: 'Este campo es obligatorio',
