@@ -2,15 +2,28 @@ import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { concatLatestFrom } from '@ngrx/operators';
-import { combineLatest, distinctUntilChanged, filter, map, merge, tap } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  concatMap,
+  distinctUntilChanged,
+  EMPTY,
+  filter,
+  map,
+  merge,
+  mergeMap,
+  of,
+  tap,
+} from 'rxjs';
 import { AudioPlayerService } from '../../features/services/audio-player-service/audio-player.service';
+import { TrackService } from '../../features/services/track-service/track.service';
 import { SnackbarService } from '../../shared/services/snackbar-service/snackbar.service';
 import { shuffledOrder } from '../../shared/helpers/player/player.helpers';
 import { Constants } from '../../core/constants/constants';
 import { AudioPlayerActions } from '../ui/audio-player.actions';
 import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
 import { settingsFeature } from '../settings/settings.feature';
-import { PlayerActions } from './player.actions';
+import { PlayerActions, PlayerApiActions } from './player.actions';
 import { playerFeature } from './player.feature';
 
 import type { Action } from '@ngrx/store';
@@ -85,13 +98,76 @@ export const syncAudio = createEffect(
 );
 
 export const relayAudioEvents = createEffect(
-  (audioPlayerService: AudioPlayerService = inject(AudioPlayerService)) => {
+  (
+    audioPlayerService: AudioPlayerService = inject(AudioPlayerService),
+    store: Store = inject(Store),
+  ) => {
     return merge(
       audioPlayerService.ended$.pipe(map(() => PlayerActions.trackEnded())),
       audioPlayerService.failed$.pipe(map(() => PlayerActions.playbackFailed())),
+      audioPlayerService.listenQualified$.pipe(
+        concatLatestFrom(() => store.select(playerFeature.selectCurrentTrack)),
+        filter(([, track]: [unknown, IPlayerTrack | null]) => track !== null),
+        map(([, track]: [unknown, IPlayerTrack | null]) =>
+          PlayerActions.listenQualified({ trackId: track?.id ?? Constants.ZERO }),
+        ),
+      ),
     );
   },
   { functional: true },
+);
+
+export const recordListen = createEffect(
+  (actions$: Actions = inject(Actions), trackService: TrackService = inject(TrackService)) => {
+    return actions$.pipe(
+      ofType(PlayerActions.listenQualified),
+      mergeMap(({ trackId }: { trackId: number }) =>
+        trackService.recordPlay(trackId).pipe(catchError(() => EMPTY)),
+      ),
+    );
+  },
+  { functional: true, dispatch: false },
+);
+
+export const saveLike = createEffect(
+  (
+    actions$: Actions = inject(Actions),
+    store: Store = inject(Store),
+    trackService: TrackService = inject(TrackService),
+  ) => {
+    return actions$.pipe(
+      ofType(AudioPlayerActions.likeToggled),
+      concatLatestFrom(() => [
+        store.select(playerFeature.selectCurrentTrack),
+        store.select(playerFeature.selectIsCurrentTrackLiked),
+      ]),
+      filter(([, track]: [Action, IPlayerTrack | null, boolean]) => track?.canLike === true),
+      concatMap(([, track, liked]: [Action, IPlayerTrack | null, boolean]) => {
+        const trackId: number = track?.id ?? Constants.ZERO;
+
+        return trackService.setLiked(trackId, liked).pipe(
+          map(() => PlayerApiActions.likeSaved({ trackId: trackId, liked: liked })),
+          catchError(() => of(PlayerApiActions.likeFailed({ trackId: trackId, liked: !liked }))),
+        );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export const reportLikeFailure = createEffect(
+  (
+    actions$: Actions = inject(Actions),
+    snackbarService: SnackbarService = inject(SnackbarService),
+  ) => {
+    return actions$.pipe(
+      ofType(PlayerApiActions.likeFailed),
+      tap(() => {
+        snackbarService.error(Constants.LIKE_FAILED);
+      }),
+    );
+  },
+  { functional: true, dispatch: false },
 );
 
 export const reportPlaybackFailure = createEffect(

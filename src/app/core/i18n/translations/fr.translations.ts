@@ -286,10 +286,14 @@ export const FR_TRANSLATIONS: Translations = {
     columns: {
       track: 'Morceau / Artiste',
       genre: 'Genre',
+      duration: 'Durée',
+      plays: 'Écoutes',
+      likes: 'J’aime',
       status: 'Statut',
       uploaded: 'Mis en ligne',
       actions: 'Actions',
     },
+    sortBy: 'Trier par {column}',
     searchPlaceholder: 'Rechercher dans vos uploads...',
     searchLabel: 'Rechercher par titre ou artiste',
     clearSearch: 'Effacer la recherche',
@@ -298,6 +302,7 @@ export const FR_TRANSLATIONS: Translations = {
     moreActions: 'Plus d’actions pour « {title} »',
     moreActionsSoon: 'D’autres actions arrivent bientôt',
     range: '{from}–{to} sur {total}',
+    perPage: 'Par page',
     pagination: 'Pages des uploads',
     previousPage: 'Page précédente',
     nextPage: 'Page suivante',
@@ -350,6 +355,7 @@ export const FR_TRANSLATIONS: Translations = {
     repeatOne: 'Répéter : un titre',
     seek: 'Position de lecture',
     like: 'J’aime',
+    likeInReview: 'Les « J’aime » seront possibles une fois la vérification qualité réussie',
     moreOptions: 'Plus d’options',
   },
   notifications: {
@@ -803,6 +809,7 @@ export const FR_TRANSLATIONS: Translations = {
       'Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ? Vos modifications seront perdues.',
   },
   messages: {
+    likeFailed: 'Impossible d’enregistrer votre « J’aime ». Veuillez réessayer.',
     emailSent: 'E-mail envoyé avec succès',
     passwordReset: 'Mot de passe réinitialisé avec succès',
     settingsSaved: 'Paramètres enregistrés',

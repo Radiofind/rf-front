@@ -33,6 +33,8 @@ export class Constants {
 
   public static readonly ACCENT_THEME_KEY: string = 'radiofind_accent_theme';
 
+  public static readonly UPLOADS_PAGE_SIZE_KEY: string = 'radiofind_uploads_page_size';
+
   public static readonly NULL_JSON: string = 'null';
 
   public static readonly UPPERCASE: string = 'uppercase';
@@ -111,6 +113,14 @@ export class Constants {
 
   public static readonly DATE_TIME_SEPARATOR: string = ' • ';
 
+  public static readonly EMPTY_VALUE_DASH: string = '—';
+
+  public static readonly ARIA_SORT_NONE: string = 'none';
+
+  public static readonly ARIA_SORT_ASCENDING: string = 'ascending';
+
+  public static readonly ARIA_SORT_DESCENDING: string = 'descending';
+
   public static readonly CELL_FIELD: string = 'cell';
 
   public static readonly SPINNER_DEFAULT_SIZE: string = '24px';
@@ -174,6 +184,12 @@ export class Constants {
   public static readonly STATUS_QUERY_PARAM: string = 'status';
 
   public static readonly SEARCH_QUERY_PARAM: string = 'search';
+
+  public static readonly SORT_QUERY_PARAM: string = 'sort';
+
+  public static readonly DIRECTION_QUERY_PARAM: string = 'direction';
+
+  public static readonly LIKE_FAILED: TranslationKey = 'messages.likeFailed';
 
   public static readonly PROFILE_PHOTO: TranslationKey = 'avatar.title';
 
@@ -250,13 +266,13 @@ export class Constants {
 
   public static readonly PLAYER_LIKED_ICON_CLASS: string = 'bxf bx-heart';
 
-  public static readonly PLAYER_PLAY_LABEL: TranslationKey = 'player.play';
-
-  public static readonly PLAYER_PAUSE_LABEL: TranslationKey = 'player.pause';
-
-  public static readonly PLAYBACK_FAILED: TranslationKey = 'messages.playbackFailed';
-
   public static readonly ABORT_ERROR_NAME: string = 'AbortError';
+
+  public static readonly TOOLTIP_PANE_CLASS: string = 'app-tooltip-pane';
+
+  public static readonly TOOLTIP_ID_PREFIX: string = 'app-tooltip-';
+
+  public static readonly VISUALLY_HIDDEN_CLASS: string = 'cdk-visually-hidden';
 
   // magic numbers
 
@@ -342,9 +358,17 @@ export class Constants {
 
   public static readonly PLAYER_RESTART_THRESHOLD_SECONDS: number = 3;
 
+  public static readonly LISTEN_QUALIFYING_SECONDS: number = 30;
+
+  public static readonly LISTEN_SHORT_TRACK_SHARE: number = 0.9;
+
+  public static readonly LISTEN_MAX_STEP_SECONDS: number = 1.5;
+
   public static readonly PERCENT: number = 100;
 
-  public static readonly EXTRA_FRACTION_DIGITS_PATTERN: RegExp = /(\.\d{3})\d+/;
+  public static readonly TOOLTIP_OFFSET: number = 12;
+
+  public static readonly TOOLTIP_VIEWPORT_MARGIN: number = 8;
 
   // others
 
@@ -361,6 +385,8 @@ export class Constants {
     'wheel',
     'touchmove',
   ];
+
+  public static readonly EXTRA_FRACTION_DIGITS_PATTERN: RegExp = /(\.\d{3})\d+/;
 
   public static readonly EN_VALIDATOR_PATTERN: RegExp = /^[A-Za-z-]+$/;
 
@@ -394,6 +420,29 @@ export class Constants {
 
   public static readonly BOTTOM_VERTICAL_ALIGNMENT: VerticalConnectionPos = 'bottom';
 
+  public static readonly PLAYER_PLAY_LABEL: TranslationKey = 'player.play';
+
+  public static readonly PLAYER_PAUSE_LABEL: TranslationKey = 'player.pause';
+
+  public static readonly PLAYBACK_FAILED: TranslationKey = 'messages.playbackFailed';
+
+  public static readonly TOOLTIP_POSITIONS: readonly ConnectedPosition[] = [
+    {
+      originX: 'center',
+      originY: 'top',
+      overlayX: 'center',
+      overlayY: 'bottom',
+      offsetY: -Constants.TOOLTIP_OFFSET,
+    },
+    {
+      originX: 'center',
+      originY: 'bottom',
+      overlayX: 'center',
+      overlayY: 'top',
+      offsetY: Constants.TOOLTIP_OFFSET,
+    },
+  ];
+
   public static readonly DROPDOWN_POSITIONS: readonly ConnectedPosition[] = [
     {
       originX: 'start',
@@ -425,7 +474,6 @@ export class Constants {
     },
   ];
 
-  // Submenus open to the side; on narrow screens they fall back to below the parent item.
   public static readonly DROPDOWN_NESTED_POSITIONS: readonly ConnectedPosition[] = [
     {
       originX: 'end',

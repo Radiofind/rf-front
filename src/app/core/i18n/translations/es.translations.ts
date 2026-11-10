@@ -284,10 +284,14 @@ export const ES_TRANSLATIONS: Translations = {
     columns: {
       track: 'Pista / Artista',
       genre: 'Género',
+      duration: 'Duración',
+      plays: 'Reproducciones',
+      likes: 'Me gusta',
       status: 'Estado',
       uploaded: 'Subida',
       actions: 'Acciones',
     },
+    sortBy: 'Ordenar por {column}',
     searchPlaceholder: 'Buscar en tus subidas...',
     searchLabel: 'Buscar por título o artista',
     clearSearch: 'Borrar búsqueda',
@@ -296,6 +300,7 @@ export const ES_TRANSLATIONS: Translations = {
     moreActions: 'Más acciones para «{title}»',
     moreActionsSoon: 'Pronto habrá más acciones',
     range: '{from}–{to} de {total}',
+    perPage: 'Por página',
     pagination: 'Páginas de subidas',
     previousPage: 'Página anterior',
     nextPage: 'Página siguiente',
@@ -347,6 +352,7 @@ export const ES_TRANSLATIONS: Translations = {
     repeatOne: 'Repetir: una pista',
     seek: 'Posición de reproducción',
     like: 'Me gusta',
+    likeInReview: 'Podrás dar «Me gusta» cuando la pista supere la revisión de calidad',
     moreOptions: 'Más opciones',
   },
   notifications: {
@@ -798,6 +804,7 @@ export const ES_TRANSLATIONS: Translations = {
       'Tienes cambios sin guardar. ¿Seguro que quieres salir de esta página? Se perderán los cambios.',
   },
   messages: {
+    likeFailed: 'No pudimos guardar tu «Me gusta». Inténtalo de nuevo.',
     emailSent: 'Correo enviado correctamente',
     passwordReset: 'Contraseña restablecida correctamente',
     settingsSaved: 'Ajustes guardados',

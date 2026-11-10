@@ -279,10 +279,14 @@ export const EN_TRANSLATIONS = {
     columns: {
       track: 'Track / Artist',
       genre: 'Genre',
+      duration: 'Duration',
+      plays: 'Plays',
+      likes: 'Likes',
       status: 'Status',
       uploaded: 'Uploaded',
       actions: 'Actions',
     },
+    sortBy: 'Sort by {column}',
     searchPlaceholder: 'Search in your uploads...',
     searchLabel: 'Search by track title or artist',
     clearSearch: 'Clear search',
@@ -291,6 +295,7 @@ export const EN_TRANSLATIONS = {
     moreActions: 'More actions for "{title}"',
     moreActionsSoon: 'More actions are coming soon',
     range: 'Showing {from}–{to} of {total}',
+    perPage: 'Per page',
     pagination: 'Uploads pages',
     previousPage: 'Previous page',
     nextPage: 'Next page',
@@ -340,6 +345,7 @@ export const EN_TRANSLATIONS = {
     repeatOne: 'Repeat: one track',
     seek: 'Playback position',
     like: 'Like',
+    likeInReview: 'Likes open once the track passes the quality review',
     moreOptions: 'More options',
   },
   notifications: {
@@ -791,6 +797,7 @@ export const EN_TRANSLATIONS = {
       'You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.',
   },
   messages: {
+    likeFailed: 'We could not save your like. Please try again.',
     emailSent: 'Email sent successfully',
     passwordReset: 'Password reset successfully',
     settingsSaved: 'Settings saved',

@@ -25,20 +25,72 @@
     color: var(--soft-text-color);
 
     &--track {
-      width: 34%;
-    }
-
-    &--genre {
       width: 26%;
     }
 
-    &--date {
+    &--genre {
       width: 18%;
     }
 
-    &--actions {
-      width: 96px;
+    &--number {
       text-align: right;
+    }
+
+    &--duration {
+      width: 104px;
+    }
+
+    &--stat {
+      width: 96px;
+    }
+
+    &--status {
+      width: 144px;
+    }
+
+    &--date {
+      width: 180px;
+    }
+
+    &--actions {
+      width: 80px;
+      text-align: right;
+    }
+  }
+
+  &__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    border-radius: 6px;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 200ms ease;
+
+    &:hover,
+    &--active {
+      color: var(--text-color);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--first-gradient-color);
+      outline-offset: 2px;
+    }
+  }
+
+  &__sort-icon {
+    display: flex;
+    font-size: 16px;
+    color: var(--second-text-color);
+    transition: color 200ms ease;
+
+    .uploads__sort--active & {
+      color: var(--icon-color);
     }
   }
 
@@ -66,8 +118,32 @@
     padding: 10px 16px;
     vertical-align: middle;
 
+    &--number {
+      font-size: 14px;
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      color: var(--soft-text-color);
+    }
+
     &--actions {
       text-align: right;
+    }
+  }
+
+  &__likes {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    i {
+      display: flex;
+      font-size: 16px;
+      color: var(--second-text-color);
+    }
+
+    &--liked i {
+      color: var(--second-gradient-color);
     }
   }
 
@@ -293,6 +369,15 @@
   }
 }
 
+@media (max-width: 1400px) {
+  .uploads {
+    &__head--genre,
+    &__cell--genre {
+      display: none;
+    }
+  }
+}
+
 @media (max-width: 1100px) {
   .uploads {
     &__head--date,
@@ -306,15 +391,27 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .uploads {
-    &__head--genre,
-    &__cell--genre {
+    &__head--duration,
+    &__cell--duration {
       display: none;
     }
+  }
+}
 
+@media (max-width: 768px) {
+  .uploads {
     &__head--track {
       width: auto;
+    }
+
+    &__head--stat {
+      width: 64px;
+    }
+
+    &__head--status {
+      width: 128px;
     }
 
     &__head--actions {
@@ -342,8 +439,10 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .uploads {
+    &__head--stat,
+    &__cell--stat,
     &__head--actions,
     &__cell--actions {
       display: none;

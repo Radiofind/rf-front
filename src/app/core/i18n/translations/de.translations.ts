@@ -281,10 +281,14 @@ export const DE_TRANSLATIONS: Translations = {
     columns: {
       track: 'Track / Künstler',
       genre: 'Genre',
+      duration: 'Dauer',
+      plays: 'Plays',
+      likes: 'Likes',
       status: 'Status',
       uploaded: 'Hochgeladen',
       actions: 'Aktionen',
     },
+    sortBy: 'Nach {column} sortieren',
     searchPlaceholder: 'In deinen Uploads suchen...',
     searchLabel: 'Nach Tracktitel oder Künstler suchen',
     clearSearch: 'Suche leeren',
@@ -293,6 +297,7 @@ export const DE_TRANSLATIONS: Translations = {
     moreActions: 'Weitere Aktionen für «{title}»',
     moreActionsSoon: 'Weitere Aktionen folgen in Kürze',
     range: '{from}–{to} von {total}',
+    perPage: 'Pro Seite',
     pagination: 'Seiten der Uploads',
     previousPage: 'Vorherige Seite',
     nextPage: 'Nächste Seite',
@@ -346,6 +351,7 @@ export const DE_TRANSLATIONS: Translations = {
     repeatOne: 'Wiederholen: ein Track',
     seek: 'Wiedergabeposition',
     like: 'Gefällt mir',
+    likeInReview: 'Likes sind möglich, sobald der Track die Qualitätsprüfung bestanden hat',
     moreOptions: 'Weitere Optionen',
   },
   notifications: {
@@ -798,6 +804,7 @@ export const DE_TRANSLATIONS: Translations = {
       'Du hast nicht gespeicherte Änderungen. Möchtest du diese Seite wirklich verlassen? Deine Änderungen gehen verloren.',
   },
   messages: {
+    likeFailed: 'Dein Like konnte nicht gespeichert werden. Bitte versuche es erneut.',
     emailSent: 'E-Mail erfolgreich gesendet',
     passwordReset: 'Passwort erfolgreich zurückgesetzt',
     settingsSaved: 'Einstellungen gespeichert',

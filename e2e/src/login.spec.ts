@@ -18,10 +18,10 @@ test.describe('login', () => {
   });
 
   test('keeps submit disabled until the form is valid', async () => {
-    await loginPage.email.fill('ada@example.com');
+    await loginPage.emailField.fill('ada@example.com');
     await expect(loginPage.submit).toBeDisabled();
 
-    await loginPage.password.fill('Passw0rd!');
+    await loginPage.passwordField.fill('Passw0rd!');
     await expect(loginPage.submit).toBeEnabled();
   });
 
@@ -32,18 +32,18 @@ test.describe('login', () => {
   });
 
   test('reports a malformed email', async () => {
-    await loginPage.email.fill('not-an-email');
+    await loginPage.emailField.fill('not-an-email');
     await loginPage.email.blur();
 
     await expect(loginPage.emailField.errors).toHaveText(['Invalid email']);
   });
 
   test('clears the email error once it becomes valid', async () => {
-    await loginPage.email.fill('not-an-email');
+    await loginPage.emailField.fill('not-an-email');
     await loginPage.email.blur();
     await expect(loginPage.emailField.errors).toHaveText(['Invalid email']);
 
-    await loginPage.email.fill('ada@example.com');
+    await loginPage.emailField.fill('ada@example.com');
 
     await expect(loginPage.emailField.errors).toHaveCount(0);
   });

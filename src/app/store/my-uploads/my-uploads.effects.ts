@@ -3,8 +3,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { concatLatestFrom } from '@ngrx/operators';
-import { catchError, debounceTime, filter, map, merge, of, switchMap } from 'rxjs';
+import { catchError, debounceTime, filter, map, merge, of, switchMap, tap } from 'rxjs';
 import { TrackService } from '../../features/services/track-service/track.service';
+import { UploadsPreferencesService } from '../../features/services/uploads-preferences-service/uploads-preferences.service';
 import { MY_UPLOADS_SEARCH_DEBOUNCE_MS } from '../../features/constants/my-uploads.constant';
 import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
 import { untilLayoutClosed } from '../shared/session.operators';
@@ -27,7 +28,9 @@ export const loadMyUploads = createEffect(
         MyUploadsPageActions.opened,
         MyUploadsPageActions.statusSelected,
         MyUploadsPageActions.filtersReset,
+        MyUploadsPageActions.sortSelected,
         MyUploadsPageActions.pageSelected,
+        MyUploadsPageActions.pageSizeSelected,
         MyUploadsPageActions.retryClicked,
       ),
     );
@@ -49,4 +52,19 @@ export const loadMyUploads = createEffect(
     );
   },
   { functional: true },
+);
+
+export const rememberPageSize = createEffect(
+  (
+    actions$: Actions = inject(Actions),
+    preferences: UploadsPreferencesService = inject(UploadsPreferencesService),
+  ) => {
+    return actions$.pipe(
+      ofType(MyUploadsPageActions.pageSizeSelected),
+      tap(({ size }: { size: number }) => {
+        preferences.writePageSize(size);
+      }),
+    );
+  },
+  { functional: true, dispatch: false },
 );

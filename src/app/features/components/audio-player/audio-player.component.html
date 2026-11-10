@@ -121,10 +121,13 @@
       type="button"
       class="player__action"
       [class.player__action--active]="isLiked()"
+      [class.player__action--unavailable]="isLikeUnavailable()"
       [disabled]="!track()"
+      [attr.aria-disabled]="isLikeUnavailable() ? true : null"
       [attr.aria-pressed]="isLiked()"
       [attr.aria-label]="'player.like' | translate"
-      [title]="'player.like' | translate"
+      [attr.title]="isLikeUnavailable() ? null : ('player.like' | translate)"
+      [appTooltip]="isLikeUnavailable() ? ('player.likeInReview' | translate) : null"
       (click)="onLikeToggle()"
     >
       <i [class]="likeIconClass()" aria-hidden="true"></i>

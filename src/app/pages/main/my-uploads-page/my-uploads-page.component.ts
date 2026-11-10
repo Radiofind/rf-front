@@ -5,12 +5,15 @@ import { Constants } from '../../../core/constants/constants';
 import { Links } from '../../../core/constants/links';
 import { UploadsTableComponent } from '../../../features/components/my-uploads/uploads-table/uploads-table.component';
 import { UploadsEmptyStateComponent } from '../../../features/components/my-uploads/uploads-empty-state/uploads-empty-state.component';
+import { UploadsPreferencesService } from '../../../features/services/uploads-preferences-service/uploads-preferences.service';
 import { UploadsEmptyStateEnum } from '../../../features/enums/uploads-empty-state.enum';
 import {
+  UPLOADS_PAGE_SIZE_OPTIONS,
   MY_UPLOADS_SEARCH_MAX_LENGTH,
   MY_UPLOADS_SKELETON_ROWS,
   UPLOADS_STATUS_TABS,
 } from '../../../features/constants/my-uploads.constant';
+import { SelectFieldComponent } from '../../../shared/components/select-field/select-field.component';
 import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
 import { MyUploadsPageActions } from '../../../store/ui/my-uploads-page.actions';
 import { myUploadsFeature } from '../../../store/my-uploads/my-uploads.feature';
@@ -18,8 +21,11 @@ import { playerFeature } from '../../../store/player/player.feature';
 import { settingsFeature } from '../../../store/settings/settings.feature';
 
 import type { OnInit, Signal } from '@angular/core';
+import type { OwnTracksSortEnum } from '../../../core/enums/own-tracks-sort.enum';
+import type { SortDirectionEnum } from '../../../core/enums/sort-direction.enum';
 import type { IPlayerTrack } from '../../../core/models/player.model';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
+import type { ISelectOption } from '../../../shared/models/select-option.model';
 import type { ITrack } from '../../../core/models/track.model';
 import type { TrackStatus } from '../../../core/types/track-status.type';
 import type { IUploadsStatusTab } from '../../../features/models/uploads-status-tab.model';
@@ -28,12 +34,14 @@ import type { IUploadsStatusTab } from '../../../features/models/uploads-status-
   selector: 'app-my-uploads-page',
   templateUrl: './my-uploads-page.component.html',
   styleUrl: './my-uploads-page.component.scss',
-  imports: [UploadsTableComponent, UploadsEmptyStateComponent, TranslatePipe],
+  imports: [UploadsTableComponent, UploadsEmptyStateComponent, SelectFieldComponent, TranslatePipe],
 })
 export class MyUploadsPageComponent implements OnInit {
   private readonly store: Store = inject(Store);
 
   private readonly router: Router = inject(Router);
+
+  private readonly preferences: UploadsPreferencesService = inject(UploadsPreferencesService);
 
   private readonly playerQueue: Signal<IPlayerTrack[]> = this.store.selectSignal(
     myUploadsFeature.selectPlayerQueue,
@@ -51,6 +59,8 @@ export class MyUploadsPageComponent implements OnInit {
 
   protected readonly searchMaxLength: number = MY_UPLOADS_SEARCH_MAX_LENGTH;
 
+  protected readonly pageSizeOptions: readonly ISelectOption<string>[] = UPLOADS_PAGE_SIZE_OPTIONS;
+
   protected readonly skeletonRows: readonly number[] = MY_UPLOADS_SKELETON_ROWS;
 
   protected readonly tracks: Signal<readonly ITrack[] | null> = this.store.selectSignal(
@@ -66,6 +76,22 @@ export class MyUploadsPageComponent implements OnInit {
   );
 
   protected readonly page: Signal<number> = this.store.selectSignal(myUploadsFeature.selectPage);
+
+  private readonly pageSizeNumber: Signal<number> = this.store.selectSignal(
+    myUploadsFeature.selectPageSize,
+  );
+
+  protected readonly pageSize: Signal<string> = computed<string>(() =>
+    String(this.pageSizeNumber()),
+  );
+
+  protected readonly sort: Signal<OwnTracksSortEnum> = this.store.selectSignal(
+    myUploadsFeature.selectSort,
+  );
+
+  protected readonly direction: Signal<SortDirectionEnum> = this.store.selectSignal(
+    myUploadsFeature.selectDirection,
+  );
 
   protected readonly isLoading: Signal<boolean> = this.store.selectSignal(
     myUploadsFeature.selectIsLoading,
@@ -114,7 +140,7 @@ export class MyUploadsPageComponent implements OnInit {
   );
 
   public ngOnInit(): void {
-    this.store.dispatch(MyUploadsPageActions.opened());
+    this.store.dispatch(MyUploadsPageActions.opened({ pageSize: this.preferences.readPageSize() }));
   }
 
   public onStatusSelect(status: TrackStatus | null): void {
@@ -135,6 +161,14 @@ export class MyUploadsPageComponent implements OnInit {
 
   public onFiltersReset(): void {
     this.store.dispatch(MyUploadsPageActions.filtersReset());
+  }
+
+  public onPageSizeSelect(size: string): void {
+    this.store.dispatch(MyUploadsPageActions.pageSizeSelected({ size: Number(size) }));
+  }
+
+  public onSortSelect(sort: OwnTracksSortEnum): void {
+    this.store.dispatch(MyUploadsPageActions.sortSelected({ sort: sort }));
   }
 
   public onRetry(): void {

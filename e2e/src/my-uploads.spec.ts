@@ -1,6 +1,6 @@
 import { expect, test } from '../fixtures/test';
 import { API_URL, registerUser } from '../fixtures/api';
-import { bearer, OWN_TRACKS_URL, setRadioMode, uploadTitled } from '../fixtures/tracks';
+import { bearer, OWN_TRACKS_URL, setRadioMode, TRACKS_URL, uploadTitled } from '../fixtures/tracks';
 import { MyUploadsPage } from '../pages/my-uploads.page';
 
 import type { APIRequestContext, APIResponse } from '@playwright/test';
@@ -10,6 +10,10 @@ interface IOwnTrack {
   title: string;
   status: string;
   audioUrl: string;
+  durationSeconds: number;
+  playsCount: number;
+  likesCount: number;
+  liked: boolean;
 }
 
 interface IOwnTracksPage {
@@ -132,6 +136,118 @@ test.describe('my uploads', () => {
       );
 
       expect(response.status()).toBe(403);
+    });
+  });
+
+  test.describe('sorting', () => {
+    test('sorts titles alphabetically in both directions', async ({ request, user }) => {
+      await uploadTitled(request, user.token, 'beta');
+      await uploadTitled(request, user.token, 'Alpha');
+      await uploadTitled(request, user.token, 'Gamma');
+
+      const ascending: IOwnTracksPage = await ownTracks(request, user.token, {
+        sort: 'TITLE',
+        direction: 'ASC',
+      });
+      const descending: IOwnTracksPage = await ownTracks(request, user.token, {
+        sort: 'TITLE',
+        direction: 'DESC',
+      });
+
+      expect(ascending.items.map((track: IOwnTrack) => track.title)).toEqual([
+        'Alpha',
+        'beta',
+        'Gamma',
+      ]);
+      expect(descending.items.map((track: IOwnTrack) => track.title)).toEqual([
+        'Gamma',
+        'beta',
+        'Alpha',
+      ]);
+    });
+
+    test('sorts by plays with the most played first', async ({ request, user }) => {
+      const fan = await registerUser();
+      await uploadTitled(request, user.token, 'Midnight Dreams');
+      await uploadTitled(request, user.token, 'Lost in Space');
+      const [, older] = (await ownTracks(request, user.token)).items;
+      await request.post(`${TRACKS_URL}/${String(older?.id)}/plays`, {
+        headers: bearer(fan.token),
+      });
+
+      const page: IOwnTracksPage = await ownTracks(request, user.token, {
+        sort: 'PLAYS',
+        direction: 'DESC',
+      });
+
+      expect(page.items.map((track: IOwnTrack) => track.title)).toEqual([
+        'Midnight Dreams',
+        'Lost in Space',
+      ]);
+    });
+
+    test('rejects an unknown sort column', async ({ request, user }) => {
+      const response: APIResponse = await request.get(OWN_TRACKS_URL, {
+        headers: bearer(user.token),
+        params: { sort: 'audioFileName' },
+      });
+
+      expect(response.status()).toBe(400);
+    });
+  });
+
+  test.describe('likes', () => {
+    test('refuses a like of a track that is still in review', async ({ request, user }) => {
+      const fan = await registerUser();
+      await uploadTitled(request, user.token, 'Midnight Dreams');
+      const [track] = (await ownTracks(request, user.token)).items;
+
+      const response: APIResponse = await request.put(`${TRACKS_URL}/${String(track?.id)}/like`, {
+        headers: bearer(fan.token),
+      });
+
+      expect(response.status()).toBe(409);
+      expect((await ownTracks(request, user.token)).items[0]?.likesCount).toBe(0);
+    });
+
+    test('lets a like be removed even while the track is in review', async ({ request, user }) => {
+      await uploadTitled(request, user.token, 'Midnight Dreams');
+      const [track] = (await ownTracks(request, user.token)).items;
+
+      const response: APIResponse = await request.delete(
+        `${TRACKS_URL}/${String(track?.id)}/like`,
+        { headers: bearer(user.token) },
+      );
+
+      expect(response.status()).toBe(204);
+    });
+  });
+
+  test.describe('plays', () => {
+    test('counts every listener once', async ({ request, user }) => {
+      const fan = await registerUser();
+      const otherFan = await registerUser();
+      await uploadTitled(request, user.token, 'Midnight Dreams');
+      const [track] = (await ownTracks(request, user.token)).items;
+      const playsUrl: string = `${TRACKS_URL}/${String(track?.id)}/plays`;
+
+      await request.post(playsUrl, { headers: bearer(fan.token) });
+      await request.post(playsUrl, { headers: bearer(fan.token) });
+      await request.post(playsUrl, { headers: bearer(otherFan.token) });
+
+      expect((await ownTracks(request, user.token)).items[0]?.playsCount).toBe(2);
+    });
+
+    test('does not count the owner listening to the own track', async ({ request, user }) => {
+      await uploadTitled(request, user.token, 'Midnight Dreams');
+      const [track] = (await ownTracks(request, user.token)).items;
+
+      const response: APIResponse = await request.post(`${TRACKS_URL}/${String(track?.id)}/plays`, {
+        headers: bearer(user.token),
+      });
+
+      expect(response.status()).toBe(204);
+      expect((await ownTracks(request, user.token)).items[0]?.playsCount).toBe(0);
     });
   });
 
@@ -272,6 +388,82 @@ test.describe('my uploads', () => {
       await expect(uploads.titles).toHaveText(['Midnight Dreams']);
       await expect(uploads.radioHint).toBeVisible();
       await expect(uploads.playButton('Midnight Dreams')).toHaveCount(0);
+    });
+    test('sorts the uploads by the clicked column header', async ({
+      authenticatedPage,
+      request,
+      user,
+    }) => {
+      const uploads: MyUploadsPage = new MyUploadsPage(authenticatedPage);
+      await uploadTitled(request, user.token, 'beta');
+      await uploadTitled(request, user.token, 'Alpha');
+      await authenticatedPage.goto('/my-uploads');
+      await expect(uploads.titles).toHaveText(['Alpha', 'beta']);
+      await expect(uploads.header('Uploaded')).toHaveAttribute('aria-sort', 'descending');
+
+      await uploads.sortButton('Track / Artist').click();
+
+      await expect(uploads.titles).toHaveText(['Alpha', 'beta']);
+      await expect(uploads.header('Track / Artist')).toHaveAttribute('aria-sort', 'ascending');
+
+      await uploads.sortButton('Track / Artist').click();
+
+      await expect(uploads.titles).toHaveText(['beta', 'Alpha']);
+      await expect(uploads.header('Track / Artist')).toHaveAttribute('aria-sort', 'descending');
+    });
+
+    test('explains that a track in review cannot be liked yet', async ({
+      authenticatedPage,
+      request,
+      user,
+    }) => {
+      const uploads: MyUploadsPage = new MyUploadsPage(authenticatedPage);
+      await setRadioMode(request, user.token, false);
+      await uploadTitled(request, user.token, 'Midnight Dreams');
+      await authenticatedPage.goto('/my-uploads');
+
+      await uploads.playButton('Midnight Dreams').click();
+      await uploads.playerLikeButton.hover();
+
+      await expect(uploads.playerLikeTooltip).toBeVisible();
+      await expect(uploads.playerLikeTooltip).toHaveText(
+        'Likes open once the track passes the quality review',
+      );
+      expect(await uploads.tooltipArrowDistanceFromLike()).toBeLessThan(2);
+
+      await authenticatedPage.mouse.down();
+      await authenticatedPage.mouse.up();
+
+      await expect(uploads.playerLikeTooltip).toBeVisible();
+      await expect(uploads.playerLikeButton).toHaveAttribute('aria-disabled', 'true');
+      await expect(uploads.playerLikeButton).toHaveAttribute('aria-pressed', 'false');
+      await expect(uploads.row('Midnight Dreams').locator('.uploads__likes')).toHaveText('0');
+    });
+
+    test('shows as many uploads per page as chosen', async ({
+      authenticatedPage,
+      request,
+      user,
+    }) => {
+      const uploads: MyUploadsPage = new MyUploadsPage(authenticatedPage);
+      await Promise.all(
+        ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11'].map((title: string) =>
+          uploadTitled(request, user.token, title),
+        ),
+      );
+      await authenticatedPage.goto('/my-uploads');
+      await expect(uploads.rows).toHaveCount(10);
+      await expect(uploads.range).toHaveText('Showing 1–10 of 11');
+
+      await uploads.choosePageSize('20');
+
+      await expect(uploads.rows).toHaveCount(11);
+      await expect(uploads.range).toHaveText('Showing 1–11 of 11');
+
+      await authenticatedPage.reload();
+
+      await expect(uploads.rows).toHaveCount(11);
+      await expect(uploads.pageSizeSelect).toContainText('20');
     });
   });
 });

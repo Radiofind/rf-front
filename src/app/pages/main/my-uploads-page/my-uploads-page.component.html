@@ -89,16 +89,35 @@
         [isPlaying]="isPlaying()"
         [canPlay]="canPlay()"
         [isLoading]="isLoading()"
+        [activeSort]="sort()"
+        [direction]="direction()"
         (playToggled)="onPlayToggle($event)"
+        (sortSelected)="onSortSelect($event)"
       />
 
       <footer class="my-uploads__footer">
-        <p class="my-uploads__range" aria-live="polite">
-          {{
-            'myUploads.range'
-              | translate: { from: rangeStart(), to: rangeEnd(), total: totalElements() }
-          }}
-        </p>
+        <div class="my-uploads__footer-info">
+          <p class="my-uploads__range" aria-live="polite">
+            {{
+              'myUploads.range'
+                | translate: { from: rangeStart(), to: rangeEnd(), total: totalElements() }
+            }}
+          </p>
+
+          <div class="my-uploads__page-size">
+            <span class="my-uploads__page-size-label" id="my-uploads-page-size">
+              {{ 'myUploads.perPage' | translate }}
+            </span>
+            <app-select-field
+              class="my-uploads__page-size-select"
+              name="page-size"
+              labelledBy="my-uploads-page-size"
+              [options]="pageSizeOptions"
+              [value]="pageSize()"
+              (valueChange)="onPageSizeSelect($event)"
+            />
+          </div>
+        </div>
 
         <nav class="my-uploads__pagination" [attr.aria-label]="'myUploads.pagination' | translate">
           <button

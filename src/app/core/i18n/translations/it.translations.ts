@@ -284,10 +284,14 @@ export const IT_TRANSLATIONS: Translations = {
     columns: {
       track: 'Brano / Artista',
       genre: 'Genere',
+      duration: 'Durata',
+      plays: 'Ascolti',
+      likes: 'Mi piace',
       status: 'Stato',
       uploaded: 'Caricato',
       actions: 'Azioni',
     },
+    sortBy: 'Ordina per {column}',
     searchPlaceholder: 'Cerca nei tuoi caricamenti...',
     searchLabel: 'Cerca per titolo o artista',
     clearSearch: 'Cancella ricerca',
@@ -296,6 +300,7 @@ export const IT_TRANSLATIONS: Translations = {
     moreActions: 'Altre azioni per «{title}»',
     moreActionsSoon: 'Altre azioni in arrivo',
     range: '{from}–{to} di {total}',
+    perPage: 'Per pagina',
     pagination: 'Pagine dei caricamenti',
     previousPage: 'Pagina precedente',
     nextPage: 'Pagina successiva',
@@ -346,6 +351,7 @@ export const IT_TRANSLATIONS: Translations = {
     repeatOne: 'Ripeti: un brano',
     seek: 'Posizione di riproduzione',
     like: 'Mi piace',
+    likeInReview: 'I «Mi piace» saranno disponibili dopo il controllo qualità del brano',
     moreOptions: 'Altre opzioni',
   },
   notifications: {
@@ -798,6 +804,7 @@ export const IT_TRANSLATIONS: Translations = {
       'Hai modifiche non salvate. Vuoi davvero lasciare questa pagina? Le modifiche andranno perse.',
   },
   messages: {
+    likeFailed: 'Impossibile salvare il tuo «Mi piace». Riprova.',
     emailSent: 'Email inviata con successo',
     passwordReset: 'Password reimpostata con successo',
     settingsSaved: 'Impostazioni salvate',

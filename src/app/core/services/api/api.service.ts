@@ -194,7 +194,9 @@ export class ApiService {
   }
 
   public getOwnTracks(query: IOwnTracksQuery): Observable<IPage<ITrack>> {
-    let params: HttpParams = this.pageParams(query.page, query.size);
+    let params: HttpParams = this.pageParams(query.page, query.size)
+      .set(Constants.SORT_QUERY_PARAM, query.sort)
+      .set(Constants.DIRECTION_QUERY_PARAM, query.direction);
 
     if (query.status) {
       params = params.set(Constants.STATUS_QUERY_PARAM, query.status);
@@ -208,6 +210,38 @@ export class ApiService {
       params: params,
       context: skipGlobalLoader(),
     });
+  }
+
+  public recordTrackPlay(trackId: number): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.post<void>(
+      `${this.tracksApi}/${String(trackId)}${this.trackEndpoints.plays}`,
+      null,
+      {
+        context: skipGlobalLoader(),
+      },
+    );
+  }
+
+  public likeTrack(trackId: number): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.put<void>(
+      `${this.tracksApi}/${String(trackId)}${this.trackEndpoints.like}`,
+      null,
+      {
+        context: skipGlobalLoader(),
+      },
+    );
+  }
+
+  public unlikeTrack(trackId: number): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.delete<void>(
+      `${this.tracksApi}/${String(trackId)}${this.trackEndpoints.like}`,
+      {
+        context: skipGlobalLoader(),
+      },
+    );
   }
 
   private pageParams(page: number, size: number): HttpParams {

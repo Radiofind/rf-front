@@ -9,5 +9,14 @@ export const PlayerActions = createActionGroup({
     'Order Shuffled': props<{ order: readonly number[] }>(),
     'Track Ended': emptyProps(),
     'Playback Failed': emptyProps(),
+    'Listen Qualified': props<{ trackId: number }>(),
+  },
+});
+
+export const PlayerApiActions = createActionGroup({
+  source: 'Player API',
+  events: {
+    'Like Saved': props<{ trackId: number; liked: boolean }>(),
+    'Like Failed': props<{ trackId: number; liked: boolean }>(),
   },
 });

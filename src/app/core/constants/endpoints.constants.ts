@@ -31,5 +31,7 @@ export class EndpointConstants {
 
   public static readonly TRACK_ENDPOINTS: ITrackEndpoints = {
     tracks: '/tracks',
+    plays: '/plays',
+    like: '/like',
   };
 }

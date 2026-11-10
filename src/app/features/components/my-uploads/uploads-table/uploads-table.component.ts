@@ -1,7 +1,18 @@
 import { Component, input, output, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { Constants } from '../../../../core/constants/constants';
-import { GENRE_LABELS, TRACK_STATUS_LABELS } from '../../../constants/my-uploads.constant';
+import { OwnTracksSortEnum } from '../../../../core/enums/own-tracks-sort.enum';
+import { SortDirectionEnum } from '../../../../core/enums/sort-direction.enum';
+import {
+  DEFAULT_UPLOADS_SORT,
+  FIRST_SORT_DIRECTION,
+  GENRE_LABELS,
+  SORT_ICON_CLASSES,
+  TRACK_STATUS_LABELS,
+  UNSORTED_ICON_CLASS,
+} from '../../../constants/my-uploads.constant';
+import { formatPlaybackTime } from '../../../../shared/helpers/player/player.helpers';
+import { CompactNumberPipe } from '../../../../shared/pipes/compact-number/compact-number.pipe';
 import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 import { DateTimePipe } from '../../../../shared/pipes/date-time/date-time.pipe';
 
@@ -14,7 +25,7 @@ import type { TranslationKey } from '../../../../core/types/translation.type';
   selector: 'app-uploads-table',
   templateUrl: './uploads-table.component.html',
   styleUrl: './uploads-table.component.scss',
-  imports: [NgTemplateOutlet, TranslatePipe, DateTimePipe],
+  imports: [NgTemplateOutlet, TranslatePipe, DateTimePipe, CompactNumberPipe],
 })
 export class UploadsTableComponent {
   public readonly tracks: InputSignal<readonly ITrack[]> = input.required<readonly ITrack[]>();
@@ -27,7 +38,16 @@ export class UploadsTableComponent {
 
   public readonly isLoading: InputSignal<boolean> = input<boolean>(false);
 
+  public readonly activeSort: InputSignal<OwnTracksSortEnum> =
+    input<OwnTracksSortEnum>(DEFAULT_UPLOADS_SORT);
+
+  public readonly direction: InputSignal<SortDirectionEnum> = input<SortDirectionEnum>(
+    FIRST_SORT_DIRECTION[DEFAULT_UPLOADS_SORT],
+  );
+
   public readonly playToggled: OutputEmitterRef<ITrack> = output<ITrack>();
+
+  public readonly sortSelected: OutputEmitterRef<OwnTracksSortEnum> = output<OwnTracksSortEnum>();
 
   protected readonly brokenCovers: WritableSignal<ReadonlySet<string>> = signal<
     ReadonlySet<string>
@@ -36,6 +56,30 @@ export class UploadsTableComponent {
   protected readonly playIconClass: string = Constants.PLAYER_PLAY_ICON_CLASS;
 
   protected readonly pauseIconClass: string = Constants.PLAYER_PAUSE_ICON_CLASS;
+
+  protected readonly likeIconClass: string = Constants.PLAYER_LIKE_ICON_CLASS;
+
+  protected readonly likedIconClass: string = Constants.PLAYER_LIKED_ICON_CLASS;
+
+  protected readonly sorts: typeof OwnTracksSortEnum = OwnTracksSortEnum;
+
+  protected sortIconClass(sort: OwnTracksSortEnum): string {
+    return sort === this.activeSort() ? SORT_ICON_CLASSES[this.direction()] : UNSORTED_ICON_CLASS;
+  }
+
+  protected ariaSort(sort: OwnTracksSortEnum): string {
+    if (sort !== this.activeSort()) {
+      return Constants.ARIA_SORT_NONE;
+    }
+
+    return this.direction() === SortDirectionEnum.ASC
+      ? Constants.ARIA_SORT_ASCENDING
+      : Constants.ARIA_SORT_DESCENDING;
+  }
+
+  protected durationLabel(seconds: number | null): string {
+    return seconds === null ? Constants.EMPTY_VALUE_DASH : formatPlaybackTime(seconds);
+  }
 
   protected statusLabel(status: TrackStatus): TranslationKey {
     return TRACK_STATUS_LABELS[status];

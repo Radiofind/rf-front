@@ -1,7 +1,11 @@
+import type { OwnTracksSortEnum } from '../enums/own-tracks-sort.enum';
+import type { SortDirectionEnum } from '../enums/sort-direction.enum';
 import type { TrackStatus } from '../types/track-status.type';
 
 export interface ITrackEndpoints {
   tracks: string;
+  plays: string;
+  like: string;
 }
 
 export interface IUploadTrackData {
@@ -21,14 +25,20 @@ export interface ITrack {
   status: TrackStatus;
   audioFormat: string;
   audioSizeBytes: number;
+  durationSeconds: number | null;
   coverUrl: string | null;
   audioUrl: string | null;
+  playsCount: number;
+  likesCount: number;
+  liked: boolean;
   createdAt: string;
 }
 
 export interface IOwnTracksQuery {
   status: TrackStatus | null;
   search: string;
+  sort: OwnTracksSortEnum;
+  direction: SortDirectionEnum;
   page: number;
   size: number;
 }

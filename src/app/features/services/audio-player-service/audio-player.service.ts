@@ -15,6 +15,12 @@ export class AudioPlayerService {
 
   private loadedPlaybackId: number | null = null;
 
+  private listenedSeconds: number = Constants.ZERO;
+
+  private lastPosition: number = Constants.ZERO;
+
+  private isListenQualified: boolean = false;
+
   private readonly currentTimeState: WritableSignal<number> = signal<number>(Constants.ZERO);
 
   private readonly durationState: WritableSignal<number> = signal<number>(Constants.ZERO);
@@ -23,6 +29,8 @@ export class AudioPlayerService {
 
   private readonly failedSubject: Subject<void> = new Subject<void>();
 
+  private readonly listenQualifiedSubject: Subject<void> = new Subject<void>();
+
   public readonly currentTime: Signal<number> = this.currentTimeState.asReadonly();
 
   public readonly duration: Signal<number> = this.durationState.asReadonly();
@@ -30,6 +38,8 @@ export class AudioPlayerService {
   public readonly ended$: Observable<void> = this.endedSubject.asObservable();
 
   public readonly failed$: Observable<void> = this.failedSubject.asObservable();
+
+  public readonly listenQualified$: Observable<void> = this.listenQualifiedSubject.asObservable();
 
   public sync({ track, playbackId, isPlaying }: IPlayback): void {
     const audio: HTMLAudioElement | null = this.element();
@@ -45,6 +55,7 @@ export class AudioPlayerService {
 
     if (playbackId !== this.loadedPlaybackId) {
       this.loadedPlaybackId = playbackId;
+      this.resetListening();
       this.currentTimeState.set(Constants.ZERO);
       this.durationState.set(Constants.ZERO);
       audio.src = track.audioUrl;
@@ -67,6 +78,7 @@ export class AudioPlayerService {
     }
 
     this.audio.currentTime = seconds;
+    this.lastPosition = seconds;
     this.currentTimeState.set(seconds);
   }
 
@@ -84,7 +96,10 @@ export class AudioPlayerService {
     const audio: HTMLAudioElement = new Audio();
     audio.preload = 'metadata';
 
-    audio.addEventListener('timeupdate', () => this.currentTimeState.set(audio.currentTime));
+    audio.addEventListener('timeupdate', () => {
+      this.trackListening(audio);
+      this.currentTimeState.set(audio.currentTime);
+    });
     audio.addEventListener('durationchange', () =>
       this.durationState.set(Number.isFinite(audio.duration) ? audio.duration : Constants.ZERO),
     );
@@ -96,6 +111,35 @@ export class AudioPlayerService {
     });
 
     return audio;
+  }
+
+  private trackListening(audio: HTMLAudioElement): void {
+    const step: number = audio.currentTime - this.lastPosition;
+    this.lastPosition = audio.currentTime;
+
+    if (step > Constants.ZERO && step <= Constants.LISTEN_MAX_STEP_SECONDS) {
+      this.listenedSeconds += step;
+    }
+
+    const threshold: number = Math.min(
+      Constants.LISTEN_QUALIFYING_SECONDS,
+      audio.duration * Constants.LISTEN_SHORT_TRACK_SHARE,
+    );
+
+    if (
+      !this.isListenQualified &&
+      threshold > Constants.ZERO &&
+      this.listenedSeconds >= threshold
+    ) {
+      this.isListenQualified = true;
+      this.listenQualifiedSubject.next();
+    }
+  }
+
+  private resetListening(): void {
+    this.listenedSeconds = Constants.ZERO;
+    this.lastPosition = Constants.ZERO;
+    this.isListenQualified = false;
   }
 
   private unload(audio: HTMLAudioElement): void {

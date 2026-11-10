@@ -9,8 +9,11 @@ import * as myUploadsEffects from './my-uploads.effects';
 import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
 import { MainLayoutActions } from '../ui/main-layout.actions';
 import { TrackService } from '../../features/services/track-service/track.service';
+import { UploadsPreferencesService } from '../../features/services/uploads-preferences-service/uploads-preferences.service';
 import { UploadsEmptyStateEnum } from '../../features/enums/uploads-empty-state.enum';
 import { TrackStatusEnum } from '../../core/enums/track-status.enum';
+import { OwnTracksSortEnum } from '../../core/enums/own-tracks-sort.enum';
+import { PlayerApiActions } from '../player/player.actions';
 
 import type { IPage } from '../../core/models/page.model';
 import type { ITrack } from '../../core/models/track.model';
@@ -25,8 +28,12 @@ describe('my uploads state', () => {
     status: TrackStatusEnum.PENDING_REVIEW,
     audioFormat: 'MP3',
     audioSizeBytes: 1024,
+    durationSeconds: 214,
     coverUrl: null,
     audioUrl: '/api/tracks/42/audio?token=signed',
+    playsCount: 0,
+    likesCount: 0,
+    liked: false,
     createdAt: '2025-04-28T14:32:00Z',
   };
 
@@ -39,6 +46,7 @@ describe('my uploads state', () => {
   });
 
   let getOwnTracks: ReturnType<typeof vi.fn>;
+  let writePageSize: ReturnType<typeof vi.fn>;
 
   const configure = (platform: string = 'browser'): Store => {
     TestBed.configureTestingModule({
@@ -48,6 +56,7 @@ describe('my uploads state', () => {
         provideEffects(myUploadsEffects),
         { provide: PLATFORM_ID, useValue: platform },
         { provide: TrackService, useValue: { getOwnTracks: getOwnTracks } },
+        { provide: UploadsPreferencesService, useValue: { writePageSize: writePageSize } },
       ],
     });
     return TestBed.inject<Store>(Store);
@@ -56,6 +65,7 @@ describe('my uploads state', () => {
   beforeEach(() => {
     TestBed.resetTestingModule();
     getOwnTracks = vi.fn().mockReturnValue(of(pageOf([track], 0, 1)));
+    writePageSize = vi.fn();
   });
 
   afterEach(() => {
@@ -65,9 +75,16 @@ describe('my uploads state', () => {
   it('loads the first page of all own uploads when the page opens', () => {
     const store: Store = configure();
 
-    store.dispatch(MyUploadsPageActions.opened());
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: null }));
 
-    expect(getOwnTracks).toHaveBeenCalledWith({ status: null, search: '', page: 0, size: 10 });
+    expect(getOwnTracks).toHaveBeenCalledWith({
+      status: null,
+      search: '',
+      sort: 'UPLOADED',
+      direction: 'DESC',
+      page: 0,
+      size: 10,
+    });
     expect(store.selectSignal(myUploadsFeature.selectTracks)()).toEqual([track]);
   });
 
@@ -80,6 +97,8 @@ describe('my uploads state', () => {
     expect(getOwnTracks).toHaveBeenLastCalledWith({
       status: TrackStatusEnum.REJECTED,
       search: '',
+      sort: 'UPLOADED',
+      direction: 'DESC',
       page: 0,
       size: 10,
     });
@@ -94,14 +113,21 @@ describe('my uploads state', () => {
     vi.advanceTimersByTime(300);
 
     expect(getOwnTracks).toHaveBeenCalledOnce();
-    expect(getOwnTracks).toHaveBeenCalledWith({ status: null, search: 'neon', page: 0, size: 10 });
+    expect(getOwnTracks).toHaveBeenCalledWith({
+      status: null,
+      search: 'neon',
+      sort: 'UPLOADED',
+      direction: 'DESC',
+      page: 0,
+      size: 10,
+    });
   });
 
   it('invites to upload a first track when the account has no uploads', () => {
     getOwnTracks.mockReturnValue(of(pageOf([], 0, 0)));
     const store: Store = configure();
 
-    store.dispatch(MyUploadsPageActions.opened());
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: null }));
 
     expect(store.selectSignal(myUploadsFeature.selectEmptyState)()).toBe(
       UploadsEmptyStateEnum.NO_UPLOADS,
@@ -136,7 +162,7 @@ describe('my uploads state', () => {
   it('shows the failure and loads again on retry', () => {
     getOwnTracks.mockReturnValueOnce(throwError(() => new Error('offline')));
     const store: Store = configure();
-    store.dispatch(MyUploadsPageActions.opened());
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: null }));
 
     store.dispatch(MyUploadsPageActions.retryClicked());
 
@@ -148,7 +174,7 @@ describe('my uploads state', () => {
     getOwnTracks.mockReturnValue(throwError(() => new Error('offline')));
     const store: Store = configure();
 
-    store.dispatch(MyUploadsPageActions.opened());
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: null }));
 
     expect(store.selectSignal(myUploadsFeature.selectEmptyState)()).toBe(
       UploadsEmptyStateEnum.LOAD_FAILED,
@@ -161,7 +187,14 @@ describe('my uploads state', () => {
 
     store.dispatch(MyUploadsPageActions.filtersReset());
 
-    expect(getOwnTracks).toHaveBeenLastCalledWith({ status: null, search: '', page: 0, size: 10 });
+    expect(getOwnTracks).toHaveBeenLastCalledWith({
+      status: null,
+      search: '',
+      sort: 'UPLOADED',
+      direction: 'DESC',
+      page: 0,
+      size: 10,
+    });
   });
 
   it('describes which uploads of the total are shown on the current page', () => {
@@ -178,7 +211,7 @@ describe('my uploads state', () => {
   it('does not load during server rendering', () => {
     const store: Store = configure('server');
 
-    store.dispatch(MyUploadsPageActions.opened());
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: null }));
 
     expect(getOwnTracks).not.toHaveBeenCalled();
   });
@@ -191,5 +224,104 @@ describe('my uploads state', () => {
 
     expect(store.selectSignal(myUploadsFeature.selectTracks)()).toBeNull();
     expect(store.selectSignal(myUploadsFeature.selectStatus)()).toBeNull();
+  });
+  it.each([
+    [OwnTracksSortEnum.TITLE, 'ASC'],
+    [OwnTracksSortEnum.PLAYS, 'DESC'],
+    [OwnTracksSortEnum.LIKES, 'DESC'],
+  ])(
+    'sorts by %s starting %s from the first page',
+    (sort: OwnTracksSortEnum, direction: string) => {
+      const store: Store = configure();
+      store.dispatch(MyUploadsPageActions.pageSelected({ page: 2 }));
+
+      store.dispatch(MyUploadsPageActions.sortSelected({ sort: sort }));
+
+      expect(getOwnTracks).toHaveBeenLastCalledWith(
+        expect.objectContaining({ sort: sort, direction: direction, page: 0 }),
+      );
+    },
+  );
+
+  it('reverses the order when the sorted column is chosen again', () => {
+    const store: Store = configure();
+    store.dispatch(MyUploadsPageActions.sortSelected({ sort: OwnTracksSortEnum.DURATION }));
+
+    store.dispatch(MyUploadsPageActions.sortSelected({ sort: OwnTracksSortEnum.DURATION }));
+
+    expect(getOwnTracks).toHaveBeenLastCalledWith(
+      expect.objectContaining({ sort: OwnTracksSortEnum.DURATION, direction: 'ASC' }),
+    );
+  });
+
+  it('counts a like saved in the player for the listed upload', () => {
+    getOwnTracks.mockReturnValue(of(pageOf([{ ...track, likesCount: 4 }], 0, 1)));
+    const store: Store = configure();
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: null }));
+
+    store.dispatch(PlayerApiActions.likeSaved({ trackId: 42, liked: true }));
+
+    expect(store.selectSignal(myUploadsFeature.selectTracks)()?.[0]).toMatchObject({
+      liked: true,
+      likesCount: 5,
+    });
+  });
+
+  it('hands the like state of the uploads to the player queue', () => {
+    getOwnTracks.mockReturnValue(of(pageOf([{ ...track, liked: true }], 0, 1)));
+    const store: Store = configure();
+
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: null }));
+
+    expect(store.selectSignal(myUploadsFeature.selectPlayerQueue)()[0]?.liked).toBe(true);
+  });
+  it('shows the chosen number of uploads per page starting from the first page', () => {
+    const store: Store = configure();
+    store.dispatch(MyUploadsPageActions.pageSelected({ page: 2 }));
+
+    store.dispatch(MyUploadsPageActions.pageSizeSelected({ size: 20 }));
+
+    expect(getOwnTracks).toHaveBeenLastCalledWith(expect.objectContaining({ size: 20, page: 0 }));
+  });
+
+  it('counts the shown range with the chosen page size', () => {
+    getOwnTracks.mockReturnValue(of(pageOf([track], 1, 21)));
+    const store: Store = configure();
+    store.dispatch(MyUploadsPageActions.pageSizeSelected({ size: 20 }));
+
+    store.dispatch(MyUploadsPageActions.pageSelected({ page: 1 }));
+
+    expect(store.selectSignal(myUploadsFeature.selectRangeStart)()).toBe(21);
+    expect(store.selectSignal(myUploadsFeature.selectRangeEnd)()).toBe(21);
+    expect(store.selectSignal(myUploadsFeature.selectTotalPages)()).toBe(2);
+  });
+  it('opens with the page size remembered from an earlier visit', () => {
+    const store: Store = configure();
+
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: 50 }));
+
+    expect(getOwnTracks).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ size: 50 }));
+  });
+
+  it('remembers the chosen page size for the next visit', () => {
+    const store: Store = configure();
+
+    store.dispatch(MyUploadsPageActions.pageSizeSelected({ size: 20 }));
+
+    expect(writePageSize).toHaveBeenCalledExactlyOnceWith(20);
+  });
+  it('lets the player like only uploads that passed the review', () => {
+    getOwnTracks.mockReturnValue(
+      of(pageOf([track, { ...track, id: 43, status: TrackStatusEnum.APPROVED }], 0, 2)),
+    );
+    const store: Store = configure();
+
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: null }));
+
+    expect(
+      store
+        .selectSignal(myUploadsFeature.selectPlayerQueue)()
+        .map((queued) => queued.canLike),
+    ).toEqual([false, true]);
   });
 });

@@ -2,6 +2,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { UploadsTableComponent } from './uploads-table.component';
 import { TrackStatusEnum } from '../../../../core/enums/track-status.enum';
+import { OwnTracksSortEnum } from '../../../../core/enums/own-tracks-sort.enum';
+import { SortDirectionEnum } from '../../../../core/enums/sort-direction.enum';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { ITrack } from '../../../../core/models/track.model';
@@ -16,8 +18,12 @@ describe('UploadsTableComponent', () => {
     status: TrackStatusEnum.PENDING_REVIEW,
     audioFormat: 'MP3',
     audioSizeBytes: 1024,
+    durationSeconds: 214,
     coverUrl: '/api/tracks/1/cover',
     audioUrl: '/api/tracks/1/audio?token=a',
+    playsCount: 0,
+    likesCount: 0,
+    liked: false,
     createdAt: '2025-04-28T14:32:00Z',
   };
 
@@ -26,6 +32,8 @@ describe('UploadsTableComponent', () => {
     canPlay?: boolean;
     currentTrackId?: number | null;
     isPlaying?: boolean;
+    activeSort?: OwnTracksSortEnum;
+    direction?: SortDirectionEnum;
   }): Promise<ComponentFixture<UploadsTableComponent>> => {
     await TestBed.configureTestingModule({ imports: [UploadsTableComponent] }).compileComponents();
 
@@ -35,6 +43,8 @@ describe('UploadsTableComponent', () => {
     fixture.componentRef.setInput('canPlay', inputs.canPlay ?? true);
     fixture.componentRef.setInput('currentTrackId', inputs.currentTrackId ?? null);
     fixture.componentRef.setInput('isPlaying', inputs.isPlaying ?? false);
+    fixture.componentRef.setInput('activeSort', inputs.activeSort ?? OwnTracksSortEnum.UPLOADED);
+    fixture.componentRef.setInput('direction', inputs.direction ?? SortDirectionEnum.DESC);
     await fixture.whenStable();
 
     return fixture;
@@ -115,5 +125,55 @@ describe('UploadsTableComponent', () => {
 
     expect(element(fixture).querySelector('img')).toBeNull();
     expect(element(fixture).querySelector('.uploads__image--placeholder')).not.toBeNull();
+  });
+  it('shows duration, plays and likes of an upload', async () => {
+    const fixture: ComponentFixture<UploadsTableComponent> = await createFixture({
+      tracks: [{ ...midnight, durationSeconds: 214, playsCount: 1234, likesCount: 7, liked: true }],
+    });
+
+    const numbers: string[] = Array.from(
+      element(fixture).querySelectorAll('.uploads__cell--number'),
+      (cell: Element) => cell.textContent.trim(),
+    );
+
+    expect(numbers).toEqual(['3:34', '1.2K', '7']);
+    expect(element(fixture).querySelector('.uploads__likes--liked')).not.toBeNull();
+  });
+
+  it('shows a dash for an upload whose duration is unknown', async () => {
+    const fixture: ComponentFixture<UploadsTableComponent> = await createFixture({
+      tracks: [{ ...midnight, durationSeconds: null }],
+    });
+
+    expect(element(fixture).querySelector('.uploads__cell--duration')?.textContent.trim()).toBe(
+      '—',
+    );
+  });
+
+  it('asks to sort by the clicked column', async () => {
+    const fixture: ComponentFixture<UploadsTableComponent> = await createFixture({
+      tracks: [midnight],
+    });
+    const sortSelected = vi.fn();
+    fixture.componentInstance.sortSelected.subscribe(sortSelected);
+
+    element(fixture).querySelector<HTMLButtonElement>('button[title="Sort by Plays"]')?.click();
+
+    expect(sortSelected).toHaveBeenCalledExactlyOnceWith(OwnTracksSortEnum.PLAYS);
+  });
+
+  it('marks only the sorted column with its direction', async () => {
+    const fixture: ComponentFixture<UploadsTableComponent> = await createFixture({
+      tracks: [midnight],
+      activeSort: OwnTracksSortEnum.TITLE,
+      direction: SortDirectionEnum.ASC,
+    });
+
+    const sorted: string[] = Array.from(
+      element(fixture).querySelectorAll('th[aria-sort]:not([aria-sort="none"])'),
+      (header: Element) => `${header.textContent.trim()} ${header.getAttribute('aria-sort') ?? ''}`,
+    );
+
+    expect(sorted).toEqual(['Track / Artist ascending']);
   });
 });

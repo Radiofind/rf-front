@@ -2,7 +2,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { By } from '@angular/platform-browser';
 import { MyUploadsPageComponent } from './my-uploads-page.component';
+import { UploadsPreferencesService } from '../../../features/services/uploads-preferences-service/uploads-preferences.service';
+import { SelectFieldComponent } from '../../../shared/components/select-field/select-field.component';
 import { Links } from '../../../core/constants/links';
 import { TrackStatusEnum } from '../../../core/enums/track-status.enum';
 import { UploadsEmptyStateEnum } from '../../../features/enums/uploads-empty-state.enum';
@@ -26,14 +29,19 @@ describe('MyUploadsPageComponent', () => {
     status: TrackStatusEnum.PENDING_REVIEW,
     audioFormat: 'MP3',
     audioSizeBytes: 1024,
+    durationSeconds: 214,
     coverUrl: null,
     audioUrl: '/api/tracks/1/audio?token=a',
+    playsCount: 0,
+    likesCount: 0,
+    liked: false,
     createdAt: '2025-04-28T14:32:00Z',
   };
   const space: ITrack = { ...midnight, id: 2, title: 'Lost in Space', audioUrl: '/a/2' };
 
   afterEach(() => {
     TestBed.inject(MockStore).resetSelectors();
+    vi.restoreAllMocks();
   });
   const queue: IPlayerTrack[] = [
     {
@@ -42,8 +50,18 @@ describe('MyUploadsPageComponent', () => {
       artistName: 'Neon Lights',
       coverUrl: null,
       audioUrl: '/a/1',
+      liked: false,
+      canLike: true,
     },
-    { id: 2, title: 'Lost in Space', artistName: 'Neon Lights', coverUrl: null, audioUrl: '/a/2' },
+    {
+      id: 2,
+      title: 'Lost in Space',
+      artistName: 'Neon Lights',
+      coverUrl: null,
+      audioUrl: '/a/2',
+      liked: false,
+      canLike: true,
+    },
   ];
 
   const createFixture = async (state: {
@@ -56,6 +74,7 @@ describe('MyUploadsPageComponent', () => {
       imports: [MyUploadsPageComponent],
       providers: [
         provideRouter([]),
+        { provide: UploadsPreferencesService, useValue: { readPageSize: () => 20 } },
         provideMockStore({
           selectors: [
             { selector: myUploadsFeature.selectTracks, value: state.tracks },
@@ -63,6 +82,7 @@ describe('MyUploadsPageComponent', () => {
             { selector: myUploadsFeature.selectPlayerQueue, value: queue },
             { selector: myUploadsFeature.selectVisiblePages, value: [0] },
             { selector: myUploadsFeature.selectTotalPages, value: 1 },
+            { selector: myUploadsFeature.selectPageSize, value: 10 },
             { selector: playerFeature.selectCurrentTrack, value: state.currentTrack ?? null },
             { selector: playerFeature.selectIsPlaying, value: state.currentTrack != null },
             {
@@ -134,5 +154,25 @@ describe('MyUploadsPageComponent', () => {
       ?.click();
 
     expect(navigate).toHaveBeenCalledWith([Links.UPLOAD_TRACK_URL]);
+  });
+  it('asks for the page size chosen in the dropdown', async () => {
+    const fixture: ComponentFixture<MyUploadsPageComponent> = await createFixture({
+      tracks: [midnight, space],
+    });
+    const dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
+    const select: SelectFieldComponent<string> = fixture.debugElement.query(
+      By.directive(SelectFieldComponent),
+    ).componentInstance as SelectFieldComponent<string>;
+
+    select.onSelect('20');
+
+    expect(dispatch).toHaveBeenCalledWith(MyUploadsPageActions.pageSizeSelected({ size: 20 }));
+  });
+  it('opens the list with the remembered page size', async () => {
+    const dispatch = vi.spyOn(MockStore.prototype, 'dispatch');
+
+    await createFixture({ tracks: null });
+
+    expect(dispatch).toHaveBeenCalledWith(MyUploadsPageActions.opened({ pageSize: 20 }));
   });
 });

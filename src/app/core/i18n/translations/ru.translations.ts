@@ -280,10 +280,14 @@ export const RU_TRANSLATIONS: Translations = {
     columns: {
       track: 'Трек / Исполнитель',
       genre: 'Жанр',
+      duration: 'Длительность',
+      plays: 'Прослушивания',
+      likes: 'Лайки',
       status: 'Статус',
       uploaded: 'Загружен',
       actions: 'Действия',
     },
+    sortBy: 'Сортировать по столбцу «{column}»',
     searchPlaceholder: 'Поиск по загрузкам...',
     searchLabel: 'Поиск по названию трека или исполнителю',
     clearSearch: 'Очистить поиск',
@@ -292,6 +296,7 @@ export const RU_TRANSLATIONS: Translations = {
     moreActions: 'Другие действия для «{title}»',
     moreActionsSoon: 'Другие действия скоро появятся',
     range: '{from}–{to} из {total}',
+    perPage: 'На странице',
     pagination: 'Страницы загрузок',
     previousPage: 'Предыдущая страница',
     nextPage: 'Следующая страница',
@@ -343,6 +348,7 @@ export const RU_TRANSLATIONS: Translations = {
     repeatOne: 'Повтор: один трек',
     seek: 'Позиция воспроизведения',
     like: 'Нравится',
+    likeInReview: 'Лайки станут доступны, когда трек пройдёт проверку качества',
     moreOptions: 'Ещё',
   },
   notifications: {
@@ -794,6 +800,7 @@ export const RU_TRANSLATIONS: Translations = {
       'У вас есть несохранённые изменения. Вы уверены, что хотите покинуть страницу? Изменения будут потеряны.',
   },
   messages: {
+    likeFailed: 'Не удалось сохранить лайк. Попробуйте ещё раз.',
     emailSent: 'Письмо успешно отправлено',
     passwordReset: 'Пароль успешно изменён',
     settingsSaved: 'Настройки сохранены',

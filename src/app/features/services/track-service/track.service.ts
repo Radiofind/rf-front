@@ -16,4 +16,12 @@ export class TrackService {
   public getOwnTracks(query: IOwnTracksQuery): Observable<IPage<ITrack>> {
     return this.apiService.getOwnTracks(query);
   }
+
+  public recordPlay(trackId: number): Observable<void> {
+    return this.apiService.recordTrackPlay(trackId);
+  }
+
+  public setLiked(trackId: number, liked: boolean): Observable<void> {
+    return liked ? this.apiService.likeTrack(trackId) : this.apiService.unlikeTrack(trackId);
+  }
 }

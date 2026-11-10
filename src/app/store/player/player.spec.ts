@@ -2,10 +2,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideState, provideStore, Store } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { playerFeature } from './player.feature';
 import * as playerEffects from './player.effects';
 import { PlayerActions } from './player.actions';
+import { TrackService } from '../../features/services/track-service/track.service';
 import { settingsFeature } from '../settings/settings.feature';
 import { SettingsApiActions } from '../settings/settings.actions';
 import { AudioPlayerActions } from '../ui/audio-player.actions';
@@ -27,6 +28,8 @@ describe('player state', () => {
     artistName: 'Neon Lights',
     coverUrl: null,
     audioUrl: '/audio/1',
+    liked: false,
+    canLike: true,
   };
   const second: IPlayerTrack = {
     id: 2,
@@ -34,6 +37,8 @@ describe('player state', () => {
     artistName: 'Harbor',
     coverUrl: null,
     audioUrl: '/audio/2',
+    liked: false,
+    canLike: true,
   };
   const third: IPlayerTrack = {
     id: 3,
@@ -41,6 +46,8 @@ describe('player state', () => {
     artistName: 'Static Bloom',
     coverUrl: null,
     audioUrl: '/audio/3',
+    liked: false,
+    canLike: true,
   };
 
   let store: Store;
@@ -48,6 +55,9 @@ describe('player state', () => {
   let snackbarError: ReturnType<typeof vi.fn>;
   let ended$: Subject<void>;
   let failed$: Subject<void>;
+  let listenQualified$: Subject<void>;
+  let setLiked: ReturnType<typeof vi.fn>;
+  let recordPlay: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     TestBed.resetTestingModule();
@@ -55,6 +65,9 @@ describe('player state', () => {
     snackbarError = vi.fn();
     ended$ = new Subject<void>();
     failed$ = new Subject<void>();
+    listenQualified$ = new Subject<void>();
+    setLiked = vi.fn().mockReturnValue(of(undefined));
+    recordPlay = vi.fn().mockReturnValue(of(undefined));
 
     TestBed.configureTestingModule({
       providers: [
@@ -64,8 +77,14 @@ describe('player state', () => {
         provideEffects(playerEffects),
         {
           provide: AudioPlayerService,
-          useValue: { sync: sync, ended$: ended$, failed$: failed$ },
+          useValue: {
+            sync: sync,
+            ended$: ended$,
+            failed$: failed$,
+            listenQualified$: listenQualified$,
+          },
         },
+        { provide: TrackService, useValue: { setLiked: setLiked, recordPlay: recordPlay } },
         { provide: SnackbarService, useValue: { error: snackbarError } },
       ],
     });
@@ -261,5 +280,58 @@ describe('player state', () => {
 
     expect(store.selectSignal(playerFeature.selectCurrentTrack)()).toBe(third);
     expect(store.selectSignal(playerFeature.selectOrder)()[0]).toBe(2);
+  });
+  it('saves a like of the current track on the server', () => {
+    store.dispatch(PlayerActions.queueStarted({ queue: [first], startIndex: 0 }));
+
+    store.dispatch(AudioPlayerActions.likeToggled());
+
+    expect(setLiked).toHaveBeenCalledExactlyOnceWith(1, true);
+  });
+
+  it('takes the like back and tells the user when it cannot be saved', () => {
+    setLiked.mockReturnValue(throwError(() => new Error('offline')));
+    store.dispatch(PlayerActions.queueStarted({ queue: [first], startIndex: 0 }));
+
+    store.dispatch(AudioPlayerActions.likeToggled());
+
+    expect(store.selectSignal(playerFeature.selectIsCurrentTrackLiked)()).toBe(false);
+    expect(snackbarError).toHaveBeenCalledExactlyOnceWith(Constants.LIKE_FAILED);
+  });
+
+  it('knows which queued tracks the user already likes', () => {
+    store.dispatch(
+      PlayerActions.queueStarted({ queue: [{ ...first, liked: true }, second], startIndex: 0 }),
+    );
+
+    expect(store.selectSignal(playerFeature.selectIsCurrentTrackLiked)()).toBe(true);
+  });
+
+  it('reports a qualified listen of the current track', () => {
+    store.dispatch(PlayerActions.queueStarted({ queue: [first, second], startIndex: 1 }));
+
+    listenQualified$.next();
+
+    expect(recordPlay).toHaveBeenCalledExactlyOnceWith(2);
+  });
+
+  it('keeps playing when a listen cannot be reported', () => {
+    recordPlay.mockReturnValue(throwError(() => new Error('offline')));
+    store.dispatch(PlayerActions.queueStarted({ queue: [first], startIndex: 0 }));
+
+    listenQualified$.next();
+
+    expect(store.selectSignal(playerFeature.selectIsPlaying)()).toBe(true);
+    expect(snackbarError).not.toHaveBeenCalled();
+  });
+  it('ignores a like of a track that is still in review', () => {
+    store.dispatch(
+      PlayerActions.queueStarted({ queue: [{ ...first, canLike: false }], startIndex: 0 }),
+    );
+
+    store.dispatch(AudioPlayerActions.likeToggled());
+
+    expect(store.selectSignal(playerFeature.selectIsCurrentTrackLiked)()).toBe(false);
+    expect(setLiked).not.toHaveBeenCalled();
   });
 });

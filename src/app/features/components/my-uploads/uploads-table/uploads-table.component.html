@@ -1,15 +1,71 @@
 <table class="uploads" [class.uploads--loading]="isLoading()" [attr.aria-busy]="isLoading()">
   <thead>
     <tr>
-      <th class="uploads__head uploads__head--track" scope="col">
-        {{ 'myUploads.columns.track' | translate }}
+      <th
+        class="uploads__head uploads__head--track"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.TITLE)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.TITLE, label: 'myUploads.columns.track' }
+          "
+        />
       </th>
       <th class="uploads__head uploads__head--genre" scope="col">
         {{ 'myUploads.columns.genre' | translate }}
       </th>
-      <th class="uploads__head" scope="col">{{ 'myUploads.columns.status' | translate }}</th>
-      <th class="uploads__head uploads__head--date" scope="col">
-        {{ 'myUploads.columns.uploaded' | translate }}
+      <th
+        class="uploads__head uploads__head--number uploads__head--duration"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.DURATION)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.DURATION, label: 'myUploads.columns.duration' }
+          "
+        />
+      </th>
+      <th
+        class="uploads__head uploads__head--number uploads__head--stat"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.PLAYS)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.PLAYS, label: 'myUploads.columns.plays' }
+          "
+        />
+      </th>
+      <th
+        class="uploads__head uploads__head--number uploads__head--stat"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.LIKES)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.LIKES, label: 'myUploads.columns.likes' }
+          "
+        />
+      </th>
+      <th class="uploads__head uploads__head--status" scope="col">
+        {{ 'myUploads.columns.status' | translate }}
+      </th>
+      <th
+        class="uploads__head uploads__head--date"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.UPLOADED)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.UPLOADED, label: 'myUploads.columns.uploaded' }
+          "
+        />
       </th>
       <th class="uploads__head uploads__head--actions" scope="col">
         {{ 'myUploads.columns.actions' | translate }}
@@ -76,6 +132,21 @@
           </ul>
         </td>
 
+        <td class="uploads__cell uploads__cell--number uploads__cell--duration">
+          {{ durationLabel(track.durationSeconds) }}
+        </td>
+
+        <td class="uploads__cell uploads__cell--number uploads__cell--stat">
+          {{ track.playsCount | compactNumber }}
+        </td>
+
+        <td class="uploads__cell uploads__cell--number uploads__cell--stat">
+          <span class="uploads__likes" [class.uploads__likes--liked]="track.liked">
+            <i [class]="track.liked ? likedIconClass : likeIconClass" aria-hidden="true"></i>
+            {{ track.likesCount | compactNumber }}
+          </span>
+        </td>
+
         <td class="uploads__cell">
           <span class="uploads__status" [class]="'uploads__status--' + track.status">
             <span class="uploads__status-dot" aria-hidden="true"></span>
@@ -102,6 +173,19 @@
     }
   </tbody>
 </table>
+
+<ng-template #sortButton let-sort let-label="label">
+  <button
+    type="button"
+    class="uploads__sort"
+    [class.uploads__sort--active]="sort === activeSort()"
+    [title]="'myUploads.sortBy' | translate: { column: (label | translate) }"
+    (click)="sortSelected.emit(sort)"
+  >
+    <span>{{ label | translate }}</span>
+    <i class="uploads__sort-icon" [class]="sortIconClass(sort)" aria-hidden="true"></i>
+  </button>
+</ng-template>
 
 <ng-template #cover let-coverUrl>
   @if (coverUrl && !brokenCovers().has(coverUrl)) {
