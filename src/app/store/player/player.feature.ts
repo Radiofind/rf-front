@@ -7,6 +7,7 @@ import { AudioPlayerActions } from '../ui/audio-player.actions';
 import { GeneralSettingsPageActions } from '../ui/general-settings-page.actions';
 import { MainLayoutActions } from '../ui/main-layout.actions';
 import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
+import { MyUploadsApiActions } from '../my-uploads/my-uploads.actions';
 import { SettingsApiActions } from '../settings/settings.actions';
 import { PlayerActions, PlayerApiActions } from './player.actions';
 
@@ -208,6 +209,20 @@ export const playerFeature = createFeature({
       SettingsApiActions.settingsLoaded,
       (state: IPlayerState, { settings }: { settings: IGeneralSettings }): IPlayerState =>
         pauseWhenRadioModeEnabled(state, settings.radioMode),
+    ),
+    on(
+      MyUploadsApiActions.trackDeleted,
+      (state: IPlayerState, { trackId }: { trackId: number }): IPlayerState =>
+        state.queue.some((track: IPlayerTrack) => track.id === trackId)
+          ? {
+              ...state,
+              queue: [],
+              order: [],
+              position: Constants.ZERO,
+              playbackId: state.playbackId + Constants.ONE,
+              isPlaying: false,
+            }
+          : state,
     ),
     on(MainLayoutActions.closed, (): IPlayerState => initialPlayerState),
   ),

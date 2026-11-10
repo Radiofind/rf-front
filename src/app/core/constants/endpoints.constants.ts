@@ -33,5 +33,11 @@ export class EndpointConstants {
     tracks: '/tracks',
     plays: '/plays',
     like: '/like',
+    cancelSubmission: '/cancel-submission',
+    submit: '/submit',
+    statistics: '/statistics',
+    schedule: '/schedule',
+    scheduleChangeRequests: '/schedule-change-requests',
+    rejection: '/rejection',
   };
 }

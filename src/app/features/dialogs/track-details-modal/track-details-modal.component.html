@@ -1,0 +1,134 @@
+<div class="track-dialog">
+  @if (details.isLoading()) {
+    <div class="track-dialog__state">
+      <app-spinner />
+    </div>
+  } @else if (details.error()) {
+    <div class="track-dialog__state" role="alert">
+      <p>{{ 'trackDialogs.loadFailed' | translate }}</p>
+      <app-button
+        contentIconClass="bx bx-refresh-cw"
+        [contentText]="'myUploads.empty.retry' | translate"
+        (clickAction)="details.reload()"
+      />
+    </div>
+  } @else if (details.value(); as track) {
+    <header class="details__header">
+      @if (track.coverUrl) {
+        <img class="details__cover" [src]="track.coverUrl" alt="" />
+      } @else {
+        <span class="details__cover details__cover--placeholder" aria-hidden="true">
+          <i class="bx bx-music"></i>
+        </span>
+      }
+      <div class="details__heading">
+        <p class="details__title">{{ track.title }}</p>
+        <p class="details__artist">{{ track.artistName }}</p>
+        <span class="details__status" [class]="'details__status--' + track.status">
+          {{ statusLabel(track.status) | translate }}
+        </span>
+      </div>
+    </header>
+
+    @if (data.isEditing) {
+      <form class="details__form" [formRoot]="editForm">
+        <app-input-field
+          [fieldLabel]="('uploadTrack.trackTitle' | translate) + ' *'"
+          [inputPlaceholder]="'uploadTrack.trackTitlePlaceholder' | translate"
+          [isCompact]="true"
+          [formField]="editForm.title"
+        />
+
+        <app-chips-field
+          fieldId="edit-track-genres"
+          [fieldLabel]="('uploadTrack.genres' | translate) + ' *'"
+          [addLabel]="'uploadTrack.addGenre' | translate"
+          [options]="genreOptions()"
+          [maxItems]="maxGenres"
+          [formField]="editForm.genres"
+        />
+
+        <app-input-field
+          [fieldLabel]="'uploadTrack.description' | translate"
+          [inputPlaceholder]="'uploadTrack.descriptionPlaceholder' | translate"
+          [isCompact]="true"
+          [isTextareaField]="true"
+          [hasOptionalLabel]="true"
+          [textareaRows]="descriptionRows"
+          [characterLimit]="descriptionLimit"
+          [formField]="editForm.description"
+        />
+
+        <app-file-dropzone
+          fieldId="edit-track-cover"
+          iconClass="bx bx-image"
+          [accept]="coverAccept"
+          [hasImagePreview]="true"
+          [isCompact]="true"
+          [dropzoneTitle]="'trackDialogs.replaceCover' | translate"
+          [dropzoneHint]="'uploadTrack.coverHint' | translate: { size: coverMaxSizeMb }"
+          [formField]="editForm.cover"
+        />
+
+        @if (track.coverUrl && !editForm.cover().value()) {
+          <app-checkbox-field
+            [checkboxText]="'trackDialogs.removeCover' | translate"
+            [formField]="editForm.removeCover"
+          />
+        }
+
+        <p class="track-dialog__note">
+          <i class="bx bx-info-circle" aria-hidden="true"></i>
+          {{ 'trackDialogs.audioNotEditable' | translate }}
+        </p>
+
+        <footer class="track-dialog__actions details__footer">
+          <app-button
+            additionalClass="button--secondary"
+            [contentText]="'common.cancel' | translate"
+            (clickAction)="onClose()"
+          />
+          <app-button
+            buttonType="submit"
+            [contentText]="'common.saveChanges' | translate"
+            [disabled]="isSaveDisabled()"
+          />
+        </footer>
+      </form>
+    } @else {
+      <dl class="track-dialog__grid">
+        <dt class="track-dialog__term">{{ 'trackDialogs.uploadedBy' | translate }}</dt>
+        <dd class="track-dialog__value">{{ track.uploadedBy }}</dd>
+
+        <dt class="track-dialog__term">{{ 'myUploads.columns.genre' | translate }}</dt>
+        <dd class="track-dialog__value">
+          <ul class="details__genres">
+            @for (genre of track.genres; track genre) {
+              @let genreKey = genreLabel(genre);
+              <li class="details__genre">{{ genreKey ? (genreKey | translate) : genre }}</li>
+            }
+          </ul>
+        </dd>
+
+        <dt class="track-dialog__term">{{ 'myUploads.columns.duration' | translate }}</dt>
+        <dd class="track-dialog__value">{{ duration(track.durationSeconds) }}</dd>
+
+        <dt class="track-dialog__term">{{ 'trackDialogs.audioFile' | translate }}</dt>
+        <dd class="track-dialog__value">
+          {{ track.audioFormat }} · {{ fileSize(track.audioSizeBytes) }}
+        </dd>
+
+        <dt class="track-dialog__term">{{ 'myUploads.columns.uploaded' | translate }}</dt>
+        <dd class="track-dialog__value">{{ track.createdAt | dateTime }}</dd>
+
+        <dt class="track-dialog__term">{{ 'trackDialogs.lastUpdated' | translate }}</dt>
+        <dd class="track-dialog__value">{{ track.updatedAt | dateTime }}</dd>
+
+        <dt class="track-dialog__term">{{ 'uploadTrack.description' | translate }}</dt>
+        <dd class="track-dialog__value details__description">
+          {{ track.description ?? ('trackDialogs.noDescription' | translate) }}
+        </dd>
+      </dl>
+    }
+  }
+</div>

@@ -57,6 +57,27 @@ export class MyUploadsPage {
     return Math.abs((tooltip?.x ?? 0) + arrow - ((like?.x ?? 0) + (like?.width ?? 0) / 2));
   }
 
+  public actionsButton(title: string): Locator {
+    return this.root.getByRole('button', { name: `More actions for "${title}"` });
+  }
+
+  public menuItems(): Locator {
+    return this.page.locator('.actions__item');
+  }
+
+  public async chooseAction(title: string, action: string): Promise<void> {
+    await this.actionsButton(title).click();
+    await this.page.getByRole('menuitem', { name: action }).click();
+  }
+
+  public dialog(): Locator {
+    return this.page.getByRole('dialog');
+  }
+
+  public async confirm(text: string): Promise<void> {
+    await this.page.locator('.confirm').getByRole('button', { name: text }).click();
+  }
+
   public tab(label: string): Locator {
     return this.root.getByRole('button', { name: label, exact: true });
   }

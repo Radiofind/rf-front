@@ -6,6 +6,8 @@ import { UserService } from '../../features/services/user-service/user.service';
 import { Constants } from '../../core/constants/constants';
 import { NOTIFICATIONS_PAGE_SIZE } from '../../features/constants/notification.constant';
 import { MainLayoutActions } from '../ui/main-layout.actions';
+import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
+import { MyUploadsApiActions } from '../my-uploads/my-uploads.actions';
 import { UploadTrackPageActions } from '../ui/upload-track-page.actions';
 import { untilLayoutClosed } from '../shared/session.operators';
 import { NotificationsApiActions } from './notifications.actions';
@@ -41,6 +43,8 @@ export const loadNotifications = createEffect(
       ofType(
         MainLayoutActions.opened,
         UploadTrackPageActions.trackUploaded,
+        MyUploadsApiActions.trackChanged,
+        MyUploadsPageActions.scheduleChangeRequested,
         NotificationsApiActions.markAllAsReadFailed,
       ),
       filter(() => isPlatformBrowser(platformId)),

@@ -29,7 +29,8 @@
                 <span class="activity__meta">
                   <span class="activity__artist">{{ activity.track?.artistName }}</span>
                   <span class="activity__date">{{
-                    'profile.uploaded' | translate: { time: (activity.createdAt | relativeTime) }
+                    activityLabels[activity.type]
+                      | translate: { time: (activity.createdAt | relativeTime) }
                   }}</span>
                 </span>
               </div>

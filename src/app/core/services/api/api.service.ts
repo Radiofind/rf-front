@@ -29,9 +29,16 @@ import type {
 } from '../../models/user.model';
 import type { IGeneralSettings } from '../../models/settings.model';
 import type {
+  IEditTrackData,
   IOwnTracksQuery,
+  IPendingScheduleChange,
+  IPlaybackSchedule,
+  IRejectionReason,
+  IScheduleChangeData,
   ITrack,
+  ITrackDetails,
   ITrackEndpoints,
+  ITrackStatistics,
   IUploadTrackData,
 } from '../../models/track.model';
 import type { IActivity } from '../../models/activity.model';
@@ -242,6 +249,82 @@ export class ApiService {
         context: skipGlobalLoader(),
       },
     );
+  }
+
+  public getTrackDetails(trackId: number): Observable<ITrackDetails> {
+    return this.http.get<ITrackDetails>(this.ownTrackApi(trackId), { context: skipGlobalLoader() });
+  }
+
+  public editTrack(trackId: number, data: IEditTrackData): Observable<ITrackDetails> {
+    const formData: FormData = new FormData();
+    formData.append(Constants.TITLE_FORM_DATA, data.title);
+    data.genres.forEach((genre: string) => {
+      formData.append(Constants.GENRES_FORM_DATA, genre);
+    });
+    formData.append(Constants.REMOVE_COVER_FORM_DATA, String(data.removeCover));
+
+    if (data.description) {
+      formData.append(Constants.DESCRIPTION_FORM_DATA, data.description);
+    }
+
+    if (data.cover) {
+      formData.append(Constants.COVER_FORM_DATA, data.cover);
+    }
+
+    return this.http.put<ITrackDetails>(this.ownTrackApi(trackId), formData);
+  }
+
+  public cancelTrackSubmission(trackId: number): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.post<void>(
+      `${this.ownTrackApi(trackId)}${this.trackEndpoints.cancelSubmission}`,
+      null,
+    );
+  }
+
+  public submitTrack(trackId: number): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.post<void>(`${this.ownTrackApi(trackId)}${this.trackEndpoints.submit}`, null);
+  }
+
+  public deleteTrack(trackId: number): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.delete<void>(this.ownTrackApi(trackId));
+  }
+
+  public getTrackStatistics(trackId: number): Observable<ITrackStatistics> {
+    return this.http.get<ITrackStatistics>(
+      `${this.ownTrackApi(trackId)}${this.trackEndpoints.statistics}`,
+      { context: skipGlobalLoader() },
+    );
+  }
+
+  public getPlaybackSchedule(trackId: number): Observable<IPlaybackSchedule> {
+    return this.http.get<IPlaybackSchedule>(
+      `${this.ownTrackApi(trackId)}${this.trackEndpoints.schedule}`,
+      { context: skipGlobalLoader() },
+    );
+  }
+
+  public requestScheduleChange(
+    trackId: number,
+    data: IScheduleChangeData,
+  ): Observable<IPendingScheduleChange> {
+    return this.http.post<IPendingScheduleChange>(
+      `${this.ownTrackApi(trackId)}${this.trackEndpoints.scheduleChangeRequests}`,
+      data,
+    );
+  }
+
+  public getRejectionReason(trackId: number): Observable<IRejectionReason> {
+    return this.http.get<IRejectionReason>(
+      `${this.ownTrackApi(trackId)}${this.trackEndpoints.rejection}`,
+      { context: skipGlobalLoader() },
+    );
+  }
+
+  private ownTrackApi(trackId: number): string {
+    return `${this.ownTracksApi}/${String(trackId)}`;
   }
 
   private pageParams(page: number, size: number): HttpParams {

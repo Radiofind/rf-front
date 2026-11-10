@@ -5,6 +5,7 @@ export const FR_TRANSLATIONS: Translations = {
     title: 'RADIOFIND - Mettez votre musique en ligne et touchez le monde entier',
   },
   common: {
+    close: 'Fermer',
     optional: '(facultatif)',
     cancel: 'Annuler',
     confirm: 'Confirmer',
@@ -192,6 +193,9 @@ export const FR_TRANSLATIONS: Translations = {
       "Les écoutes, auditeurs et sélections radio s'afficheront ici dès que vos titres seront en ligne.",
     latestActivity: 'Activité récente',
     uploaded: 'Mis en ligne {time}',
+    submissionCancelled: 'Retiré de la vérification {time}',
+    resubmitted: 'Soumis à nouveau {time}',
+    scheduleChangeRequested: 'Changement d’horaire demandé {time}',
     noActivityTitle: "Pas encore d'activité",
     noActivityDescription: "Vos titres, évaluations et sélections radio s'afficheront ici.",
     uploadFirstTrack: 'Téléversez votre premier titre',
@@ -277,8 +281,10 @@ export const FR_TRANSLATIONS: Translations = {
       published: 'Publiés',
       processing: 'En traitement',
       rejected: 'Refusés',
+      drafts: 'Brouillons',
     },
     status: {
+      draft: 'Brouillon',
       published: 'Publié',
       processing: 'En traitement',
       rejected: 'Refusé',
@@ -300,7 +306,6 @@ export const FR_TRANSLATIONS: Translations = {
     playTrack: 'Lire « {title} »',
     pauseTrack: 'Mettre « {title} » en pause',
     moreActions: 'Plus d’actions pour « {title} »',
-    moreActionsSoon: 'D’autres actions arrivent bientôt',
     range: '{from}–{to} sur {total}',
     perPage: 'Par page',
     pagination: 'Pages des uploads',
@@ -309,7 +314,23 @@ export const FR_TRANSLATIONS: Translations = {
     goToPage: 'Page {page}',
     radioModeHint:
       'Le mode radio est activé. Désactivez-le dans les paramètres pour écouter vos morceaux ici.',
+    actions: {
+      details: 'Détails du morceau',
+      edit: 'Modifier les détails',
+      statistics: 'Voir les statistiques',
+      schedule: 'Programme de diffusion',
+      requestScheduleChange: 'Demander un changement d’horaire',
+      rejectionReason: 'Voir le motif du refus',
+      submit: 'Soumettre à la vérification',
+      resubmit: 'Soumettre à nouveau',
+      cancelSubmission: 'Annuler la soumission',
+      download: 'Télécharger le morceau',
+      delete: 'Supprimer le morceau',
+    },
     empty: {
+      noDraftsTitle: 'Aucun brouillon',
+      noDraftsDescription:
+        'Les morceaux retirés de la vérification attendent ici jusqu’à ce que vous les soumettiez à nouveau.',
       noUploadsTitle: 'Votre scène est encore vide',
       noUploadsDescription:
         'Mettez en ligne votre premier morceau et suivez-le ici, de la vérification qualité jusqu’à la publication.',
@@ -336,6 +357,45 @@ export const FR_TRANSLATIONS: Translations = {
       retry: 'Réessayer',
     },
   },
+  trackDialogs: {
+    loadFailed: 'Impossible de charger ces informations',
+    uploadedBy: 'Mis en ligne par',
+    audioFile: 'Fichier audio',
+    lastUpdated: 'Dernière modification',
+    noDescription: 'Aucune description',
+    replaceCover: 'Remplacer la pochette',
+    removeCover: 'Retirer la pochette actuelle',
+    audioNotEditable:
+      'Le fichier audio ne peut pas être remplacé. Pour le changer, mettez le morceau en ligne à nouveau.',
+    uniqueListeners: 'Auditeurs uniques',
+    radioAirings: 'Diffusions radio',
+    newListeners7Days: 'Nouveaux auditeurs, 7 jours',
+    newListeners30Days: 'Nouveaux auditeurs, 30 jours',
+    lastListened: 'Dernière écoute {time}',
+    noListenersYet: 'Personne n’a encore écouté ce morceau',
+    nextAiring: 'Prochaine diffusion',
+    slotLength: 'Durée du créneau : {duration}',
+    changeUnderReview: 'Votre demande de déplacement à {time} est en cours d’examen',
+    currentAiring: 'Actuellement prévu le {time}',
+    preferredDate: 'Date souhaitée',
+    preferredTime: 'Heure souhaitée',
+    pickTime: 'Choisir l’heure',
+    comment: 'Commentaire',
+    commentPlaceholder: 'Expliquez-nous pourquoi cet horaire convient mieux à votre morceau...',
+    sendRequest: 'Envoyer la demande',
+    rejectionNextSteps:
+      'Corrigez les points via « Modifier les détails » ou mettez en ligne une nouvelle version, puis soumettez à nouveau le morceau.',
+    submitConfirm: 'Soumettre ce morceau à la vérification ?',
+    resubmitConfirm: 'Soumettre à nouveau ce morceau ?',
+    resubmitDescription:
+      'Assurez-vous d’avoir corrigé le motif du refus. Le morceau retourne dans la file de vérification.',
+    cancelSubmissionConfirm: 'Annuler la soumission ?',
+    cancelSubmissionDescription:
+      'Le morceau quitte la file de vérification et est enregistré comme brouillon. Vous pourrez le soumettre à nouveau à tout moment.',
+    deleteConfirm: 'Supprimer définitivement ce morceau ?',
+    deleteDescription:
+      'Le morceau, ses fichiers, ses « J’aime », ses écoutes et son historique seront supprimés. Cette action est irréversible.',
+  },
   fileDropzone: {
     replaceHint: '{size} Mo · Cliquez ou déposez un autre fichier pour le remplacer',
   },
@@ -359,6 +419,12 @@ export const FR_TRANSLATIONS: Translations = {
     moreOptions: 'Plus d’options',
   },
   notifications: {
+    trackSubmissionCancelled:
+      'Vous avez retiré « {title} » de la vérification. Il est enregistré comme brouillon.',
+    trackResubmittedForReview:
+      'Votre morceau « {title} » a été soumis à nouveau à la vérification qualité',
+    scheduleChangeRequested:
+      'Votre demande de changement d’horaire pour « {title} » est en cours d’examen',
     trackSubmittedForReview:
       'Votre morceau « {title} » a été importé et envoyé au contrôle qualité',
   },
@@ -809,6 +875,16 @@ export const FR_TRANSLATIONS: Translations = {
       'Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ? Vos modifications seront perdues.',
   },
   messages: {
+    submissionCancelled: 'Soumission annulée. Le morceau est maintenant un brouillon.',
+    trackSubmitted: 'Morceau soumis à la vérification',
+    trackResubmitted: 'Morceau soumis à nouveau',
+    trackDeleted: 'Morceau supprimé',
+    trackUpdated: 'Détails du morceau enregistrés',
+    scheduleChangeRequested:
+      'Changement d’horaire demandé. Nous vous informerons dès qu’il aura été examiné.',
+    scheduleChangeAlreadyPending:
+      'Un changement d’horaire pour ce morceau est déjà en cours d’examen',
+    trackActionFailed: 'Une erreur s’est produite. Veuillez réessayer.',
     likeFailed: 'Impossible d’enregistrer votre « J’aime ». Veuillez réessayer.',
     emailSent: 'E-mail envoyé avec succès',
     passwordReset: 'Mot de passe réinitialisé avec succès',
@@ -832,6 +908,8 @@ export const FR_TRANSLATIONS: Translations = {
     playbackFailed: 'Impossible de lire le titre. Veuillez réessayer.',
   },
   validation: {
+    dateFromTomorrow: 'Choisissez une date à partir de demain',
+    maxLengthComment: 'Ne doit pas dépasser 500 caractères',
     required: 'Ce champ est obligatoire',
     email: 'E-mail invalide',
     minLength: 'Doit contenir au moins 8 caractères',

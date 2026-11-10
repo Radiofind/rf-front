@@ -17,5 +17,10 @@ export const MyUploadsPageActions = createActionGroup({
     'Retry Clicked': emptyProps(),
     'Track Played': props<{ queue: readonly IPlayerTrack[]; startIndex: number }>(),
     'Playback Toggled': emptyProps(),
+    'Submission Cancel Confirmed': props<{ trackId: number }>(),
+    'Submit Confirmed': props<{ trackId: number; isResubmission: boolean }>(),
+    'Delete Confirmed': props<{ trackId: number }>(),
+    'Track Edited': emptyProps(),
+    'Schedule Change Requested': emptyProps(),
   },
 });

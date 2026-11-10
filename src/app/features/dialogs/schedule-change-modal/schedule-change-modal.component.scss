@@ -1,0 +1,33 @@
+@use '../track-dialog';
+
+.change {
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 180px);
+    align-items: end;
+    gap: 16px;
+  }
+
+  &__time {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__label {
+    font-size: 14px;
+    color: var(--text-color);
+  }
+}
+
+@media (max-width: 540px) {
+  .change__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

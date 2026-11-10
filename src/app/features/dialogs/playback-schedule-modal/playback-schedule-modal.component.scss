@@ -1,0 +1,44 @@
+@use '../track-dialog';
+
+.airing {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--header-element-border);
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--first-gradient-color) 22%, transparent),
+    color-mix(in srgb, var(--second-gradient-color) 8%, transparent)
+  );
+
+  &__icon {
+    display: flex;
+    font-size: 40px;
+    color: var(--icon-color);
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--second-gradient-color) 60%, transparent));
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__label {
+    font-size: 13px;
+    color: var(--second-text-color);
+  }
+
+  &__time {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+
+  &__duration {
+    font-size: 14px;
+    color: var(--soft-text-color);
+  }
+}

@@ -13,6 +13,7 @@ import { AudioPlayerActions } from '../ui/audio-player.actions';
 import { GeneralSettingsPageActions } from '../ui/general-settings-page.actions';
 import { MainLayoutActions } from '../ui/main-layout.actions';
 import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
+import { MyUploadsApiActions } from '../my-uploads/my-uploads.actions';
 import { AudioPlayerService } from '../../features/services/audio-player-service/audio-player.service';
 import { SnackbarService } from '../../shared/services/snackbar-service/snackbar.service';
 import { DEFAULT_GENERAL_SETTINGS } from '../../features/constants/settings.constant';
@@ -333,5 +334,21 @@ describe('player state', () => {
 
     expect(store.selectSignal(playerFeature.selectIsCurrentTrackLiked)()).toBe(false);
     expect(setLiked).not.toHaveBeenCalled();
+  });
+  it('stops and forgets the queue when one of its tracks is deleted', () => {
+    store.dispatch(PlayerActions.queueStarted({ queue: [first, second], startIndex: 0 }));
+
+    store.dispatch(MyUploadsApiActions.trackDeleted({ trackId: 2 }));
+
+    expect(store.selectSignal(playerFeature.selectCurrentTrack)()).toBeNull();
+    expect(store.selectSignal(playerFeature.selectIsPlaying)()).toBe(false);
+  });
+
+  it('keeps playing when a track outside the queue is deleted', () => {
+    store.dispatch(PlayerActions.queueStarted({ queue: [first], startIndex: 0 }));
+
+    store.dispatch(MyUploadsApiActions.trackDeleted({ trackId: 99 }));
+
+    expect(store.selectSignal(playerFeature.selectCurrentTrack)()).toBe(first);
   });
 });

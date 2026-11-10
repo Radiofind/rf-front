@@ -15,9 +15,11 @@ import { formatPlaybackTime } from '../../../../shared/helpers/player/player.hel
 import { CompactNumberPipe } from '../../../../shared/pipes/compact-number/compact-number.pipe';
 import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 import { DateTimePipe } from '../../../../shared/pipes/date-time/date-time.pipe';
+import { TrackActionsMenuComponent } from '../track-actions-menu/track-actions-menu.component';
 
 import type { InputSignal, OutputEmitterRef, WritableSignal } from '@angular/core';
 import type { ITrack } from '../../../../core/models/track.model';
+import type { ITrackActionRequest } from '../../../models/track-action-option.model';
 import type { TrackStatus } from '../../../../core/types/track-status.type';
 import type { TranslationKey } from '../../../../core/types/translation.type';
 
@@ -25,7 +27,13 @@ import type { TranslationKey } from '../../../../core/types/translation.type';
   selector: 'app-uploads-table',
   templateUrl: './uploads-table.component.html',
   styleUrl: './uploads-table.component.scss',
-  imports: [NgTemplateOutlet, TranslatePipe, DateTimePipe, CompactNumberPipe],
+  imports: [
+    NgTemplateOutlet,
+    TranslatePipe,
+    DateTimePipe,
+    CompactNumberPipe,
+    TrackActionsMenuComponent,
+  ],
 })
 export class UploadsTableComponent {
   public readonly tracks: InputSignal<readonly ITrack[]> = input.required<readonly ITrack[]>();
@@ -48,6 +56,9 @@ export class UploadsTableComponent {
   public readonly playToggled: OutputEmitterRef<ITrack> = output<ITrack>();
 
   public readonly sortSelected: OutputEmitterRef<OwnTracksSortEnum> = output<OwnTracksSortEnum>();
+
+  public readonly actionSelected: OutputEmitterRef<ITrackActionRequest> =
+    output<ITrackActionRequest>();
 
   protected readonly brokenCovers: WritableSignal<ReadonlySet<string>> = signal<
     ReadonlySet<string>

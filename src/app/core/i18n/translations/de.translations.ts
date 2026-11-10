@@ -5,6 +5,7 @@ export const DE_TRANSLATIONS: Translations = {
     title: 'RADIOFIND - Lade deine Musik hoch und erreiche die Welt',
   },
   common: {
+    close: 'Schliessen',
     optional: '(optional)',
     cancel: 'Abbrechen',
     confirm: 'Bestätigen',
@@ -189,6 +190,9 @@ export const DE_TRANSLATIONS: Translations = {
       'Plays, Hörer und Radio-Auswahl erscheinen hier, sobald deine Tracks live sind.',
     latestActivity: 'Letzte Aktivität',
     uploaded: 'Hochgeladen {time}',
+    submissionCancelled: 'Aus der Prüfung zurückgezogen {time}',
+    resubmitted: 'Erneut zur Prüfung eingereicht {time}',
+    scheduleChangeRequested: 'Änderung der Sendezeit angefragt {time}',
     noActivityTitle: 'Noch keine Aktivität',
     noActivityDescription: 'Deine Uploads, Bewertungen und Radio-Auswahl erscheinen hier.',
     uploadFirstTrack: 'Lade deinen ersten Track hoch',
@@ -272,8 +276,10 @@ export const DE_TRANSLATIONS: Translations = {
       published: 'Veröffentlicht',
       processing: 'In Prüfung',
       rejected: 'Abgelehnt',
+      drafts: 'Entwürfe',
     },
     status: {
+      draft: 'Entwurf',
       published: 'Veröffentlicht',
       processing: 'In Prüfung',
       rejected: 'Abgelehnt',
@@ -295,7 +301,6 @@ export const DE_TRANSLATIONS: Translations = {
     playTrack: '«{title}» abspielen',
     pauseTrack: '«{title}» pausieren',
     moreActions: 'Weitere Aktionen für «{title}»',
-    moreActionsSoon: 'Weitere Aktionen folgen in Kürze',
     range: '{from}–{to} von {total}',
     perPage: 'Pro Seite',
     pagination: 'Seiten der Uploads',
@@ -304,7 +309,23 @@ export const DE_TRANSLATIONS: Translations = {
     goToPage: 'Seite {page}',
     radioModeHint:
       'Der Radiomodus ist aktiv. Schalte ihn in den Einstellungen aus, um deine Tracks hier anzuhören.',
+    actions: {
+      details: 'Track-Details',
+      edit: 'Details bearbeiten',
+      statistics: 'Statistik anzeigen',
+      schedule: 'Sendeplan',
+      requestScheduleChange: 'Sendezeit ändern lassen',
+      rejectionReason: 'Ablehnungsgrund anzeigen',
+      submit: 'Zur Prüfung einreichen',
+      resubmit: 'Erneut einreichen',
+      cancelSubmission: 'Einreichung zurückziehen',
+      download: 'Track herunterladen',
+      delete: 'Track löschen',
+    },
     empty: {
+      noDraftsTitle: 'Keine Entwürfe',
+      noDraftsDescription:
+        'Tracks, die du aus der Prüfung zurückziehst, warten hier, bis du sie erneut einreichst.',
       noUploadsTitle: 'Deine Bühne ist noch leer',
       noUploadsDescription:
         'Lade deinen ersten Track hoch und verfolge ihn hier – von der Qualitätsprüfung bis zur Veröffentlichung.',
@@ -332,6 +353,44 @@ export const DE_TRANSLATIONS: Translations = {
       retry: 'Erneut versuchen',
     },
   },
+  trackDialogs: {
+    loadFailed: 'Diese Informationen konnten nicht geladen werden',
+    uploadedBy: 'Hochgeladen von',
+    audioFile: 'Audiodatei',
+    lastUpdated: 'Zuletzt geändert',
+    noDescription: 'Keine Beschreibung',
+    replaceCover: 'Cover ersetzen',
+    removeCover: 'Aktuelles Cover entfernen',
+    audioNotEditable: 'Die Audiodatei kann nicht ersetzt werden. Lade den Track dafür erneut hoch.',
+    uniqueListeners: 'Einzelne Hörer',
+    radioAirings: 'Radioausstrahlungen',
+    newListeners7Days: 'Neue Hörer, 7 Tage',
+    newListeners30Days: 'Neue Hörer, 30 Tage',
+    lastListened: 'Zuletzt gehört {time}',
+    noListenersYet: 'Diesen Track hat noch niemand gehört',
+    nextAiring: 'Nächste Ausstrahlung',
+    slotLength: 'Sendeplatz: {duration}',
+    changeUnderReview: 'Deine Anfrage, ihn auf {time} zu verschieben, wird geprüft',
+    currentAiring: 'Aktuell geplant für {time}',
+    preferredDate: 'Wunschdatum',
+    preferredTime: 'Wunschzeit',
+    pickTime: 'Zeit wählen',
+    comment: 'Kommentar',
+    commentPlaceholder: 'Erzähl uns, warum diese Zeit besser zu deinem Track passt...',
+    sendRequest: 'Anfrage senden',
+    rejectionNextSteps:
+      'Behebe die Punkte über «Details bearbeiten» oder lade eine neue Version hoch und reiche den Track dann erneut ein.',
+    submitConfirm: 'Diesen Track zur Prüfung einreichen?',
+    resubmitConfirm: 'Diesen Track erneut einreichen?',
+    resubmitDescription:
+      'Stelle sicher, dass du den Ablehnungsgrund behoben hast. Der Track kommt zurück in die Prüfwarteschlange.',
+    cancelSubmissionConfirm: 'Einreichung zurückziehen?',
+    cancelSubmissionDescription:
+      'Der Track verlässt die Prüfwarteschlange und wird als Entwurf gespeichert. Du kannst ihn jederzeit erneut einreichen.',
+    deleteConfirm: 'Diesen Track endgültig löschen?',
+    deleteDescription:
+      'Der Track, seine Dateien, Likes, Plays und sein Verlauf werden entfernt. Das kann nicht rückgängig gemacht werden.',
+  },
   fileDropzone: {
     replaceHint: '{size} MB · Klicke oder ziehe eine andere Datei hierher, um sie zu ersetzen',
   },
@@ -355,6 +414,10 @@ export const DE_TRANSLATIONS: Translations = {
     moreOptions: 'Weitere Optionen',
   },
   notifications: {
+    trackSubmissionCancelled:
+      'Du hast «{title}» aus der Prüfung zurückgezogen. Der Track ist als Entwurf gespeichert.',
+    trackResubmittedForReview: 'Dein Track «{title}» wurde erneut zur Qualitätsprüfung eingereicht',
+    scheduleChangeRequested: 'Deine Anfrage zur Änderung der Sendezeit von «{title}» wird geprüft',
     trackSubmittedForReview:
       'Dein Track «{title}» wurde hochgeladen und zur Qualitätsprüfung weitergeleitet',
   },
@@ -804,6 +867,16 @@ export const DE_TRANSLATIONS: Translations = {
       'Du hast nicht gespeicherte Änderungen. Möchtest du diese Seite wirklich verlassen? Deine Änderungen gehen verloren.',
   },
   messages: {
+    submissionCancelled: 'Einreichung zurückgezogen. Der Track ist jetzt ein Entwurf.',
+    trackSubmitted: 'Track zur Prüfung eingereicht',
+    trackResubmitted: 'Track erneut zur Prüfung eingereicht',
+    trackDeleted: 'Track gelöscht',
+    trackUpdated: 'Track-Details gespeichert',
+    scheduleChangeRequested:
+      'Änderung der Sendezeit angefragt. Wir melden uns, sobald sie geprüft ist.',
+    scheduleChangeAlreadyPending:
+      'Für diesen Track wird bereits eine Änderung der Sendezeit geprüft',
+    trackActionFailed: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
     likeFailed: 'Dein Like konnte nicht gespeichert werden. Bitte versuche es erneut.',
     emailSent: 'E-Mail erfolgreich gesendet',
     passwordReset: 'Passwort erfolgreich zurückgesetzt',
@@ -827,6 +900,8 @@ export const DE_TRANSLATIONS: Translations = {
     playbackFailed: 'Der Track konnte nicht abgespielt werden. Bitte versuche es erneut.',
   },
   validation: {
+    dateFromTomorrow: 'Wähle ein Datum ab morgen',
+    maxLengthComment: 'Darf höchstens 500 Zeichen lang sein',
     required: 'Pflichtfeld',
     email: 'Ungültige E-Mail',
     minLength: 'Muss mindestens 8 Zeichen lang sein',

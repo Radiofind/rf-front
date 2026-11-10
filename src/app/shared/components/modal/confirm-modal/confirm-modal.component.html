@@ -12,6 +12,10 @@
       (clickAction)="onCancel()"
     />
 
-    <app-button [contentText]="confirmText | translate" (clickAction)="onConfirm()" />
+    <app-button
+      [contentText]="confirmText | translate"
+      [additionalClass]="data.isDanger ? 'button--danger' : ''"
+      (clickAction)="onConfirm()"
+    />
   </div>
 </div>

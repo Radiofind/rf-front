@@ -159,15 +159,11 @@
         </td>
 
         <td class="uploads__cell uploads__cell--actions">
-          <button
-            type="button"
-            class="uploads__more"
-            disabled
-            [attr.aria-label]="'myUploads.moreActions' | translate: { title: track.title }"
-            [title]="'myUploads.moreActionsSoon' | translate"
-          >
-            <i class="bx bx-dots-horizontal-rounded" aria-hidden="true"></i>
-          </button>
+          <app-track-actions-menu
+            [status]="track.status"
+            [trackTitle]="track.title"
+            (actionSelected)="actionSelected.emit({ track: track, action: $event })"
+          />
         </td>
       </tr>
     }

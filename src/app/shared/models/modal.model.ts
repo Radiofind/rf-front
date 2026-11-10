@@ -25,4 +25,5 @@ export interface IConfirmModalData {
   description?: TranslationKey | null;
   confirmText?: TranslationKey;
   cancelText?: TranslationKey;
+  isDanger?: boolean;
 }

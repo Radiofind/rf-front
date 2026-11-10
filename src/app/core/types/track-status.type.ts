@@ -1,1 +1,1 @@
-export type TrackStatus = 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED';
+export type TrackStatus = 'DRAFT' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED';

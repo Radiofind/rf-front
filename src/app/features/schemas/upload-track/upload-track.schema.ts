@@ -12,25 +12,34 @@ import {
   TRACK_TITLE_MAX_LENGTH,
 } from '../../constants/upload-track.constant';
 
-import type { Schema } from '@angular/forms/signals';
+import type { Schema, SchemaPath } from '@angular/forms/signals';
 import type { IUploadTrackForm } from '../../models/upload-track-form.model';
 
-export const uploadTrackFormSchema: Schema<IUploadTrackForm> = schema<IUploadTrackForm>((form) => {
-  required(form.audio, { message: UploadTrackValidationMessages.AUDIO_REQUIRED });
-  validate(form.audio, ({ value }) => fileError(value(), AUDIO_FILE_RULES));
+export interface ITrackMetadataPaths {
+  title: SchemaPath<string>;
+  genres: SchemaPath<string[]>;
+  description: SchemaPath<string>;
+  cover: SchemaPath<File | null>;
+}
 
-  validate(form.cover, ({ value }) => fileError(value(), COVER_FILE_RULES));
+export function applyTrackMetadataRules({
+  title,
+  genres,
+  description,
+  cover,
+}: ITrackMetadataPaths): void {
+  validate(cover, ({ value }) => fileError(value(), COVER_FILE_RULES));
 
-  required(form.title, { message: AuthValidationMessages.REQUIRED });
-  maxLength(form.title, TRACK_TITLE_MAX_LENGTH, {
+  required(title, { message: AuthValidationMessages.REQUIRED });
+  maxLength(title, TRACK_TITLE_MAX_LENGTH, {
     message: UploadTrackValidationMessages.MAX_LENGTH_TITLE,
   });
-  pattern(form.title, Constants.EN_PLUS_SPACES_AND_SYMBOLS, {
+  pattern(title, Constants.EN_PLUS_SPACES_AND_SYMBOLS, {
     message: AuthValidationMessages.PATTERN_WITH_SPACES_AND_SYMBOLS,
     when: ({ value }) => !!value(),
   });
 
-  validate(form.genres, ({ value }) =>
+  validate(genres, ({ value }) =>
     value().length
       ? undefined
       : {
@@ -38,13 +47,20 @@ export const uploadTrackFormSchema: Schema<IUploadTrackForm> = schema<IUploadTra
           message: UploadTrackValidationMessages.GENRE_REQUIRED,
         },
   );
-  maxLength(form.genres, MAX_TRACK_GENRES, { message: UploadTrackValidationMessages.MAX_GENRES });
+  maxLength(genres, MAX_TRACK_GENRES, { message: UploadTrackValidationMessages.MAX_GENRES });
 
-  maxLength(form.description, TRACK_DESCRIPTION_MAX_LENGTH, {
+  maxLength(description, TRACK_DESCRIPTION_MAX_LENGTH, {
     message: ProfileValidationMessages.MAX_LENGTH_DESCRIPTION,
   });
-  pattern(form.description, Constants.EN_PLUS_SPACES_AND_SYMBOLS, {
+  pattern(description, Constants.EN_PLUS_SPACES_AND_SYMBOLS, {
     message: AuthValidationMessages.PATTERN_WITH_SPACES_AND_SYMBOLS,
     when: ({ value }) => !!value(),
   });
+}
+
+export const uploadTrackFormSchema: Schema<IUploadTrackForm> = schema<IUploadTrackForm>((form) => {
+  required(form.audio, { message: UploadTrackValidationMessages.AUDIO_REQUIRED });
+  validate(form.audio, ({ value }) => fileError(value(), AUDIO_FILE_RULES));
+
+  applyTrackMetadataRules(form);
 });

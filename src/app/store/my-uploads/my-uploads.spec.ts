@@ -9,6 +9,7 @@ import * as myUploadsEffects from './my-uploads.effects';
 import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
 import { MainLayoutActions } from '../ui/main-layout.actions';
 import { TrackService } from '../../features/services/track-service/track.service';
+import { SnackbarService } from '../../shared/services/snackbar-service/snackbar.service';
 import { UploadsPreferencesService } from '../../features/services/uploads-preferences-service/uploads-preferences.service';
 import { UploadsEmptyStateEnum } from '../../features/enums/uploads-empty-state.enum';
 import { TrackStatusEnum } from '../../core/enums/track-status.enum';
@@ -47,6 +48,8 @@ describe('my uploads state', () => {
 
   let getOwnTracks: ReturnType<typeof vi.fn>;
   let writePageSize: ReturnType<typeof vi.fn>;
+  let trackActions: Record<string, ReturnType<typeof vi.fn>>;
+  let snackbar: Record<string, ReturnType<typeof vi.fn>>;
 
   const configure = (platform: string = 'browser'): Store => {
     TestBed.configureTestingModule({
@@ -55,7 +58,8 @@ describe('my uploads state', () => {
         provideState(myUploadsFeature),
         provideEffects(myUploadsEffects),
         { provide: PLATFORM_ID, useValue: platform },
-        { provide: TrackService, useValue: { getOwnTracks: getOwnTracks } },
+        { provide: TrackService, useValue: { getOwnTracks: getOwnTracks, ...trackActions } },
+        { provide: SnackbarService, useValue: snackbar },
         { provide: UploadsPreferencesService, useValue: { writePageSize: writePageSize } },
       ],
     });
@@ -66,6 +70,12 @@ describe('my uploads state', () => {
     TestBed.resetTestingModule();
     getOwnTracks = vi.fn().mockReturnValue(of(pageOf([track], 0, 1)));
     writePageSize = vi.fn();
+    trackActions = {
+      cancelSubmission: vi.fn().mockReturnValue(of(undefined)),
+      submitForReview: vi.fn().mockReturnValue(of(undefined)),
+      delete: vi.fn().mockReturnValue(of(undefined)),
+    };
+    snackbar = { success: vi.fn(), error: vi.fn() };
   });
 
   afterEach(() => {
@@ -323,5 +333,61 @@ describe('my uploads state', () => {
         .selectSignal(myUploadsFeature.selectPlayerQueue)()
         .map((queued) => queued.canLike),
     ).toEqual([false, true]);
+  });
+  it('withdraws a submission, confirms it and shows the uploads again', () => {
+    const store: Store = configure();
+    store.dispatch(MyUploadsPageActions.opened({ pageSize: null }));
+
+    store.dispatch(MyUploadsPageActions.submissionCancelConfirmed({ trackId: 42 }));
+
+    expect(trackActions['cancelSubmission']).toHaveBeenCalledExactlyOnceWith(42);
+    expect(getOwnTracks).toHaveBeenCalledTimes(2);
+    expect(snackbar['success']).toHaveBeenCalledExactlyOnceWith('messages.submissionCancelled');
+  });
+
+  it.each([
+    [false, 'messages.trackSubmitted'],
+    [true, 'messages.trackResubmitted'],
+  ])(
+    'confirms a submission for review (resubmission %s) with %s',
+    (isResubmission: boolean, message: string) => {
+      const store: Store = configure();
+
+      store.dispatch(
+        MyUploadsPageActions.submitConfirmed({ trackId: 42, isResubmission: isResubmission }),
+      );
+
+      expect(trackActions['submitForReview']).toHaveBeenCalledExactlyOnceWith(42);
+      expect(snackbar['success']).toHaveBeenCalledExactlyOnceWith(message);
+    },
+  );
+
+  it('removes a deleted track from the list', () => {
+    const store: Store = configure();
+
+    store.dispatch(MyUploadsPageActions.deleteConfirmed({ trackId: 42 }));
+
+    expect(trackActions['delete']).toHaveBeenCalledExactlyOnceWith(42);
+    expect(getOwnTracks).toHaveBeenCalledOnce();
+    expect(snackbar['success']).toHaveBeenCalledExactlyOnceWith('messages.trackDeleted');
+  });
+
+  it('tells the user when a track action fails and keeps the list as it is', () => {
+    trackActions['delete']?.mockReturnValue(throwError(() => new Error('offline')));
+    const store: Store = configure();
+
+    store.dispatch(MyUploadsPageActions.deleteConfirmed({ trackId: 42 }));
+
+    expect(snackbar['error']).toHaveBeenCalledExactlyOnceWith('messages.trackActionFailed');
+    expect(getOwnTracks).not.toHaveBeenCalled();
+  });
+
+  it('shows the uploads again after the details were edited', () => {
+    const store: Store = configure();
+
+    store.dispatch(MyUploadsPageActions.trackEdited());
+
+    expect(getOwnTracks).toHaveBeenCalledOnce();
+    expect(snackbar['success']).toHaveBeenCalledExactlyOnceWith('messages.trackUpdated');
   });
 });

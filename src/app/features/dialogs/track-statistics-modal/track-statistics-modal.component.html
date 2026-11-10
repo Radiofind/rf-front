@@ -1,0 +1,60 @@
+<div class="track-dialog">
+  @if (statistics.isLoading()) {
+    <div class="track-dialog__state">
+      <app-spinner />
+    </div>
+  } @else if (statistics.error()) {
+    <div class="track-dialog__state" role="alert">
+      <p>{{ 'trackDialogs.loadFailed' | translate }}</p>
+      <app-button
+        contentIconClass="bx bx-refresh-cw"
+        [contentText]="'myUploads.empty.retry' | translate"
+        (clickAction)="statistics.reload()"
+      />
+    </div>
+  } @else if (statistics.value(); as stats) {
+    <ul class="stats">
+      <li class="stats__tile stats__tile--main">
+        <i class="bx bx-headphone stats__icon" aria-hidden="true"></i>
+        <span class="stats__value">{{ stats.playsCount | compactNumber }}</span>
+        <span class="stats__label">{{ 'myUploads.columns.plays' | translate }}</span>
+      </li>
+      <li class="stats__tile stats__tile--main">
+        <i class="bx bx-heart stats__icon" aria-hidden="true"></i>
+        <span class="stats__value">{{ stats.likesCount | compactNumber }}</span>
+        <span class="stats__label">{{ 'myUploads.columns.likes' | translate }}</span>
+      </li>
+      <li class="stats__tile">
+        <i class="bx bx-user stats__icon" aria-hidden="true"></i>
+        <span class="stats__value">{{ stats.uniqueListeners | compactNumber }}</span>
+        <span class="stats__label">{{ 'trackDialogs.uniqueListeners' | translate }}</span>
+      </li>
+      <li class="stats__tile">
+        <i class="bx bx-broadcast stats__icon" aria-hidden="true"></i>
+        <span class="stats__value">{{ stats.radioAirings | compactNumber }}</span>
+        <span class="stats__label">{{ 'trackDialogs.radioAirings' | translate }}</span>
+      </li>
+      <li class="stats__tile">
+        <i class="bx bx-calendar-week stats__icon" aria-hidden="true"></i>
+        <span class="stats__value">{{ stats.listenersLast7Days | compactNumber }}</span>
+        <span class="stats__label">{{ 'trackDialogs.newListeners7Days' | translate }}</span>
+      </li>
+      <li class="stats__tile">
+        <i class="bx bx-calendar stats__icon" aria-hidden="true"></i>
+        <span class="stats__value">{{ stats.listenersLast30Days | compactNumber }}</span>
+        <span class="stats__label">{{ 'trackDialogs.newListeners30Days' | translate }}</span>
+      </li>
+    </ul>
+
+    <p class="track-dialog__note">
+      <i class="bx bx-clock" aria-hidden="true"></i>
+      @if (stats.lastListenedAt) {
+        {{
+          'trackDialogs.lastListened' | translate: { time: (stats.lastListenedAt | relativeTime) }
+        }}
+      } @else {
+        {{ 'trackDialogs.noListenersYet' | translate }}
+      }
+    </p>
+  }
+</div>

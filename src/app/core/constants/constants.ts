@@ -187,6 +187,12 @@ export class Constants {
 
   public static readonly SORT_QUERY_PARAM: string = 'sort';
 
+  public static readonly REMOVE_COVER_FORM_DATA: string = 'removeCover';
+
+  public static readonly MIN_DATE_PROPERTY: string = 'minDate';
+
+  public static readonly DOWNLOAD_QUERY_SUFFIX: string = '&download=true';
+
   public static readonly DIRECTION_QUERY_PARAM: string = 'direction';
 
   public static readonly LIKE_FAILED: TranslationKey = 'messages.likeFailed';

@@ -5,6 +5,7 @@ import { Constants } from '../../../core/constants/constants';
 import { Links } from '../../../core/constants/links';
 import { UploadsTableComponent } from '../../../features/components/my-uploads/uploads-table/uploads-table.component';
 import { UploadsEmptyStateComponent } from '../../../features/components/my-uploads/uploads-empty-state/uploads-empty-state.component';
+import { TrackActionsService } from '../../../features/services/track-actions-service/track-actions.service';
 import { UploadsPreferencesService } from '../../../features/services/uploads-preferences-service/uploads-preferences.service';
 import { UploadsEmptyStateEnum } from '../../../features/enums/uploads-empty-state.enum';
 import {
@@ -29,6 +30,7 @@ import type { ISelectOption } from '../../../shared/models/select-option.model';
 import type { ITrack } from '../../../core/models/track.model';
 import type { TrackStatus } from '../../../core/types/track-status.type';
 import type { IUploadsStatusTab } from '../../../features/models/uploads-status-tab.model';
+import type { ITrackActionRequest } from '../../../features/models/track-action-option.model';
 
 @Component({
   selector: 'app-my-uploads-page',
@@ -42,6 +44,8 @@ export class MyUploadsPageComponent implements OnInit {
   private readonly router: Router = inject(Router);
 
   private readonly preferences: UploadsPreferencesService = inject(UploadsPreferencesService);
+
+  private readonly trackActions: TrackActionsService = inject(TrackActionsService);
 
   private readonly playerQueue: Signal<IPlayerTrack[]> = this.store.selectSignal(
     myUploadsFeature.selectPlayerQueue,
@@ -179,6 +183,10 @@ export class MyUploadsPageComponent implements OnInit {
     if (page !== this.page() && page >= Constants.ZERO && page < this.totalPages()) {
       this.store.dispatch(MyUploadsPageActions.pageSelected({ page: page }));
     }
+  }
+
+  public onTrackAction({ track, action }: ITrackActionRequest): void {
+    this.trackActions.run(track, action);
   }
 
   public onUpload(): void {

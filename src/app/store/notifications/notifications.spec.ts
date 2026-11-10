@@ -2,12 +2,15 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { PLATFORM_ID } from '@angular/core';
 import { provideStore, provideState, Store } from '@ngrx/store';
+import type { Action } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { of, Subject, throwError } from 'rxjs';
 import { notificationsFeature } from './notifications.feature';
 import * as notificationsEffects from './notifications.effects';
 import { UserService } from '../../features/services/user-service/user.service';
 import { MainLayoutActions } from '../ui/main-layout.actions';
+import { MyUploadsApiActions } from '../my-uploads/my-uploads.actions';
+import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
 import { UploadTrackPageActions } from '../ui/upload-track-page.actions';
 import { NOTIFICATIONS_PAGE_SIZE } from '../../features/constants/notification.constant';
 
@@ -99,6 +102,21 @@ describe('notifications state', () => {
     store.dispatch(MainLayoutActions.opened());
 
     store.dispatch(UploadTrackPageActions.trackUploaded());
+
+    expect(getNotifications).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([
+    [
+      'a track changed status',
+      MyUploadsApiActions.trackChanged({ message: 'messages.trackSubmitted' }),
+    ],
+    ['a schedule change was requested', MyUploadsPageActions.scheduleChangeRequested()],
+  ])('reloads after %s', (_: string, action: Action) => {
+    const store: Store = configure('browser');
+    store.dispatch(MainLayoutActions.opened());
+
+    store.dispatch(action);
 
     expect(getNotifications).toHaveBeenCalledTimes(2);
   });

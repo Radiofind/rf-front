@@ -91,4 +91,24 @@ describe('ConfirmModalComponent', () => {
 
     expect(close).toHaveBeenCalledWith(false);
   });
+  it.each([
+    [true, true],
+    [false, false],
+  ])(
+    'styles the confirm button as dangerous (%s) only when asked to',
+    async (isDanger: boolean, isRed: boolean) => {
+      const fixture: ComponentFixture<ConfirmModalComponent> = await createFixture({
+        message: 'trackDialogs.deleteConfirm',
+        confirmText: 'myUploads.actions.delete',
+        isDanger: isDanger,
+      });
+      await fixture.whenStable();
+
+      const confirm: HTMLButtonElement | undefined = buttonsOf(fixture).find(
+        (button: HTMLButtonElement) => button.textContent.trim() === 'Delete track',
+      );
+
+      expect(confirm?.classList.contains('button--danger')).toBe(isRed);
+    },
+  );
 });

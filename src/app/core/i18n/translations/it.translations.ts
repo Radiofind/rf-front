@@ -5,6 +5,7 @@ export const IT_TRANSLATIONS: Translations = {
     title: 'RADIOFIND - Carica la tua musica e raggiungi il mondo',
   },
   common: {
+    close: 'Chiudi',
     optional: '(facoltativo)',
     cancel: 'Annulla',
     confirm: 'Conferma',
@@ -191,6 +192,9 @@ export const IT_TRANSLATIONS: Translations = {
       'Ascolti, ascoltatori e selezioni radio appariranno qui quando i tuoi brani saranno online.',
     latestActivity: 'Ultima attività',
     uploaded: 'Caricato {time}',
+    submissionCancelled: 'Ritirato dalla revisione {time}',
+    resubmitted: 'Inviato di nuovo per la revisione {time}',
+    scheduleChangeRequested: 'Cambio orario richiesto {time}',
     noActivityTitle: 'Ancora nessuna attività',
     noActivityDescription: 'I tuoi caricamenti, recensioni e selezioni radio appariranno qui.',
     uploadFirstTrack: 'Carica il tuo primo brano',
@@ -275,8 +279,10 @@ export const IT_TRANSLATIONS: Translations = {
       published: 'Pubblicati',
       processing: 'In elaborazione',
       rejected: 'Rifiutati',
+      drafts: 'Bozze',
     },
     status: {
+      draft: 'Bozza',
       published: 'Pubblicato',
       processing: 'In elaborazione',
       rejected: 'Rifiutato',
@@ -298,7 +304,6 @@ export const IT_TRANSLATIONS: Translations = {
     playTrack: 'Riproduci «{title}»',
     pauseTrack: 'Metti in pausa «{title}»',
     moreActions: 'Altre azioni per «{title}»',
-    moreActionsSoon: 'Altre azioni in arrivo',
     range: '{from}–{to} di {total}',
     perPage: 'Per pagina',
     pagination: 'Pagine dei caricamenti',
@@ -307,7 +312,23 @@ export const IT_TRANSLATIONS: Translations = {
     goToPage: 'Pagina {page}',
     radioModeHint:
       'La modalità radio è attiva. Disattivala nelle impostazioni per ascoltare qui i tuoi brani.',
+    actions: {
+      details: 'Dettagli del brano',
+      edit: 'Modifica dettagli',
+      statistics: 'Visualizza statistiche',
+      schedule: 'Programmazione',
+      requestScheduleChange: 'Richiedi cambio orario',
+      rejectionReason: 'Visualizza motivo del rifiuto',
+      submit: 'Invia per la revisione',
+      resubmit: 'Invia di nuovo',
+      cancelSubmission: 'Annulla invio',
+      download: 'Scarica brano',
+      delete: 'Elimina brano',
+    },
     empty: {
+      noDraftsTitle: 'Nessuna bozza',
+      noDraftsDescription:
+        'I brani ritirati dalla revisione restano qui finché non li invii di nuovo.',
       noUploadsTitle: 'Il tuo palco è ancora vuoto',
       noUploadsDescription:
         'Carica il tuo primo brano e seguilo qui, dal controllo qualità fino alla pubblicazione.',
@@ -332,6 +353,45 @@ export const IT_TRANSLATIONS: Translations = {
       retry: 'Riprova',
     },
   },
+  trackDialogs: {
+    loadFailed: 'Impossibile caricare queste informazioni',
+    uploadedBy: 'Caricato da',
+    audioFile: 'File audio',
+    lastUpdated: 'Ultima modifica',
+    noDescription: 'Nessuna descrizione',
+    replaceCover: 'Sostituisci copertina',
+    removeCover: 'Rimuovi copertina attuale',
+    audioNotEditable:
+      'Il file audio non può essere sostituito. Per cambiarlo, carica di nuovo il brano.',
+    uniqueListeners: 'Ascoltatori unici',
+    radioAirings: 'Passaggi radio',
+    newListeners7Days: 'Nuovi ascoltatori, 7 giorni',
+    newListeners30Days: 'Nuovi ascoltatori, 30 giorni',
+    lastListened: 'Ultimo ascolto {time}',
+    noListenersYet: 'Nessuno ha ancora ascoltato questo brano',
+    nextAiring: 'Prossima messa in onda',
+    slotLength: 'Durata dello slot: {duration}',
+    changeUnderReview: 'La tua richiesta di spostarlo a {time} è in valutazione',
+    currentAiring: 'Attualmente previsto per {time}',
+    preferredDate: 'Data preferita',
+    preferredTime: 'Orario preferito',
+    pickTime: 'Scegli orario',
+    comment: 'Commento',
+    commentPlaceholder: 'Spiegaci perché questo orario è più adatto al tuo brano...',
+    sendRequest: 'Invia richiesta',
+    rejectionNextSteps:
+      'Risolvi i problemi con «Modifica dettagli» o carica una nuova versione, poi invia di nuovo il brano.',
+    submitConfirm: 'Inviare questo brano per la revisione?',
+    resubmitConfirm: 'Inviare di nuovo questo brano?',
+    resubmitDescription:
+      'Assicurati di aver risolto il motivo del rifiuto. Il brano torna nella coda di revisione.',
+    cancelSubmissionConfirm: 'Annullare l’invio?',
+    cancelSubmissionDescription:
+      'Il brano esce dalla coda di revisione e viene salvato come bozza. Puoi inviarlo di nuovo in qualsiasi momento.',
+    deleteConfirm: 'Eliminare definitivamente questo brano?',
+    deleteDescription:
+      'Il brano, i suoi file, i «Mi piace», gli ascolti e la cronologia verranno rimossi. L’operazione è irreversibile.',
+  },
   fileDropzone: {
     replaceHint: '{size} MB · Fai clic o trascina un altro file per sostituirlo',
   },
@@ -355,6 +415,10 @@ export const IT_TRANSLATIONS: Translations = {
     moreOptions: 'Altre opzioni',
   },
   notifications: {
+    trackSubmissionCancelled: 'Hai ritirato «{title}» dalla revisione. È salvato come bozza.',
+    trackResubmittedForReview:
+      'Il tuo brano «{title}» è stato inviato di nuovo al controllo qualità',
+    scheduleChangeRequested: 'La tua richiesta di cambiare l’orario di «{title}» è in valutazione',
     trackSubmittedForReview:
       'Il tuo brano «{title}» è stato caricato e inviato al controllo qualità',
   },
@@ -804,6 +868,14 @@ export const IT_TRANSLATIONS: Translations = {
       'Hai modifiche non salvate. Vuoi davvero lasciare questa pagina? Le modifiche andranno perse.',
   },
   messages: {
+    submissionCancelled: 'Invio annullato. Il brano ora è una bozza.',
+    trackSubmitted: 'Brano inviato per la revisione',
+    trackResubmitted: 'Brano inviato di nuovo',
+    trackDeleted: 'Brano eliminato',
+    trackUpdated: 'Dettagli del brano salvati',
+    scheduleChangeRequested: 'Cambio orario richiesto. Ti avviseremo appena sarà valutato.',
+    scheduleChangeAlreadyPending: 'Un cambio orario per questo brano è già in valutazione',
+    trackActionFailed: 'Qualcosa è andato storto. Riprova.',
     likeFailed: 'Impossibile salvare il tuo «Mi piace». Riprova.',
     emailSent: 'Email inviata con successo',
     passwordReset: 'Password reimpostata con successo',
@@ -827,6 +899,8 @@ export const IT_TRANSLATIONS: Translations = {
     playbackFailed: 'Impossibile riprodurre il brano. Riprova.',
   },
   validation: {
+    dateFromTomorrow: 'Scegli una data a partire da domani',
+    maxLengthComment: 'Non deve superare 500 caratteri',
     required: 'Campo obbligatorio',
     email: 'Email non valida',
     minLength: 'Deve contenere almeno 8 caratteri',
