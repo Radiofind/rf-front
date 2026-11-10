@@ -6,6 +6,7 @@ import { REPEAT_MODE_LABELS } from '../../constants/player.constant';
 import { AudioPlayerService } from '../../services/audio-player-service/audio-player.service';
 import { formatPlaybackTime } from '../../../shared/helpers/player/player.helpers';
 import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
+import { TooltipDirective } from '../../../shared/directives/tooltip/tooltip.directive';
 import { AudioPlayerActions } from '../../../store/ui/audio-player.actions';
 import { playerFeature } from '../../../store/player/player.feature';
 import { settingsFeature } from '../../../store/settings/settings.feature';
@@ -19,7 +20,7 @@ import type { TranslationKey } from '../../../core/types/translation.type';
   selector: 'app-audio-player',
   templateUrl: './audio-player.component.html',
   styleUrl: './audio-player.component.scss',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, TooltipDirective],
 })
 export class AudioPlayerComponent {
   private readonly store: Store = inject(Store);
@@ -114,6 +115,14 @@ export class AudioPlayerComponent {
     () => REPEAT_MODE_LABELS[this.repeatMode()],
   );
 
+  protected readonly canLike: Signal<boolean> = this.store.selectSignal(
+    playerFeature.selectCanLikeCurrentTrack,
+  );
+
+  protected readonly isLikeUnavailable: Signal<boolean> = computed<boolean>(
+    () => this.track() !== null && !this.canLike(),
+  );
+
   protected readonly likeIconClass: Signal<string> = computed<string>(() =>
     this.isLiked() ? Constants.PLAYER_LIKED_ICON_CLASS : Constants.PLAYER_LIKE_ICON_CLASS,
   );
@@ -144,6 +153,10 @@ export class AudioPlayerComponent {
   }
 
   public onLikeToggle(): void {
+    if (!this.canLike()) {
+      return;
+    }
+
     this.store.dispatch(AudioPlayerActions.likeToggled());
   }
 

@@ -1,6 +1,6 @@
 import type { DialogConfig } from '@angular/cdk/dialog';
 import type { ModalSize } from '../../core/types/modal-size.type';
-import type { TranslationKey } from '../../core/types/translation.type';
+import type { TranslationKey, TranslationParams } from '../../core/types/translation.type';
 
 export interface IModalOptions<D = unknown> {
   title?: TranslationKey | null;
@@ -22,7 +22,9 @@ export interface IModalDialogConfig<D = unknown, R = unknown>
 
 export interface IConfirmModalData {
   message: TranslationKey;
+  messageParams?: TranslationParams;
   description?: TranslationKey | null;
   confirmText?: TranslationKey;
   cancelText?: TranslationKey;
+  isDanger?: boolean;
 }

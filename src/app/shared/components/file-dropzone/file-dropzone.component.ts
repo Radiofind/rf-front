@@ -47,6 +47,8 @@ export class FileDropzoneComponent implements FormValueControl<File | null> {
 
   public readonly hasImagePreview: InputSignal<boolean> = input<boolean>(false);
 
+  public readonly isCompact: InputSignal<boolean> = input<boolean>(false);
+
   public readonly isDragOver: WritableSignal<boolean> = signal<boolean>(false);
 
   public readonly previewUrl: WritableSignal<string | null> = signal<string | null>(null);

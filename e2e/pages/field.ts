@@ -28,7 +28,15 @@ export class Field {
   }
 }
 
+export const waitForHydration = async (page: Page): Promise<void> => {
+  await page.waitForFunction(
+    () =>
+      document.querySelector('app-root[ng-version]') !== null && !document.querySelector('[ngh]'),
+  );
+};
+
 export const fillWhenHydrated = async (control: Locator, value: string): Promise<void> => {
+  await waitForHydration(control.page());
   await expect(async () => {
     await control.fill(value);
     await expect(control).toHaveValue(value, { timeout: 1_000 });

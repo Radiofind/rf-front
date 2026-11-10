@@ -1,0 +1,50 @@
+:host {
+  position: relative;
+  display: block;
+  width: max-content;
+  max-width: 240px;
+  padding: 10px 14px;
+  border: 1px solid var(--header-element-border);
+  border-radius: 10px;
+  background: var(--surface-color);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--second-gradient-color) 30%, transparent);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-color);
+  animation: tooltip-in 150ms ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: calc(var(--tooltip-arrow-x, 50%) - 5px);
+    width: 10px;
+    height: 10px;
+    border-right: 1px solid var(--header-element-border);
+    border-bottom: 1px solid var(--header-element-border);
+    background: var(--surface-color);
+    transform: rotate(45deg);
+  }
+}
+
+:host(.tooltip--below)::after {
+  top: -6px;
+  bottom: auto;
+  transform: rotate(-135deg);
+}
+
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    animation: none;
+  }
+}

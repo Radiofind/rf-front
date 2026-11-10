@@ -6,8 +6,10 @@ import { sequentialOrder } from '../../shared/helpers/player/player.helpers';
 import { AudioPlayerActions } from '../ui/audio-player.actions';
 import { GeneralSettingsPageActions } from '../ui/general-settings-page.actions';
 import { MainLayoutActions } from '../ui/main-layout.actions';
+import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
+import { MyUploadsApiActions } from '../my-uploads/my-uploads.actions';
 import { SettingsApiActions } from '../settings/settings.actions';
-import { PlayerActions } from './player.actions';
+import { PlayerActions, PlayerApiActions } from './player.actions';
 
 import type { IPlayback, IPlayerTrack } from '../../core/models/player.model';
 import type { IGeneralSettings } from '../../core/models/settings.model';
@@ -67,6 +69,28 @@ function playAt(state: IPlayerState, position: number | null): IPlayerState {
   };
 }
 
+function withLikedState(
+  likedTrackIds: readonly number[],
+  trackId: number,
+  liked: boolean,
+): readonly number[] {
+  const others: number[] = likedTrackIds.filter((id: number) => id !== trackId);
+
+  return liked ? [...others, trackId] : others;
+}
+
+function likedFromQueue(
+  likedTrackIds: readonly number[],
+  queue: readonly IPlayerTrack[],
+): readonly number[] {
+  const queuedIds: ReadonlySet<number> = new Set(queue.map((track: IPlayerTrack) => track.id));
+
+  return [
+    ...likedTrackIds.filter((id: number) => !queuedIds.has(id)),
+    ...queue.filter((track: IPlayerTrack) => track.liked).map((track: IPlayerTrack) => track.id),
+  ];
+}
+
 function pauseWhenRadioModeEnabled(
   state: IPlayerState,
   radioMode: boolean | undefined,
@@ -80,6 +104,7 @@ export const playerFeature = createFeature({
     initialPlayerState,
     on(
       PlayerActions.queueStarted,
+      MyUploadsPageActions.trackPlayed,
       (
         state: IPlayerState,
         { queue, startIndex }: { queue: readonly IPlayerTrack[]; startIndex: number },
@@ -90,6 +115,7 @@ export const playerFeature = createFeature({
         position: startIndex,
         playbackId: state.playbackId + Constants.ONE,
         isPlaying: queue.length > Constants.ZERO,
+        likedTrackIds: likedFromQueue(state.likedTrackIds, queue),
       }),
     ),
     on(
@@ -102,6 +128,7 @@ export const playerFeature = createFeature({
     ),
     on(
       AudioPlayerActions.playToggled,
+      MyUploadsPageActions.playbackToggled,
       (state: IPlayerState): IPlayerState =>
         state.queue.length > Constants.ZERO ? { ...state, isPlaying: !state.isPlaying } : state,
     ),
@@ -142,19 +169,33 @@ export const playerFeature = createFeature({
       }),
     ),
     on(AudioPlayerActions.likeToggled, (state: IPlayerState): IPlayerState => {
-      const trackId: number | undefined = state.queue[currentQueueIndex(state)]?.id;
+      const track: IPlayerTrack | undefined = state.queue[currentQueueIndex(state)];
 
-      if (trackId === undefined) {
+      if (!track?.canLike) {
         return state;
       }
 
+      const trackId: number = track.id;
+
       return {
         ...state,
-        likedTrackIds: state.likedTrackIds.includes(trackId)
-          ? state.likedTrackIds.filter((id: number) => id !== trackId)
-          : [...state.likedTrackIds, trackId],
+        likedTrackIds: withLikedState(
+          state.likedTrackIds,
+          trackId,
+          !state.likedTrackIds.includes(trackId),
+        ),
       };
     }),
+    on(
+      PlayerApiActions.likeFailed,
+      (
+        state: IPlayerState,
+        { trackId, liked }: { trackId: number; liked: boolean },
+      ): IPlayerState => ({
+        ...state,
+        likedTrackIds: withLikedState(state.likedTrackIds, trackId, liked),
+      }),
+    ),
     on(
       PlayerActions.playbackFailed,
       (state: IPlayerState): IPlayerState => ({ ...state, isPlaying: false }),
@@ -168,6 +209,20 @@ export const playerFeature = createFeature({
       SettingsApiActions.settingsLoaded,
       (state: IPlayerState, { settings }: { settings: IGeneralSettings }): IPlayerState =>
         pauseWhenRadioModeEnabled(state, settings.radioMode),
+    ),
+    on(
+      MyUploadsApiActions.trackDeleted,
+      (state: IPlayerState, { trackId }: { trackId: number }): IPlayerState =>
+        state.queue.some((track: IPlayerTrack) => track.id === trackId)
+          ? {
+              ...state,
+              queue: [],
+              order: [],
+              position: Constants.ZERO,
+              playbackId: state.playbackId + Constants.ONE,
+              isPlaying: false,
+            }
+          : state,
     ),
     on(MainLayoutActions.closed, (): IPlayerState => initialPlayerState),
   ),
@@ -208,6 +263,10 @@ export const playerFeature = createFeature({
         (order: readonly number[], position: number, repeatMode: RepeatModeEnum): boolean =>
           position > Constants.ZERO ||
           (repeatMode === RepeatModeEnum.ALL && order.length > Constants.ONE),
+      ),
+      selectCanLikeCurrentTrack: createSelector(
+        selectCurrentTrack,
+        (track: IPlayerTrack | null): boolean => track?.canLike ?? false,
       ),
       selectIsCurrentTrackLiked: createSelector(
         selectCurrentTrack,

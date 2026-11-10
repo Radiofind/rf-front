@@ -121,6 +121,42 @@
     }
   }
 
+  &--compact &__area {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    justify-items: start;
+    column-gap: 16px;
+    row-gap: 2px;
+    min-height: 0;
+    padding: 14px 60px 14px 16px;
+    text-align: left;
+  }
+
+  &--compact &__icon,
+  &--compact &__preview {
+    grid-row: 1 / span 3;
+    margin: 0;
+  }
+
+  &--compact &__icon {
+    font-size: 36px;
+  }
+
+  &--compact &__preview {
+    width: 56px;
+    height: 56px;
+  }
+
+  &--compact &__hint {
+    margin-top: 0;
+  }
+
+  &--compact &__remove {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   &__errors {
     display: flex;
     flex-direction: column;

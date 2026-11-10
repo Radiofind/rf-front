@@ -1,13 +1,21 @@
 import { Constants } from '../../../core/constants/constants';
-import { DATE_FORMAT_OPTIONS, RELATIVE_TIME_STEPS } from '../../constants/time.constants';
+import {
+  DATE_FORMAT_OPTIONS,
+  RELATIVE_TIME_STEPS,
+  TIME_FORMAT_OPTIONS,
+} from '../../constants/time.constants';
+import { DateFormatEnum } from '../../../core/enums/date-format.enum';
 
 import type { IRelativeTime, IRelativeTimeStep } from '../../models/relative-time.model';
-import type { DateFormatEnum } from '../../../core/enums/date-format.enum';
 
-export function toRelativeTime(isoDate: string, now: Date): IRelativeTime {
-  const date: Date = new Date(
+function parseIsoDate(isoDate: string): Date {
+  return new Date(
     isoDate.replace(Constants.EXTRA_FRACTION_DIGITS_PATTERN, Constants.ISO_DATE_REPLACEMENT),
   );
+}
+
+export function toRelativeTime(isoDate: string, now: Date): IRelativeTime {
+  const date: Date = parseIsoDate(isoDate);
   const elapsedSeconds: number = Math.max(
     Constants.ZERO,
     Math.floor((now.getTime() - date.getTime()) / Constants.MILLISECONDS_IN_ONE_SECOND),
@@ -50,4 +58,15 @@ export function formatStringDate(
   return new Intl.DateTimeFormat(locale, DATE_FORMAT_OPTIONS[format]).format(
     transformStringToDate(datePart),
   );
+}
+
+export function formatDateTime(isoDate: string, locale: string): string {
+  const date: Date = parseIsoDate(isoDate);
+  const datePart: string = new Intl.DateTimeFormat(
+    locale,
+    DATE_FORMAT_OPTIONS[DateFormatEnum.FULL_DATE],
+  ).format(date);
+  const timePart: string = new Intl.DateTimeFormat(locale, TIME_FORMAT_OPTIONS).format(date);
+
+  return `${datePart}${Constants.DATE_TIME_SEPARATOR}${timePart}`;
 }

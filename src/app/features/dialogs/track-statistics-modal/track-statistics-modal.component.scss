@@ -1,0 +1,45 @@
+@use '../track-dialog';
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  list-style: none;
+
+  &__tile {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--main-color) 7%, transparent);
+
+    &--main {
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--first-gradient-color) 22%, transparent),
+        color-mix(in srgb, var(--second-gradient-color) 8%, transparent)
+      );
+    }
+  }
+
+  &__icon {
+    display: flex;
+    margin-bottom: 4px;
+    font-size: 22px;
+    color: var(--icon-color);
+  }
+
+  &__value {
+    font-size: 26px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-color);
+  }
+
+  &__label {
+    font-size: 13px;
+    color: var(--second-text-color);
+  }
+}

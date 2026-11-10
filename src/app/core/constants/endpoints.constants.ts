@@ -26,9 +26,18 @@ export class EndpointConstants {
     notifications: '/notifications',
     unreadCount: '/unread-count',
     readAll: '/read-all',
+    tracks: '/tracks',
   };
 
   public static readonly TRACK_ENDPOINTS: ITrackEndpoints = {
     tracks: '/tracks',
+    plays: '/plays',
+    like: '/like',
+    cancelSubmission: '/cancel-submission',
+    submit: '/submit',
+    statistics: '/statistics',
+    schedule: '/schedule',
+    scheduleChangeRequests: '/schedule-change-requests',
+    rejection: '/rejection',
   };
 }

@@ -15,6 +15,12 @@ export const DATE_FORMAT_OPTIONS: Readonly<Record<DateFormatEnum, Intl.DateTimeF
   },
 };
 
+export const TIME_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+};
+
 const SECONDS_IN_HOUR: number = 60 * Constants.SECONDS_IN_MINUTE;
 
 const SECONDS_IN_DAY: number = 24 * SECONDS_IN_HOUR;

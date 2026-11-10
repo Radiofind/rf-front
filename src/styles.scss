@@ -62,6 +62,7 @@ body {
 }
 
 @include cdk.overlay();
+@include cdk.a11y-visually-hidden();
 
 .modal-backdrop {
   background: rgba(3, 3, 14, 0.75);
@@ -80,6 +81,10 @@ body.is-loading {
 
 .cdk-overlay-pane {
   display: block !important;
+}
+
+.app-tooltip-pane {
+  pointer-events: none;
 }
 
 @media (max-width: 1200px) {

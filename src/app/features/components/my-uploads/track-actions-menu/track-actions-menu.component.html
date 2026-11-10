@@ -1,0 +1,34 @@
+<button
+  type="button"
+  class="actions__trigger"
+  [cdkMenuTriggerFor]="menu"
+  [cdkMenuPosition]="positions"
+  [attr.aria-label]="'myUploads.moreActions' | translate: { title: trackTitle() }"
+  [title]="'myUploads.columns.actions' | translate"
+>
+  <i class="bx bx-dots-horizontal-rounded" aria-hidden="true"></i>
+</button>
+
+<ng-template #menu>
+  <div
+    class="actions__menu"
+    cdkMenu
+    [attr.aria-label]="'myUploads.moreActions' | translate: { title: trackTitle() }"
+  >
+    @for (option of options(); track option.action) {
+      @if (option.isDanger) {
+        <span class="actions__divider" role="separator"></span>
+      }
+      <button
+        type="button"
+        class="actions__item"
+        cdkMenuItem
+        [class.actions__item--danger]="option.isDanger"
+        (cdkMenuItemTriggered)="actionSelected.emit(option.action)"
+      >
+        <i class="actions__icon" [class]="option.iconClass" aria-hidden="true"></i>
+        <span>{{ option.label | translate }}</span>
+      </button>
+    }
+  </div>
+</ng-template>

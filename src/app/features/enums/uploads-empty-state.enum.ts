@@ -1,0 +1,6 @@
+export enum UploadsEmptyStateEnum {
+  NO_UPLOADS = 'NO_UPLOADS',
+  NO_STATUS_MATCH = 'NO_STATUS_MATCH',
+  NO_SEARCH_MATCH = 'NO_SEARCH_MATCH',
+  LOAD_FAILED = 'LOAD_FAILED',
+}

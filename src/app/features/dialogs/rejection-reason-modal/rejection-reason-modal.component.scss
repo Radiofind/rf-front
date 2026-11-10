@@ -1,0 +1,29 @@
+@use '../track-dialog';
+
+.rejection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 18px;
+  border: 1px solid color-mix(in srgb, var(--error-color) 55%, transparent);
+  border-left-width: 4px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--error-color) 8%, transparent);
+
+  &__summary {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+
+  &__details {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--soft-text-color);
+  }
+
+  &__meta {
+    font-size: 13px;
+    color: var(--second-text-color);
+  }
+}

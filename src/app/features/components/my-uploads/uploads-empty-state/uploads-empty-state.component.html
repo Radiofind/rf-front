@@ -1,0 +1,104 @@
+@switch (kind()) {
+  @case (kinds.NO_UPLOADS) {
+    <section class="first-upload" aria-labelledby="first-upload-title">
+      <div class="first-upload__glow" aria-hidden="true">
+        <i class="bx bx-arrow-up-circle"></i>
+      </div>
+
+      <h2 class="first-upload__title" id="first-upload-title">
+        {{ 'myUploads.empty.noUploadsTitle' | translate }}
+      </h2>
+      <p class="first-upload__description">
+        {{ 'myUploads.empty.noUploadsDescription' | translate }}
+      </p>
+
+      <button class="first-upload__cta" type="button" (click)="uploadClicked.emit()">
+        <i class="bx bx-arrow-up-circle" aria-hidden="true"></i>
+        <span>{{ 'myUploads.empty.uploadFirstTrack' | translate }}</span>
+      </button>
+
+      <ol
+        class="first-upload__steps"
+        [attr.aria-label]="'myUploads.empty.journeyLabel' | translate"
+      >
+        <li class="first-upload__step">
+          <span class="first-upload__step-icon" aria-hidden="true">
+            <i class="bx bx-arrow-up-circle"></i>
+          </span>
+          <span class="first-upload__step-title">{{
+            'myUploads.empty.stepUploadTitle' | translate
+          }}</span>
+          <span class="first-upload__step-text">{{
+            'myUploads.empty.stepUploadText' | translate
+          }}</span>
+        </li>
+        <li class="first-upload__step first-upload__step--processing">
+          <span class="first-upload__step-icon" aria-hidden="true">
+            <i class="bx bx-hourglass"></i>
+          </span>
+          <span class="first-upload__step-title">{{
+            'myUploads.status.processing' | translate
+          }}</span>
+          <span class="first-upload__step-text">{{
+            'myUploads.empty.stepProcessingText' | translate
+          }}</span>
+        </li>
+        <li class="first-upload__step first-upload__step--published">
+          <span class="first-upload__step-icon" aria-hidden="true">
+            <i class="bx bx-check-circle"></i>
+          </span>
+          <span class="first-upload__step-title">{{
+            'myUploads.status.published' | translate
+          }}</span>
+          <span class="first-upload__step-text">{{
+            'myUploads.empty.stepPublishedText' | translate
+          }}</span>
+        </li>
+      </ol>
+    </section>
+  }
+
+  @case (kinds.NO_STATUS_MATCH) {
+    @let title = statusTitle();
+    @let description = statusDescription();
+    <div class="no-match">
+      <app-empty-state
+        emptyIconClass="bx bx-folder-open"
+        [emptyTitle]="title ? (title | translate) : null"
+        [emptyDescription]="description ? (description | translate) : null"
+      />
+      <button class="no-match__action" type="button" (click)="resetClicked.emit()">
+        <i class="bx bx-folder" aria-hidden="true"></i>
+        <span>{{ 'myUploads.empty.showAll' | translate }}</span>
+      </button>
+    </div>
+  }
+
+  @case (kinds.NO_SEARCH_MATCH) {
+    <div class="no-match">
+      <app-empty-state
+        emptyIconClass="bx bx-search-x"
+        [emptyTitle]="'myUploads.empty.noSearchTitle' | translate: { query: search().trim() }"
+        [emptyDescription]="'myUploads.empty.noSearchDescription' | translate"
+      />
+      <button class="no-match__action" type="button" (click)="resetClicked.emit()">
+        <i class="bx bx-x" aria-hidden="true"></i>
+        <span>{{ 'myUploads.empty.clearFilters' | translate }}</span>
+      </button>
+    </div>
+  }
+
+  @case (kinds.LOAD_FAILED) {
+    <div class="no-match" role="alert">
+      <app-empty-state
+        emptyIconClass="bx bx-alert-circle"
+        [emptyTitle]="'myUploads.empty.loadFailedTitle' | translate"
+        [emptyDescription]="'myUploads.empty.loadFailedDescription' | translate"
+      />
+      <button class="no-match__action" type="button" (click)="retryClicked.emit()">
+        <i class="bx bx-refresh-cw" aria-hidden="true"></i>
+        <span>{{ 'myUploads.empty.retry' | translate }}</span>
+      </button>
+    </div>
+  }
+}
