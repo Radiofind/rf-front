@@ -26,6 +26,7 @@ export class EndpointConstants {
     notifications: '/notifications',
     unreadCount: '/unread-count',
     readAll: '/read-all',
+    tracks: '/tracks',
   };
 
   public static readonly TRACK_ENDPOINTS: ITrackEndpoints = {

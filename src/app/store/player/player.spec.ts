@@ -11,6 +11,7 @@ import { SettingsApiActions } from '../settings/settings.actions';
 import { AudioPlayerActions } from '../ui/audio-player.actions';
 import { GeneralSettingsPageActions } from '../ui/general-settings-page.actions';
 import { MainLayoutActions } from '../ui/main-layout.actions';
+import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
 import { AudioPlayerService } from '../../features/services/audio-player-service/audio-player.service';
 import { SnackbarService } from '../../shared/services/snackbar-service/snackbar.service';
 import { DEFAULT_GENERAL_SETTINGS } from '../../features/constants/settings.constant';
@@ -233,5 +234,32 @@ describe('player state', () => {
     store.dispatch(MainLayoutActions.closed());
 
     expect((sync.mock.lastCall?.[0] as IPlayback).track).toBeNull();
+  });
+  it('plays an upload picked on the my uploads page and continues with the following one', () => {
+    store.dispatch(MyUploadsPageActions.trackPlayed({ queue: [first, second], startIndex: 0 }));
+
+    ended$.next();
+
+    expect(store.selectSignal(playerFeature.selectCurrentTrack)()).toBe(second);
+    expect(store.selectSignal(playerFeature.selectIsPlaying)()).toBe(true);
+  });
+
+  it('pauses the current upload when its cover is clicked again', () => {
+    store.dispatch(MyUploadsPageActions.trackPlayed({ queue: [first], startIndex: 0 }));
+
+    store.dispatch(MyUploadsPageActions.playbackToggled());
+
+    expect(store.selectSignal(playerFeature.selectIsPlaying)()).toBe(false);
+  });
+
+  it('keeps the picked upload first when shuffle is on', () => {
+    store.dispatch(AudioPlayerActions.shuffleToggled());
+
+    store.dispatch(
+      MyUploadsPageActions.trackPlayed({ queue: [first, second, third], startIndex: 2 }),
+    );
+
+    expect(store.selectSignal(playerFeature.selectCurrentTrack)()).toBe(third);
+    expect(store.selectSignal(playerFeature.selectOrder)()[0]).toBe(2);
   });
 });

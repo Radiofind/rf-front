@@ -11,6 +11,7 @@ export interface IUserEndpoints {
   notifications: string;
   unreadCount: string;
   readAll: string;
+  tracks: string;
 }
 
 export interface ICurrentUser {

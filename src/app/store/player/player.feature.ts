@@ -6,6 +6,7 @@ import { sequentialOrder } from '../../shared/helpers/player/player.helpers';
 import { AudioPlayerActions } from '../ui/audio-player.actions';
 import { GeneralSettingsPageActions } from '../ui/general-settings-page.actions';
 import { MainLayoutActions } from '../ui/main-layout.actions';
+import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
 import { SettingsApiActions } from '../settings/settings.actions';
 import { PlayerActions } from './player.actions';
 
@@ -80,6 +81,7 @@ export const playerFeature = createFeature({
     initialPlayerState,
     on(
       PlayerActions.queueStarted,
+      MyUploadsPageActions.trackPlayed,
       (
         state: IPlayerState,
         { queue, startIndex }: { queue: readonly IPlayerTrack[]; startIndex: number },
@@ -102,6 +104,7 @@ export const playerFeature = createFeature({
     ),
     on(
       AudioPlayerActions.playToggled,
+      MyUploadsPageActions.playbackToggled,
       (state: IPlayerState): IPlayerState =>
         state.queue.length > Constants.ZERO ? { ...state, isPlaying: !state.isPlaying } : state,
     ),

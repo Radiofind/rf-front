@@ -28,7 +28,12 @@ import type {
   IUserProfileData,
 } from '../../models/user.model';
 import type { IGeneralSettings } from '../../models/settings.model';
-import type { ITrack, ITrackEndpoints, IUploadTrackData } from '../../models/track.model';
+import type {
+  IOwnTracksQuery,
+  ITrack,
+  ITrackEndpoints,
+  IUploadTrackData,
+} from '../../models/track.model';
 import type { IActivity } from '../../models/activity.model';
 import type { INotification, IUnreadNotifications } from '../../models/notification.model';
 import type { IPage } from '../../models/page.model';
@@ -54,6 +59,8 @@ export class ApiService {
   private readonly activitiesApi: string = `${this.currentUserApi}${this.userEndpoints.activities}`;
 
   private readonly notificationsApi: string = `${this.currentUserApi}${this.userEndpoints.notifications}`;
+
+  private readonly ownTracksApi: string = `${this.currentUserApi}${this.userEndpoints.tracks}`;
 
   private readonly http: HttpClient = inject(HttpClient);
 
@@ -182,6 +189,23 @@ export class ApiService {
   public markAllNotificationsAsRead(): Observable<void> {
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     return this.http.post<void>(`${this.notificationsApi}${this.userEndpoints.readAll}`, null, {
+      context: skipGlobalLoader(),
+    });
+  }
+
+  public getOwnTracks(query: IOwnTracksQuery): Observable<IPage<ITrack>> {
+    let params: HttpParams = this.pageParams(query.page, query.size);
+
+    if (query.status) {
+      params = params.set(Constants.STATUS_QUERY_PARAM, query.status);
+    }
+
+    if (query.search) {
+      params = params.set(Constants.SEARCH_QUERY_PARAM, query.search);
+    }
+
+    return this.http.get<IPage<ITrack>>(this.ownTracksApi, {
+      params: params,
       context: skipGlobalLoader(),
     });
   }

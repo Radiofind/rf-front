@@ -8,6 +8,7 @@ import { SnackbarService } from '../../shared/services/snackbar-service/snackbar
 import { shuffledOrder } from '../../shared/helpers/player/player.helpers';
 import { Constants } from '../../core/constants/constants';
 import { AudioPlayerActions } from '../ui/audio-player.actions';
+import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
 import { settingsFeature } from '../settings/settings.feature';
 import { PlayerActions } from './player.actions';
 import { playerFeature } from './player.feature';
@@ -24,7 +25,11 @@ const isSamePlayback = (previous: IPlayback, current: IPlayback): boolean =>
 export const shufflePlaybackOrder = createEffect(
   (actions$: Actions = inject(Actions), store: Store = inject(Store)) => {
     return actions$.pipe(
-      ofType(PlayerActions.queueStarted, AudioPlayerActions.shuffleToggled),
+      ofType(
+        PlayerActions.queueStarted,
+        MyUploadsPageActions.trackPlayed,
+        AudioPlayerActions.shuffleToggled,
+      ),
       concatLatestFrom(() => [
         store.select(playerFeature.selectIsShuffled),
         store.select(playerFeature.selectQueue),

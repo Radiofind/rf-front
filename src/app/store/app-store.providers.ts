@@ -9,12 +9,14 @@ import { profileFeature } from './profile/profile.feature';
 import { settingsFeature } from './settings/settings.feature';
 import { notificationsFeature } from './notifications/notifications.feature';
 import { playerFeature } from './player/player.feature';
+import { myUploadsFeature } from './my-uploads/my-uploads.feature';
 import * as userEffects from './user/user.effects';
 import * as avatarEffects from './avatar/avatar.effects';
 import * as profileEffects from './profile/profile.effects';
 import * as settingsEffects from './settings/settings.effects';
 import * as notificationsEffects from './notifications/notifications.effects';
 import * as playerEffects from './player/player.effects';
+import * as myUploadsEffects from './my-uploads/my-uploads.effects';
 
 import type { EnvironmentProviders } from '@angular/core';
 
@@ -43,6 +45,7 @@ export function provideMainLayoutStore(): EnvironmentProviders[] {
     provideState(settingsFeature),
     provideState(notificationsFeature),
     provideState(playerFeature),
+    provideState(myUploadsFeature),
     provideEffects(
       userEffects,
       avatarEffects,
@@ -50,6 +53,7 @@ export function provideMainLayoutStore(): EnvironmentProviders[] {
       settingsEffects,
       notificationsEffects,
       playerEffects,
+      myUploadsEffects,
     ),
   ];
 }

@@ -2,7 +2,8 @@ import { inject, Service } from '@angular/core';
 import { ApiService } from '../../../core/services/api/api.service';
 
 import type { Observable } from 'rxjs';
-import type { ITrack, IUploadTrackData } from '../../../core/models/track.model';
+import type { IOwnTracksQuery, ITrack, IUploadTrackData } from '../../../core/models/track.model';
+import type { IPage } from '../../../core/models/page.model';
 
 @Service()
 export class TrackService {
@@ -10,5 +11,9 @@ export class TrackService {
 
   public uploadTrack(data: IUploadTrackData): Observable<ITrack> {
     return this.apiService.uploadTrack(data);
+  }
+
+  public getOwnTracks(query: IOwnTracksQuery): Observable<IPage<ITrack>> {
+    return this.apiService.getOwnTracks(query);
   }
 }

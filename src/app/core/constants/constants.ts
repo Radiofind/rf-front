@@ -109,6 +109,8 @@ export class Constants {
 
   public static readonly TIME_SEPARATOR: string = ':';
 
+  public static readonly DATE_TIME_SEPARATOR: string = ' • ';
+
   public static readonly CELL_FIELD: string = 'cell';
 
   public static readonly SPINNER_DEFAULT_SIZE: string = '24px';
@@ -168,6 +170,10 @@ export class Constants {
   public static readonly PAGE_QUERY_PARAM: string = 'page';
 
   public static readonly SIZE_QUERY_PARAM: string = 'size';
+
+  public static readonly STATUS_QUERY_PARAM: string = 'status';
+
+  public static readonly SEARCH_QUERY_PARAM: string = 'search';
 
   public static readonly PROFILE_PHOTO: TranslationKey = 'avatar.title';
 
@@ -257,6 +263,8 @@ export class Constants {
   public static readonly ZERO: number = 0;
 
   public static readonly ONE: number = 1;
+
+  public static readonly TWO: number = 2;
 
   public static readonly MIN_LINGTH_FORM_VALIDATION_NAME: number = 2;
 

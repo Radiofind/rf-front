@@ -22,7 +22,15 @@ export interface ITrack {
   audioFormat: string;
   audioSizeBytes: number;
   coverUrl: string | null;
+  audioUrl: string | null;
   createdAt: string;
+}
+
+export interface IOwnTracksQuery {
+  status: TrackStatus | null;
+  search: string;
+  page: number;
+  size: number;
 }
 
 export interface ITrackSummary {
