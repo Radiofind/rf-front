@@ -117,7 +117,10 @@ test.describe('track actions', () => {
       );
     });
 
-    test('deletes the track together with its history', async ({ request, user }) => {
+    test('replaces the history of a deleted track with one deletion entry', async ({
+      request,
+      user,
+    }) => {
       await uploadTitled(request, user.token, 'Midnight Dreams');
       const track: IOwnTrack = await firstOwnTrack(request, user.token);
 
@@ -129,15 +132,25 @@ test.describe('track actions', () => {
       ).json()) as { totalElements: number };
       const activities = (await (
         await request.get(`${API_URL}/users/me/activities`, { headers: bearer(user.token) })
-      ).json()) as { items: unknown[] };
+      ).json()) as { items: { type: string; track: { title: string } }[] };
       const notifications = (await (
         await request.get(`${API_URL}/users/me/notifications`, { headers: bearer(user.token) })
-      ).json()) as { items: unknown[] };
+      ).json()) as { items: { type: string; track: { title: string } }[] };
 
       expect(deleted.status()).toBe(204);
       expect(tracks.totalElements).toBe(0);
-      expect(activities.items).toEqual([]);
-      expect(notifications.items).toEqual([]);
+      expect(activities.items).toEqual([
+        expect.objectContaining({
+          type: 'TRACK_DELETED',
+          track: expect.objectContaining({ title: 'Midnight Dreams' }),
+        }),
+      ]);
+      expect(notifications.items).toEqual([
+        expect.objectContaining({
+          type: 'TRACK_DELETED',
+          track: expect.objectContaining({ title: 'Midnight Dreams' }),
+        }),
+      ]);
     });
   });
 
@@ -154,11 +167,11 @@ test.describe('track actions', () => {
       await uploads.actionsButton('Midnight Dreams').click();
 
       await expect(uploads.menuItems()).toHaveText([
-        'Track details',
-        'Edit details',
-        'Download track',
-        'Cancel submission',
-        'Delete track',
+        'Track Details',
+        'Edit Details',
+        'Download Track',
+        'Cancel Submission',
+        'Delete Track',
       ]);
     });
 
@@ -182,7 +195,7 @@ test.describe('track actions', () => {
       await uploadTitled(request, user.token, 'Midnight Dreams');
       await authenticatedPage.goto('/my-uploads');
 
-      await uploads.chooseAction('Midnight Dreams', 'Track details');
+      await uploads.chooseAction('Midnight Dreams', 'Track Details');
 
       await expect(uploads.dialog()).toContainText('Uploaded by');
       await expect(uploads.dialog()).toContainText('Ada Lovelace');
@@ -193,7 +206,7 @@ test.describe('track actions', () => {
       await uploadTitled(request, user.token, 'Midnight Dreams');
       await authenticatedPage.goto('/my-uploads');
 
-      await uploads.chooseAction('Midnight Dreams', 'Edit details');
+      await uploads.chooseAction('Midnight Dreams', 'Edit Details');
       await fillWhenHydrated(
         uploads.dialog().getByPlaceholder('Enter track title...'),
         'Midnight Dreams Remaster',
@@ -214,16 +227,16 @@ test.describe('track actions', () => {
       await uploadTitled(request, user.token, 'Midnight Dreams');
       await authenticatedPage.goto('/my-uploads');
 
-      await uploads.chooseAction('Midnight Dreams', 'Cancel submission');
-      await uploads.confirm('Cancel submission');
+      await uploads.chooseAction('Midnight Dreams', 'Cancel Submission');
+      await uploads.confirm('Cancel Submission');
 
       await expect(uploads.row('Midnight Dreams').locator('.uploads__status')).toHaveText('Draft');
 
       await uploads.tab('Drafts').click();
       await expect(uploads.titles).toHaveText(['Midnight Dreams']);
 
-      await uploads.chooseAction('Midnight Dreams', 'Submit for review');
-      await uploads.confirm('Submit for review');
+      await uploads.chooseAction('Midnight Dreams', 'Submit for Review');
+      await uploads.confirm('Submit for Review');
 
       await expect(uploads.emptyTitle).toHaveText('No drafts');
     });
@@ -234,7 +247,7 @@ test.describe('track actions', () => {
       await authenticatedPage.goto('/my-uploads');
       const download = authenticatedPage.waitForEvent('download');
 
-      await uploads.chooseAction('Midnight Dreams', 'Download track');
+      await uploads.chooseAction('Midnight Dreams', 'Download Track');
 
       expect((await download).suggestedFilename()).toBe('Ada Lovelace - Midnight Dreams.wav');
     });
@@ -244,8 +257,8 @@ test.describe('track actions', () => {
       await uploadTitled(request, user.token, 'Midnight Dreams');
       await authenticatedPage.goto('/my-uploads');
 
-      await uploads.chooseAction('Midnight Dreams', 'Delete track');
-      await uploads.confirm('Delete track');
+      await uploads.chooseAction('Midnight Dreams', 'Delete Track');
+      await uploads.confirm('Delete Track');
 
       await expect(uploads.firstUploadTitle).toHaveText('Your stage is still empty');
       await expect(authenticatedPage.locator('.snackbar__text')).toHaveText('Track deleted');

@@ -191,10 +191,11 @@ export const IT_TRANSLATIONS: Translations = {
     noStatsDescription:
       'Ascolti, ascoltatori e selezioni radio appariranno qui quando i tuoi brani saranno online.',
     latestActivity: 'Ultima attività',
-    uploaded: 'Caricato {time}',
-    submissionCancelled: 'Ritirato dalla revisione {time}',
-    resubmitted: 'Inviato di nuovo per la revisione {time}',
-    scheduleChangeRequested: 'Cambio orario richiesto {time}',
+    uploaded: 'Caricato',
+    deleted: 'Eliminato',
+    submissionCancelled: 'Ritirato dalla revisione',
+    resubmitted: 'Inviato di nuovo per la revisione',
+    scheduleChangeRequested: 'Cambio orario richiesto',
     noActivityTitle: 'Ancora nessuna attività',
     noActivityDescription: 'I tuoi caricamenti, recensioni e selezioni radio appariranno qui.',
     uploadFirstTrack: 'Carica il tuo primo brano',
@@ -362,7 +363,7 @@ export const IT_TRANSLATIONS: Translations = {
     replaceCover: 'Sostituisci copertina',
     removeCover: 'Rimuovi copertina attuale',
     audioNotEditable:
-      'Il file audio non può essere sostituito. Per cambiarlo, carica di nuovo il brano.',
+      'Il file audio non può essere modificato. Per sostituirlo, elimina prima questo brano e poi carica la nuova versione: lo stesso brano non può essere caricato di nuovo finché esiste.',
     uniqueListeners: 'Ascoltatori unici',
     radioAirings: 'Passaggi radio',
     newListeners7Days: 'Nuovi ascoltatori, 7 giorni',
@@ -381,14 +382,14 @@ export const IT_TRANSLATIONS: Translations = {
     sendRequest: 'Invia richiesta',
     rejectionNextSteps:
       'Risolvi i problemi con «Modifica dettagli» o carica una nuova versione, poi invia di nuovo il brano.',
-    submitConfirm: 'Inviare questo brano per la revisione?',
-    resubmitConfirm: 'Inviare di nuovo questo brano?',
+    submitConfirm: 'Inviare «{title}» al controllo qualità?',
+    resubmitConfirm: 'Inviare di nuovo «{title}» per la revisione?',
     resubmitDescription:
       'Assicurati di aver risolto il motivo del rifiuto. Il brano torna nella coda di revisione.',
-    cancelSubmissionConfirm: 'Annullare l’invio?',
+    cancelSubmissionConfirm: 'Ritirare «{title}» dalla revisione?',
     cancelSubmissionDescription:
       'Il brano esce dalla coda di revisione e viene salvato come bozza. Puoi inviarlo di nuovo in qualsiasi momento.',
-    deleteConfirm: 'Eliminare definitivamente questo brano?',
+    deleteConfirm: 'Vuoi davvero eliminare «{title}»?',
     deleteDescription:
       'Il brano, i suoi file, i «Mi piace», gli ascolti e la cronologia verranno rimossi. L’operazione è irreversibile.',
   },
@@ -415,6 +416,7 @@ export const IT_TRANSLATIONS: Translations = {
     moreOptions: 'Altre opzioni',
   },
   notifications: {
+    trackDeleted: 'Il tuo brano «{title}» è stato eliminato',
     trackSubmissionCancelled: 'Hai ritirato «{title}» dalla revisione. È salvato come bozza.',
     trackResubmittedForReview:
       'Il tuo brano «{title}» è stato inviato di nuovo al controllo qualità',

@@ -8,4 +8,5 @@ export const ACTIVITY_LABELS: Readonly<Record<ActivityType, TranslationKey>> = {
   [ActivityTypeEnum.TRACK_SUBMISSION_CANCELLED]: 'profile.submissionCancelled',
   [ActivityTypeEnum.TRACK_RESUBMITTED]: 'profile.resubmitted',
   [ActivityTypeEnum.SCHEDULE_CHANGE_REQUESTED]: 'profile.scheduleChangeRequested',
+  [ActivityTypeEnum.TRACK_DELETED]: 'profile.deleted',
 };

@@ -63,7 +63,7 @@ describe('ConfirmModalComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('.confirm__description').textContent).toBe(
-      'Unsaved changes',
+      'Unsaved Changes',
     );
     expect(fixture.componentInstance.confirmText).toBe('common.yes');
     expect(fixture.componentInstance.cancelText).toBe('common.no');
@@ -105,10 +105,21 @@ describe('ConfirmModalComponent', () => {
       await fixture.whenStable();
 
       const confirm: HTMLButtonElement | undefined = buttonsOf(fixture).find(
-        (button: HTMLButtonElement) => button.textContent.trim() === 'Delete track',
+        (button: HTMLButtonElement) => button.textContent.trim() === 'Delete Track',
       );
 
       expect(confirm?.classList.contains('button--danger')).toBe(isRed);
     },
   );
+  it('names the subject of the question', async () => {
+    const fixture: ComponentFixture<ConfirmModalComponent> = await createFixture({
+      message: 'trackDialogs.deleteConfirm',
+      messageParams: { title: 'Midnight Dreams' },
+    });
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.confirm__message').textContent).toBe(
+      'Are you sure you want to delete "Midnight Dreams"?',
+    );
+  });
 });

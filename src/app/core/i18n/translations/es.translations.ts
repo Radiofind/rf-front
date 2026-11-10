@@ -192,10 +192,11 @@ export const ES_TRANSLATIONS: Translations = {
     noStatsDescription:
       'Las reproducciones, los oyentes y las selecciones de radio aparecerán aquí cuando tus temas estén publicados.',
     latestActivity: 'Última actividad',
-    uploaded: 'Subido {time}',
-    submissionCancelled: 'Retirada de la revisión {time}',
-    resubmitted: 'Reenviada a revisión {time}',
-    scheduleChangeRequested: 'Cambio de horario solicitado {time}',
+    uploaded: 'Subido',
+    deleted: 'Eliminada',
+    submissionCancelled: 'Retirada de la revisión',
+    resubmitted: 'Reenviada a revisión',
+    scheduleChangeRequested: 'Cambio de horario solicitado',
     noActivityTitle: 'Aún no hay actividad',
     noActivityDescription: 'Aquí aparecerán tus subidas, valoraciones y selecciones de radio.',
     uploadFirstTrack: 'Sube tu primer tema',
@@ -363,7 +364,7 @@ export const ES_TRANSLATIONS: Translations = {
     replaceCover: 'Reemplazar portada',
     removeCover: 'Quitar la portada actual',
     audioNotEditable:
-      'El archivo de audio no se puede reemplazar. Para cambiarlo, sube la pista de nuevo.',
+      'El archivo de audio no se puede cambiar. Para reemplazarlo, elimina primero esta pista y luego sube la nueva versión: la misma pista no se puede volver a subir mientras exista.',
     uniqueListeners: 'Oyentes únicos',
     radioAirings: 'Emisiones en radio',
     newListeners7Days: 'Nuevos oyentes, 7 días',
@@ -382,14 +383,14 @@ export const ES_TRANSLATIONS: Translations = {
     sendRequest: 'Enviar solicitud',
     rejectionNextSteps:
       'Corrige los problemas con «Editar detalles» o sube una nueva versión y luego reenvía la pista a revisión.',
-    submitConfirm: '¿Enviar esta pista a revisión?',
-    resubmitConfirm: '¿Reenviar esta pista a revisión?',
+    submitConfirm: '¿Enviar «{title}» a la revisión de calidad?',
+    resubmitConfirm: '¿Reenviar «{title}» a revisión?',
     resubmitDescription:
       'Asegúrate de haber corregido el motivo del rechazo. La pista vuelve a la cola de revisión.',
-    cancelSubmissionConfirm: '¿Cancelar el envío?',
+    cancelSubmissionConfirm: '¿Retirar «{title}» de la revisión?',
     cancelSubmissionDescription:
       'La pista sale de la cola de revisión y se guarda como borrador. Puedes enviarla de nuevo cuando quieras.',
-    deleteConfirm: '¿Eliminar esta pista para siempre?',
+    deleteConfirm: '¿Seguro que quieres eliminar «{title}»?',
     deleteDescription:
       'Se eliminarán la pista, sus archivos, «Me gusta», reproducciones e historial. No se puede deshacer.',
   },
@@ -416,6 +417,7 @@ export const ES_TRANSLATIONS: Translations = {
     moreOptions: 'Más opciones',
   },
   notifications: {
+    trackDeleted: 'Tu pista «{title}» se eliminó',
     trackSubmissionCancelled: 'Retiraste «{title}» de la revisión. Se guardó como borrador.',
     trackResubmittedForReview: 'Tu pista «{title}» se reenvió a la revisión de calidad',
     scheduleChangeRequested: 'Tu solicitud de cambiar el horario de «{title}» está en revisión',

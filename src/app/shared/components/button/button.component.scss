@@ -40,6 +40,17 @@
   opacity: 1;
 }
 
+.button--compact {
+  height: 44px;
+  padding: 0 24px;
+  font-size: 16px;
+  white-space: nowrap;
+
+  i {
+    font-size: 20px;
+  }
+}
+
 .button--danger {
   background: linear-gradient(
     135deg,

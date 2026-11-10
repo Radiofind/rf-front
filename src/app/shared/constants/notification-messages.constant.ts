@@ -8,4 +8,5 @@ export const NOTIFICATION_MESSAGES: Readonly<Record<NotificationType, Translatio
   [NotificationTypeEnum.TRACK_SUBMISSION_CANCELLED]: 'notifications.trackSubmissionCancelled',
   [NotificationTypeEnum.TRACK_RESUBMITTED_FOR_REVIEW]: 'notifications.trackResubmittedForReview',
   [NotificationTypeEnum.SCHEDULE_CHANGE_REQUESTED]: 'notifications.scheduleChangeRequested',
+  [NotificationTypeEnum.TRACK_DELETED]: 'notifications.trackDeleted',
 };

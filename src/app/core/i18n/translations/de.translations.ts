@@ -189,10 +189,11 @@ export const DE_TRANSLATIONS: Translations = {
     noStatsDescription:
       'Plays, Hörer und Radio-Auswahl erscheinen hier, sobald deine Tracks live sind.',
     latestActivity: 'Letzte Aktivität',
-    uploaded: 'Hochgeladen {time}',
-    submissionCancelled: 'Aus der Prüfung zurückgezogen {time}',
-    resubmitted: 'Erneut zur Prüfung eingereicht {time}',
-    scheduleChangeRequested: 'Änderung der Sendezeit angefragt {time}',
+    uploaded: 'Hochgeladen',
+    deleted: 'Gelöscht',
+    submissionCancelled: 'Aus der Prüfung zurückgezogen',
+    resubmitted: 'Erneut zur Prüfung eingereicht',
+    scheduleChangeRequested: 'Änderung der Sendezeit angefragt',
     noActivityTitle: 'Noch keine Aktivität',
     noActivityDescription: 'Deine Uploads, Bewertungen und Radio-Auswahl erscheinen hier.',
     uploadFirstTrack: 'Lade deinen ersten Track hoch',
@@ -361,7 +362,8 @@ export const DE_TRANSLATIONS: Translations = {
     noDescription: 'Keine Beschreibung',
     replaceCover: 'Cover ersetzen',
     removeCover: 'Aktuelles Cover entfernen',
-    audioNotEditable: 'Die Audiodatei kann nicht ersetzt werden. Lade den Track dafür erneut hoch.',
+    audioNotEditable:
+      'Die Audiodatei kann nicht geändert werden. Lösche dazu zuerst diesen Track und lade dann die neue Version hoch: Derselbe Track kann nicht erneut hochgeladen werden, solange er existiert.',
     uniqueListeners: 'Einzelne Hörer',
     radioAirings: 'Radioausstrahlungen',
     newListeners7Days: 'Neue Hörer, 7 Tage',
@@ -380,14 +382,14 @@ export const DE_TRANSLATIONS: Translations = {
     sendRequest: 'Anfrage senden',
     rejectionNextSteps:
       'Behebe die Punkte über «Details bearbeiten» oder lade eine neue Version hoch und reiche den Track dann erneut ein.',
-    submitConfirm: 'Diesen Track zur Prüfung einreichen?',
-    resubmitConfirm: 'Diesen Track erneut einreichen?',
+    submitConfirm: '«{title}» zur Qualitätsprüfung einreichen?',
+    resubmitConfirm: '«{title}» erneut zur Prüfung einreichen?',
     resubmitDescription:
       'Stelle sicher, dass du den Ablehnungsgrund behoben hast. Der Track kommt zurück in die Prüfwarteschlange.',
-    cancelSubmissionConfirm: 'Einreichung zurückziehen?',
+    cancelSubmissionConfirm: '«{title}» aus der Prüfung zurückziehen?',
     cancelSubmissionDescription:
       'Der Track verlässt die Prüfwarteschlange und wird als Entwurf gespeichert. Du kannst ihn jederzeit erneut einreichen.',
-    deleteConfirm: 'Diesen Track endgültig löschen?',
+    deleteConfirm: 'Möchtest du «{title}» wirklich löschen?',
     deleteDescription:
       'Der Track, seine Dateien, Likes, Plays und sein Verlauf werden entfernt. Das kann nicht rückgängig gemacht werden.',
   },
@@ -414,6 +416,7 @@ export const DE_TRANSLATIONS: Translations = {
     moreOptions: 'Weitere Optionen',
   },
   notifications: {
+    trackDeleted: 'Dein Track «{title}» wurde gelöscht',
     trackSubmissionCancelled:
       'Du hast «{title}» aus der Prüfung zurückgezogen. Der Track ist als Entwurf gespeichert.',
     trackResubmittedForReview: 'Dein Track «{title}» wurde erneut zur Qualitätsprüfung eingereicht',

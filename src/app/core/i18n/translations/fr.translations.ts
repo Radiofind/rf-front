@@ -192,10 +192,11 @@ export const FR_TRANSLATIONS: Translations = {
     noStatsDescription:
       "Les écoutes, auditeurs et sélections radio s'afficheront ici dès que vos titres seront en ligne.",
     latestActivity: 'Activité récente',
-    uploaded: 'Mis en ligne {time}',
-    submissionCancelled: 'Retiré de la vérification {time}',
-    resubmitted: 'Soumis à nouveau {time}',
-    scheduleChangeRequested: 'Changement d’horaire demandé {time}',
+    uploaded: 'Mis en ligne',
+    deleted: 'Supprimé',
+    submissionCancelled: 'Retiré de la vérification',
+    resubmitted: 'Soumis à nouveau',
+    scheduleChangeRequested: 'Changement d’horaire demandé',
     noActivityTitle: "Pas encore d'activité",
     noActivityDescription: "Vos titres, évaluations et sélections radio s'afficheront ici.",
     uploadFirstTrack: 'Téléversez votre premier titre',
@@ -366,7 +367,7 @@ export const FR_TRANSLATIONS: Translations = {
     replaceCover: 'Remplacer la pochette',
     removeCover: 'Retirer la pochette actuelle',
     audioNotEditable:
-      'Le fichier audio ne peut pas être remplacé. Pour le changer, mettez le morceau en ligne à nouveau.',
+      'Le fichier audio ne peut pas être modifié. Pour le remplacer, supprimez d’abord ce morceau puis mettez en ligne la nouvelle version : le même morceau ne peut pas être mis en ligne une seconde fois tant qu’il existe.',
     uniqueListeners: 'Auditeurs uniques',
     radioAirings: 'Diffusions radio',
     newListeners7Days: 'Nouveaux auditeurs, 7 jours',
@@ -385,14 +386,14 @@ export const FR_TRANSLATIONS: Translations = {
     sendRequest: 'Envoyer la demande',
     rejectionNextSteps:
       'Corrigez les points via « Modifier les détails » ou mettez en ligne une nouvelle version, puis soumettez à nouveau le morceau.',
-    submitConfirm: 'Soumettre ce morceau à la vérification ?',
-    resubmitConfirm: 'Soumettre à nouveau ce morceau ?',
+    submitConfirm: 'Soumettre « {title} » à la vérification qualité ?',
+    resubmitConfirm: 'Soumettre à nouveau « {title} » à la vérification ?',
     resubmitDescription:
       'Assurez-vous d’avoir corrigé le motif du refus. Le morceau retourne dans la file de vérification.',
-    cancelSubmissionConfirm: 'Annuler la soumission ?',
+    cancelSubmissionConfirm: 'Retirer « {title} » de la vérification ?',
     cancelSubmissionDescription:
       'Le morceau quitte la file de vérification et est enregistré comme brouillon. Vous pourrez le soumettre à nouveau à tout moment.',
-    deleteConfirm: 'Supprimer définitivement ce morceau ?',
+    deleteConfirm: 'Voulez-vous vraiment supprimer « {title} » ?',
     deleteDescription:
       'Le morceau, ses fichiers, ses « J’aime », ses écoutes et son historique seront supprimés. Cette action est irréversible.',
   },
@@ -419,6 +420,7 @@ export const FR_TRANSLATIONS: Translations = {
     moreOptions: 'Plus d’options',
   },
   notifications: {
+    trackDeleted: 'Votre morceau « {title} » a été supprimé',
     trackSubmissionCancelled:
       'Vous avez retiré « {title} » de la vérification. Il est enregistré comme brouillon.',
     trackResubmittedForReview:

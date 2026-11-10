@@ -7,6 +7,7 @@
     <div class="track-dialog__state" role="alert">
       <p>{{ 'trackDialogs.loadFailed' | translate }}</p>
       <app-button
+        additionalClass="button--compact"
         contentIconClass="bx bx-refresh-cw"
         [contentText]="'myUploads.empty.retry' | translate"
         (clickAction)="schedule.reload()"

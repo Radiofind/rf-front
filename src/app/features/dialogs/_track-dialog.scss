@@ -57,6 +57,11 @@
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: 12px;
+
+    app-button {
+      display: block;
+      min-width: 140px;
+    }
   }
 }
 

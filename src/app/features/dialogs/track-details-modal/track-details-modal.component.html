@@ -7,6 +7,7 @@
     <div class="track-dialog__state" role="alert">
       <p>{{ 'trackDialogs.loadFailed' | translate }}</p>
       <app-button
+        additionalClass="button--compact"
         contentIconClass="bx bx-refresh-cw"
         [contentText]="'myUploads.empty.retry' | translate"
         (clickAction)="details.reload()"
@@ -84,11 +85,12 @@
 
         <footer class="track-dialog__actions details__footer">
           <app-button
-            additionalClass="button--secondary"
+            additionalClass="button--secondary button--compact"
             [contentText]="'common.cancel' | translate"
             (clickAction)="onClose()"
           />
           <app-button
+            additionalClass="button--compact"
             buttonType="submit"
             [contentText]="'common.saveChanges' | translate"
             [disabled]="isSaveDisabled()"

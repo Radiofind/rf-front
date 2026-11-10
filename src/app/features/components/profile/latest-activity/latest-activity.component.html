@@ -28,11 +28,11 @@
                 <span class="activity__name">{{ activity.track?.title }}</span>
                 <span class="activity__meta">
                   <span class="activity__artist">{{ activity.track?.artistName }}</span>
-                  <span class="activity__date">{{
-                    activityLabels[activity.type]
-                      | translate: { time: (activity.createdAt | relativeTime) }
+                  <span class="activity__event">{{
+                    activityLabels[activity.type] | translate
                   }}</span>
                 </span>
+                <span class="activity__date">{{ activity.createdAt | relativeTime }}</span>
               </div>
             </li>
           }

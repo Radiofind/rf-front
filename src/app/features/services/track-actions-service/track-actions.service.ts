@@ -59,12 +59,16 @@ export class TrackActionsService {
     },
     [TrackActionEnum.SUBMIT]: (track: ITrack) => {
       this.confirm(
+        track,
+        TrackActionEnum.SUBMIT,
         { message: 'trackDialogs.submitConfirm', confirmText: 'myUploads.actions.submit' },
         MyUploadsPageActions.submitConfirmed({ trackId: track.id, isResubmission: false }),
       );
     },
     [TrackActionEnum.RESUBMIT]: (track: ITrack) => {
       this.confirm(
+        track,
+        TrackActionEnum.RESUBMIT,
         {
           message: 'trackDialogs.resubmitConfirm',
           description: 'trackDialogs.resubmitDescription',
@@ -75,6 +79,8 @@ export class TrackActionsService {
     },
     [TrackActionEnum.CANCEL_SUBMISSION]: (track: ITrack) => {
       this.confirm(
+        track,
+        TrackActionEnum.CANCEL_SUBMISSION,
         {
           message: 'trackDialogs.cancelSubmissionConfirm',
           description: 'trackDialogs.cancelSubmissionDescription',
@@ -88,6 +94,8 @@ export class TrackActionsService {
     },
     [TrackActionEnum.DELETE]: (track: ITrack) => {
       this.confirm(
+        track,
+        TrackActionEnum.DELETE,
         {
           message: 'trackDialogs.deleteConfirm',
           description: 'trackDialogs.deleteDescription',
@@ -143,9 +151,20 @@ export class TrackActionsService {
       });
   }
 
-  private confirm(data: IConfirmModalData, onConfirm: Action): void {
+  private confirm(
+    track: ITrack,
+    action: TrackActionEnum,
+    data: IConfirmModalData,
+    onConfirm: Action,
+  ): void {
     this.modalService
-      .confirm(data)
+      .confirm(
+        { ...data, messageParams: { title: track.title } },
+        {
+          title: TRACK_ACTION_OPTIONS[action].label,
+          iconClass: TRACK_ACTION_OPTIONS[action].iconClass,
+        },
+      )
       .pipe(filter(Boolean), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.store.dispatch(onConfirm);

@@ -44,6 +44,7 @@ export const loadNotifications = createEffect(
         MainLayoutActions.opened,
         UploadTrackPageActions.trackUploaded,
         MyUploadsApiActions.trackChanged,
+        MyUploadsApiActions.trackDeleted,
         MyUploadsPageActions.scheduleChangeRequested,
         NotificationsApiActions.markAllAsReadFailed,
       ),

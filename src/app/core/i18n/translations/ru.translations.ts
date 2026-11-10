@@ -189,10 +189,11 @@ export const RU_TRANSLATIONS: Translations = {
     noStatsDescription:
       'Прослушивания, слушатели и выбор радиостанций появятся здесь, как только ваши треки выйдут в эфир.',
     latestActivity: 'Последняя активность',
-    uploaded: 'Загружено {time}',
-    submissionCancelled: 'Отозван с проверки {time}',
-    resubmitted: 'Повторно отправлен на проверку {time}',
-    scheduleChangeRequested: 'Запрошен перенос эфира {time}',
+    uploaded: 'Загружено',
+    deleted: 'Удалён',
+    submissionCancelled: 'Отозван с проверки',
+    resubmitted: 'Повторно отправлен на проверку',
+    scheduleChangeRequested: 'Запрошен перенос эфира',
     noActivityTitle: 'Активности пока нет',
     noActivityDescription: 'Здесь появятся ваши загрузки, отзывы и выбор радиостанций.',
     uploadFirstTrack: 'Загрузите свой первый трек',
@@ -358,7 +359,8 @@ export const RU_TRANSLATIONS: Translations = {
     noDescription: 'Нет описания',
     replaceCover: 'Заменить обложку',
     removeCover: 'Удалить текущую обложку',
-    audioNotEditable: 'Аудиофайл заменить нельзя. Чтобы изменить его, загрузите трек заново.',
+    audioNotEditable:
+      'Аудиофайл изменить нельзя. Чтобы заменить его, сначала удалите этот трек, а затем загрузите новую версию: тот же трек нельзя загрузить повторно, пока он существует.',
     uniqueListeners: 'Уникальные слушатели',
     radioAirings: 'Эфиры на радио',
     newListeners7Days: 'Новые слушатели за 7 дней',
@@ -377,14 +379,14 @@ export const RU_TRANSLATIONS: Translations = {
     sendRequest: 'Отправить запрос',
     rejectionNextSteps:
       'Исправьте замечания через «Редактировать» или загрузите новую версию, затем отправьте трек на проверку повторно.',
-    submitConfirm: 'Отправить трек на проверку?',
-    resubmitConfirm: 'Отправить трек на проверку повторно?',
+    submitConfirm: 'Отправить «{title}» на проверку качества?',
+    resubmitConfirm: 'Отправить «{title}» на проверку повторно?',
     resubmitDescription:
       'Убедитесь, что вы устранили причину отказа. Трек вернётся в очередь на проверку.',
-    cancelSubmissionConfirm: 'Отозвать трек с проверки?',
+    cancelSubmissionConfirm: 'Отозвать «{title}» с проверки?',
     cancelSubmissionDescription:
       'Трек покинет очередь на проверку и сохранится как черновик. Вы сможете отправить его снова в любой момент.',
-    deleteConfirm: 'Удалить трек навсегда?',
+    deleteConfirm: 'Вы уверены, что хотите удалить «{title}»?',
     deleteDescription:
       'Будут удалены трек, его файлы, лайки, прослушивания и история. Это действие нельзя отменить.',
   },
@@ -411,6 +413,7 @@ export const RU_TRANSLATIONS: Translations = {
     moreOptions: 'Ещё',
   },
   notifications: {
+    trackDeleted: 'Ваш трек «{title}» удалён',
     trackSubmissionCancelled: 'Вы отозвали «{title}» с проверки. Трек сохранён как черновик.',
     trackResubmittedForReview: 'Ваш трек «{title}» повторно отправлен на проверку качества',
     scheduleChangeRequested: 'Ваш запрос на перенос эфира «{title}» на рассмотрении',

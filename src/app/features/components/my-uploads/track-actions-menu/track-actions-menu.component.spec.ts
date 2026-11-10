@@ -36,33 +36,33 @@ describe('TrackActionsMenuComponent', () => {
   it.each([
     [
       TrackStatusEnum.PENDING_REVIEW,
-      ['Track details', 'Edit details', 'Download track', 'Cancel submission', 'Delete track'],
+      ['Track Details', 'Edit Details', 'Download Track', 'Cancel Submission', 'Delete Track'],
     ],
     [
       TrackStatusEnum.APPROVED,
       [
-        'Track details',
-        'View statistics',
-        'Playback schedule',
-        'Request schedule change',
-        'Download track',
-        'Delete track',
+        'Track Details',
+        'View Statistics',
+        'Playback Schedule',
+        'Request Schedule Change',
+        'Download Track',
+        'Delete Track',
       ],
     ],
     [
       TrackStatusEnum.REJECTED,
       [
-        'Track details',
-        'Edit details',
-        'View rejection reason',
-        'Resubmit for review',
-        'Download track',
-        'Delete track',
+        'Track Details',
+        'Edit Details',
+        'View Rejection Reason',
+        'Resubmit for Review',
+        'Download Track',
+        'Delete Track',
       ],
     ],
     [
       TrackStatusEnum.DRAFT,
-      ['Track details', 'Edit details', 'Submit for review', 'Download track', 'Delete track'],
+      ['Track Details', 'Edit Details', 'Submit for Review', 'Download Track', 'Delete Track'],
     ],
   ])('offers the actions of a %s track', async (status: TrackStatus, expected: string[]) => {
     await openMenu(status);
@@ -78,7 +78,7 @@ describe('TrackActionsMenuComponent', () => {
       (item: Element) => item.textContent.trim(),
     );
 
-    expect(danger).toEqual(['Delete track']);
+    expect(danger).toEqual(['Delete Track']);
   });
 
   it('reports the chosen action', async () => {
@@ -89,7 +89,7 @@ describe('TrackActionsMenuComponent', () => {
     fixture.componentInstance.actionSelected.subscribe(selected);
 
     Array.from(document.querySelectorAll<HTMLButtonElement>('.actions__item'))
-      .find((item: HTMLButtonElement) => item.textContent.trim() === 'Submit for review')
+      .find((item: HTMLButtonElement) => item.textContent.trim() === 'Submit for Review')
       ?.click();
 
     expect(selected).toHaveBeenCalledExactlyOnceWith(TrackActionEnum.SUBMIT);

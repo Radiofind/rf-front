@@ -112,6 +112,7 @@ describe('notifications state', () => {
       MyUploadsApiActions.trackChanged({ message: 'messages.trackSubmitted' }),
     ],
     ['a schedule change was requested', MyUploadsPageActions.scheduleChangeRequested()],
+    ['a track was deleted', MyUploadsApiActions.trackDeleted({ trackId: 42 })],
   ])('reloads after %s', (_: string, action: Action) => {
     const store: Store = configure('browser');
     store.dispatch(MainLayoutActions.opened());

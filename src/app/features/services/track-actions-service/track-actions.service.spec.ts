@@ -57,11 +57,21 @@ describe('TrackActionsService', () => {
   it('deletes a track only after the user confirms', () => {
     service.run(track, TrackActionEnum.DELETE);
 
-    expect(confirm).toHaveBeenCalledWith(
-      expect.objectContaining({ message: 'trackDialogs.deleteConfirm', isDanger: true }),
-    );
     expect(dispatch).toHaveBeenCalledExactlyOnceWith(
       MyUploadsPageActions.deleteConfirmed({ trackId: 42 }),
+    );
+  });
+
+  it('asks about the track by name under the title and icon of the action', () => {
+    service.run(track, TrackActionEnum.DELETE);
+
+    expect(confirm).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'trackDialogs.deleteConfirm',
+        messageParams: { title: 'Midnight Dreams' },
+        isDanger: true,
+      }),
+      { title: 'myUploads.actions.delete', iconClass: 'bx bx-trash' },
     );
   });
 
@@ -76,7 +86,10 @@ describe('TrackActionsService', () => {
   it('asks to cancel a submission without warning colours, since it can be undone', () => {
     service.run(track, TrackActionEnum.CANCEL_SUBMISSION);
 
-    expect(confirm).toHaveBeenCalledWith(expect.not.objectContaining({ isDanger: true }));
+    expect(confirm).toHaveBeenCalledWith(
+      expect.not.objectContaining({ isDanger: true }),
+      expect.anything(),
+    );
   });
 
   it('resubmits a rejected track as a resubmission', () => {

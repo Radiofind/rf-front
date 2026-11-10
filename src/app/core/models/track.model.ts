@@ -108,9 +108,9 @@ export interface IOwnTracksQuery {
 }
 
 export interface ITrackSummary {
-  id: number;
+  id: number | null;
   title: string;
   artistName: string;
   coverUrl: string | null;
-  status: TrackStatus;
+  status: TrackStatus | null;
 }
