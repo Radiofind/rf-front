@@ -1,41 +1,18 @@
 import { expect, test } from '../fixtures/test';
 import { API_URL, registerUser } from '../fixtures/api';
 import { melodyWav, randomSeed } from '../fixtures/audio';
+import { bearer, PNG_BYTES, TRACKS_URL, uploadTrack } from '../fixtures/tracks';
 import { fillWhenHydrated } from '../pages/field';
 import { LatestActivityPage } from '../pages/latest-activity.page';
 import { SidebarPage } from '../pages/sidebar.page';
 import { UploadTrackPage } from '../pages/upload-track.page';
 
-import type { APIRequestContext, APIResponse } from '@playwright/test';
-
-const TRACKS_URL: string = `${API_URL}/tracks`;
+import type { APIResponse } from '@playwright/test';
 
 const ACTIVITIES_URL: string = `${API_URL}/users/me/activities`;
 
 const NOTIFICATIONS_URL: string = `${API_URL}/users/me/notifications`;
 const FAKE_MP3_BYTES: Buffer = Buffer.concat([Buffer.from('ID3'), Buffer.alloc(64)]);
-
-const PNG_BYTES: Buffer = Buffer.from(
-  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC',
-  'base64',
-);
-
-const bearer = (token: string): Record<string, string> => ({ Authorization: `Bearer ${token}` });
-
-const uploadTrack = (
-  request: APIRequestContext,
-  token: string,
-  fields: Record<string, string> = { title: 'Midnight Dreams', genres: 'GRUNGE' },
-  audio: Buffer = melodyWav(randomSeed()),
-): Promise<APIResponse> =>
-  request.post(TRACKS_URL, {
-    headers: bearer(token),
-    multipart: {
-      ...fields,
-      audio: { name: 'song.wav', mimeType: 'audio/wav', buffer: audio },
-      cover: { name: 'cover.png', mimeType: 'image/png', buffer: PNG_BYTES },
-    },
-  });
 
 test.describe('upload track', () => {
   test.describe('POST /tracks', () => {

@@ -4,6 +4,8 @@ export interface IPlayerTrack {
   artistName: string;
   coverUrl: string | null;
   audioUrl: string;
+  liked: boolean;
+  canLike: boolean;
 }
 
 export interface IPlayback {

@@ -1,0 +1,86 @@
+<div class="track-dialog">
+  @if (schedule.isLoading()) {
+    <div class="track-dialog__state">
+      <app-spinner />
+    </div>
+  } @else if (schedule.error()) {
+    <div class="track-dialog__state" role="alert">
+      <p>{{ 'trackDialogs.loadFailed' | translate }}</p>
+      <app-button
+        additionalClass="button--compact"
+        contentIconClass="bx bx-refresh-cw"
+        [contentText]="'myUploads.empty.retry' | translate"
+        (clickAction)="schedule.reload()"
+      />
+    </div>
+  } @else if (schedule.value(); as slot) {
+    <p class="track-dialog__note">
+      <i class="bx bx-broadcast" aria-hidden="true"></i>
+      {{ 'trackDialogs.currentAiring' | translate: { time: (slot.airsAt | dateTime) } }}
+    </p>
+
+    @if (slot.pendingChange; as change) {
+      <p class="track-dialog__note" role="status">
+        <i class="bx bx-clock" aria-hidden="true"></i>
+        {{
+          'trackDialogs.changeUnderReview' | translate: { time: (change.preferredAt | dateTime) }
+        }}
+      </p>
+
+      <footer class="track-dialog__actions">
+        <app-button
+          additionalClass="button--compact"
+          [contentText]="'common.close' | translate"
+          (clickAction)="onCancel()"
+        />
+      </footer>
+    } @else {
+      <form class="change__form" [formRoot]="changeForm">
+        <div class="change__row">
+          <app-date-field
+            [fieldLabel]="('trackDialogs.preferredDate' | translate) + ' *'"
+            [formField]="changeForm.date"
+          />
+
+          <div class="change__time">
+            <span class="change__label" id="schedule-change-time">
+              {{ 'trackDialogs.preferredTime' | translate }} *
+            </span>
+            <app-select-field
+              labelledBy="schedule-change-time"
+              [placeholder]="'trackDialogs.pickTime' | translate"
+              [options]="hourOptions"
+              [formField]="changeForm.time"
+            />
+          </div>
+        </div>
+
+        <app-input-field
+          [fieldLabel]="'trackDialogs.comment' | translate"
+          [inputPlaceholder]="'trackDialogs.commentPlaceholder' | translate"
+          [isCompact]="true"
+          [isTextareaField]="true"
+          [hasOptionalLabel]="true"
+          [textareaRows]="commentRows"
+          [characterLimit]="commentLimit"
+          [formField]="changeForm.comment"
+        />
+
+        <footer class="track-dialog__actions">
+          <app-button
+            additionalClass="button--secondary button--compact"
+            [contentText]="'common.cancel' | translate"
+            (clickAction)="onCancel()"
+          />
+          <app-button
+            additionalClass="button--compact"
+            buttonType="submit"
+            contentIconClass="bx bx-send"
+            [contentText]="'trackDialogs.sendRequest' | translate"
+            [disabled]="isSendDisabled()"
+          />
+        </footer>
+      </form>
+    }
+  }
+</div>

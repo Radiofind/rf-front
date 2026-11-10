@@ -1,0 +1,30 @@
+<div class="track-dialog">
+  @if (reason.isLoading()) {
+    <div class="track-dialog__state">
+      <app-spinner />
+    </div>
+  } @else if (reason.error()) {
+    <div class="track-dialog__state" role="alert">
+      <p>{{ 'trackDialogs.loadFailed' | translate }}</p>
+      <app-button
+        additionalClass="button--compact"
+        contentIconClass="bx bx-refresh-cw"
+        [contentText]="'myUploads.empty.retry' | translate"
+        (clickAction)="reason.reload()"
+      />
+    </div>
+  } @else if (reason.value(); as rejection) {
+    <section class="rejection">
+      <p class="rejection__summary">{{ rejection.summary }}</p>
+      <p class="rejection__details">{{ rejection.details }}</p>
+      <p class="rejection__meta">
+        {{ rejection.reviewer }} · {{ rejection.reviewedAt | dateTime }}
+      </p>
+    </section>
+
+    <p class="track-dialog__note">
+      <i class="bx bx-info-circle" aria-hidden="true"></i>
+      {{ 'trackDialogs.rejectionNextSteps' | translate }}
+    </p>
+  }
+</div>

@@ -1,0 +1,120 @@
+:host {
+  display: inline-flex;
+}
+
+.actions {
+  &__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 8px;
+    background: transparent;
+    font-size: 22px;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 200ms ease;
+
+    &:hover,
+    &[aria-expanded='true'] {
+      border-color: var(--first-gradient-color);
+      background: color-mix(in srgb, var(--main-color) 20%, transparent);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--first-gradient-color);
+      outline-offset: 2px;
+    }
+  }
+
+  &__menu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 230px;
+    padding: 6px;
+    border: 1px solid color-mix(in srgb, var(--main-color) 45%, transparent);
+    border-radius: 12px;
+    background: var(--second-bg-color);
+    box-shadow:
+      0 24px 64px rgba(0, 0, 0, 0.65),
+      0 0 32px color-mix(in srgb, var(--main-color) 20%, transparent);
+    animation: actions-menu-in 160ms ease;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 15px;
+    text-align: left;
+    white-space: nowrap;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 200ms ease;
+
+    &:hover,
+    &:focus-visible {
+      background: color-mix(in srgb, var(--first-gradient-color) 16%, transparent);
+    }
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 1px var(--first-gradient-color);
+    }
+
+    &--danger {
+      color: var(--error-color);
+
+      &:hover,
+      &:focus-visible {
+        background: color-mix(in srgb, var(--error-color) 14%, transparent);
+      }
+    }
+
+    > * {
+      pointer-events: none;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    flex-shrink: 0;
+    font-size: 20px;
+    color: var(--icon-color);
+
+    .actions__item--danger & {
+      color: var(--error-color);
+    }
+  }
+
+  &__divider {
+    height: 1px;
+    margin: 4px 6px;
+    background: color-mix(in srgb, var(--main-color) 35%, transparent);
+  }
+}
+
+@keyframes actions-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actions__menu {
+    animation: none;
+  }
+}

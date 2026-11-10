@@ -1,0 +1,194 @@
+<table class="uploads" [class.uploads--loading]="isLoading()" [attr.aria-busy]="isLoading()">
+  <thead>
+    <tr>
+      <th
+        class="uploads__head uploads__head--track"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.TITLE)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.TITLE, label: 'myUploads.columns.track' }
+          "
+        />
+      </th>
+      <th class="uploads__head uploads__head--genre" scope="col">
+        {{ 'myUploads.columns.genre' | translate }}
+      </th>
+      <th
+        class="uploads__head uploads__head--number uploads__head--duration"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.DURATION)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.DURATION, label: 'myUploads.columns.duration' }
+          "
+        />
+      </th>
+      <th
+        class="uploads__head uploads__head--number uploads__head--stat"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.PLAYS)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.PLAYS, label: 'myUploads.columns.plays' }
+          "
+        />
+      </th>
+      <th
+        class="uploads__head uploads__head--number uploads__head--stat"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.LIKES)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.LIKES, label: 'myUploads.columns.likes' }
+          "
+        />
+      </th>
+      <th class="uploads__head uploads__head--status" scope="col">
+        {{ 'myUploads.columns.status' | translate }}
+      </th>
+      <th
+        class="uploads__head uploads__head--date"
+        scope="col"
+        [attr.aria-sort]="ariaSort(sorts.UPLOADED)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: sorts.UPLOADED, label: 'myUploads.columns.uploaded' }
+          "
+        />
+      </th>
+      <th class="uploads__head uploads__head--actions" scope="col">
+        {{ 'myUploads.columns.actions' | translate }}
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (track of tracks(); track track.id) {
+      @let isCurrent = track.id === currentTrackId();
+      @let isActive = isCurrent && isPlaying();
+
+      <tr class="uploads__row" [class.uploads__row--current]="isCurrent">
+        <td class="uploads__cell uploads__cell--track">
+          <div class="uploads__track">
+            @if (canPlay() && track.audioUrl) {
+              <button
+                type="button"
+                class="uploads__cover uploads__cover--playable"
+                [class.uploads__cover--playing]="isActive"
+                [attr.aria-label]="
+                  (isActive ? 'myUploads.pauseTrack' : 'myUploads.playTrack')
+                    | translate: { title: track.title }
+                "
+                [title]="(isActive ? 'player.pause' : 'player.play') | translate"
+                (click)="playToggled.emit(track)"
+              >
+                <ng-container *ngTemplateOutlet="cover; context: { $implicit: track.coverUrl }" />
+
+                @if (isActive) {
+                  <span class="uploads__equalizer" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </span>
+                }
+
+                <span class="uploads__overlay" aria-hidden="true">
+                  <i [class]="isActive ? pauseIconClass : playIconClass"></i>
+                </span>
+              </button>
+            } @else {
+              <div class="uploads__cover">
+                <ng-container *ngTemplateOutlet="cover; context: { $implicit: track.coverUrl }" />
+              </div>
+            }
+
+            <div class="uploads__info">
+              <span class="uploads__title" [title]="track.title">{{ track.title }}</span>
+              <span class="uploads__artist" [title]="track.artistName">{{ track.artistName }}</span>
+              <span class="uploads__date uploads__date--inline">{{
+                track.createdAt | dateTime
+              }}</span>
+            </div>
+          </div>
+        </td>
+
+        <td class="uploads__cell uploads__cell--genre">
+          <ul class="uploads__genres">
+            @for (genre of track.genres; track genre) {
+              @let genreKey = genreLabel(genre);
+              <li class="uploads__genre">{{ genreKey ? (genreKey | translate) : genre }}</li>
+            }
+          </ul>
+        </td>
+
+        <td class="uploads__cell uploads__cell--number uploads__cell--duration">
+          {{ durationLabel(track.durationSeconds) }}
+        </td>
+
+        <td class="uploads__cell uploads__cell--number uploads__cell--stat">
+          {{ track.playsCount | compactNumber }}
+        </td>
+
+        <td class="uploads__cell uploads__cell--number uploads__cell--stat">
+          <span class="uploads__likes" [class.uploads__likes--liked]="track.liked">
+            <i [class]="track.liked ? likedIconClass : likeIconClass" aria-hidden="true"></i>
+            {{ track.likesCount | compactNumber }}
+          </span>
+        </td>
+
+        <td class="uploads__cell">
+          <span class="uploads__status" [class]="'uploads__status--' + track.status">
+            <span class="uploads__status-dot" aria-hidden="true"></span>
+            {{ statusLabel(track.status) | translate }}
+          </span>
+        </td>
+
+        <td class="uploads__cell uploads__cell--date">
+          <span class="uploads__date">{{ track.createdAt | dateTime }}</span>
+        </td>
+
+        <td class="uploads__cell uploads__cell--actions">
+          <app-track-actions-menu
+            [status]="track.status"
+            [trackTitle]="track.title"
+            (actionSelected)="actionSelected.emit({ track: track, action: $event })"
+          />
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<ng-template #sortButton let-sort let-label="label">
+  <button
+    type="button"
+    class="uploads__sort"
+    [class.uploads__sort--active]="sort === activeSort()"
+    [title]="'myUploads.sortBy' | translate: { column: (label | translate) }"
+    (click)="sortSelected.emit(sort)"
+  >
+    <span>{{ label | translate }}</span>
+    <i class="uploads__sort-icon" [class]="sortIconClass(sort)" aria-hidden="true"></i>
+  </button>
+</ng-template>
+
+<ng-template #cover let-coverUrl>
+  @if (coverUrl && !brokenCovers().has(coverUrl)) {
+    <img class="uploads__image" [src]="coverUrl" alt="" (error)="onCoverError(coverUrl)" />
+  } @else {
+    <span class="uploads__image uploads__image--placeholder" aria-hidden="true">
+      <i class="bx bx-music"></i>
+    </span>
+  }
+</ng-template>

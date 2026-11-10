@@ -1,1 +1,6 @@
-export type ActivityType = 'TRACK_UPLOADED';
+export type ActivityType =
+  | 'TRACK_UPLOADED'
+  | 'TRACK_SUBMISSION_CANCELLED'
+  | 'TRACK_RESUBMITTED'
+  | 'SCHEDULE_CHANGE_REQUESTED'
+  | 'TRACK_DELETED';

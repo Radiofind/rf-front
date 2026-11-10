@@ -21,6 +21,8 @@ describe('AudioPlayerComponent', () => {
     artistName: 'Neon Lights',
     coverUrl: 'blob:cover',
     audioUrl: '/audio/1',
+    liked: false,
+    canLike: true,
   };
 
   let fixture: ComponentFixture<AudioPlayerComponent>;
@@ -59,6 +61,7 @@ describe('AudioPlayerComponent', () => {
             { selector: playerFeature.selectHasNext, value: true },
             { selector: playerFeature.selectHasPrevious, value: true },
             { selector: playerFeature.selectIsCurrentTrackLiked, value: false },
+            { selector: playerFeature.selectCanLikeCurrentTrack, value: true },
           ],
         }),
         {
@@ -164,5 +167,27 @@ describe('AudioPlayerComponent', () => {
 
     expect(element().querySelector('img')).toBeNull();
     expect(element().querySelector('.player__cover--placeholder')).not.toBeNull();
+  });
+  it('likes the current track that passed the review', () => {
+    button('Like').click();
+
+    expect(button('Like').hasAttribute('aria-describedby')).toBe(false);
+    expect(dispatch).toHaveBeenCalledExactlyOnceWith(AudioPlayerActions.likeToggled());
+  });
+
+  it('explains why a track in review cannot be liked yet', async () => {
+    store.overrideSelector(playerFeature.selectCanLikeCurrentTrack, false);
+    store.refreshState();
+    await fixture.whenStable();
+    const like: HTMLButtonElement = button('Like');
+
+    like.click();
+
+    const description: HTMLElement | null = document.getElementById(
+      like.getAttribute('aria-describedby') ?? '',
+    );
+    expect(like.getAttribute('aria-disabled')).toBe('true');
+    expect(description?.textContent).toBe('Likes open once the track passes the quality review');
+    expect(dispatch).not.toHaveBeenCalled();
   });
 });

@@ -95,7 +95,8 @@
     cursor: pointer;
     transition: all 300ms ease;
 
-    &:disabled {
+    &:disabled,
+    &--unavailable {
       opacity: 0.4;
       cursor: not-allowed;
     }

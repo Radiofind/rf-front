@@ -1,0 +1,39 @@
+<div class="track-dialog">
+  @if (schedule.isLoading()) {
+    <div class="track-dialog__state">
+      <app-spinner />
+    </div>
+  } @else if (schedule.error()) {
+    <div class="track-dialog__state" role="alert">
+      <p>{{ 'trackDialogs.loadFailed' | translate }}</p>
+      <app-button
+        additionalClass="button--compact"
+        contentIconClass="bx bx-refresh-cw"
+        [contentText]="'myUploads.empty.retry' | translate"
+        (clickAction)="schedule.reload()"
+      />
+    </div>
+  } @else if (schedule.value(); as slot) {
+    <div class="airing">
+      <i class="bx bx-broadcast airing__icon" aria-hidden="true"></i>
+      <div class="airing__text">
+        <span class="airing__label">{{ 'trackDialogs.nextAiring' | translate }}</span>
+        <span class="airing__time">{{ slot.airsAt | dateTime }}</span>
+        <span class="airing__duration">
+          {{ 'trackDialogs.slotLength' | translate: { duration: duration(slot.durationSeconds) } }}
+        </span>
+      </div>
+    </div>
+
+    @if (slot.pendingChange; as change) {
+      <div class="track-dialog__note" role="status">
+        <i class="bx bx-clock" aria-hidden="true"></i>
+        <span>
+          {{
+            'trackDialogs.changeUnderReview' | translate: { time: (change.preferredAt | dateTime) }
+          }}
+        </span>
+      </div>
+    }
+  }
+</div>

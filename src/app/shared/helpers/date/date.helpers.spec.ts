@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  formatDateTime,
   formatStringDate,
   toRelativeTime,
   transformDateToString,
@@ -78,6 +79,19 @@ describe('date.helpers', () => {
 
     it('treats a date slightly in the future as now', () => {
       expect(toRelativeTime('2026-11-05T12:00:05Z', now)).toEqual({ value: 0, unit: 'second' });
+    });
+  });
+  describe('formatDateTime', () => {
+    it('shows the upload moment as date and 24-hour local time', () => {
+      const uploadedAt: string = new Date(2025, 3, 28, 14, 32).toISOString();
+
+      expect(formatDateTime(uploadedAt, 'en-US')).toBe('Apr 28, 2025 • 14:32');
+    });
+
+    it('accepts the microsecond precision the backend sends', () => {
+      const uploadedAt: string = new Date(2025, 3, 21, 9, 5).toISOString().replace('Z', '123Z');
+
+      expect(formatDateTime(uploadedAt, 'de-DE')).toBe('21. Apr. 2025 • 09:05');
     });
   });
 });

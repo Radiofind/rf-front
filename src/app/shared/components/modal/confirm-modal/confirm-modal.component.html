@@ -1,5 +1,5 @@
 <div class="confirm">
-  <p class="confirm__message">{{ data.message | translate }}</p>
+  <p class="confirm__message">{{ data.message | translate: data.messageParams }}</p>
 
   @if (data.description) {
     <p class="confirm__description">{{ data.description | translate }}</p>
@@ -8,10 +8,14 @@
   <div class="confirm__actions">
     <app-button
       [contentText]="cancelText | translate"
-      [additionalClass]="'button--secondary'"
+      [additionalClass]="'button--secondary button--compact'"
       (clickAction)="onCancel()"
     />
 
-    <app-button [contentText]="confirmText | translate" (clickAction)="onConfirm()" />
+    <app-button
+      [contentText]="confirmText | translate"
+      [additionalClass]="data.isDanger ? 'button--compact button--danger' : 'button--compact'"
+      (clickAction)="onConfirm()"
+    />
   </div>
 </div>
