@@ -34,6 +34,11 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "{us,de,fr,it,es,ru}.svg",
+                "input": "node_modules/flag-icons/flags/4x3",
+                "output": "assets/flags"
               }
             ],
             "styles": ["src/styles.scss"],
