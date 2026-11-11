@@ -1,0 +1,83 @@
+@switch (kind()) {
+  @case (kinds.EMPTY_LIBRARY) {
+    <section class="empty-library" aria-labelledby="empty-library-title">
+      <div class="empty-library__glow" aria-hidden="true">
+        <i class="bx bx-heart"></i>
+      </div>
+
+      <h2 class="empty-library__title" id="empty-library-title">
+        {{ 'mediaLibrary.empty.emptyTitle' | translate }}
+      </h2>
+      <p class="empty-library__description">
+        {{ 'mediaLibrary.empty.emptyDescription' | translate }}
+      </p>
+
+      <ol
+        class="empty-library__steps"
+        [attr.aria-label]="'mediaLibrary.empty.journeyLabel' | translate"
+      >
+        <li class="empty-library__step empty-library__step--listen">
+          <span class="empty-library__step-icon" aria-hidden="true">
+            <i class="bx bx-headphone"></i>
+          </span>
+          <span class="empty-library__step-title">{{
+            'mediaLibrary.empty.stepListenTitle' | translate
+          }}</span>
+          <span class="empty-library__step-text">{{
+            'mediaLibrary.empty.stepListenText' | translate
+          }}</span>
+        </li>
+        <li class="empty-library__step">
+          <span class="empty-library__step-icon" aria-hidden="true">
+            <i class="bx bx-heart"></i>
+          </span>
+          <span class="empty-library__step-title">{{
+            'mediaLibrary.empty.stepLikeTitle' | translate
+          }}</span>
+          <span class="empty-library__step-text">{{
+            'mediaLibrary.empty.stepLikeText' | translate
+          }}</span>
+        </li>
+        <li class="empty-library__step empty-library__step--collect">
+          <span class="empty-library__step-icon" aria-hidden="true">
+            <i class="bx bx-music-library"></i>
+          </span>
+          <span class="empty-library__step-title">{{
+            'mediaLibrary.empty.stepCollectTitle' | translate
+          }}</span>
+          <span class="empty-library__step-text">{{
+            'mediaLibrary.empty.stepCollectText' | translate
+          }}</span>
+        </li>
+      </ol>
+    </section>
+  }
+
+  @case (kinds.NO_SEARCH_MATCH) {
+    <div class="no-match">
+      <app-empty-state
+        emptyIconClass="bx bx-search-x"
+        [emptyTitle]="'myUploads.empty.noSearchTitle' | translate: { query: search().trim() }"
+        [emptyDescription]="'myUploads.empty.noSearchDescription' | translate"
+      />
+      <button class="no-match__action" type="button" (click)="resetClicked.emit()">
+        <i class="bx bx-x" aria-hidden="true"></i>
+        <span>{{ 'mediaLibrary.empty.clearSearch' | translate }}</span>
+      </button>
+    </div>
+  }
+
+  @case (kinds.LOAD_FAILED) {
+    <div class="no-match" role="alert">
+      <app-empty-state
+        emptyIconClass="bx bx-alert-circle"
+        [emptyTitle]="'mediaLibrary.empty.loadFailedTitle' | translate"
+        [emptyDescription]="'myUploads.empty.loadFailedDescription' | translate"
+      />
+      <button class="no-match__action" type="button" (click)="retryClicked.emit()">
+        <i class="bx bx-refresh-cw" aria-hidden="true"></i>
+        <span>{{ 'myUploads.empty.retry' | translate }}</span>
+      </button>
+    </div>
+  }
+}

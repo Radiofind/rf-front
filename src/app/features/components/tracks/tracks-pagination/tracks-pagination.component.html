@@ -1,0 +1,56 @@
+<div class="tracks-pagination__info">
+  <p class="tracks-pagination__range" aria-live="polite">
+    {{
+      'myUploads.range' | translate: { from: rangeStart(), to: rangeEnd(), total: totalElements() }
+    }}
+  </p>
+
+  <div class="tracks-pagination__page-size">
+    <span class="tracks-pagination__page-size-label" id="tracks-page-size">
+      {{ 'myUploads.perPage' | translate }}
+    </span>
+    <app-select-field
+      class="tracks-pagination__page-size-select"
+      name="page-size"
+      labelledBy="tracks-page-size"
+      [options]="pageSizeOptions"
+      [value]="pageSize().toString()"
+      (valueChange)="onPageSizeSelect($event)"
+    />
+  </div>
+</div>
+
+<nav class="tracks-pagination__pages" [attr.aria-label]="label()">
+  <button
+    type="button"
+    class="tracks-pagination__page tracks-pagination__page--arrow"
+    [disabled]="page() === 0"
+    [attr.aria-label]="'myUploads.previousPage' | translate"
+    (click)="onPageSelect(page() - 1)"
+  >
+    <i class="bx bx-chevron-left" aria-hidden="true"></i>
+  </button>
+
+  @for (pageIndex of visiblePages(); track pageIndex) {
+    <button
+      type="button"
+      class="tracks-pagination__page"
+      [class.tracks-pagination__page--active]="pageIndex === page()"
+      [attr.aria-current]="pageIndex === page() ? 'page' : null"
+      [attr.aria-label]="'myUploads.goToPage' | translate: { page: pageIndex + 1 }"
+      (click)="onPageSelect(pageIndex)"
+    >
+      {{ pageIndex + 1 }}
+    </button>
+  }
+
+  <button
+    type="button"
+    class="tracks-pagination__page tracks-pagination__page--arrow"
+    [disabled]="page() + 1 >= totalPages()"
+    [attr.aria-label]="'myUploads.nextPage' | translate"
+    (click)="onPageSelect(page() + 1)"
+  >
+    <i class="bx bx-chevron-right" aria-hidden="true"></i>
+  </button>
+</nav>

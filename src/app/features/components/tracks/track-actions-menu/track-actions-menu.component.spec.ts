@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { TrackActionsMenuComponent } from './track-actions-menu.component';
 import { TrackActionEnum } from '../../../../core/enums/track-action.enum';
 import { TrackStatusEnum } from '../../../../core/enums/track-status.enum';
+import { TRACK_ACTIONS_BY_STATUS } from '../../../constants/my-uploads.constant';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { TrackStatus } from '../../../../core/types/track-status.type';
@@ -16,7 +17,7 @@ describe('TrackActionsMenuComponent', () => {
     }).compileComponents();
     const fixture: ComponentFixture<TrackActionsMenuComponent> =
       TestBed.createComponent(TrackActionsMenuComponent);
-    fixture.componentRef.setInput('status', status);
+    fixture.componentRef.setInput('actions', TRACK_ACTIONS_BY_STATUS[status]);
     fixture.componentRef.setInput('trackTitle', 'Midnight Dreams');
     await fixture.whenStable();
 

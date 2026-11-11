@@ -1,15 +1,11 @@
 import { Component, computed, input, output } from '@angular/core';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
-import {
-  TRACK_ACTION_OPTIONS,
-  TRACK_ACTIONS_BY_STATUS,
-} from '../../../constants/my-uploads.constant';
+import { TRACK_ACTION_OPTIONS } from '../../../constants/my-uploads.constant';
 import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 
 import type { InputSignal, OutputEmitterRef, Signal } from '@angular/core';
 import type { ConnectedPosition } from '@angular/cdk/overlay';
 import type { TrackActionEnum } from '../../../../core/enums/track-action.enum';
-import type { TrackStatus } from '../../../../core/types/track-status.type';
 import type { ITrackActionOption } from '../../../models/track-action-option.model';
 
 const MENU_OFFSET: number = 6;
@@ -21,7 +17,8 @@ const MENU_OFFSET: number = 6;
   styleUrl: './track-actions-menu.component.scss',
 })
 export class TrackActionsMenuComponent {
-  public readonly status: InputSignal<TrackStatus> = input.required<TrackStatus>();
+  public readonly actions: InputSignal<readonly TrackActionEnum[]> =
+    input.required<readonly TrackActionEnum[]>();
 
   public readonly trackTitle: InputSignal<string> = input.required<string>();
 
@@ -29,11 +26,7 @@ export class TrackActionsMenuComponent {
 
   protected readonly options: Signal<readonly ITrackActionOption[]> = computed<
     readonly ITrackActionOption[]
-  >(() =>
-    TRACK_ACTIONS_BY_STATUS[this.status()].map(
-      (action: TrackActionEnum) => TRACK_ACTION_OPTIONS[action],
-    ),
-  );
+  >(() => this.actions().map((action: TrackActionEnum) => TRACK_ACTION_OPTIONS[action]));
 
   protected readonly positions: ConnectedPosition[] = [
     { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: MENU_OFFSET },

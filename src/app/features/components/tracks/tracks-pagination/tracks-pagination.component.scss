@@ -1,0 +1,99 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 16px 16px 0;
+  border-top: 1px solid var(--header-element-border);
+}
+
+.tracks-pagination {
+  &__info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+  }
+
+  &__range {
+    font-size: 15px;
+    color: var(--soft-text-color);
+  }
+
+  &__page-size {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__page-size-label {
+    font-size: 15px;
+    white-space: nowrap;
+    color: var(--soft-text-color);
+  }
+
+  &__page-size-select {
+    --select-height: 42px;
+    --select-radius: 10px;
+    display: block;
+    width: 92px;
+  }
+
+  &__pages {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 8px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 10px;
+    background: transparent;
+    font-size: 15px;
+    color: var(--text-color);
+    transition: all 250ms ease;
+    cursor: pointer;
+
+    &--arrow {
+      font-size: 22px;
+    }
+
+    &--active {
+      border-color: var(--first-gradient-color);
+      background: color-mix(in srgb, var(--main-color) 45%, transparent);
+      box-shadow: 0 0 14px color-mix(in srgb, var(--second-gradient-color) 40%, transparent);
+    }
+
+    &:hover:not(:disabled) {
+      border-color: var(--first-gradient-color);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--first-gradient-color);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    justify-content: center;
+    padding: 12px 8px 0;
+  }
+
+  .tracks-pagination__info {
+    justify-content: center;
+  }
+}

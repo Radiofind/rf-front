@@ -4,6 +4,7 @@ import { ApiService } from '../../../core/services/api/api.service';
 import type { Observable } from 'rxjs';
 import type {
   IEditTrackData,
+  ILibraryQuery,
   IOwnTracksQuery,
   IPendingScheduleChange,
   IPlaybackSchedule,
@@ -11,6 +12,7 @@ import type {
   IScheduleChangeData,
   ITrack,
   ITrackDetails,
+  ITrackReportData,
   ITrackStatistics,
   IUploadTrackData,
 } from '../../../core/models/track.model';
@@ -26,6 +28,18 @@ export class TrackService {
 
   public getOwnTracks(query: IOwnTracksQuery): Observable<IPage<ITrack>> {
     return this.apiService.getOwnTracks(query);
+  }
+
+  public getLibrary(query: ILibraryQuery): Observable<IPage<ITrack>> {
+    return this.apiService.getLibrary(query);
+  }
+
+  public getLibraryDetails(trackId: number): Observable<ITrackDetails> {
+    return this.apiService.getLibraryTrackDetails(trackId);
+  }
+
+  public report(trackId: number, data: ITrackReportData): Observable<void> {
+    return this.apiService.reportTrack(trackId, data);
   }
 
   public recordPlay(trackId: number): Observable<void> {

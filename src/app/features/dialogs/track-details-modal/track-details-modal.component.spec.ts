@@ -30,13 +30,24 @@ describe('TrackDetailsModalComponent', () => {
     isEditing: boolean,
     edit: ReturnType<typeof vi.fn> = vi.fn(),
     close: ReturnType<typeof vi.fn> = vi.fn(),
+    isLibrary: boolean = false,
   ): Promise<ComponentFixture<TrackDetailsModalComponent>> => {
     await TestBed.configureTestingModule({
       imports: [TrackDetailsModalComponent],
       providers: [
-        { provide: DIALOG_DATA, useValue: { trackId: 42, isEditing: isEditing } },
+        {
+          provide: DIALOG_DATA,
+          useValue: { trackId: 42, isEditing: isEditing, isLibrary: isLibrary },
+        },
         { provide: DialogRef, useValue: { close: close } },
-        { provide: TrackService, useValue: { getDetails: () => of(details), edit: edit } },
+        {
+          provide: TrackService,
+          useValue: {
+            getDetails: () => of(details),
+            getLibraryDetails: () => of({ ...details, uploadedBy: null }),
+            edit: edit,
+          },
+        },
       ],
     }).compileComponents();
     const fixture: ComponentFixture<TrackDetailsModalComponent> = TestBed.createComponent(
@@ -61,6 +72,26 @@ describe('TrackDetailsModalComponent', () => {
     expect(values).toContain('Ada Lovelace');
     expect(values).toContain('WAV · 4.2 MB');
     expect(values).toContain('No description');
+  });
+
+  it('shows a library track without its status and without the uploader', async () => {
+    const fixture: ComponentFixture<TrackDetailsModalComponent> = await createFixture(
+      false,
+      vi.fn(),
+      vi.fn(),
+      true,
+    );
+
+    const terms: string[] = Array.from(
+      element(fixture).querySelectorAll('.track-dialog__term'),
+      (term: Element) => term.textContent.trim(),
+    );
+
+    expect(element(fixture).querySelector('.details__status')).toBeNull();
+    expect(terms).not.toContain('Uploaded by');
+    expect(element(fixture).querySelector('.details__artist')?.textContent.trim()).toBe(
+      'Neon Lights',
+    );
   });
 
   it('saves the changed title and closes as saved', async () => {

@@ -351,6 +351,55 @@ export const RU_TRANSLATIONS: Translations = {
       retry: 'Повторить',
     },
   },
+  mediaLibrary: {
+    title: 'Медиатека',
+    subtitle: 'Все понравившиеся треки в одном месте.',
+    searchPlaceholder: 'Поиск в медиатеке...',
+    pagination: 'Страницы медиатеки',
+    radioModeHint:
+      'Включён режим радио. Отключите его в настройках, чтобы слушать медиатеку здесь.',
+    columns: {
+      added: 'Добавлен',
+    },
+    actions: {
+      report: 'Пожаловаться на трек',
+      remove: 'Удалить из медиатеки',
+    },
+    removeConfirm: 'Удалить «{title}» из медиатеки?',
+    removeDescription:
+      'Ваш лайк на этом треке тоже будет снят. Вернуть трек можно, снова поставив лайк.',
+    empty: {
+      emptyTitle: 'Ваша медиатека ждёт первый трек',
+      emptyDescription:
+        'Каждый трек, который вам понравился, сохраняется здесь — любимая музыка всегда в один клик.',
+      journeyLabel: 'Как треки попадают в медиатеку',
+      stepListenTitle: 'Слушайте',
+      stepListenText: 'Открывайте треки на радио или в плеере.',
+      stepLikeTitle: 'Лайкайте',
+      stepLikeText: 'Нажмите на сердечко у понравившегося трека.',
+      stepCollectTitle: 'Собирайте',
+      stepCollectText: 'Трек появится здесь и будет готов к повторному прослушиванию.',
+      clearSearch: 'Очистить поиск',
+      loadFailedTitle: 'Не удалось загрузить медиатеку',
+    },
+    report: {
+      intro:
+        'Расскажите, что не так с треком «{title}» ({artist}). Модераторы проверяют каждую жалобу.',
+      reason: 'Причина',
+      reasonPlaceholder: 'Выберите причину',
+      details: 'Подробности',
+      detailsPlaceholder: 'Опишите проблему, чтобы модераторы смогли проверить её быстрее...',
+      send: 'Отправить жалобу',
+      reasons: {
+        copyrightInfringement: 'Нарушение авторских прав',
+        offensiveContent: 'Оскорбительный или неприемлемый контент',
+        spam: 'Спам или вводящая в заблуждение загрузка',
+        misleadingInformation: 'Неверное название, исполнитель или жанр',
+        poorAudioQuality: 'Плохое качество звука',
+        other: 'Другое',
+      },
+    },
+  },
   trackDialogs: {
     loadFailed: 'Не удалось загрузить данные',
     uploadedBy: 'Загрузил',
@@ -413,6 +462,7 @@ export const RU_TRANSLATIONS: Translations = {
     moreOptions: 'Ещё',
   },
   notifications: {
+    trackReported: 'На трек «{title}» поступила жалоба, требуется модерация',
     trackDeleted: 'Ваш трек «{title}» удалён',
     trackSubmissionCancelled: 'Вы отозвали «{title}» с проверки. Трек сохранён как черновик.',
     trackResubmittedForReview: 'Ваш трек «{title}» повторно отправлен на проверку качества',
@@ -865,6 +915,9 @@ export const RU_TRANSLATIONS: Translations = {
       'У вас есть несохранённые изменения. Вы уверены, что хотите покинуть страницу? Изменения будут потеряны.',
   },
   messages: {
+    trackRemovedFromLibrary: 'Трек удалён из медиатеки',
+    trackReported: 'Спасибо! Жалоба отправлена модераторам.',
+    trackAlreadyReported: 'Вы уже жаловались на этот трек',
     submissionCancelled: 'Отправка отменена. Трек сохранён как черновик.',
     trackSubmitted: 'Трек отправлен на проверку',
     trackResubmitted: 'Трек повторно отправлен на проверку',

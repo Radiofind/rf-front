@@ -1,0 +1,207 @@
+<table
+  class="tracks-table"
+  [class.tracks-table--loading]="isLoading()"
+  [attr.aria-busy]="isLoading()"
+>
+  <thead>
+    <tr>
+      <th
+        class="tracks-table__head tracks-table__head--track"
+        scope="col"
+        [attr.aria-sort]="ariaSort(config().sorts.title)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: config().sorts.title, label: 'myUploads.columns.track' }
+          "
+        />
+      </th>
+      <th class="tracks-table__head tracks-table__head--genre" scope="col">
+        {{ 'myUploads.columns.genre' | translate }}
+      </th>
+      <th
+        class="tracks-table__head tracks-table__head--number tracks-table__head--duration"
+        scope="col"
+        [attr.aria-sort]="ariaSort(config().sorts.duration)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: config().sorts.duration, label: 'myUploads.columns.duration' }
+          "
+        />
+      </th>
+      <th
+        class="tracks-table__head tracks-table__head--number tracks-table__head--stat"
+        scope="col"
+        [attr.aria-sort]="ariaSort(config().sorts.plays)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: config().sorts.plays, label: 'myUploads.columns.plays' }
+          "
+        />
+      </th>
+      <th
+        class="tracks-table__head tracks-table__head--number tracks-table__head--stat"
+        scope="col"
+        [attr.aria-sort]="ariaSort(config().sorts.likes)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: config().sorts.likes, label: 'myUploads.columns.likes' }
+          "
+        />
+      </th>
+      @if (config().hasStatus) {
+        <th class="tracks-table__head tracks-table__head--status" scope="col">
+          {{ 'myUploads.columns.status' | translate }}
+        </th>
+      }
+      <th
+        class="tracks-table__head tracks-table__head--date"
+        scope="col"
+        [attr.aria-sort]="ariaSort(config().sorts.date)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            sortButton;
+            context: { $implicit: config().sorts.date, label: config().dateLabel }
+          "
+        />
+      </th>
+      <th class="tracks-table__head tracks-table__head--actions" scope="col">
+        {{ 'myUploads.columns.actions' | translate }}
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (track of tracks(); track track.id) {
+      @let isCurrent = track.id === currentTrackId();
+      @let isActive = isCurrent && isPlaying();
+      @let date = config().dateOf(track);
+
+      <tr class="tracks-table__row" [class.tracks-table__row--current]="isCurrent">
+        <td class="tracks-table__cell tracks-table__cell--track">
+          <div class="tracks-table__track">
+            @if (canPlay() && track.audioUrl) {
+              <button
+                type="button"
+                class="tracks-table__cover tracks-table__cover--playable"
+                [class.tracks-table__cover--playing]="isActive"
+                [attr.aria-label]="
+                  (isActive ? 'myUploads.pauseTrack' : 'myUploads.playTrack')
+                    | translate: { title: track.title }
+                "
+                [title]="(isActive ? 'player.pause' : 'player.play') | translate"
+                (click)="playToggled.emit(track)"
+              >
+                <ng-container *ngTemplateOutlet="cover; context: { $implicit: track.coverUrl }" />
+
+                @if (isActive) {
+                  <span class="tracks-table__equalizer" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </span>
+                }
+
+                <span class="tracks-table__overlay" aria-hidden="true">
+                  <i [class]="isActive ? pauseIconClass : playIconClass"></i>
+                </span>
+              </button>
+            } @else {
+              <div class="tracks-table__cover">
+                <ng-container *ngTemplateOutlet="cover; context: { $implicit: track.coverUrl }" />
+              </div>
+            }
+
+            <div class="tracks-table__info">
+              <span class="tracks-table__title" [title]="track.title">{{ track.title }}</span>
+              <span class="tracks-table__artist" [title]="track.artistName">{{
+                track.artistName
+              }}</span>
+              @if (date) {
+                <span class="tracks-table__date tracks-table__date--inline">{{
+                  date | dateTime
+                }}</span>
+              }
+            </div>
+          </div>
+        </td>
+
+        <td class="tracks-table__cell tracks-table__cell--genre">
+          <ul class="tracks-table__genres">
+            @for (genre of track.genres; track genre) {
+              @let genreKey = genreLabel(genre);
+              <li class="tracks-table__genre">{{ genreKey ? (genreKey | translate) : genre }}</li>
+            }
+          </ul>
+        </td>
+
+        <td class="tracks-table__cell tracks-table__cell--number tracks-table__cell--duration">
+          {{ durationLabel(track.durationSeconds) }}
+        </td>
+
+        <td class="tracks-table__cell tracks-table__cell--number tracks-table__cell--stat">
+          {{ track.playsCount | compactNumber }}
+        </td>
+
+        <td class="tracks-table__cell tracks-table__cell--number tracks-table__cell--stat">
+          <span class="tracks-table__likes" [class.tracks-table__likes--liked]="track.liked">
+            <i [class]="track.liked ? likedIconClass : likeIconClass" aria-hidden="true"></i>
+            {{ track.likesCount | compactNumber }}
+          </span>
+        </td>
+
+        @if (config().hasStatus) {
+          <td class="tracks-table__cell">
+            <span class="tracks-table__status" [class]="'tracks-table__status--' + track.status">
+              <span class="tracks-table__status-dot" aria-hidden="true"></span>
+              {{ statusLabel(track.status) | translate }}
+            </span>
+          </td>
+        }
+
+        <td class="tracks-table__cell tracks-table__cell--date">
+          <span class="tracks-table__date">{{ date ? (date | dateTime) : emptyValue }}</span>
+        </td>
+
+        <td class="tracks-table__cell tracks-table__cell--actions">
+          <app-track-actions-menu
+            [actions]="config().actionsOf(track)"
+            [trackTitle]="track.title"
+            (actionSelected)="actionSelected.emit({ track: track, action: $event })"
+          />
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<ng-template #sortButton let-sort let-label="label">
+  <button
+    type="button"
+    class="tracks-table__sort"
+    [class.tracks-table__sort--active]="sort === activeSort()"
+    [title]="'myUploads.sortBy' | translate: { column: (label | translate) }"
+    (click)="sortSelected.emit(sort)"
+  >
+    <span>{{ label | translate }}</span>
+    <i class="tracks-table__sort-icon" [class]="sortIconClass(sort)" aria-hidden="true"></i>
+  </button>
+</ng-template>
+
+<ng-template #cover let-coverUrl>
+  @if (coverUrl && !brokenCovers().has(coverUrl)) {
+    <img class="tracks-table__image" [src]="coverUrl" alt="" (error)="onCoverError(coverUrl)" />
+  } @else {
+    <span class="tracks-table__image tracks-table__image--placeholder" aria-hidden="true">
+      <i class="bx bx-music"></i>
+    </span>
+  }
+</ng-template>

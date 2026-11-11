@@ -1,5 +1,7 @@
+import type { LibrarySortEnum } from '../enums/library-sort.enum';
 import type { OwnTracksSortEnum } from '../enums/own-tracks-sort.enum';
 import type { SortDirectionEnum } from '../enums/sort-direction.enum';
+import type { TrackReportReasonEnum } from '../enums/track-report-reason.enum';
 import type { TrackStatus } from '../types/track-status.type';
 
 export interface ITrackEndpoints {
@@ -12,6 +14,7 @@ export interface ITrackEndpoints {
   schedule: string;
   scheduleChangeRequests: string;
   rejection: string;
+  reports: string;
 }
 
 export interface IEditTrackData {
@@ -26,7 +29,7 @@ export interface ITrackDetails {
   id: number;
   title: string;
   artistName: string;
-  uploadedBy: string;
+  uploadedBy: string | null;
   genres: string[];
   description: string | null;
   status: TrackStatus;
@@ -95,7 +98,9 @@ export interface ITrack {
   playsCount: number;
   likesCount: number;
   liked: boolean;
+  own: boolean;
   createdAt: string;
+  likedAt: string | null;
 }
 
 export interface IOwnTracksQuery {
@@ -105,6 +110,19 @@ export interface IOwnTracksQuery {
   direction: SortDirectionEnum;
   page: number;
   size: number;
+}
+
+export interface ILibraryQuery {
+  search: string;
+  sort: LibrarySortEnum;
+  direction: SortDirectionEnum;
+  page: number;
+  size: number;
+}
+
+export interface ITrackReportData {
+  reason: TrackReportReasonEnum;
+  comment: string | null;
 }
 
 export interface ITrackSummary {

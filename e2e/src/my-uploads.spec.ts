@@ -278,9 +278,9 @@ test.describe('my uploads', () => {
       await authenticatedPage.goto('/my-uploads');
 
       const row = uploads.row('Midnight Dreams');
-      await expect(row.locator('.uploads__artist')).toHaveText('Ada Lovelace');
-      await expect(row.locator('.uploads__genre')).toHaveText('Grunge');
-      await expect(row.locator('.uploads__status')).toHaveText('Processing');
+      await expect(row.locator('.tracks-table__artist')).toHaveText('Ada Lovelace');
+      await expect(row.locator('.tracks-table__genre')).toHaveText('Grunge');
+      await expect(row.locator('.tracks-table__status')).toHaveText('Processing');
       await expect(uploads.range).toHaveText('Showing 1–1 of 1');
     });
 
@@ -437,7 +437,7 @@ test.describe('my uploads', () => {
       await expect(uploads.playerLikeTooltip).toBeVisible();
       await expect(uploads.playerLikeButton).toHaveAttribute('aria-disabled', 'true');
       await expect(uploads.playerLikeButton).toHaveAttribute('aria-pressed', 'false');
-      await expect(uploads.row('Midnight Dreams').locator('.uploads__likes')).toHaveText('0');
+      await expect(uploads.row('Midnight Dreams').locator('.tracks-table__likes')).toHaveText('0');
     });
 
     test('shows as many uploads per page as chosen', async ({

@@ -28,6 +28,8 @@ describe('TrackActionsService', () => {
     playsCount: 0,
     likesCount: 0,
     liked: false,
+    own: true,
+    likedAt: null,
     createdAt: '2025-04-28T14:32:00Z',
   };
 
@@ -105,7 +107,7 @@ describe('TrackActionsService', () => {
 
     expect(open).toHaveBeenCalledWith(
       TrackDetailsModalComponent,
-      expect.objectContaining({ data: { trackId: 42, isEditing: true } }),
+      expect.objectContaining({ data: { trackId: 42, isEditing: true, isLibrary: false } }),
     );
     expect(dispatch).toHaveBeenCalledExactlyOnceWith(MyUploadsPageActions.trackEdited());
   });

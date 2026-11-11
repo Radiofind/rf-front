@@ -358,6 +358,56 @@ export const FR_TRANSLATIONS: Translations = {
       retry: 'Réessayer',
     },
   },
+  mediaLibrary: {
+    title: 'Médiathèque',
+    subtitle: 'Tous les morceaux que vous avez aimés, au même endroit.',
+    searchPlaceholder: 'Rechercher dans votre médiathèque...',
+    pagination: 'Pages de la médiathèque',
+    radioModeHint:
+      'Le mode radio est activé. Désactivez-le dans les paramètres pour écouter votre médiathèque ici.',
+    columns: {
+      added: 'Ajouté',
+    },
+    actions: {
+      report: 'Signaler le morceau',
+      remove: 'Retirer de la médiathèque',
+    },
+    removeConfirm: 'Retirer « {title} » de votre médiathèque ?',
+    removeDescription:
+      'Votre « j’aime » sur ce morceau est également retiré. Vous pourrez le rajouter en l’aimant à nouveau.',
+    empty: {
+      emptyTitle: 'Votre médiathèque attend son premier morceau',
+      emptyDescription:
+        'Chaque morceau que vous aimez est enregistré ici : vos favoris sont toujours à portée de clic.',
+      journeyLabel: 'Comment les morceaux arrivent dans votre médiathèque',
+      stepListenTitle: 'Écouter',
+      stepListenText: 'Découvrez des morceaux à la radio ou dans le lecteur.',
+      stepLikeTitle: 'Aimer',
+      stepLikeText: 'Touchez le cœur d’un morceau qui vous plaît.',
+      stepCollectTitle: 'Collectionner',
+      stepCollectText: 'Le morceau apparaît ici, prêt à être réécouté.',
+      clearSearch: 'Effacer la recherche',
+      loadFailedTitle: 'Impossible de charger votre médiathèque',
+    },
+    report: {
+      intro:
+        'Dites-nous ce qui ne va pas avec « {title} » de {artist}. Nos modérateurs examinent chaque signalement.',
+      reason: 'Motif',
+      reasonPlaceholder: 'Choisir un motif',
+      details: 'Détails',
+      detailsPlaceholder:
+        'Décrivez le problème pour que nos modérateurs puissent le vérifier plus vite...',
+      send: 'Envoyer le signalement',
+      reasons: {
+        copyrightInfringement: 'Violation du droit d’auteur',
+        offensiveContent: 'Contenu choquant ou inapproprié',
+        spam: 'Spam ou mise en ligne trompeuse',
+        misleadingInformation: 'Titre, artiste ou genre incorrect',
+        poorAudioQuality: 'Mauvaise qualité audio',
+        other: 'Autre',
+      },
+    },
+  },
   trackDialogs: {
     loadFailed: 'Impossible de charger ces informations',
     uploadedBy: 'Mis en ligne par',
@@ -420,6 +470,7 @@ export const FR_TRANSLATIONS: Translations = {
     moreOptions: 'Plus d’options',
   },
   notifications: {
+    trackReported: 'Le morceau « {title} » a été signalé et doit être modéré',
     trackDeleted: 'Votre morceau « {title} » a été supprimé',
     trackSubmissionCancelled:
       'Vous avez retiré « {title} » de la vérification. Il est enregistré comme brouillon.',
@@ -877,6 +928,9 @@ export const FR_TRANSLATIONS: Translations = {
       'Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ? Vos modifications seront perdues.',
   },
   messages: {
+    trackRemovedFromLibrary: 'Morceau retiré de votre médiathèque',
+    trackReported: 'Merci ! Votre signalement a été transmis à nos modérateurs.',
+    trackAlreadyReported: 'Vous avez déjà signalé ce morceau',
     submissionCancelled: 'Soumission annulée. Le morceau est maintenant un brouillon.',
     trackSubmitted: 'Morceau soumis à la vérification',
     trackResubmitted: 'Morceau soumis à nouveau',

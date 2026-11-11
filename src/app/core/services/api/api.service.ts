@@ -30,6 +30,7 @@ import type {
 import type { IGeneralSettings } from '../../models/settings.model';
 import type {
   IEditTrackData,
+  ILibraryQuery,
   IOwnTracksQuery,
   IPendingScheduleChange,
   IPlaybackSchedule,
@@ -38,6 +39,7 @@ import type {
   ITrack,
   ITrackDetails,
   ITrackEndpoints,
+  ITrackReportData,
   ITrackStatistics,
   IUploadTrackData,
 } from '../../models/track.model';
@@ -68,6 +70,8 @@ export class ApiService {
   private readonly notificationsApi: string = `${this.currentUserApi}${this.userEndpoints.notifications}`;
 
   private readonly ownTracksApi: string = `${this.currentUserApi}${this.userEndpoints.tracks}`;
+
+  private readonly libraryApi: string = `${this.currentUserApi}${this.userEndpoints.library}`;
 
   private readonly http: HttpClient = inject(HttpClient);
 
@@ -217,6 +221,35 @@ export class ApiService {
       params: params,
       context: skipGlobalLoader(),
     });
+  }
+
+  public getLibrary(query: ILibraryQuery): Observable<IPage<ITrack>> {
+    let params: HttpParams = this.pageParams(query.page, query.size)
+      .set(Constants.SORT_QUERY_PARAM, query.sort)
+      .set(Constants.DIRECTION_QUERY_PARAM, query.direction);
+
+    if (query.search) {
+      params = params.set(Constants.SEARCH_QUERY_PARAM, query.search);
+    }
+
+    return this.http.get<IPage<ITrack>>(this.libraryApi, {
+      params: params,
+      context: skipGlobalLoader(),
+    });
+  }
+
+  public getLibraryTrackDetails(trackId: number): Observable<ITrackDetails> {
+    return this.http.get<ITrackDetails>(`${this.libraryApi}/${String(trackId)}`, {
+      context: skipGlobalLoader(),
+    });
+  }
+
+  public reportTrack(trackId: number, data: ITrackReportData): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.post<void>(
+      `${this.tracksApi}/${String(trackId)}${this.trackEndpoints.reports}`,
+      data,
+    );
   }
 
   public recordTrackPlay(trackId: number): Observable<void> {
