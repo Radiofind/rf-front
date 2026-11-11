@@ -1,11 +1,8 @@
 import { Component, input, output, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { Constants } from '../../../../core/constants/constants';
-import { OwnTracksSortEnum } from '../../../../core/enums/own-tracks-sort.enum';
 import { SortDirectionEnum } from '../../../../core/enums/sort-direction.enum';
 import {
-  DEFAULT_UPLOADS_SORT,
-  FIRST_SORT_DIRECTION,
   GENRE_LABELS,
   SORT_ICON_CLASSES,
   TRACK_STATUS_LABELS,
@@ -20,13 +17,14 @@ import { TrackActionsMenuComponent } from '../track-actions-menu/track-actions-m
 import type { InputSignal, OutputEmitterRef, WritableSignal } from '@angular/core';
 import type { ITrack } from '../../../../core/models/track.model';
 import type { ITrackActionRequest } from '../../../models/track-action-option.model';
+import type { ITracksTableConfig } from '../../../models/tracks-table.model';
 import type { TrackStatus } from '../../../../core/types/track-status.type';
 import type { TranslationKey } from '../../../../core/types/translation.type';
 
 @Component({
-  selector: 'app-uploads-table',
-  templateUrl: './uploads-table.component.html',
-  styleUrl: './uploads-table.component.scss',
+  selector: 'app-tracks-table',
+  templateUrl: './tracks-table.component.html',
+  styleUrl: './tracks-table.component.scss',
   imports: [
     NgTemplateOutlet,
     TranslatePipe,
@@ -35,8 +33,17 @@ import type { TranslationKey } from '../../../../core/types/translation.type';
     TrackActionsMenuComponent,
   ],
 })
-export class UploadsTableComponent {
+export class TracksTableComponent<TSort extends string> {
   public readonly tracks: InputSignal<readonly ITrack[]> = input.required<readonly ITrack[]>();
+
+  public readonly config: InputSignal<ITracksTableConfig<TSort>> =
+    input.required<ITracksTableConfig<TSort>>();
+
+  public readonly activeSort: InputSignal<TSort> = input.required<TSort>();
+
+  public readonly direction: InputSignal<SortDirectionEnum> = input<SortDirectionEnum>(
+    SortDirectionEnum.DESC,
+  );
 
   public readonly currentTrackId: InputSignal<number | null> = input<number | null>(null);
 
@@ -46,16 +53,9 @@ export class UploadsTableComponent {
 
   public readonly isLoading: InputSignal<boolean> = input<boolean>(false);
 
-  public readonly activeSort: InputSignal<OwnTracksSortEnum> =
-    input<OwnTracksSortEnum>(DEFAULT_UPLOADS_SORT);
-
-  public readonly direction: InputSignal<SortDirectionEnum> = input<SortDirectionEnum>(
-    FIRST_SORT_DIRECTION[DEFAULT_UPLOADS_SORT],
-  );
-
   public readonly playToggled: OutputEmitterRef<ITrack> = output<ITrack>();
 
-  public readonly sortSelected: OutputEmitterRef<OwnTracksSortEnum> = output<OwnTracksSortEnum>();
+  public readonly sortSelected: OutputEmitterRef<TSort> = output<TSort>();
 
   public readonly actionSelected: OutputEmitterRef<ITrackActionRequest> =
     output<ITrackActionRequest>();
@@ -63,6 +63,8 @@ export class UploadsTableComponent {
   protected readonly brokenCovers: WritableSignal<ReadonlySet<string>> = signal<
     ReadonlySet<string>
   >(new Set<string>());
+
+  protected readonly emptyValue: string = Constants.EMPTY_VALUE_DASH;
 
   protected readonly playIconClass: string = Constants.PLAYER_PLAY_ICON_CLASS;
 
@@ -72,13 +74,11 @@ export class UploadsTableComponent {
 
   protected readonly likedIconClass: string = Constants.PLAYER_LIKED_ICON_CLASS;
 
-  protected readonly sorts: typeof OwnTracksSortEnum = OwnTracksSortEnum;
-
-  protected sortIconClass(sort: OwnTracksSortEnum): string {
+  protected sortIconClass(sort: TSort): string {
     return sort === this.activeSort() ? SORT_ICON_CLASSES[this.direction()] : UNSORTED_ICON_CLASS;
   }
 
-  protected ariaSort(sort: OwnTracksSortEnum): string {
+  protected ariaSort(sort: TSort): string {
     if (sort !== this.activeSort()) {
       return Constants.ARIA_SORT_NONE;
     }

@@ -1,1 +1,71 @@
-<p>media-library-page works!</p>
+<section class="media-library" aria-labelledby="media-library-title">
+  <header class="media-library__header">
+    <span class="media-library__header-icon" aria-hidden="true">
+      <i class="bx bx-music-library"></i>
+    </span>
+
+    <div class="media-library__heading">
+      <h1 class="media-library__title" id="media-library-title">
+        {{ 'mediaLibrary.title' | translate }}
+      </h1>
+      <p class="media-library__subtitle">{{ 'mediaLibrary.subtitle' | translate }}</p>
+    </div>
+  </header>
+
+  @if (hasToolbar()) {
+    <div class="media-library__toolbar">
+      <app-tracks-search
+        [value]="search()"
+        [placeholder]="'mediaLibrary.searchPlaceholder' | translate"
+        (searchChanged)="onSearch($event)"
+      />
+    </div>
+  }
+
+  <div class="media-library__card">
+    @if (emptyState(); as kind) {
+      <app-library-empty-state
+        [kind]="kind"
+        [search]="search()"
+        (resetClicked)="onSearchReset()"
+        (retryClicked)="onRetry()"
+      />
+    } @else if (isFirstLoad()) {
+      <app-tracks-skeleton />
+    } @else if (tracks(); as tracks) {
+      <app-tracks-table
+        [tracks]="tracks"
+        [config]="tableConfig"
+        [activeSort]="sort()"
+        [direction]="direction()"
+        [currentTrackId]="currentTrackId()"
+        [isPlaying]="isPlaying()"
+        [canPlay]="canPlay()"
+        [isLoading]="isLoading()"
+        (playToggled)="onPlayToggle($event)"
+        (sortSelected)="onSortSelect($event)"
+        (actionSelected)="onTrackAction($event)"
+      />
+
+      <app-tracks-pagination
+        [label]="'mediaLibrary.pagination' | translate"
+        [page]="page()"
+        [totalPages]="totalPages()"
+        [visiblePages]="visiblePages()"
+        [rangeStart]="rangeStart()"
+        [rangeEnd]="rangeEnd()"
+        [totalElements]="totalElements()"
+        [pageSize]="pageSize()"
+        (pageSelected)="onPageSelect($event)"
+        (pageSizeSelected)="onPageSizeSelect($event)"
+      />
+    }
+  </div>
+
+  @if (!canPlay() && tracks()?.length) {
+    <p class="media-library__radio-hint" role="note">
+      <i class="bx bx-broadcast" aria-hidden="true"></i>
+      {{ 'mediaLibrary.radioModeHint' | translate }}
+    </p>
+  }
+</section>

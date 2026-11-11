@@ -12,6 +12,7 @@ export interface IUserEndpoints {
   unreadCount: string;
   readAll: string;
   tracks: string;
+  library: string;
 }
 
 export interface ICurrentUser {

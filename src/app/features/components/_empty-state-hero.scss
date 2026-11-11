@@ -1,0 +1,203 @@
+%pill-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--header-element-border);
+  border-radius: 999px;
+  font-weight: 500;
+  color: var(--text-color);
+  transition: all 300ms ease;
+  cursor: pointer;
+
+  i {
+    display: flex;
+    font-size: 20px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--first-gradient-color);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--second-gradient-color) 35%, transparent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--first-gradient-color);
+    outline-offset: 2px;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 40px color-mix(in srgb, var(--second-gradient-color) 25%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 0 70px color-mix(in srgb, var(--second-gradient-color) 45%, transparent);
+  }
+}
+
+@mixin hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 760px;
+  padding: 40px 24px;
+  text-align: center;
+
+  &__glow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 24px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--second-gradient-color) 45%, transparent) 0%,
+      color-mix(in srgb, var(--main-color) 15%, transparent) 60%,
+      transparent 100%
+    );
+    font-size: 64px;
+    color: var(--icon-color);
+    box-shadow: 0 0 60px color-mix(in srgb, var(--second-gradient-color) 35%, transparent);
+    animation: glow 3s ease-in-out infinite;
+  }
+
+  &__title {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+
+  &__description {
+    max-width: 520px;
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--soft-text-color);
+  }
+
+  &__cta {
+    @extend %pill-button;
+    height: 48px;
+    margin-top: 28px;
+    padding: 0 28px;
+    border-color: transparent;
+    background: linear-gradient(90deg, var(--first-gradient-color), var(--second-gradient-color));
+    font-size: 15px;
+    box-shadow: 0 0 24px color-mix(in srgb, var(--second-gradient-color) 40%, transparent);
+  }
+
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    width: 100%;
+    margin-top: 40px;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  &__step {
+    --step-color: var(--second-gradient-color);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 20px 16px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--main-color) 7%, transparent);
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -17px;
+      width: 18px;
+      height: 1px;
+      background: var(--header-element-border);
+    }
+  }
+
+  &__step-icon {
+    display: flex;
+    margin-bottom: 4px;
+    font-size: 30px;
+    color: var(--step-color);
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--step-color) 60%, transparent));
+  }
+
+  &__step-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-color);
+  }
+
+  &__step-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--second-text-color);
+  }
+
+  @media (max-width: 768px) {
+    padding: 24px 8px;
+
+    &__glow {
+      width: 96px;
+      height: 96px;
+      font-size: 48px;
+    }
+
+    &__title {
+      font-size: 22px;
+    }
+
+    &__steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    &__step {
+      &:not(:last-child)::after {
+        top: auto;
+        right: auto;
+        bottom: -13px;
+        left: 50%;
+        width: 1px;
+        height: 14px;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__glow {
+      animation: none;
+    }
+  }
+}
+
+@mixin no-match {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 16px;
+
+  &__action {
+    @extend %pill-button;
+    height: 42px;
+    padding: 0 20px;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--first-gradient-color) 25%, transparent),
+      color-mix(in srgb, var(--second-gradient-color) 10%, transparent)
+    );
+    font-size: 14px;
+  }
+}

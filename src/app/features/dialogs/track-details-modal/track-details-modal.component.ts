@@ -74,7 +74,10 @@ export class TrackDetailsModalComponent {
 
   protected readonly details: ResourceRef<ITrackDetails | undefined> = rxResource({
     params: () => this.data.trackId,
-    stream: ({ params }: { params: number }) => this.trackService.getDetails(params),
+    stream: ({ params }: { params: number }) =>
+      this.data.isLibrary
+        ? this.trackService.getLibraryDetails(params)
+        : this.trackService.getDetails(params),
   });
 
   private readonly editModel = linkedSignal<IEditTrackForm>(() => {

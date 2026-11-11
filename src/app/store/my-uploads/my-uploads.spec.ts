@@ -35,6 +35,8 @@ describe('my uploads state', () => {
     playsCount: 0,
     likesCount: 0,
     liked: false,
+    own: true,
+    likedAt: null,
     createdAt: '2025-04-28T14:32:00Z',
   };
 

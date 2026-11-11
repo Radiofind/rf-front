@@ -25,9 +25,11 @@
       <div class="details__heading">
         <p class="details__title">{{ track.title }}</p>
         <p class="details__artist">{{ track.artistName }}</p>
-        <span class="details__status" [class]="'details__status--' + track.status">
-          {{ statusLabel(track.status) | translate }}
-        </span>
+        @if (!data.isLibrary) {
+          <span class="details__status" [class]="'details__status--' + track.status">
+            {{ statusLabel(track.status) | translate }}
+          </span>
+        }
       </div>
     </header>
 
@@ -99,8 +101,10 @@
       </form>
     } @else {
       <dl class="track-dialog__grid">
-        <dt class="track-dialog__term">{{ 'trackDialogs.uploadedBy' | translate }}</dt>
-        <dd class="track-dialog__value">{{ track.uploadedBy }}</dd>
+        @if (track.uploadedBy) {
+          <dt class="track-dialog__term">{{ 'trackDialogs.uploadedBy' | translate }}</dt>
+          <dd class="track-dialog__value">{{ track.uploadedBy }}</dd>
+        }
 
         <dt class="track-dialog__term">{{ 'myUploads.columns.genre' | translate }}</dt>
         <dd class="track-dialog__value">

@@ -6,6 +6,7 @@ export class LatestActivityPage {
   public readonly emptyTitle: Locator;
   public readonly emptyDescription: Locator;
   public readonly uploadFirstTrackButton: Locator;
+  public readonly globalLoader: Locator;
 
   public constructor(page: Page) {
     this.root = page.getByRole('region', { name: 'Latest Activity' });
@@ -15,5 +16,6 @@ export class LatestActivityPage {
     this.uploadFirstTrackButton = this.root.getByRole('button', {
       name: 'Upload your first track',
     });
+    this.globalLoader = page.locator('app-loader .loader');
   }
 }

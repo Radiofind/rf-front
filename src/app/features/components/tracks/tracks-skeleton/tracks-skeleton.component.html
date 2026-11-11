@@ -1,0 +1,11 @@
+<ul class="tracks-skeleton" [attr.aria-label]="'common.loadingText' | translate" aria-busy="true">
+  @for (row of rows; track row) {
+    <li class="tracks-skeleton__row">
+      <span class="tracks-skeleton__cover"></span>
+      <span class="tracks-skeleton__lines">
+        <span class="tracks-skeleton__line"></span>
+        <span class="tracks-skeleton__line tracks-skeleton__line--short"></span>
+      </span>
+    </li>
+  }
+</ul>

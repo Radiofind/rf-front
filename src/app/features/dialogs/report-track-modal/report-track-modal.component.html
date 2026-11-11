@@ -1,0 +1,44 @@
+<form class="track-dialog report" [formRoot]="reportForm">
+  <p class="track-dialog__note">
+    <i class="bx bx-flag" aria-hidden="true"></i>
+    {{ 'mediaLibrary.report.intro' | translate: { title: data.title, artist: data.artistName } }}
+  </p>
+
+  <div class="report__reason">
+    <span class="report__label" id="report-track-reason">
+      {{ 'mediaLibrary.report.reason' | translate }} *
+    </span>
+    <app-select-field
+      labelledBy="report-track-reason"
+      [placeholder]="'mediaLibrary.report.reasonPlaceholder' | translate"
+      [options]="reasonOptions()"
+      [formField]="reportForm.reason"
+    />
+  </div>
+
+  <app-input-field
+    [fieldLabel]="('mediaLibrary.report.details' | translate) + (isCommentRequired() ? ' *' : '')"
+    [inputPlaceholder]="'mediaLibrary.report.detailsPlaceholder' | translate"
+    [isCompact]="true"
+    [isTextareaField]="true"
+    [hasOptionalLabel]="!isCommentRequired()"
+    [textareaRows]="commentRows"
+    [characterLimit]="commentLimit"
+    [formField]="reportForm.comment"
+  />
+
+  <footer class="track-dialog__actions">
+    <app-button
+      additionalClass="button--secondary button--compact"
+      [contentText]="'common.cancel' | translate"
+      (clickAction)="onCancel()"
+    />
+    <app-button
+      additionalClass="button--compact"
+      buttonType="submit"
+      contentIconClass="bx bx-send"
+      [contentText]="'mediaLibrary.report.send' | translate"
+      [disabled]="isSendDisabled()"
+    />
+  </footer>
+</form>

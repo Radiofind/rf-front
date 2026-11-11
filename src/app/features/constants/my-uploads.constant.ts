@@ -4,11 +4,13 @@ import { TrackActionEnum } from '../../core/enums/track-action.enum';
 import { TrackStatusEnum } from '../../core/enums/track-status.enum';
 import { GENRE_OPTIONS } from './genre.constant';
 
+import type { ITrack } from '../../core/models/track.model';
 import type { TrackStatus } from '../../core/types/track-status.type';
 import type { TranslationKey } from '../../core/types/translation.type';
 import type { ISelectOption } from '../../shared/models/select-option.model';
 import type { IUploadsStatusTab } from '../models/uploads-status-tab.model';
 import type { ITrackActionOption } from '../models/track-action-option.model';
+import type { ITracksTableConfig } from '../models/tracks-table.model';
 
 export const DEFAULT_UPLOADS_PAGE_SIZE: number = 10;
 
@@ -158,6 +160,18 @@ export const TRACK_ACTION_OPTIONS: Readonly<Record<TrackActionEnum, ITrackAction
     iconClass: 'bx bx-trash',
     isDanger: true,
   },
+  [TrackActionEnum.REPORT]: {
+    action: TrackActionEnum.REPORT,
+    label: 'mediaLibrary.actions.report',
+    iconClass: 'bx bx-flag',
+    isDanger: false,
+  },
+  [TrackActionEnum.REMOVE_FROM_LIBRARY]: {
+    action: TrackActionEnum.REMOVE_FROM_LIBRARY,
+    label: 'mediaLibrary.actions.remove',
+    iconClass: 'bx bx-heart-break',
+    isDanger: true,
+  },
 };
 
 export const TRACK_ACTIONS_BY_STATUS: Readonly<Record<TrackStatus, readonly TrackActionEnum[]>> = {
@@ -191,6 +205,20 @@ export const TRACK_ACTIONS_BY_STATUS: Readonly<Record<TrackStatus, readonly Trac
     TrackActionEnum.DOWNLOAD,
     TrackActionEnum.DELETE,
   ],
+};
+
+export const MY_UPLOADS_TABLE_CONFIG: ITracksTableConfig<OwnTracksSortEnum> = {
+  sorts: {
+    title: OwnTracksSortEnum.TITLE,
+    duration: OwnTracksSortEnum.DURATION,
+    plays: OwnTracksSortEnum.PLAYS,
+    likes: OwnTracksSortEnum.LIKES,
+    date: OwnTracksSortEnum.UPLOADED,
+  },
+  dateLabel: 'myUploads.columns.uploaded',
+  dateOf: (track: ITrack): string => track.createdAt,
+  hasStatus: true,
+  actionsOf: (track: ITrack): readonly TrackActionEnum[] => TRACK_ACTIONS_BY_STATUS[track.status],
 };
 
 export const MY_UPLOADS_MESSAGES = {

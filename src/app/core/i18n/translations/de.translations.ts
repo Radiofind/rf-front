@@ -354,6 +354,56 @@ export const DE_TRANSLATIONS: Translations = {
       retry: 'Erneut versuchen',
     },
   },
+  mediaLibrary: {
+    title: 'Mediathek',
+    subtitle: 'Alle Tracks, die dir gefallen, an einem Ort.',
+    searchPlaceholder: 'In deiner Mediathek suchen...',
+    pagination: 'Seiten der Mediathek',
+    radioModeHint:
+      'Der Radiomodus ist aktiv. Schalte ihn in den Einstellungen aus, um deine Mediathek hier zu hören.',
+    columns: {
+      added: 'Hinzugefügt',
+    },
+    actions: {
+      report: 'Track melden',
+      remove: 'Aus Mediathek entfernen',
+    },
+    removeConfirm: '«{title}» aus deiner Mediathek entfernen?',
+    removeDescription:
+      'Dein Like für diesen Track wird ebenfalls entfernt. Mit einem neuen Like kannst du ihn wieder hinzufügen.',
+    empty: {
+      emptyTitle: 'Deine Mediathek wartet auf ihren ersten Track',
+      emptyDescription:
+        'Jeder Track, den du likest, wird hier gespeichert – so sind deine Favoriten immer nur einen Klick entfernt.',
+      journeyLabel: 'So kommen Tracks in deine Mediathek',
+      stepListenTitle: 'Anhören',
+      stepListenText: 'Entdecke Tracks im Radio oder im Player.',
+      stepLikeTitle: 'Liken',
+      stepLikeText: 'Tippe auf das Herz bei einem Track, der dir gefällt.',
+      stepCollectTitle: 'Sammeln',
+      stepCollectText: 'Der Track erscheint hier und ist jederzeit abspielbar.',
+      clearSearch: 'Suche leeren',
+      loadFailedTitle: 'Wir konnten deine Mediathek nicht laden',
+    },
+    report: {
+      intro:
+        'Sag uns, was mit «{title}» von {artist} nicht stimmt. Unsere Moderatoren prüfen jede Meldung.',
+      reason: 'Grund',
+      reasonPlaceholder: 'Grund auswählen',
+      details: 'Details',
+      detailsPlaceholder:
+        'Beschreibe das Problem, damit unsere Moderatoren es schneller prüfen können...',
+      send: 'Meldung senden',
+      reasons: {
+        copyrightInfringement: 'Urheberrechtsverletzung',
+        offensiveContent: 'Anstössiger oder unangemessener Inhalt',
+        spam: 'Spam oder irreführender Upload',
+        misleadingInformation: 'Falscher Titel, Künstler oder falsches Genre',
+        poorAudioQuality: 'Schlechte Audioqualität',
+        other: 'Sonstiges',
+      },
+    },
+  },
   trackDialogs: {
     loadFailed: 'Diese Informationen konnten nicht geladen werden',
     uploadedBy: 'Hochgeladen von',
@@ -416,6 +466,7 @@ export const DE_TRANSLATIONS: Translations = {
     moreOptions: 'Weitere Optionen',
   },
   notifications: {
+    trackReported: 'Der Track «{title}» wurde gemeldet und muss moderiert werden',
     trackDeleted: 'Dein Track «{title}» wurde gelöscht',
     trackSubmissionCancelled:
       'Du hast «{title}» aus der Prüfung zurückgezogen. Der Track ist als Entwurf gespeichert.',
@@ -870,6 +921,9 @@ export const DE_TRANSLATIONS: Translations = {
       'Du hast nicht gespeicherte Änderungen. Möchtest du diese Seite wirklich verlassen? Deine Änderungen gehen verloren.',
   },
   messages: {
+    trackRemovedFromLibrary: 'Track aus deiner Mediathek entfernt',
+    trackReported: 'Danke! Deine Meldung wurde an unsere Moderatoren gesendet.',
+    trackAlreadyReported: 'Du hast diesen Track bereits gemeldet',
     submissionCancelled: 'Einreichung zurückgezogen. Der Track ist jetzt ein Entwurf.',
     trackSubmitted: 'Track zur Prüfung eingereicht',
     trackResubmitted: 'Track erneut zur Prüfung eingereicht',

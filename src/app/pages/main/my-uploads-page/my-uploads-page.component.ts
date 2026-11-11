@@ -3,18 +3,18 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Constants } from '../../../core/constants/constants';
 import { Links } from '../../../core/constants/links';
-import { UploadsTableComponent } from '../../../features/components/my-uploads/uploads-table/uploads-table.component';
+import { TracksTableComponent } from '../../../features/components/tracks/tracks-table/tracks-table.component';
+import { TracksSearchComponent } from '../../../features/components/tracks/tracks-search/tracks-search.component';
+import { TracksSkeletonComponent } from '../../../features/components/tracks/tracks-skeleton/tracks-skeleton.component';
+import { TracksPaginationComponent } from '../../../features/components/tracks/tracks-pagination/tracks-pagination.component';
 import { UploadsEmptyStateComponent } from '../../../features/components/my-uploads/uploads-empty-state/uploads-empty-state.component';
 import { TrackActionsService } from '../../../features/services/track-actions-service/track-actions.service';
 import { UploadsPreferencesService } from '../../../features/services/uploads-preferences-service/uploads-preferences.service';
 import { UploadsEmptyStateEnum } from '../../../features/enums/uploads-empty-state.enum';
 import {
-  UPLOADS_PAGE_SIZE_OPTIONS,
-  MY_UPLOADS_SEARCH_MAX_LENGTH,
-  MY_UPLOADS_SKELETON_ROWS,
+  MY_UPLOADS_TABLE_CONFIG,
   UPLOADS_STATUS_TABS,
 } from '../../../features/constants/my-uploads.constant';
-import { SelectFieldComponent } from '../../../shared/components/select-field/select-field.component';
 import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
 import { MyUploadsPageActions } from '../../../store/ui/my-uploads-page.actions';
 import { myUploadsFeature } from '../../../store/my-uploads/my-uploads.feature';
@@ -26,17 +26,24 @@ import type { OwnTracksSortEnum } from '../../../core/enums/own-tracks-sort.enum
 import type { SortDirectionEnum } from '../../../core/enums/sort-direction.enum';
 import type { IPlayerTrack } from '../../../core/models/player.model';
 import type { IGeneralSettings } from '../../../core/models/settings.model';
-import type { ISelectOption } from '../../../shared/models/select-option.model';
 import type { ITrack } from '../../../core/models/track.model';
 import type { TrackStatus } from '../../../core/types/track-status.type';
 import type { IUploadsStatusTab } from '../../../features/models/uploads-status-tab.model';
 import type { ITrackActionRequest } from '../../../features/models/track-action-option.model';
+import type { ITracksTableConfig } from '../../../features/models/tracks-table.model';
 
 @Component({
   selector: 'app-my-uploads-page',
   templateUrl: './my-uploads-page.component.html',
   styleUrl: './my-uploads-page.component.scss',
-  imports: [UploadsTableComponent, UploadsEmptyStateComponent, SelectFieldComponent, TranslatePipe],
+  imports: [
+    TracksTableComponent,
+    TracksSearchComponent,
+    TracksSkeletonComponent,
+    TracksPaginationComponent,
+    UploadsEmptyStateComponent,
+    TranslatePipe,
+  ],
 })
 export class MyUploadsPageComponent implements OnInit {
   private readonly store: Store = inject(Store);
@@ -61,11 +68,7 @@ export class MyUploadsPageComponent implements OnInit {
 
   protected readonly tabs: readonly IUploadsStatusTab[] = UPLOADS_STATUS_TABS;
 
-  protected readonly searchMaxLength: number = MY_UPLOADS_SEARCH_MAX_LENGTH;
-
-  protected readonly pageSizeOptions: readonly ISelectOption<string>[] = UPLOADS_PAGE_SIZE_OPTIONS;
-
-  protected readonly skeletonRows: readonly number[] = MY_UPLOADS_SKELETON_ROWS;
+  protected readonly tableConfig: ITracksTableConfig<OwnTracksSortEnum> = MY_UPLOADS_TABLE_CONFIG;
 
   protected readonly tracks: Signal<readonly ITrack[] | null> = this.store.selectSignal(
     myUploadsFeature.selectTracks,
@@ -81,12 +84,8 @@ export class MyUploadsPageComponent implements OnInit {
 
   protected readonly page: Signal<number> = this.store.selectSignal(myUploadsFeature.selectPage);
 
-  private readonly pageSizeNumber: Signal<number> = this.store.selectSignal(
+  protected readonly pageSize: Signal<number> = this.store.selectSignal(
     myUploadsFeature.selectPageSize,
-  );
-
-  protected readonly pageSize: Signal<string> = computed<string>(() =>
-    String(this.pageSizeNumber()),
   );
 
   protected readonly sort: Signal<OwnTracksSortEnum> = this.store.selectSignal(
@@ -153,22 +152,16 @@ export class MyUploadsPageComponent implements OnInit {
     }
   }
 
-  public onSearch(event: Event): void {
-    this.store.dispatch(
-      MyUploadsPageActions.searchChanged({ search: (event.target as HTMLInputElement).value }),
-    );
-  }
-
-  public onSearchClear(): void {
-    this.store.dispatch(MyUploadsPageActions.searchChanged({ search: Constants.EMPTY_STRING }));
+  public onSearch(search: string): void {
+    this.store.dispatch(MyUploadsPageActions.searchChanged({ search: search }));
   }
 
   public onFiltersReset(): void {
     this.store.dispatch(MyUploadsPageActions.filtersReset());
   }
 
-  public onPageSizeSelect(size: string): void {
-    this.store.dispatch(MyUploadsPageActions.pageSizeSelected({ size: Number(size) }));
+  public onPageSizeSelect(size: number): void {
+    this.store.dispatch(MyUploadsPageActions.pageSizeSelected({ size: size }));
   }
 
   public onSortSelect(sort: OwnTracksSortEnum): void {
@@ -180,9 +173,7 @@ export class MyUploadsPageComponent implements OnInit {
   }
 
   public onPageSelect(page: number): void {
-    if (page !== this.page() && page >= Constants.ZERO && page < this.totalPages()) {
-      this.store.dispatch(MyUploadsPageActions.pageSelected({ page: page }));
-    }
+    this.store.dispatch(MyUploadsPageActions.pageSelected({ page: page }));
   }
 
   public onTrackAction({ track, action }: ITrackActionRequest): void {

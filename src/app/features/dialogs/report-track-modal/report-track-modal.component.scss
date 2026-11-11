@@ -1,0 +1,16 @@
+@use '../track-dialog';
+
+.report {
+  gap: 16px;
+
+  &__reason {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__label {
+    font-size: 14px;
+    color: var(--text-color);
+  }
+}
