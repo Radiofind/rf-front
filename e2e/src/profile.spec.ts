@@ -265,8 +265,11 @@ test.describe('profile', () => {
       const activity: LatestActivityPage = new LatestActivityPage(authenticatedPage);
 
       await authenticatedPage.goto('/profile');
+      await expect(activity.uploadFirstTrackButton).toBeVisible();
+      await expect(activity.globalLoader).toBeHidden();
 
       await activity.uploadFirstTrackButton.focus();
+      await expect(activity.uploadFirstTrackButton).toBeFocused();
       await authenticatedPage.keyboard.press('Enter');
 
       await expect(authenticatedPage).toHaveURL(/\/upload-track$/);

@@ -347,6 +347,54 @@ export const EN_TRANSLATIONS = {
       retry: 'Try again',
     },
   },
+  mediaLibrary: {
+    title: 'Media Library',
+    subtitle: 'All the tracks you liked, in one place.',
+    searchPlaceholder: 'Search in your library...',
+    pagination: 'Library pages',
+    radioModeHint: 'Radio mode is on. Turn it off in Settings to listen to your library here.',
+    columns: {
+      added: 'Added',
+    },
+    actions: {
+      report: 'Report Track',
+      remove: 'Remove from Library',
+    },
+    removeConfirm: 'Remove "{title}" from your library?',
+    removeDescription:
+      'Your like on this track is removed as well. You can add it back by liking it again.',
+    empty: {
+      emptyTitle: 'Your library is waiting for its first track',
+      emptyDescription:
+        'Every track you like is saved here, so your favourites are always one click away.',
+      journeyLabel: 'How tracks get into your library',
+      stepListenTitle: 'Listen',
+      stepListenText: 'Discover tracks on the radio or in the player.',
+      stepLikeTitle: 'Like',
+      stepLikeText: 'Tap the heart on a track you enjoy.',
+      stepCollectTitle: 'Collect',
+      stepCollectText: 'The track appears here, ready to play again.',
+      clearSearch: 'Clear search',
+      loadFailedTitle: 'We could not load your library',
+    },
+    report: {
+      intro:
+        'Tell us what is wrong with "{title}" by {artist}. Our moderators review every report.',
+      reason: 'Reason',
+      reasonPlaceholder: 'Select a reason',
+      details: 'Details',
+      detailsPlaceholder: 'Describe the problem so our moderators can check it faster...',
+      send: 'Send report',
+      reasons: {
+        copyrightInfringement: 'Copyright infringement',
+        offensiveContent: 'Offensive or inappropriate content',
+        spam: 'Spam or misleading upload',
+        misleadingInformation: 'Wrong title, artist or genre',
+        poorAudioQuality: 'Poor audio quality',
+        other: 'Other',
+      },
+    },
+  },
   trackDialogs: {
     loadFailed: 'We could not load this information',
     uploadedBy: 'Uploaded by',
@@ -409,6 +457,7 @@ export const EN_TRANSLATIONS = {
     moreOptions: 'More options',
   },
   notifications: {
+    trackReported: 'The track "{title}" was reported and needs a moderation review',
     trackDeleted: 'Your track "{title}" was deleted',
     trackSubmissionCancelled: 'You withdrew "{title}" from review. It is saved as a draft.',
     trackResubmittedForReview: 'Your track "{title}" was sent for quality review again',
@@ -861,6 +910,9 @@ export const EN_TRANSLATIONS = {
       'You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.',
   },
   messages: {
+    trackRemovedFromLibrary: 'Track removed from your library',
+    trackReported: 'Thank you. Your report was sent to our moderators.',
+    trackAlreadyReported: 'You have already reported this track',
     submissionCancelled: 'Submission cancelled. The track is now a draft.',
     trackSubmitted: 'Track sent for review',
     trackResubmitted: 'Track sent for review again',

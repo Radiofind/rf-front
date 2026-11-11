@@ -1,0 +1,9 @@
+@use '../track-list-page';
+
+:host {
+  display: block;
+}
+
+.media-library {
+  @include track-list-page.layout;
+}

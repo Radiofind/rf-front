@@ -1,0 +1,21 @@
+<i class="bx bx-search tracks-search__icon" aria-hidden="true"></i>
+<input
+  class="tracks-search__input"
+  type="search"
+  [value]="value()"
+  [maxLength]="maxLength"
+  [placeholder]="placeholder()"
+  [attr.aria-label]="'myUploads.searchLabel' | translate"
+  (input)="onInput($event)"
+/>
+@if (value()) {
+  <button
+    type="button"
+    class="tracks-search__clear"
+    [attr.aria-label]="'myUploads.clearSearch' | translate"
+    [title]="'myUploads.clearSearch' | translate"
+    (click)="searchChanged.emit('')"
+  >
+    <i class="bx bx-x" aria-hidden="true"></i>
+  </button>
+}

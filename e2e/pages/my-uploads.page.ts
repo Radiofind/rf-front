@@ -23,8 +23,8 @@ export class MyUploadsPage {
   public constructor(page: Page) {
     this.page = page;
     this.root = page.locator('app-my-uploads-page');
-    this.rows = this.root.locator('.uploads__row');
-    this.titles = this.rows.locator('.uploads__title');
+    this.rows = this.root.locator('.tracks-table__row');
+    this.titles = this.rows.locator('.tracks-table__title');
     this.search = this.root.getByRole('searchbox', { name: 'Search by track title or artist' });
     this.clearSearchButton = this.root.getByRole('button', { name: 'Clear search', exact: true });
     this.emptyTitle = this.root.locator('.empty__title');
@@ -32,7 +32,7 @@ export class MyUploadsPage {
     this.uploadFirstTrackButton = this.root.getByRole('button', {
       name: 'Upload your first track',
     });
-    this.range = this.root.locator('.my-uploads__range');
+    this.range = this.root.locator('.tracks-pagination__range');
     this.radioHint = this.root.locator('.my-uploads__radio-hint');
     this.playerTitle = page.locator('app-audio-player .player__title');
     this.playerPlayButton = page.locator('app-audio-player .player__play');

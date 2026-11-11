@@ -5,7 +5,7 @@
   --status-rejected: var(--error-color);
 }
 
-.uploads {
+.tracks-table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
@@ -89,7 +89,7 @@
     color: var(--second-text-color);
     transition: color 200ms ease;
 
-    .uploads__sort--active & {
+    .tracks-table__sort--active & {
       color: var(--icon-color);
     }
   }
@@ -108,7 +108,7 @@
     &--current {
       background: color-mix(in srgb, var(--main-color) 12%, transparent);
 
-      .uploads__title {
+      .tracks-table__title {
         color: var(--icon-color);
       }
     }
@@ -171,11 +171,11 @@
 
       &:hover,
       &:focus-visible {
-        .uploads__overlay {
+        .tracks-table__overlay {
           opacity: 1;
         }
 
-        .uploads__equalizer {
+        .tracks-table__equalizer {
           opacity: 0;
         }
       }
@@ -440,7 +440,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .uploads__equalizer span {
+  .tracks-table__equalizer span {
     animation: none;
     transform: scaleY(0.7);
   }

@@ -35,6 +35,8 @@ describe('MyUploadsPageComponent', () => {
     playsCount: 0,
     likesCount: 0,
     liked: false,
+    own: true,
+    likedAt: null,
     createdAt: '2025-04-28T14:32:00Z',
   };
   const space: ITrack = { ...midnight, id: 2, title: 'Lost in Space', audioUrl: '/a/2' };
@@ -104,7 +106,7 @@ describe('MyUploadsPageComponent', () => {
   const covers = (fixture: ComponentFixture<MyUploadsPageComponent>): HTMLButtonElement[] =>
     Array.from(
       (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
-        '.uploads__cover--playable',
+        '.tracks-table__cover--playable',
       ),
     );
 

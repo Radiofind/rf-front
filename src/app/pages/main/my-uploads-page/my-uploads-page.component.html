@@ -30,29 +30,11 @@
         }
       </div>
 
-      <div class="my-uploads__search">
-        <i class="bx bx-search my-uploads__search-icon" aria-hidden="true"></i>
-        <input
-          class="my-uploads__search-input"
-          type="search"
-          [value]="search()"
-          [maxLength]="searchMaxLength"
-          [placeholder]="'myUploads.searchPlaceholder' | translate"
-          [attr.aria-label]="'myUploads.searchLabel' | translate"
-          (input)="onSearch($event)"
-        />
-        @if (search()) {
-          <button
-            type="button"
-            class="my-uploads__search-clear"
-            [attr.aria-label]="'myUploads.clearSearch' | translate"
-            [title]="'myUploads.clearSearch' | translate"
-            (click)="onSearchClear()"
-          >
-            <i class="bx bx-x" aria-hidden="true"></i>
-          </button>
-        }
-      </div>
+      <app-tracks-search
+        [value]="search()"
+        [placeholder]="'myUploads.searchPlaceholder' | translate"
+        (searchChanged)="onSearch($event)"
+      />
     </div>
   }
 
@@ -67,94 +49,34 @@
         (retryClicked)="onRetry()"
       />
     } @else if (isFirstLoad()) {
-      <ul
-        class="my-uploads__skeleton"
-        [attr.aria-label]="'common.loadingText' | translate"
-        aria-busy="true"
-      >
-        @for (row of skeletonRows; track row) {
-          <li class="my-uploads__skeleton-row">
-            <span class="my-uploads__skeleton-cover"></span>
-            <span class="my-uploads__skeleton-lines">
-              <span class="my-uploads__skeleton-line"></span>
-              <span class="my-uploads__skeleton-line my-uploads__skeleton-line--short"></span>
-            </span>
-          </li>
-        }
-      </ul>
+      <app-tracks-skeleton />
     } @else if (tracks(); as tracks) {
-      <app-uploads-table
+      <app-tracks-table
         [tracks]="tracks"
+        [config]="tableConfig"
+        [activeSort]="sort()"
+        [direction]="direction()"
         [currentTrackId]="currentTrackId()"
         [isPlaying]="isPlaying()"
         [canPlay]="canPlay()"
         [isLoading]="isLoading()"
-        [activeSort]="sort()"
-        [direction]="direction()"
         (playToggled)="onPlayToggle($event)"
         (sortSelected)="onSortSelect($event)"
         (actionSelected)="onTrackAction($event)"
       />
 
-      <footer class="my-uploads__footer">
-        <div class="my-uploads__footer-info">
-          <p class="my-uploads__range" aria-live="polite">
-            {{
-              'myUploads.range'
-                | translate: { from: rangeStart(), to: rangeEnd(), total: totalElements() }
-            }}
-          </p>
-
-          <div class="my-uploads__page-size">
-            <span class="my-uploads__page-size-label" id="my-uploads-page-size">
-              {{ 'myUploads.perPage' | translate }}
-            </span>
-            <app-select-field
-              class="my-uploads__page-size-select"
-              name="page-size"
-              labelledBy="my-uploads-page-size"
-              [options]="pageSizeOptions"
-              [value]="pageSize()"
-              (valueChange)="onPageSizeSelect($event)"
-            />
-          </div>
-        </div>
-
-        <nav class="my-uploads__pagination" [attr.aria-label]="'myUploads.pagination' | translate">
-          <button
-            type="button"
-            class="my-uploads__page my-uploads__page--arrow"
-            [disabled]="page() === 0"
-            [attr.aria-label]="'myUploads.previousPage' | translate"
-            (click)="onPageSelect(page() - 1)"
-          >
-            <i class="bx bx-chevron-left" aria-hidden="true"></i>
-          </button>
-
-          @for (pageIndex of visiblePages(); track pageIndex) {
-            <button
-              type="button"
-              class="my-uploads__page"
-              [class.my-uploads__page--active]="pageIndex === page()"
-              [attr.aria-current]="pageIndex === page() ? 'page' : null"
-              [attr.aria-label]="'myUploads.goToPage' | translate: { page: pageIndex + 1 }"
-              (click)="onPageSelect(pageIndex)"
-            >
-              {{ pageIndex + 1 }}
-            </button>
-          }
-
-          <button
-            type="button"
-            class="my-uploads__page my-uploads__page--arrow"
-            [disabled]="page() + 1 >= totalPages()"
-            [attr.aria-label]="'myUploads.nextPage' | translate"
-            (click)="onPageSelect(page() + 1)"
-          >
-            <i class="bx bx-chevron-right" aria-hidden="true"></i>
-          </button>
-        </nav>
-      </footer>
+      <app-tracks-pagination
+        [label]="'myUploads.pagination' | translate"
+        [page]="page()"
+        [totalPages]="totalPages()"
+        [visiblePages]="visiblePages()"
+        [rangeStart]="rangeStart()"
+        [rangeEnd]="rangeEnd()"
+        [totalElements]="totalElements()"
+        [pageSize]="pageSize()"
+        (pageSelected)="onPageSelect($event)"
+        (pageSizeSelected)="onPageSizeSelect($event)"
+      />
     }
   </div>
 

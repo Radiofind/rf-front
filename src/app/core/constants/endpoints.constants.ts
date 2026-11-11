@@ -27,6 +27,7 @@ export class EndpointConstants {
     unreadCount: '/unread-count',
     readAll: '/read-all',
     tracks: '/tracks',
+    library: '/library',
   };
 
   public static readonly TRACK_ENDPOINTS: ITrackEndpoints = {
@@ -39,5 +40,6 @@ export class EndpointConstants {
     schedule: '/schedule',
     scheduleChangeRequests: '/schedule-change-requests',
     rejection: '/rejection',
+    reports: '/reports',
   };
 }

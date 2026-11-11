@@ -230,7 +230,9 @@ test.describe('track actions', () => {
       await uploads.chooseAction('Midnight Dreams', 'Cancel Submission');
       await uploads.confirm('Cancel Submission');
 
-      await expect(uploads.row('Midnight Dreams').locator('.uploads__status')).toHaveText('Draft');
+      await expect(uploads.row('Midnight Dreams').locator('.tracks-table__status')).toHaveText(
+        'Draft',
+      );
 
       await uploads.tab('Drafts').click();
       await expect(uploads.titles).toHaveText(['Midnight Dreams']);

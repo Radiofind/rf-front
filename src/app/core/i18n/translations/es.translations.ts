@@ -355,6 +355,56 @@ export const ES_TRANSLATIONS: Translations = {
       retry: 'Reintentar',
     },
   },
+  mediaLibrary: {
+    title: 'Biblioteca multimedia',
+    subtitle: 'Todas las pistas que te gustan, en un solo lugar.',
+    searchPlaceholder: 'Buscar en tu biblioteca...',
+    pagination: 'Páginas de la biblioteca',
+    radioModeHint:
+      'El modo radio está activado. Desactívalo en Ajustes para escuchar tu biblioteca aquí.',
+    columns: {
+      added: 'Añadido',
+    },
+    actions: {
+      report: 'Denunciar pista',
+      remove: 'Quitar de la biblioteca',
+    },
+    removeConfirm: '¿Quitar «{title}» de tu biblioteca?',
+    removeDescription:
+      'También se quitará tu «Me gusta» de esta pista. Puedes volver a añadirla dándole «Me gusta» otra vez.',
+    empty: {
+      emptyTitle: 'Tu biblioteca espera su primera pista',
+      emptyDescription:
+        'Cada pista que te gusta se guarda aquí, así tus favoritas siempre están a un clic.',
+      journeyLabel: 'Cómo llegan las pistas a tu biblioteca',
+      stepListenTitle: 'Escucha',
+      stepListenText: 'Descubre pistas en la radio o en el reproductor.',
+      stepLikeTitle: 'Dale «Me gusta»',
+      stepLikeText: 'Toca el corazón de una pista que disfrutes.',
+      stepCollectTitle: 'Colecciona',
+      stepCollectText: 'La pista aparece aquí, lista para volver a sonar.',
+      clearSearch: 'Borrar búsqueda',
+      loadFailedTitle: 'No pudimos cargar tu biblioteca',
+    },
+    report: {
+      intro:
+        'Cuéntanos qué pasa con «{title}» de {artist}. Nuestros moderadores revisan cada denuncia.',
+      reason: 'Motivo',
+      reasonPlaceholder: 'Selecciona un motivo',
+      details: 'Detalles',
+      detailsPlaceholder:
+        'Describe el problema para que nuestros moderadores puedan revisarlo antes...',
+      send: 'Enviar denuncia',
+      reasons: {
+        copyrightInfringement: 'Infracción de derechos de autor',
+        offensiveContent: 'Contenido ofensivo o inapropiado',
+        spam: 'Spam o subida engañosa',
+        misleadingInformation: 'Título, artista o género incorrecto',
+        poorAudioQuality: 'Mala calidad de audio',
+        other: 'Otro',
+      },
+    },
+  },
   trackDialogs: {
     loadFailed: 'No pudimos cargar esta información',
     uploadedBy: 'Subida por',
@@ -417,6 +467,7 @@ export const ES_TRANSLATIONS: Translations = {
     moreOptions: 'Más opciones',
   },
   notifications: {
+    trackReported: 'La pista «{title}» ha sido denunciada y necesita revisión',
     trackDeleted: 'Tu pista «{title}» se eliminó',
     trackSubmissionCancelled: 'Retiraste «{title}» de la revisión. Se guardó como borrador.',
     trackResubmittedForReview: 'Tu pista «{title}» se reenvió a la revisión de calidad',
@@ -869,6 +920,9 @@ export const ES_TRANSLATIONS: Translations = {
       'Tienes cambios sin guardar. ¿Seguro que quieres salir de esta página? Se perderán los cambios.',
   },
   messages: {
+    trackRemovedFromLibrary: 'Pista quitada de tu biblioteca',
+    trackReported: '¡Gracias! Tu denuncia se envió a nuestros moderadores.',
+    trackAlreadyReported: 'Ya denunciaste esta pista',
     submissionCancelled: 'Envío cancelado. La pista ahora es un borrador.',
     trackSubmitted: 'Pista enviada a revisión',
     trackResubmitted: 'Pista reenviada a revisión',

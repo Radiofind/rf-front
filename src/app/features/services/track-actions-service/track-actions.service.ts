@@ -33,7 +33,7 @@ export class TrackActionsService {
 
   private readonly isBrowser: boolean = isPlatformBrowser(inject(PLATFORM_ID));
 
-  private readonly handlers: Readonly<Record<TrackActionEnum, (track: ITrack) => void>> = {
+  private readonly handlers: Readonly<Partial<Record<TrackActionEnum, (track: ITrack) => void>>> = {
     [TrackActionEnum.DETAILS]: (track: ITrack) => {
       this.openDetails(track, false);
     },
@@ -108,7 +108,7 @@ export class TrackActionsService {
   };
 
   public run(track: ITrack, action: TrackActionEnum): void {
-    this.handlers[action](track);
+    this.handlers[action]?.(track);
   }
 
   private openDetails(track: ITrack, isEditing: boolean): void {
@@ -121,7 +121,7 @@ export class TrackActionsService {
           title: TRACK_ACTION_OPTIONS[action].label,
           iconClass: TRACK_ACTION_OPTIONS[action].iconClass,
           size: ModalSizeEnum.LARGE,
-          data: { trackId: track.id, isEditing: isEditing },
+          data: { trackId: track.id, isEditing: isEditing, isLibrary: false },
         },
       )
       .closed.pipe(filter(Boolean), takeUntilDestroyed(this.destroyRef))
