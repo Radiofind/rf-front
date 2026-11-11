@@ -63,6 +63,21 @@ describe('SelectFieldComponent', () => {
     expect(displayedValue(fixture)).toBe('Plum');
   });
 
+  it('shows the image of the selected option as decoration', async () => {
+    const fixture: ComponentFixture<SelectFieldComponent<Fruit>> = await createFixture();
+    fixture.componentRef.setInput('options', [
+      { value: 'pear', label: 'Pear', imageSrc: '/images/pear.svg' },
+    ]);
+    await fixture.whenStable();
+
+    const image: HTMLImageElement = (fixture.nativeElement as HTMLElement).querySelector(
+      '.select__image',
+    )!;
+
+    expect(image.getAttribute('src')).toBe('/images/pear.svg');
+    expect(image.getAttribute('alt')).toBe('');
+  });
+
   it('opens a custom menu with every option and marks the selected one', async () => {
     const fixture: ComponentFixture<SelectFieldComponent<Fruit>> = await createFixture();
 
