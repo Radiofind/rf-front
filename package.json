@@ -54,6 +54,7 @@
     "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "flag-icons": "^7.6.0",
     "jsdom": "^28.0.0",
     "normalize.css": "^8.0.1",
     "prettier": "^3.8.3",

@@ -59,7 +59,7 @@ describe('GeneralSettingsPageComponent', () => {
   const selectedLabel = (
     fixture: ComponentFixture<GeneralSettingsPageComponent>,
     id: string,
-  ): string => row(fixture, id).querySelector('.select__value')!.textContent.trim();
+  ): string => row(fixture, id).querySelector('.select__text')!.textContent.trim();
 
   const toggle = (
     fixture: ComponentFixture<GeneralSettingsPageComponent>,
@@ -76,8 +76,8 @@ describe('GeneralSettingsPageComponent', () => {
   ): Promise<void> => {
     select(fixture, id).click();
     await fixture.whenStable();
-    Array.from(document.querySelectorAll<HTMLButtonElement>('.dropdown-menu__item'))
-      .find((item) => item.textContent.trim() === label)!
+    Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu__text'))
+      .find((text) => text.textContent.trim() === label)!
       .click();
     await fixture.whenStable();
   };

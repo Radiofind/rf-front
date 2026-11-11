@@ -24,12 +24,12 @@ export const DEFAULT_GENERAL_SETTINGS: Readonly<IGeneralSettings> = {
 };
 
 export const LANGUAGE_OPTIONS: readonly ISelectOption<Language>[] = [
-  { value: LanguageEnum.EN, label: 'English' },
-  { value: LanguageEnum.DE, label: 'Deutsch' },
-  { value: LanguageEnum.FR, label: 'Français' },
-  { value: LanguageEnum.IT, label: 'Italiano' },
-  { value: LanguageEnum.ES, label: 'Español' },
-  { value: LanguageEnum.RU, label: 'Русский' },
+  { value: LanguageEnum.EN, label: 'English', imageSrc: '/assets/flags/us.svg' },
+  { value: LanguageEnum.DE, label: 'Deutsch', imageSrc: '/assets/flags/de.svg' },
+  { value: LanguageEnum.FR, label: 'Français', imageSrc: '/assets/flags/fr.svg' },
+  { value: LanguageEnum.IT, label: 'Italiano', imageSrc: '/assets/flags/it.svg' },
+  { value: LanguageEnum.ES, label: 'Español', imageSrc: '/assets/flags/es.svg' },
+  { value: LanguageEnum.RU, label: 'Русский', imageSrc: '/assets/flags/ru.svg' },
 ];
 
 export const PROFILE_VISIBILITY_OPTIONS: readonly ISelectOption<

@@ -19,7 +19,18 @@
           [cdkMenuPosition]="nestedPositions"
           (click)="onGroupClick(groupTrigger)"
         >
-          <span class="dropdown-menu__label">{{ option.label }}</span>
+          <span class="dropdown-menu__label">
+            @if (option.imageSrc) {
+              <img
+                class="dropdown-menu__image"
+                [src]="option.imageSrc"
+                alt=""
+                width="20"
+                height="15"
+              />
+            }
+            <span class="dropdown-menu__text">{{ option.label }}</span>
+          </span>
           <i class="dropdown-menu__icon bx bx-chevron-right" aria-hidden="true"></i>
         </button>
       } @else {
@@ -31,7 +42,18 @@
           [cdkMenuItemChecked]="isSelected(option)"
           (cdkMenuItemTriggered)="onSelect(option)"
         >
-          <span class="dropdown-menu__label">{{ option.label }}</span>
+          <span class="dropdown-menu__label">
+            @if (option.imageSrc) {
+              <img
+                class="dropdown-menu__image"
+                [src]="option.imageSrc"
+                alt=""
+                width="20"
+                height="15"
+              />
+            }
+            <span class="dropdown-menu__text">{{ option.label }}</span>
+          </span>
           @if (isSelected(option)) {
             <i class="dropdown-menu__icon bx bx-check" aria-hidden="true"></i>
           }

@@ -12,7 +12,10 @@
     (cdkMenuClosed)="onClose()"
   >
     <span class="select__value" [class.select__value--placeholder]="!selectedOption()">
-      {{ selectedOption()?.label ?? placeholder() }}
+      @if (selectedOption()?.imageSrc; as imageSrc) {
+        <img class="select__image" [src]="imageSrc" alt="" width="20" height="15" />
+      }
+      <span class="select__text">{{ selectedOption()?.label ?? placeholder() }}</span>
     </span>
     <i class="select__arrow bx bx-chevron-down" aria-hidden="true"></i>
   </button>
