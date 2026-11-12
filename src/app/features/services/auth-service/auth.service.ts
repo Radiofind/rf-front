@@ -31,6 +31,10 @@ export class AuthService {
     return this.apiService.twoFactorAuth(data);
   }
 
+  public verifyBackupCode(data: ITwoFactorData): Observable<ITwoFactorResponse> {
+    return this.apiService.verifyBackupCode(data);
+  }
+
   public resendTwoFactorAuth(data: IResendTwoFactorData): Observable<IAuthResponse> {
     return this.apiService.resendTwoFactorAuth(data);
   }

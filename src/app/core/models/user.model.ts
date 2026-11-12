@@ -13,6 +13,11 @@ export interface IUserEndpoints {
   readAll: string;
   tracks: string;
   library: string;
+  security: string;
+  twoFactor: string;
+  backupCodes: string;
+  enrollment: string;
+  confirm: string;
 }
 
 export interface ICurrentUser {

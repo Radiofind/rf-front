@@ -1,9 +1,123 @@
 .account-settings {
-  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__card {
+    padding: 12px 28px 4px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 16px;
+    background: var(--second-bg-color);
+
+    app-settings-row + app-settings-row {
+      border-top: 1px solid var(--header-border-color);
+    }
+
+    &--danger {
+      border-color: color-mix(in srgb, var(--error-color) 55%, transparent);
+    }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--header-border-color);
+  }
 
   &__title {
     font-size: 22px;
     font-weight: 500;
     color: var(--text-color);
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: var(--muted-text-color);
+
+    &--danger {
+      color: var(--error-color);
+    }
+  }
+
+  &__control {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+
+    app-button {
+      flex-shrink: 0;
+    }
+
+    ::ng-deep .button--compact {
+      padding: 0 16px;
+    }
+  }
+
+  &__action {
+    width: 136px;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--online-color) 16%, transparent);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--online-color);
+
+    i {
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+  }
+
+  &__badge-text,
+  &__hint {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__hint {
+    font-size: 13px;
+    color: var(--muted-text-color);
+  }
+
+  &__danger-row ::ng-deep .row__icon {
+    color: var(--error-color);
+    filter: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .account-settings__control {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 540px) {
+  .account-settings {
+    gap: 16px;
+
+    &__badge i {
+      display: none;
+    }
+
+    &__card {
+      padding: 8px 16px 0;
+    }
+
+    &__title {
+      font-size: 19px;
+    }
   }
 }

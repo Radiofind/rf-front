@@ -27,7 +27,16 @@ import type {
   IUserEndpoints,
   IUserProfileData,
 } from '../../models/user.model';
-import type { IGeneralSettings } from '../../models/settings.model';
+import type {
+  IBackupCodes,
+  IGeneralSettings,
+  INotificationSettings,
+  IConfirmTwoFactorEnrollmentData,
+  IPasswordConfirmationData,
+  ISecurityOverview,
+  IStartTwoFactorEnrollmentData,
+  ITwoFactorEnrollment,
+} from '../../models/settings.model';
 import type {
   IEditTrackData,
   ILibraryQuery,
@@ -61,6 +70,12 @@ export class ApiService {
 
   private readonly generalSettingsApi: string = `${this.currentUserApi}${this.userEndpoints.settings}${this.userEndpoints.general}`;
 
+  private readonly notificationSettingsApi: string = `${this.currentUserApi}${this.userEndpoints.settings}${this.userEndpoints.notifications}`;
+
+  private readonly securityApi: string = `${this.currentUserApi}${this.userEndpoints.security}`;
+
+  private readonly twoFactorEnrollmentApi: string = `${this.securityApi}${this.userEndpoints.twoFactor}${this.userEndpoints.enrollment}`;
+
   private readonly trackEndpoints: ITrackEndpoints = EndpointConstants.TRACK_ENDPOINTS;
 
   private readonly tracksApi: string = `${environment.apiUrl}${this.trackEndpoints.tracks}`;
@@ -86,6 +101,13 @@ export class ApiService {
   public twoFactorAuth(data: ITwoFactorData): Observable<ITwoFactorResponse> {
     return this.http.post<ITwoFactorResponse>(
       `${this.authApi}${this.authEndpoints.twoFactorAuth}`,
+      data,
+    );
+  }
+
+  public verifyBackupCode(data: ITwoFactorData): Observable<ITwoFactorResponse> {
+    return this.http.post<ITwoFactorResponse>(
+      `${this.authApi}${this.authEndpoints.verifyBackupCode}`,
       data,
     );
   }
@@ -156,6 +178,49 @@ export class ApiService {
     return this.http.put<IGeneralSettings>(this.generalSettingsApi, settings, {
       context: skipGlobalLoader(),
     });
+  }
+
+  public getNotificationSettings(): Observable<INotificationSettings> {
+    return this.http.get<INotificationSettings>(this.notificationSettingsApi);
+  }
+
+  public updateNotificationSettings(
+    settings: INotificationSettings,
+  ): Observable<INotificationSettings> {
+    return this.http.put<INotificationSettings>(this.notificationSettingsApi, settings, {
+      context: skipGlobalLoader(),
+    });
+  }
+
+  public getSecurityOverview(): Observable<ISecurityOverview> {
+    return this.http.get<ISecurityOverview>(this.securityApi);
+  }
+
+  public startTwoFactorEnrollment(
+    data: IStartTwoFactorEnrollmentData,
+  ): Observable<ITwoFactorEnrollment> {
+    return this.http.post<ITwoFactorEnrollment>(this.twoFactorEnrollmentApi, data);
+  }
+
+  public confirmTwoFactorEnrollment(
+    data: IConfirmTwoFactorEnrollmentData,
+  ): Observable<ISecurityOverview> {
+    return this.http.post<ISecurityOverview>(
+      `${this.twoFactorEnrollmentApi}${this.userEndpoints.confirm}`,
+      data,
+    );
+  }
+
+  public regenerateBackupCodes(data: IPasswordConfirmationData): Observable<IBackupCodes> {
+    return this.http.post<IBackupCodes>(
+      `${this.securityApi}${this.userEndpoints.backupCodes}`,
+      data,
+    );
+  }
+
+  public deleteAccount(data: IPasswordConfirmationData): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.delete<void>(this.currentUserApi, { body: data });
   }
 
   public uploadTrack(data: IUploadTrackData): Observable<ITrack> {

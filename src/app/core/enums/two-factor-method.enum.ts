@@ -1,0 +1,5 @@
+export enum TwoFactorMethodEnum {
+  EMAIL = 'EMAIL',
+  RECOVERY_EMAIL = 'RECOVERY_EMAIL',
+  AUTHENTICATOR = 'AUTHENTICATOR',
+}

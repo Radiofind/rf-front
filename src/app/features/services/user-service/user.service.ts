@@ -9,7 +9,14 @@ import type {
   IUpdateProfileData,
   IUserProfileData,
 } from '../../../core/models/user.model';
-import type { IGeneralSettings } from '../../../core/models/settings.model';
+import type {
+  IBackupCodes,
+  IGeneralSettings,
+  INotificationSettings,
+  ISecurityOverview,
+  ITwoFactorEnrollment,
+} from '../../../core/models/settings.model';
+import type { TwoFactorMethod } from '../../../core/types/two-factor-method.type';
 import type { IActivity } from '../../../core/models/activity.model';
 import type { INotification, IUnreadNotifications } from '../../../core/models/notification.model';
 import type { IPage } from '../../../core/models/page.model';
@@ -64,5 +71,38 @@ export class UserService {
 
   public markAllNotificationsAsRead(): Observable<void> {
     return this.apiService.markAllNotificationsAsRead();
+  }
+
+  public getNotificationSettings(): Observable<INotificationSettings> {
+    return this.apiService.getNotificationSettings();
+  }
+
+  public updateNotificationSettings(
+    settings: INotificationSettings,
+  ): Observable<INotificationSettings> {
+    return this.apiService.updateNotificationSettings(settings);
+  }
+
+  public getSecurityOverview(): Observable<ISecurityOverview> {
+    return this.apiService.getSecurityOverview();
+  }
+
+  public startTwoFactorEnrollment(
+    method: TwoFactorMethod,
+    password: string,
+  ): Observable<ITwoFactorEnrollment> {
+    return this.apiService.startTwoFactorEnrollment({ method: method, password: password });
+  }
+
+  public confirmTwoFactorEnrollment(code: string): Observable<ISecurityOverview> {
+    return this.apiService.confirmTwoFactorEnrollment({ code: code });
+  }
+
+  public regenerateBackupCodes(password: string): Observable<IBackupCodes> {
+    return this.apiService.regenerateBackupCodes({ password: password });
+  }
+
+  public deleteAccount(password: string): Observable<void> {
+    return this.apiService.deleteAccount({ password: password });
   }
 }

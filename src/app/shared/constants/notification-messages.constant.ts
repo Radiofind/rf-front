@@ -10,4 +10,5 @@ export const NOTIFICATION_MESSAGES: Readonly<Record<NotificationType, Translatio
   [NotificationTypeEnum.SCHEDULE_CHANGE_REQUESTED]: 'notifications.scheduleChangeRequested',
   [NotificationTypeEnum.TRACK_DELETED]: 'notifications.trackDeleted',
   [NotificationTypeEnum.TRACK_REPORTED]: 'notifications.trackReported',
+  [NotificationTypeEnum.TRACK_LIKED]: 'notifications.trackLiked',
 };

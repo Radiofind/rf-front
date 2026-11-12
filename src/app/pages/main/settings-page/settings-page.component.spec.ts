@@ -6,7 +6,11 @@ import { SettingsPageComponent } from './settings-page.component';
 import { SETTINGS_ROUTES } from './settings.routes';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { settingsFeature } from '../../../store/settings/settings.feature';
-import { DEFAULT_GENERAL_SETTINGS } from '../../../features/constants/settings.constant';
+import { accountSettingsFeature } from '../../../store/account-settings/account-settings.feature';
+import {
+  DEFAULT_GENERAL_SETTINGS,
+  DEFAULT_NOTIFICATION_SETTINGS,
+} from '../../../features/constants/settings.constant';
 import { Links } from '../../../core/constants/links';
 
 describe('SettingsPageComponent', () => {
@@ -40,6 +44,12 @@ describe('SettingsPageComponent', () => {
           selectors: [
             { selector: settingsFeature.selectSettings, value: DEFAULT_GENERAL_SETTINGS },
             { selector: settingsFeature.selectIsLoaded, value: true },
+            {
+              selector: accountSettingsFeature.selectNotifications,
+              value: DEFAULT_NOTIFICATION_SETTINGS,
+            },
+            { selector: accountSettingsFeature.selectSecurity, value: null },
+            { selector: accountSettingsFeature.selectIsLoaded, value: true },
           ],
         }),
       ],

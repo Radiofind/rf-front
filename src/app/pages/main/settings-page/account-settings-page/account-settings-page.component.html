@@ -1,5 +1,154 @@
-<section class="account-settings" aria-labelledby="account-settings-title">
-  <h2 class="account-settings__title" id="account-settings-title">
-    {{ 'settings.accountTitle' | translate }}
-  </h2>
-</section>
+<div class="account-settings">
+  <section class="account-settings__card" aria-labelledby="account-security-title">
+    <header class="account-settings__header">
+      <h2 class="account-settings__title" id="account-security-title">
+        {{ 'accountSettings.securityTitle' | translate }}
+      </h2>
+      <p class="account-settings__subtitle">
+        {{ 'accountSettings.securityDescription' | translate }}
+      </p>
+    </header>
+
+    <app-settings-row
+      rowId="settings-two-factor"
+      iconClass="bx bx-check-shield"
+      [rowTitle]="'accountSettings.twoFactorTitle' | translate"
+      [rowDescription]="
+        'accountSettings.twoFactorDescription'
+          | translate: { method: twoFactorMethodLabel() ?? 'common.loading' | translate }
+      "
+    >
+      <div class="account-settings__control">
+        <span class="account-settings__badge">
+          <i class="bx bx-check-circle" aria-hidden="true"></i>
+          <span class="account-settings__badge-text">{{
+            'accountSettings.enabled' | translate
+          }}</span>
+        </span>
+
+        <app-button
+          class="account-settings__action"
+          additionalClass="button--compact"
+          [contentText]="'accountSettings.manage' | translate"
+          [disabled]="isDisabled()"
+          (clickAction)="onManageTwoFactor()"
+        />
+      </div>
+    </app-settings-row>
+
+    <app-settings-row
+      rowId="settings-backup-codes"
+      iconClass="bx bx-key"
+      [rowTitle]="'accountSettings.backupCodesTitle' | translate"
+      [rowDescription]="'accountSettings.backupCodesDescription' | translate"
+    >
+      <div class="account-settings__control">
+        @if (backupCodesRemaining() > 0) {
+          <span class="account-settings__hint">
+            {{
+              'accountSettings.backupCodesRemaining' | translate: { count: backupCodesRemaining() }
+            }}
+          </span>
+        }
+
+        <app-button
+          class="account-settings__action"
+          additionalClass="button--compact"
+          [contentText]="
+            (backupCodesRemaining() > 0 ? 'accountSettings.regenerate' : 'accountSettings.generate')
+              | translate
+          "
+          [disabled]="isDisabled()"
+          (clickAction)="onGenerateBackupCodes()"
+        />
+      </div>
+    </app-settings-row>
+  </section>
+
+  <section class="account-settings__card" aria-labelledby="account-notifications-title">
+    <header class="account-settings__header">
+      <h2 class="account-settings__title" id="account-notifications-title">
+        {{ 'accountSettings.notificationsTitle' | translate }}
+      </h2>
+      <p class="account-settings__subtitle">
+        {{ 'accountSettings.notificationsDescription' | translate }}
+      </p>
+    </header>
+
+    <app-settings-row
+      rowId="settings-track-updates"
+      iconClass="bx bx-music"
+      [rowTitle]="'accountSettings.trackUpdatesTitle' | translate"
+      [rowDescription]="'accountSettings.trackUpdatesDescription' | translate"
+    >
+      <app-toggle-switch
+        name="track-updates"
+        labelledBy="settings-track-updates-title"
+        describedBy="settings-track-updates-description"
+        [checked]="notifications().trackUpdates"
+        [disabled]="isDisabled()"
+        (checkedChange)="onNotificationChange('trackUpdates', $event)"
+      />
+    </app-settings-row>
+
+    <app-settings-row
+      rowId="settings-radio-updates"
+      iconClass="bx bx-broadcast"
+      [rowTitle]="'accountSettings.radioUpdatesTitle' | translate"
+      [rowDescription]="'accountSettings.radioUpdatesDescription' | translate"
+    >
+      <app-toggle-switch
+        name="radio-updates"
+        labelledBy="settings-radio-updates-title"
+        describedBy="settings-radio-updates-description"
+        [checked]="notifications().radioUpdates"
+        [disabled]="isDisabled()"
+        (checkedChange)="onNotificationChange('radioUpdates', $event)"
+      />
+    </app-settings-row>
+
+    <app-settings-row
+      rowId="settings-likes"
+      iconClass="bx bx-heart"
+      [rowTitle]="'accountSettings.likesTitle' | translate"
+      [rowDescription]="'accountSettings.likesDescription' | translate"
+    >
+      <app-toggle-switch
+        name="likes"
+        labelledBy="settings-likes-title"
+        describedBy="settings-likes-description"
+        [checked]="notifications().likes"
+        [disabled]="isDisabled()"
+        (checkedChange)="onNotificationChange('likes', $event)"
+      />
+    </app-settings-row>
+  </section>
+
+  <section
+    class="account-settings__card account-settings__card--danger"
+    aria-labelledby="account-danger-title"
+  >
+    <header class="account-settings__header">
+      <h2 class="account-settings__title" id="account-danger-title">
+        {{ 'accountSettings.dangerZoneTitle' | translate }}
+      </h2>
+      <p class="account-settings__subtitle account-settings__subtitle--danger">
+        {{ 'accountSettings.dangerZoneDescription' | translate }}
+      </p>
+    </header>
+
+    <app-settings-row
+      class="account-settings__danger-row"
+      rowId="settings-delete-account"
+      iconClass="bx bx-alert-triangle"
+      [rowTitle]="'accountSettings.deleteAccount' | translate"
+      [rowDescription]="'accountSettings.deleteAccountDescription' | translate"
+    >
+      <app-button
+        additionalClass="button--compact button--danger"
+        [contentText]="'accountSettings.deleteAccount' | translate"
+        (clickAction)="onDeleteAccount()"
+      />
+    </app-settings-row>
+  </section>
+</div>

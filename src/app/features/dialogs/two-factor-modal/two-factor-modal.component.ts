@@ -7,11 +7,13 @@ import { Store } from '@ngrx/store';
 import { Constants } from '../../../core/constants/constants';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { CodeFieldComponent } from '../../../shared/components/code-field/code-field.component';
+import { InputFieldComponent } from '../../../shared/components/input-field/input-field.component';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 import { TwoFactorModalActions } from '../../../store/ui/two-factor-modal.actions';
+import { TwoFactorMethodEnum } from '../../../core/enums/two-factor-method.enum';
 
 import type { Signal, WritableSignal } from '@angular/core';
 import type { Subscription } from 'rxjs';
@@ -22,7 +24,13 @@ import type { TranslationKey } from '../../../core/types/translation.type';
 
 @Component({
   selector: 'app-two-factor-modal',
-  imports: [ButtonComponent, CodeFieldComponent, SpinnerComponent, TranslatePipe],
+  imports: [
+    ButtonComponent,
+    CodeFieldComponent,
+    InputFieldComponent,
+    SpinnerComponent,
+    TranslatePipe,
+  ],
   templateUrl: './two-factor-modal.component.html',
   styleUrl: './two-factor-modal.component.scss',
 })
@@ -39,6 +47,23 @@ export class TwoFactorModalComponent {
   public readonly data: ITwoFactorModalData = inject<ITwoFactorModalData>(DIALOG_DATA);
 
   public readonly code: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+
+  public readonly isAuthenticator: boolean = this.data.method === TwoFactorMethodEnum.AUTHENTICATOR;
+
+  public readonly descriptionStart: TranslationKey =
+    this.data.method === TwoFactorMethodEnum.RECOVERY_EMAIL
+      ? 'twoFactor.recoveryDescriptionStart'
+      : 'twoFactor.descriptionStart';
+
+  public readonly isBackupCodeMode: WritableSignal<boolean> = signal<boolean>(false);
+
+  public readonly backupCode: WritableSignal<string> = signal<string>(Constants.EMPTY_STRING);
+
+  public readonly isBackupCodeComplete: Signal<boolean> = computed(
+    () =>
+      this.backupCode().replace(Constants.BACKUP_CODE_SEPARATORS_PATTERN, Constants.EMPTY_STRING)
+        .length === Constants.BACKUP_CODE_LENGTH,
+  );
 
   public readonly isResending: WritableSignal<boolean> = signal<boolean>(false);
 
@@ -87,22 +112,41 @@ export class TwoFactorModalComponent {
     }
   }
 
+  public onBackupCodeChange(code: string): void {
+    this.backupCode.set(code);
+
+    if (!this.isLocked()) {
+      this.codeErrors.set([]);
+    }
+  }
+
+  public onToggleBackupCodeMode(): void {
+    this.isBackupCodeMode.update((isBackupCodeMode: boolean) => !isBackupCodeMode);
+
+    if (!this.isLocked()) {
+      this.codeErrors.set([]);
+    }
+  }
+
   public async onVerify(): Promise<void> {
     if (this.isLocked()) {
       return;
     }
 
+    const isBackupCodeMode: boolean = this.isBackupCodeMode();
     const twoFactorData: ITwoFactorData = {
       challengeId: this.data.challengeId,
-      code: this.code(),
+      code: isBackupCodeMode ? this.backupCode() : this.code(),
     };
 
     try {
       const response: ITwoFactorResponse = await firstValueFrom(
-        this.authService.twoFactorAuth(twoFactorData),
+        isBackupCodeMode
+          ? this.authService.verifyBackupCode(twoFactorData)
+          : this.authService.twoFactorAuth(twoFactorData),
       );
       this.store.dispatch(TwoFactorModalActions.verified({ token: response.token }));
-      this.dialogRef.close(this.code());
+      this.dialogRef.close(twoFactorData.code);
     } catch (error: unknown) {
       const status: number | undefined = this.statusOf(error);
 
@@ -114,7 +158,9 @@ export class TwoFactorModalComponent {
       this.setCodeError(
         status === Constants.HTTP_BAD_REQUEST_STATUS
           ? AuthValidationMessages.TWO_FACTOR_CODE_NO_LONGER_VALID
-          : AuthValidationMessages.INVALID_TWO_FACTOR_CODE,
+          : isBackupCodeMode
+            ? AuthValidationMessages.INVALID_BACKUP_CODE
+            : AuthValidationMessages.INVALID_TWO_FACTOR_CODE,
       );
     }
   }

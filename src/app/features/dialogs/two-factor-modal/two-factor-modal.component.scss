@@ -82,6 +82,19 @@
     vertical-align: middle;
   }
 
+  &__switch {
+    margin-top: 16px;
+    background: transparent;
+    font-size: 15px;
+    color: var(--main-color);
+    cursor: pointer;
+    transition: color 300ms ease;
+
+    &:hover {
+      color: var(--icon-color);
+    }
+  }
+
   &__resend-action {
     background: transparent;
     font-size: 16px;

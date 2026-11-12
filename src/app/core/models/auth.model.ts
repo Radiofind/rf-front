@@ -1,3 +1,5 @@
+import type { TwoFactorMethod } from '../types/two-factor-method.type';
+
 export interface ILoginData {
   email: string;
   password: string;
@@ -7,6 +9,8 @@ export interface IAuthResponse {
   challengeId: string | null;
   requiresTwoFactor: boolean;
   token: string | null;
+  twoFactorMethod?: TwoFactorMethod | null;
+  destination?: string | null;
 }
 
 export interface IAuthEndpoints {
@@ -18,6 +22,7 @@ export interface IAuthEndpoints {
   forgotPassword: string;
   resetPassword: string;
   validateResetToken: string;
+  verifyBackupCode: string;
 }
 
 export interface IJwtPayload {

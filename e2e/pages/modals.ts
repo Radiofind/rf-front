@@ -8,6 +8,8 @@ export class TwoFactorModal {
   public readonly verify: Locator;
   public readonly resend: Locator;
   public readonly errors: Locator;
+  public readonly switchToBackupCode: Locator;
+  public readonly backupCode: Locator;
 
   public constructor(page: Page) {
     this.root = page.locator('.two-factor');
@@ -17,6 +19,8 @@ export class TwoFactorModal {
     this.verify = this.root.getByRole('button', { name: 'Verify Code' });
     this.resend = this.root.locator('.two-factor__resend-action');
     this.errors = this.root.locator('.code-field__errors');
+    this.switchToBackupCode = this.root.getByRole('button', { name: 'Use a backup code instead' });
+    this.backupCode = this.root.getByPlaceholder('XXXXX-XXXXX');
   }
 
   public async enterCode(code: string): Promise<void> {

@@ -140,6 +140,14 @@ export const FR_TRANSLATIONS: Translations = {
     submit: 'Envoyer le lien',
   },
   twoFactor: {
+    authenticatorDescription:
+      "Ouvrez votre application d'authentification et saisissez le code à 6 chiffres pour RADIOFIND.",
+    recoveryDescriptionStart:
+      'Nous avons envoyé un code à 6 chiffres à votre e-mail de récupération ',
+    backupCodeDescription:
+      "Saisissez l'un de vos codes de secours. Chaque code ne peut être utilisé qu'une seule fois.",
+    useBackupCode: 'Utiliser plutôt un code de secours',
+    useEmailCode: 'Utiliser plutôt le code reçu par e-mail',
     title: 'Authentification à deux facteurs',
     descriptionStart: 'Nous avons envoyé un code à 6 chiffres à votre adresse e-mail',
     descriptionEnd: '. Saisissez le code ci-dessous pour continuer.',
@@ -470,6 +478,7 @@ export const FR_TRANSLATIONS: Translations = {
     moreOptions: 'Plus d’options',
   },
   notifications: {
+    trackLiked: "Quelqu'un aime votre morceau « {title} »",
     trackReported: 'Le morceau « {title} » a été signalé et doit être modéré',
     trackDeleted: 'Votre morceau « {title} » a été supprimé',
     trackSubmissionCancelled:
@@ -480,6 +489,78 @@ export const FR_TRANSLATIONS: Translations = {
       'Votre demande de changement d’horaire pour « {title} » est en cours d’examen',
     trackSubmittedForReview:
       'Votre morceau « {title} » a été importé et envoyé au contrôle qualité',
+  },
+  accountSettings: {
+    chooseMethod:
+      'Choisissez comment recevoir les codes de vérification, puis confirmez avec votre mot de passe.',
+    currentMethod: 'Actuelle',
+    continue: 'Continuer',
+    back: 'Retour',
+    confirm: 'Confirmer',
+    scanQrCode:
+      "Scannez ce QR code avec votre application d'authentification (Google Authenticator, Microsoft Authenticator, 1Password …), puis saisissez le code à 6 chiffres affiché.",
+    qrCodeAlt: "QR code pour l'application d'authentification",
+    manualKey: 'Impossible de scanner le code ? Saisissez cette clé manuellement :',
+    codeSentTo: 'Saisissez le code à 6 chiffres envoyé à',
+    methods: {
+      email: 'E-mail',
+      emailDescription: "Les codes sont envoyés à l'e-mail de votre compte",
+      recoveryEmail: 'E-mail de récupération',
+      recoveryEmailDescription: 'Les codes sont envoyés à votre e-mail de récupération',
+      recoveryEmailMissing:
+        'Ajoutez un e-mail de récupération dans votre profil pour utiliser cette méthode.',
+      authenticator: "Application d'authentification",
+      authenticatorDescription:
+        'Les codes sont générés par une application sur votre téléphone, même hors ligne.',
+    },
+    securityTitle: 'Sécurité',
+    securityDescription: 'Protégez votre compte grâce à des options de sécurité avancées.',
+    twoFactorTitle: 'Authentification à deux facteurs',
+    twoFactorDescription: 'Méthode actuelle : {method}',
+    enabled: 'Activée',
+    manage: 'Gérer',
+    backupCodesTitle: 'Codes de secours',
+    backupCodesDescription:
+      'Générez des codes à usage unique pour vous connecter sans accès à vos e-mails.',
+    backupCodesRemaining: '{count} non utilisés',
+    generate: 'Générer',
+    regenerate: 'Régénérer',
+    generateBackupCodesMessage:
+      'Confirmez votre mot de passe pour générer de nouveaux codes de secours.',
+    generateBackupCodesDescription:
+      'Les codes de secours générés auparavant ne fonctionneront plus.',
+    backupCodesWarning:
+      "Conservez ces codes en lieu sûr. Ils ne s'affichent qu'une seule fois et chaque code ne fonctionne qu'une fois.",
+    copyCodes: 'Copier',
+    downloadCodes: 'Télécharger',
+    backupCodesDone: "J'ai enregistré mes codes",
+    backupCodesCopied: 'Codes de secours copiés',
+    notificationsTitle: 'Notifications',
+    notificationsDescription: 'Choisissez les notifications que vous souhaitez recevoir.',
+    trackUpdatesTitle: 'Mises à jour des morceaux',
+    trackUpdatesDescription:
+      'Sachez quand vos morceaux sont envoyés en revue, retirés ou supprimés.',
+    radioUpdatesTitle: 'Mises à jour radio',
+    radioUpdatesDescription: 'Recevez des informations sur la diffusion de vos morceaux.',
+    likesTitle: "J'aime",
+    likesDescription: "Sachez quand quelqu'un aime vos morceaux.",
+    dangerZoneTitle: 'Zone de danger',
+    dangerZoneDescription: 'Ces actions sont définitives et irréversibles.',
+    deleteAccount: 'Supprimer le compte',
+    deleteAccountTitle: 'Supprimer le compte',
+    deleteAccountDescription:
+      'Supprimez définitivement votre compte et toutes les données associées.',
+    deleteAccountMessage: 'Voulez-vous vraiment supprimer votre compte ?',
+    deleteAccountWarning:
+      "Votre profil, vos morceaux, vos j'aime et vos notifications seront supprimés définitivement. Cette action est irréversible.",
+    passwordLabel: 'Mot de passe actuel',
+    errors: {
+      invalidCode: 'Le code est incorrect',
+      setupExpired: 'La configuration a expiré. Veuillez recommencer.',
+      noRecoveryEmail: "Ajoutez d'abord un e-mail de récupération dans votre profil",
+      incorrectPassword: 'Le mot de passe est incorrect',
+      requestFailed: "Une erreur s'est produite. Veuillez réessayer.",
+    },
   },
   settings: {
     title: 'Paramètres',
@@ -497,9 +578,6 @@ export const FR_TRANSLATIONS: Translations = {
     profileVisibilityTitle: 'Visibilité du profil',
     profileVisibilityDescription:
       'Contrôlez ce que les autres utilisateurs voient sur votre profil : vos statistiques et vos informations « À propos ».',
-    notificationsTitle: 'Notifications',
-    notificationsDescription:
-      'Recevez des mises à jour sur les nouveaux abonnés, les mentions « J’aime » et plus encore.',
     audioQualityTitle: 'Qualité audio',
     audioQualityDescription: 'Choisissez la qualité du streaming audio.',
     accentColorTitle: "Couleur d'accent",
@@ -928,6 +1006,7 @@ export const FR_TRANSLATIONS: Translations = {
       'Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ? Vos modifications seront perdues.',
   },
   messages: {
+    accountDeleted: 'Votre compte a été supprimé',
     trackRemovedFromLibrary: 'Morceau retiré de votre médiathèque',
     trackReported: 'Merci ! Votre signalement a été transmis à nos modérateurs.',
     trackAlreadyReported: 'Vous avez déjà signalé ce morceau',
@@ -964,6 +1043,7 @@ export const FR_TRANSLATIONS: Translations = {
     playbackFailed: 'Impossible de lire le titre. Veuillez réessayer.',
   },
   validation: {
+    invalidBackupCode: "Ce code de secours n'est pas valide ou a déjà été utilisé",
     dateFromTomorrow: 'Choisissez une date à partir de demain',
     maxLengthComment: 'Ne doit pas dépasser 500 caractères',
     required: 'Ce champ est obligatoire',
