@@ -1,0 +1,130 @@
+@let currentEnrollment = enrollment();
+
+@if (!currentEnrollment) {
+  <form class="method-modal" (submit)="$event.preventDefault(); onStart()">
+    <p class="method-modal__intro">{{ 'accountSettings.chooseMethod' | translate }}</p>
+
+    <div
+      class="method-modal__options"
+      role="radiogroup"
+      [attr.aria-label]="'accountSettings.twoFactorTitle' | translate"
+    >
+      @for (option of options; track option.value) {
+        <label
+          class="method-modal__option"
+          [class.method-modal__option--selected]="method() === option.value"
+          [class.method-modal__option--disabled]="isUnavailable(option.value)"
+        >
+          <input
+            class="method-modal__radio"
+            type="radio"
+            name="two-factor-method"
+            [value]="option.value"
+            [checked]="method() === option.value"
+            [disabled]="isUnavailable(option.value)"
+            (change)="onMethodChange(option.value)"
+          />
+          <i class="method-modal__icon" [class]="option.iconClass" aria-hidden="true"></i>
+          <span class="method-modal__text">
+            <span class="method-modal__label">
+              {{ option.label | translate }}
+              @if (isCurrent(option.value)) {
+                <span class="method-modal__current">{{
+                  'accountSettings.currentMethod' | translate
+                }}</span>
+              }
+            </span>
+            <span class="method-modal__description">
+              @if (isUnavailable(option.value)) {
+                {{ 'accountSettings.methods.recoveryEmailMissing' | translate }}
+              } @else {
+                {{ option.description | translate }}
+                @if (destinationOf(option.value); as destination) {
+                  <span class="method-modal__destination">{{ destination }}</span>
+                }
+              }
+            </span>
+          </span>
+        </label>
+      }
+    </div>
+
+    <app-input-field
+      class="method-modal__field"
+      name="current-password"
+      iconClass="bx bx-lock"
+      [fieldLabel]="'accountSettings.passwordLabel' | translate"
+      [inputPlaceholder]="'auth.fields.passwordPlaceholder' | translate"
+      [inputType]="isPasswordVisible() ? 'text' : 'password'"
+      [hasInputAction]="true"
+      [inputActionIconClass]="isPasswordVisible() ? 'bx bx-eye' : 'bx bx-eye-slash'"
+      [value]="password()"
+      [errors]="errors()"
+      [touched]="hasError()"
+      (valueChange)="onPasswordChange($event)"
+      (inputActionEmiter)="onTogglePasswordVisibility()"
+    />
+
+    <div class="method-modal__actions">
+      <app-button
+        [contentText]="'common.cancel' | translate"
+        additionalClass="button--secondary button--compact"
+        (clickAction)="onCancel()"
+      />
+      <app-button
+        buttonType="submit"
+        additionalClass="button--compact"
+        [contentText]="'accountSettings.continue' | translate"
+        [disabled]="!canStart()"
+      />
+    </div>
+  </form>
+} @else {
+  <form class="method-modal" (submit)="$event.preventDefault(); onConfirm()">
+    @if (currentEnrollment.secret) {
+      <p class="method-modal__intro">{{ 'accountSettings.scanQrCode' | translate }}</p>
+
+      @if (qrCode(); as qrCodeSource) {
+        <img
+          class="method-modal__qr"
+          width="200"
+          height="200"
+          [src]="qrCodeSource"
+          [alt]="'accountSettings.qrCodeAlt' | translate"
+        />
+      }
+
+      <p class="method-modal__hint">{{ 'accountSettings.manualKey' | translate }}</p>
+      <code class="method-modal__secret">{{ currentEnrollment.secret }}</code>
+    } @else {
+      <p class="method-modal__intro">
+        {{ 'accountSettings.codeSentTo' | translate }}
+        <span class="method-modal__destination">{{ currentEnrollment.destination }}</span>
+      </p>
+    }
+
+    <app-code-field
+      class="method-modal__code"
+      name="two-factor-setup-code"
+      [value]="code()"
+      [codeLength]="6"
+      [errors]="errors()"
+      [touched]="hasError()"
+      (valueChange)="onCodeChange($event)"
+    />
+
+    <div class="method-modal__actions">
+      <app-button
+        [contentText]="'accountSettings.back' | translate"
+        additionalClass="button--secondary button--compact"
+        (clickAction)="onBack()"
+      />
+      <app-button
+        buttonType="submit"
+        additionalClass="button--compact"
+        [contentText]="'accountSettings.confirm' | translate"
+        [disabled]="!canConfirm()"
+      />
+    </div>
+  </form>
+}

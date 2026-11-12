@@ -12,6 +12,7 @@ export interface ITestUser {
   email: string;
   password: string;
   dateOfBirth: string;
+  recoveryEmail?: string | null;
   token: string;
 }
 
@@ -37,7 +38,7 @@ export const registerUser = async (
       name: user.name,
       surname: user.surname,
       email: user.email,
-      recoveryEmail: null,
+      recoveryEmail: user.recoveryEmail ?? null,
       dateOfBirth: user.dateOfBirth,
       password: user.password,
       artistInformation: { typeOfArtist: 'ARTIST', artistName: null, description: null },

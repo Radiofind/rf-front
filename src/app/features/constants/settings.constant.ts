@@ -3,8 +3,9 @@ import { AccentColorEnum } from '../../core/enums/accent-color.enum';
 import { AudioQualityEnum } from '../../core/enums/audio-quality.enum';
 import { LanguageEnum } from '../../core/enums/language.enum';
 import { ProfileVisibilityEnum } from '../../core/enums/profile-visibility.enum';
+import { TwoFactorMethodEnum } from '../../core/enums/two-factor-method.enum';
 
-import type { IGeneralSettings } from '../../core/models/settings.model';
+import type { IGeneralSettings, INotificationSettings } from '../../core/models/settings.model';
 import type { AccentColor } from '../../core/types/accent-color.type';
 import type { AudioQuality } from '../../core/types/audio-quality.type';
 import type { Language } from '../../core/types/language.type';
@@ -13,14 +14,21 @@ import type { TranslationKey } from '../../core/types/translation.type';
 import type { ISelectOption } from '../../shared/models/select-option.model';
 import type { IAccentColorOption } from '../models/accent-color-option.model';
 import type { ISettingsNavItem } from '../models/settings-nav-item.model';
+import type { ITwoFactorMethodOption } from '../models/account-settings-dialog.model';
+import type { TwoFactorMethod } from '../../core/types/two-factor-method.type';
 
 export const DEFAULT_GENERAL_SETTINGS: Readonly<IGeneralSettings> = {
   language: LanguageEnum.EN,
   radioMode: true,
   profileVisibility: ProfileVisibilityEnum.EVERYONE,
-  notificationsEnabled: true,
   audioQuality: AudioQualityEnum.HIGH,
   accentColor: AccentColorEnum.VIOLET,
+};
+
+export const DEFAULT_NOTIFICATION_SETTINGS: Readonly<INotificationSettings> = {
+  trackUpdates: true,
+  radioUpdates: true,
+  likes: true,
 };
 
 export const LANGUAGE_OPTIONS: readonly ISelectOption<Language>[] = [
@@ -91,3 +99,30 @@ export const SETTINGS_NAV_ITEMS: readonly ISettingsNavItem[] = [
   { label: 'settings.general', iconClass: 'bx bx-cog', link: Links.GENERAL_SETTINGS_PATH },
   { label: 'settings.account', iconClass: 'bx bx-user', link: Links.ACCOUNT_SETTINGS_PATH },
 ];
+
+export const TWO_FACTOR_METHOD_OPTIONS: readonly ITwoFactorMethodOption[] = [
+  {
+    value: TwoFactorMethodEnum.EMAIL,
+    label: 'accountSettings.methods.email',
+    description: 'accountSettings.methods.emailDescription',
+    iconClass: 'bx bx-envelope-alt',
+  },
+  {
+    value: TwoFactorMethodEnum.RECOVERY_EMAIL,
+    label: 'accountSettings.methods.recoveryEmail',
+    description: 'accountSettings.methods.recoveryEmailDescription',
+    iconClass: 'bx bx-inbox',
+  },
+  {
+    value: TwoFactorMethodEnum.AUTHENTICATOR,
+    label: 'accountSettings.methods.authenticator',
+    description: 'accountSettings.methods.authenticatorDescription',
+    iconClass: 'bx bx-lock-keyhole',
+  },
+];
+
+export const TWO_FACTOR_METHOD_LABELS: Readonly<Record<TwoFactorMethod, TranslationKey>> = {
+  [TwoFactorMethodEnum.EMAIL]: 'accountSettings.methods.email',
+  [TwoFactorMethodEnum.RECOVERY_EMAIL]: 'accountSettings.methods.recoveryEmail',
+  [TwoFactorMethodEnum.AUTHENTICATOR]: 'accountSettings.methods.authenticator',
+};

@@ -43,6 +43,8 @@ export class AuthValidationMessages {
 
   public static readonly EMAIL_TAKEN: TranslationKey = 'validation.emailTaken';
 
+  public static readonly INVALID_BACKUP_CODE: TranslationKey = 'validation.invalidBackupCode';
+
   public static readonly INVALID_TWO_FACTOR_CODE: TranslationKey =
     'validation.invalidTwoFactorCode';
 

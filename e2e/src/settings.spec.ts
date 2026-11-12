@@ -13,7 +13,6 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
   language: 'EN',
   radioMode: true,
   profileVisibility: 'EVERYONE',
-  notificationsEnabled: true,
   audioQuality: 'HIGH',
   accentColor: 'VIOLET',
 };
@@ -22,7 +21,6 @@ const CUSTOM_SETTINGS: Record<string, unknown> = {
   language: 'DE',
   radioMode: false,
   profileVisibility: 'ONLY_ME',
-  notificationsEnabled: false,
   audioQuality: 'LOW',
   accentColor: 'OCEAN',
 };
@@ -179,7 +177,6 @@ test.describe('settings', () => {
       await expect(settings.language).toHaveText('Deutsch');
       await expect(settings.radioMode).not.toBeChecked();
       await expect(settings.profileVisibility).toHaveText('Nur ich');
-      await expect(settings.notifications).not.toBeChecked();
       await expect(settings.audioQuality).toHaveText('Niedrig (96 kbps)');
       await expect(settings.accentColor('OCEAN')).toBeChecked();
     });
@@ -200,10 +197,6 @@ test.describe('settings', () => {
 
       saved = waitForSave(authenticatedPage);
       await settings.choose(settings.profileVisibility, 'Followers only');
-      await saved;
-
-      saved = waitForSave(authenticatedPage);
-      await settings.notifications.click();
       await saved;
 
       saved = waitForSave(authenticatedPage);
@@ -228,7 +221,6 @@ test.describe('settings', () => {
         language: 'FR',
         radioMode: false,
         profileVisibility: 'FOLLOWERS',
-        notificationsEnabled: false,
         audioQuality: 'NORMAL',
         accentColor: 'PLUM',
       });
@@ -263,8 +255,8 @@ test.describe('settings', () => {
       const settings: SettingsPage = new SettingsPage(authenticatedPage);
 
       await authenticatedPage.goto('/settings/general');
-      await expect(settings.notifications).toBeEnabled();
-      await expect(settings.notifications).toBeChecked();
+      await expect(settings.radioMode).toBeEnabled();
+      await expect(settings.radioMode).toBeChecked();
 
       await authenticatedPage.route('**/users/me/settings/general', (route) =>
         route.request().method() === 'PUT'
@@ -272,12 +264,12 @@ test.describe('settings', () => {
           : route.continue(),
       );
 
-      await settings.notifications.click();
+      await settings.radioMode.click();
 
       await expect(
         authenticatedPage.getByText('Could not save settings. Please try again.'),
       ).toBeVisible();
-      await expect(settings.notifications).toBeChecked();
+      await expect(settings.radioMode).toBeChecked();
     });
 
     test('updates the document language', async ({ authenticatedPage }) => {

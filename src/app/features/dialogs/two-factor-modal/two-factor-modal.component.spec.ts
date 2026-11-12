@@ -9,9 +9,11 @@ import { AuthService } from '../../services/auth-service/auth.service';
 import { Constants } from '../../../core/constants/constants';
 import { AuthValidationMessages } from '../../constants/auth-error-messages.constant';
 import { TwoFactorModalActions } from '../../../store/ui/two-factor-modal.actions';
+import { TwoFactorMethodEnum } from '../../../core/enums/two-factor-method.enum';
 
 import { translate } from '../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
+import type { ITwoFactorModalData } from '../../models/two-factor.model';
 
 describe('TwoFactorModalComponent', () => {
   let fixture: ComponentFixture<TwoFactorModalComponent>;
@@ -19,6 +21,8 @@ describe('TwoFactorModalComponent', () => {
   let close: ReturnType<typeof vi.fn>;
   let twoFactorAuth: ReturnType<typeof vi.fn>;
   let resendTwoFactorAuth: ReturnType<typeof vi.fn>;
+  let verifyBackupCode: ReturnType<typeof vi.fn>;
+  let modalData: ITwoFactorModalData;
   let dispatch: ReturnType<typeof vi.spyOn>;
 
   const createFixture = async (): Promise<void> => {
@@ -26,10 +30,14 @@ describe('TwoFactorModalComponent', () => {
       imports: [TwoFactorModalComponent],
       providers: [
         { provide: DialogRef, useValue: { close: close } },
-        { provide: DIALOG_DATA, useValue: { email: 'ada@example.com', challengeId: 'challenge' } },
+        { provide: DIALOG_DATA, useValue: modalData },
         {
           provide: AuthService,
-          useValue: { twoFactorAuth: twoFactorAuth, resendTwoFactorAuth: resendTwoFactorAuth },
+          useValue: {
+            twoFactorAuth: twoFactorAuth,
+            resendTwoFactorAuth: resendTwoFactorAuth,
+            verifyBackupCode: verifyBackupCode,
+          },
         },
         provideMockStore(),
       ],
@@ -46,7 +54,15 @@ describe('TwoFactorModalComponent', () => {
     vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
 
     close = vi.fn();
+    modalData = {
+      email: 'ada@example.com',
+      challengeId: 'challenge',
+      method: TwoFactorMethodEnum.EMAIL,
+    };
     twoFactorAuth = vi
+      .fn()
+      .mockReturnValue(of({ challengeId: null, requiresTwoFactor: false, token: 'jwt' }));
+    verifyBackupCode = vi
       .fn()
       .mockReturnValue(of({ challengeId: null, requiresTwoFactor: false, token: 'jwt' }));
     resendTwoFactorAuth = vi
@@ -300,5 +316,86 @@ describe('TwoFactorModalComponent', () => {
     vi.advanceTimersByTime(Constants.TIMER_INTERVAL_MS * 5);
 
     expect(component.resendSeconds()).toBe(Constants.RESEND_TIMEOUT_SECONDS);
+  });
+
+  it('signs in with a backup code instead of the email code', async () => {
+    component.onToggleBackupCodeMode();
+    component.onBackupCodeChange('abcde-fghjk');
+
+    await component.onVerify();
+
+    expect(verifyBackupCode).toHaveBeenCalledWith({
+      challengeId: 'challenge',
+      code: 'abcde-fghjk',
+    });
+    expect(twoFactorAuth).not.toHaveBeenCalled();
+    expect(dispatch).toHaveBeenCalledWith(TwoFactorModalActions.verified({ token: 'jwt' }));
+  });
+
+  it('tells the user when the backup code is not valid', async () => {
+    verifyBackupCode.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: Constants.HTTP_UNAUTHORIZED_STATUS })),
+    );
+    component.onToggleBackupCodeMode();
+    component.onBackupCodeChange('ABCDE-FGHJK');
+
+    await component.onVerify();
+
+    expect(component.codeErrors()[0]?.message).toBe(AuthValidationMessages.INVALID_BACKUP_CODE);
+    expect(close).not.toHaveBeenCalled();
+  });
+
+  it('keeps the verify button disabled until the backup code is complete', async () => {
+    component.onToggleBackupCodeMode();
+    component.onBackupCodeChange('ABCDE');
+    await fixture.whenStable();
+
+    expect(component.isBackupCodeComplete()).toBe(false);
+  });
+
+  it('asks for the authenticator code without offering to resend it', async () => {
+    TestBed.resetTestingModule();
+    modalData = {
+      email: 'ada@example.com',
+      challengeId: 'challenge',
+      method: TwoFactorMethodEnum.AUTHENTICATOR,
+    };
+
+    await createFixture();
+
+    expect(fixture.nativeElement.querySelector('.two-factor__description').textContent).toContain(
+      'authenticator app',
+    );
+    expect(fixture.nativeElement.querySelector('.two-factor__resend')).toBeNull();
+  });
+
+  it('lets the user type the authenticator code', async () => {
+    TestBed.resetTestingModule();
+    modalData = {
+      email: 'ada@example.com',
+      challengeId: 'challenge',
+      method: TwoFactorMethodEnum.AUTHENTICATOR,
+    };
+
+    await createFixture();
+
+    expect(fixture.nativeElement.querySelectorAll('.code-field__cell')).toHaveLength(
+      Constants.CODE_FIELD_DEFAULT_LENGTH,
+    );
+  });
+
+  it('names the recovery email as the destination', async () => {
+    TestBed.resetTestingModule();
+    modalData = {
+      email: 'ba***@example.com',
+      challengeId: 'challenge',
+      method: TwoFactorMethodEnum.RECOVERY_EMAIL,
+    };
+
+    await createFixture();
+
+    expect(fixture.nativeElement.querySelector('.two-factor__description').textContent).toContain(
+      'recovery email',
+    );
   });
 });

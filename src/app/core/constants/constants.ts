@@ -209,6 +209,14 @@ export class Constants {
 
   public static readonly SETTINGS_LOAD_FAILED: TranslationKey = 'messages.settingsLoadFailed';
 
+  public static readonly ACCOUNT_DELETED: TranslationKey = 'messages.accountDeleted';
+
+  public static readonly BACKUP_CODES_FILE_NAME: string = 'radiofind-backup-codes.txt';
+
+  public static readonly BACKUP_CODES_FILE_TYPE: string = 'text/plain';
+
+  public static readonly LINE_BREAK: string = '\n';
+
   public static readonly TOGGLE_ENABLED_TEXT: TranslationKey = 'common.enabled';
 
   public static readonly TOGGLE_DISABLED_TEXT: TranslationKey = 'common.disabled';
@@ -316,7 +324,17 @@ export class Constants {
 
   public static readonly HTTP_UNAUTHORIZED_STATUS: number = 401;
 
+  public static readonly HTTP_FORBIDDEN_STATUS: number = 403;
+
+  public static readonly BACKUP_CODE_LENGTH: number = 10;
+
+  public static readonly BACKUP_CODE_SEPARATORS_PATTERN: RegExp = /[\s-]/g;
+
   public static readonly HTTP_CONFLICT_STATUS: number = 409;
+
+  public static readonly HTTP_GONE_STATUS: number = 410;
+
+  public static readonly HTTP_UNPROCESSABLE_CONTENT_STATUS: number = 422;
 
   public static readonly HTTP_CONTENT_TOO_LARGE_STATUS: number = 413;
 

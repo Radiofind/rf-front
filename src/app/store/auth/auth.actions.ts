@@ -1,4 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { AccountSettingsPageActions } from '../ui/account-settings-page.actions';
 import { EditProfilePageActions } from '../ui/edit-profile-page.actions';
 import { HeaderActions } from '../ui/header.actions';
 
@@ -20,4 +21,5 @@ export const signOutActions = [
   HeaderActions.logOutClicked,
   EditProfilePageActions.reauthenticationRequired,
   AuthApiActions.sessionRejected,
+  AccountSettingsPageActions.accountDeleted,
 ] as const;
