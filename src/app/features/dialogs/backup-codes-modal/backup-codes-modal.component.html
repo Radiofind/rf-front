@@ -1,0 +1,35 @@
+<div class="backup-codes">
+  <p class="backup-codes__warning">
+    <i class="bx bx-alert-triangle" aria-hidden="true"></i>
+    {{ 'accountSettings.backupCodesWarning' | translate }}
+  </p>
+
+  <ul class="backup-codes__list" [attr.aria-label]="'accountSettings.backupCodesTitle' | translate">
+    @for (code of data.codes; track code) {
+      <li class="backup-codes__code">{{ code }}</li>
+    }
+  </ul>
+
+  <div class="backup-codes__actions">
+    <app-button
+      contentIconClass="bx bx-copy"
+      [contentText]="'accountSettings.copyCodes' | translate"
+      additionalClass="button--secondary button--compact"
+      (clickAction)="onCopy()"
+    />
+
+    <app-button
+      contentIconClass="bx bx-download"
+      [contentText]="'accountSettings.downloadCodes' | translate"
+      additionalClass="button--secondary button--compact"
+      (clickAction)="onDownload()"
+    />
+  </div>
+
+  <app-button
+    class="backup-codes__done"
+    [contentText]="'accountSettings.backupCodesDone' | translate"
+    additionalClass="button--compact"
+    (clickAction)="onDone()"
+  />
+</div>

@@ -13,7 +13,6 @@ describe('GeneralSettingsPageComponent', () => {
     language: 'DE',
     radioMode: true,
     profileVisibility: 'FOLLOWERS',
-    notificationsEnabled: false,
     audioQuality: 'NORMAL',
     accentColor: 'ORCHID',
   };
@@ -107,7 +106,6 @@ describe('GeneralSettingsPageComponent', () => {
       'Language',
       'Radio-mode',
       'Profile Visibility',
-      'Notifications',
       'Audio Quality',
       'Accent Color',
     ]);
@@ -119,7 +117,6 @@ describe('GeneralSettingsPageComponent', () => {
     expect(selectedLabel(fixture, 'settings-language')).toBe('Deutsch');
     expect(toggle(fixture, 'settings-radio-mode').checked).toBe(true);
     expect(selectedLabel(fixture, 'settings-profile-visibility')).toBe('Followers only');
-    expect(toggle(fixture, 'settings-notifications').checked).toBe(false);
     expect(selectedLabel(fixture, 'settings-audio-quality')).toBe('Normal (160 kbps)');
     expect(swatches(fixture).find((swatch) => swatch.checked)?.value).toBe('ORCHID');
   });
@@ -130,13 +127,13 @@ describe('GeneralSettingsPageComponent', () => {
     store.overrideSelector(settingsFeature.selectSettings, {
       ...storedSettings,
       language: 'IT',
-      notificationsEnabled: true,
+      radioMode: false,
     });
     store.refreshState();
     await fixture.whenStable();
 
     expect(selectedLabel(fixture, 'settings-language')).toBe('Italiano');
-    expect(toggle(fixture, 'settings-notifications').checked).toBe(true);
+    expect(toggle(fixture, 'settings-radio-mode').checked).toBe(false);
   });
 
   it('labels every control with its row title and description', async () => {
@@ -179,17 +176,6 @@ describe('GeneralSettingsPageComponent', () => {
 
       expect(dispatch).toHaveBeenLastCalledWith(
         GeneralSettingsPageActions.settingChanged({ changes: { profileVisibility: 'ONLY_ME' } }),
-      );
-    });
-
-    it('saves the notifications toggle', async () => {
-      const fixture: ComponentFixture<GeneralSettingsPageComponent> = await createFixture();
-
-      toggle(fixture, 'settings-notifications').click();
-      await fixture.whenStable();
-
-      expect(dispatch).toHaveBeenLastCalledWith(
-        GeneralSettingsPageActions.settingChanged({ changes: { notificationsEnabled: true } }),
       );
     });
 
@@ -241,7 +227,7 @@ describe('GeneralSettingsPageComponent', () => {
       fixture.nativeElement.querySelectorAll('.select__control, input'),
     );
 
-    expect(controls).toHaveLength(9);
+    expect(controls).toHaveLength(8);
     expect(controls.every((control) => control.disabled)).toBe(true);
 
     store.overrideSelector(settingsFeature.selectIsLoaded, true);

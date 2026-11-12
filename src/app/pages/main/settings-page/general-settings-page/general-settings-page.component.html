@@ -56,22 +56,6 @@
   </app-settings-row>
 
   <app-settings-row
-    rowId="settings-notifications"
-    iconClass="bx bx-bell"
-    [rowTitle]="'settings.notificationsTitle' | translate"
-    [rowDescription]="'settings.notificationsDescription' | translate"
-  >
-    <app-toggle-switch
-      name="notifications"
-      labelledBy="settings-notifications-title"
-      describedBy="settings-notifications-description"
-      [checked]="settings().notificationsEnabled"
-      [disabled]="isDisabled()"
-      (checkedChange)="onSettingChange('notificationsEnabled', $event)"
-    />
-  </app-settings-row>
-
-  <app-settings-row
     rowId="settings-audio-quality"
     iconClass="bx bx-waveform"
     [rowTitle]="'settings.audioQualityTitle' | translate"

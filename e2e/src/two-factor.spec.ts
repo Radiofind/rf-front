@@ -15,9 +15,10 @@ test.describe('two-factor verification', () => {
     await modal.title.waitFor();
   });
 
-  test('opens with the account address and an empty code', async ({ user }) => {
+  test('opens with the masked account address and an empty code', async ({ user }) => {
     await expect(modal.title).toHaveText('Two-Factor Authentication');
-    await expect(modal.description).toContainText(user.email);
+    await expect(modal.description).toContainText('***@example.com');
+    await expect(modal.description).not.toContainText(user.email);
     await expect(modal.cells).toHaveCount(6);
 
     for (let index = 0; index < 6; index++) {

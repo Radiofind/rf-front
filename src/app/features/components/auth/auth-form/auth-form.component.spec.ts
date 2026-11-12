@@ -15,6 +15,7 @@ import { AUTH_TYPE } from '../../../enums/auth-type.enum';
 import { AuthValidationMessages } from '../../../constants/auth-error-messages.constant';
 import { Constants } from '../../../../core/constants/constants';
 import { AuthFormActions } from '../../../../store/ui/auth-form.actions';
+import { TwoFactorMethodEnum } from '../../../../core/enums/two-factor-method.enum';
 
 import { translate } from '../../../../../test-translate';
 import type { ComponentFixture } from '@angular/core/testing';
@@ -138,9 +139,31 @@ describe('AuthFormComponent', () => {
       ).toEqual({
         email: 'ada@example.com',
         challengeId: 'challenge',
+        method: TwoFactorMethodEnum.EMAIL,
       });
       expect(navigate).toHaveBeenCalledWith([Links.DEFAULT_PATH]);
       expect(component.loginError()).toBeUndefined();
+    });
+
+    it('tells the two-factor modal which method and destination the server chose', async () => {
+      login.mockReturnValue(
+        of({
+          challengeId: 'challenge',
+          requiresTwoFactor: true,
+          token: null,
+          twoFactorMethod: TwoFactorMethodEnum.RECOVERY_EMAIL,
+          destination: 'ba***@example.com',
+        }),
+      );
+      fillLogin();
+
+      await submit(component.loginForm);
+
+      expect((open.mock.calls[0]?.[1] as IModalOptions).data).toEqual({
+        email: 'ba***@example.com',
+        challengeId: 'challenge',
+        method: TwoFactorMethodEnum.RECOVERY_EMAIL,
+      });
     });
 
     it('surfaces a server error and stays on the page when login fails', async () => {

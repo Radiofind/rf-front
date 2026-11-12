@@ -8,45 +8,70 @@
 
   <h2 class="two-factor__title">{{ 'twoFactor.title' | translate }}</h2>
 
-  <p class="two-factor__description">
-    {{ 'twoFactor.descriptionStart' | translate }}
-    <span class="two-factor__email">{{ data.email }}</span
-    >{{ 'twoFactor.descriptionEnd' | translate }}
-  </p>
+  @if (isBackupCodeMode()) {
+    <p class="two-factor__description">{{ 'twoFactor.backupCodeDescription' | translate }}</p>
 
-  <app-code-field
-    class="two-factor__code"
-    name="two-factor-code"
-    [value]="code()"
-    [codeLength]="6"
-    [errors]="codeErrors()"
-    [touched]="hasCodeError()"
-    (valueChange)="onCodeChange($event)"
-  />
+    <app-input-field
+      class="two-factor__code"
+      name="two-factor-backup-code"
+      iconClass="bx bx-key"
+      inputPlaceholder="XXXXX-XXXXX"
+      [value]="backupCode()"
+      [errors]="codeErrors()"
+      [touched]="hasCodeError()"
+      (valueChange)="onBackupCodeChange($event)"
+    />
+  } @else {
+    @if (isAuthenticator) {
+      <p class="two-factor__description">{{ 'twoFactor.authenticatorDescription' | translate }}</p>
+    } @else {
+      <p class="two-factor__description">
+        {{ descriptionStart | translate }}
+        <span class="two-factor__email">{{ data.email }}</span
+        >{{ 'twoFactor.descriptionEnd' | translate }}
+      </p>
+    }
+
+    <app-code-field
+      class="two-factor__code"
+      name="two-factor-code"
+      [value]="code()"
+      [codeLength]="6"
+      [errors]="codeErrors()"
+      [touched]="hasCodeError()"
+      (valueChange)="onCodeChange($event)"
+    />
+  }
 
   <app-button
     contentIconClass="bx bx-arrow-right-stroke"
     [contentText]="'twoFactor.submit' | translate"
-    [disabled]="!isCodeComplete() || isLocked()"
+    [disabled]="(isBackupCodeMode() ? !isBackupCodeComplete() : !isCodeComplete()) || isLocked()"
     (clickAction)="onVerify()"
   />
 
-  <p class="two-factor__resend">
-    {{ 'twoFactor.noCode' | translate }}
-    @if (isResending()) {
-      <app-spinner class="two-factor__resend-spinner" size="20px" thickness="2px" />
-    } @else {
-      <button
-        class="two-factor__resend-action"
-        type="button"
-        [disabled]="!canResend() || isLocked()"
-        (click)="onResend()"
-      >
-        {{ 'twoFactor.resend' | translate }}
-        @if (!canResend() && !isLocked()) {
-          ({{ resendTimer() }})
-        }
-      </button>
-    }
-  </p>
+  <button class="two-factor__switch" type="button" (click)="onToggleBackupCodeMode()">
+    {{ (isBackupCodeMode() ? 'twoFactor.useEmailCode' : 'twoFactor.useBackupCode') | translate }}
+  </button>
+
+  @if (!isBackupCodeMode() && !isAuthenticator) {
+    <p class="two-factor__resend">
+      {{ 'twoFactor.noCode' | translate }}
+      @if (isResending()) {
+        <app-spinner class="two-factor__resend-spinner" size="20px" thickness="2px" />
+      } @else {
+        <button
+          class="two-factor__resend-action"
+          type="button"
+          [disabled]="!canResend() || isLocked()"
+          (click)="onResend()"
+        >
+          {{ 'twoFactor.resend' | translate }}
+          @if (!canResend() && !isLocked()) {
+            ({{ resendTimer() }})
+          }
+        </button>
+      }
+    </p>
+  }
 </div>

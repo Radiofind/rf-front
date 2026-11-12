@@ -137,6 +137,14 @@ export const DE_TRANSLATIONS: Translations = {
     submit: 'Link zum Zurücksetzen senden',
   },
   twoFactor: {
+    authenticatorDescription:
+      'Öffne deine Authenticator-App und gib den 6-stelligen Code für RADIOFIND ein.',
+    recoveryDescriptionStart:
+      'Wir haben einen 6-stelligen Code an deine Wiederherstellungs-E-Mail gesendet: ',
+    backupCodeDescription:
+      'Gib einen deiner Backup-Codes ein. Jeder Code kann nur einmal verwendet werden.',
+    useBackupCode: 'Stattdessen Backup-Code verwenden',
+    useEmailCode: 'Stattdessen Code aus der E-Mail verwenden',
     title: 'Zwei-Faktor-Authentifizierung',
     descriptionStart: 'Wir haben einen 6-stelligen Code an deine E-Mail-Adresse',
     descriptionEnd: ' gesendet. Gib den Code unten ein, um fortzufahren.',
@@ -466,6 +474,7 @@ export const DE_TRANSLATIONS: Translations = {
     moreOptions: 'Weitere Optionen',
   },
   notifications: {
+    trackLiked: 'Jemandem gefällt dein Track «{title}»',
     trackReported: 'Der Track «{title}» wurde gemeldet und muss moderiert werden',
     trackDeleted: 'Dein Track «{title}» wurde gelöscht',
     trackSubmissionCancelled:
@@ -474,6 +483,77 @@ export const DE_TRANSLATIONS: Translations = {
     scheduleChangeRequested: 'Deine Anfrage zur Änderung der Sendezeit von «{title}» wird geprüft',
     trackSubmittedForReview:
       'Dein Track «{title}» wurde hochgeladen und zur Qualitätsprüfung weitergeleitet',
+  },
+  accountSettings: {
+    chooseMethod:
+      'Wähle, wie du Bestätigungscodes erhalten möchtest, und bestätige mit deinem Passwort.',
+    currentMethod: 'Aktuell',
+    continue: 'Weiter',
+    back: 'Zurück',
+    confirm: 'Bestätigen',
+    scanQrCode:
+      'Scanne diesen QR-Code mit deiner Authenticator-App (Google Authenticator, Microsoft Authenticator, 1Password …) und gib den angezeigten 6-stelligen Code ein.',
+    qrCodeAlt: 'QR-Code für die Authenticator-App',
+    manualKey: 'Code lässt sich nicht scannen? Gib diesen Schlüssel manuell ein:',
+    codeSentTo: 'Gib den 6-stelligen Code ein, den wir gesendet haben an',
+    methods: {
+      email: 'E-Mail',
+      emailDescription: 'Codes werden an die E-Mail-Adresse deines Kontos gesendet',
+      recoveryEmail: 'Wiederherstellungs-E-Mail',
+      recoveryEmailDescription: 'Codes werden an deine Wiederherstellungs-E-Mail gesendet',
+      recoveryEmailMissing:
+        'Hinterlege in deinem Profil eine Wiederherstellungs-E-Mail, um diese Methode zu nutzen.',
+      authenticator: 'Authenticator-App',
+      authenticatorDescription:
+        'Codes werden von einer App auf deinem Smartphone erzeugt, auch offline.',
+    },
+    securityTitle: 'Sicherheit',
+    securityDescription: 'Schütze dein Konto mit erweiterten Sicherheitsoptionen.',
+    twoFactorTitle: 'Zwei-Faktor-Authentifizierung',
+    twoFactorDescription: 'Aktuelle Methode: {method}',
+    enabled: 'Aktiviert',
+    manage: 'Verwalten',
+    backupCodesTitle: 'Backup-Codes',
+    backupCodesDescription:
+      'Erstelle Einmal-Codes, um dich anzumelden, wenn du keinen Zugriff auf deine E-Mails hast.',
+    backupCodesRemaining: '{count} unbenutzt',
+    generate: 'Erstellen',
+    regenerate: 'Neu erstellen',
+    generateBackupCodesMessage: 'Bestätige dein Passwort, um neue Backup-Codes zu erstellen.',
+    generateBackupCodesDescription:
+      'Früher erstellte Backup-Codes funktionieren danach nicht mehr.',
+    backupCodesWarning:
+      'Bewahre diese Codes sicher auf. Sie werden nur einmal angezeigt, und jeder Code funktioniert nur einmal.',
+    copyCodes: 'Kopieren',
+    downloadCodes: 'Herunterladen',
+    backupCodesDone: 'Ich habe meine Codes gespeichert',
+    backupCodesCopied: 'Backup-Codes kopiert',
+    notificationsTitle: 'Benachrichtigungen',
+    notificationsDescription: 'Wähle, welche Benachrichtigungen du erhalten möchtest.',
+    trackUpdatesTitle: 'Track-Updates',
+    trackUpdatesDescription:
+      'Erfahre, wenn deine Tracks zur Prüfung gesendet, zurückgezogen oder gelöscht werden.',
+    radioUpdatesTitle: 'Radio-Updates',
+    radioUpdatesDescription: 'Erhalte Updates zur Sendezeit deiner Tracks.',
+    likesTitle: 'Likes',
+    likesDescription: 'Erfahre, wenn jemandem deine Tracks gefallen.',
+    dangerZoneTitle: 'Gefahrenzone',
+    dangerZoneDescription:
+      'Diese Aktionen sind endgültig und können nicht rückgängig gemacht werden.',
+    deleteAccount: 'Konto löschen',
+    deleteAccountTitle: 'Konto löschen',
+    deleteAccountDescription: 'Lösche dein Konto und alle zugehörigen Daten endgültig.',
+    deleteAccountMessage: 'Möchtest du dein Konto wirklich löschen?',
+    deleteAccountWarning:
+      'Dein Profil, deine Tracks, Likes und Benachrichtigungen werden endgültig gelöscht. Das kann nicht rückgängig gemacht werden.',
+    passwordLabel: 'Aktuelles Passwort',
+    errors: {
+      invalidCode: 'Der Code ist falsch',
+      setupExpired: 'Die Einrichtung ist abgelaufen. Bitte starte erneut.',
+      noRecoveryEmail: 'Hinterlege zuerst eine Wiederherstellungs-E-Mail in deinem Profil',
+      incorrectPassword: 'Das Passwort ist falsch',
+      requestFailed: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
+    },
   },
   settings: {
     title: 'Einstellungen',
@@ -491,8 +571,6 @@ export const DE_TRANSLATIONS: Translations = {
     profileVisibilityTitle: 'Profilsichtbarkeit',
     profileVisibilityDescription:
       'Lege fest, was andere Nutzer in deinem Profil sehen können – deine Statistiken und Infos über dich.',
-    notificationsTitle: 'Benachrichtigungen',
-    notificationsDescription: 'Erhalte Updates zu neuen Followern, Likes und mehr.',
     audioQualityTitle: 'Audioqualität',
     audioQualityDescription: 'Wähle die Qualität des Audio-Streamings.',
     accentColorTitle: 'Akzentfarbe',
@@ -921,6 +999,7 @@ export const DE_TRANSLATIONS: Translations = {
       'Du hast nicht gespeicherte Änderungen. Möchtest du diese Seite wirklich verlassen? Deine Änderungen gehen verloren.',
   },
   messages: {
+    accountDeleted: 'Dein Konto wurde gelöscht',
     trackRemovedFromLibrary: 'Track aus deiner Mediathek entfernt',
     trackReported: 'Danke! Deine Meldung wurde an unsere Moderatoren gesendet.',
     trackAlreadyReported: 'Du hast diesen Track bereits gemeldet',
@@ -957,6 +1036,7 @@ export const DE_TRANSLATIONS: Translations = {
     playbackFailed: 'Der Track konnte nicht abgespielt werden. Bitte versuche es erneut.',
   },
   validation: {
+    invalidBackupCode: 'Dieser Backup-Code ist ungültig oder wurde bereits verwendet',
     dateFromTomorrow: 'Wähle ein Datum ab morgen',
     maxLengthComment: 'Darf höchstens 500 Zeichen lang sein',
     required: 'Pflichtfeld',

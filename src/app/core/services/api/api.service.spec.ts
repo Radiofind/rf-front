@@ -41,7 +41,6 @@ describe('ApiService', () => {
     language: 'DE',
     radioMode: false,
     profileVisibility: 'ONLY_ME',
-    notificationsEnabled: true,
     audioQuality: 'NORMAL',
     accentColor: 'OCEAN',
   };

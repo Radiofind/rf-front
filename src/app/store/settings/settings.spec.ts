@@ -22,7 +22,6 @@ describe('settings state', () => {
     language: 'DE',
     radioMode: false,
     profileVisibility: 'FOLLOWERS',
-    notificationsEnabled: false,
     audioQuality: 'NORMAL',
     accentColor: 'OCEAN',
   };
@@ -209,7 +208,7 @@ describe('settings state', () => {
 
       store.dispatch(
         GeneralSettingsPageActions.settingChanged({
-          changes: { accentColor: 'ORCHID', notificationsEnabled: true },
+          changes: { accentColor: 'ORCHID', radioMode: true },
         }),
       );
 

@@ -6,7 +6,6 @@ export class SettingsPage {
   public readonly language: Locator;
   public readonly radioMode: Locator;
   public readonly profileVisibility: Locator;
-  public readonly notifications: Locator;
   public readonly audioQuality: Locator;
   public readonly accentColors: Locator;
 
@@ -16,7 +15,6 @@ export class SettingsPage {
     this.language = this.control('settings-language');
     this.radioMode = this.control('settings-radio-mode');
     this.profileVisibility = this.control('settings-profile-visibility');
-    this.notifications = this.control('settings-notifications');
     this.audioQuality = this.control('settings-audio-quality');
     this.accentColors = this.control('settings-accent-color');
   }

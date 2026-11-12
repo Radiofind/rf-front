@@ -15,6 +15,7 @@ import { AuthValidationMessages } from '../../../constants/auth-error-messages.c
 import { loginFormSchema, registerFormSchema } from '../../../schemas/auth-form/auth-form.schema';
 import { AuthService } from '../../../services/auth-service/auth.service';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
+import { TwoFactorMethodEnum } from '../../../../core/enums/two-factor-method.enum';
 import { TwoFactorModalComponent } from '../../../dialogs/two-factor-modal/two-factor-modal.component';
 import {
   DEFAULT_ARTIST_TYPE,
@@ -37,6 +38,7 @@ import type { ArtistType } from '../../../../core/types/artist-type.type';
 import type { AuthType } from '../../../../core/types/auth.type';
 import type { IRegisterData } from '../../../models/auth-content.model';
 import type { ILoginForm, IRegisterForm } from '../../../models/auth-form.model';
+import type { TwoFactorMethod } from '../../../../core/types/two-factor-method.type';
 import type { ITwoFactorModalData } from '../../../models/two-factor.model';
 import type { IAuthResponse } from '../../../../core/models/auth.model';
 import type { ISelectOption } from '../../../../shared/models/select-option.model';
@@ -76,6 +78,14 @@ export class AuthFormComponent {
   public readonly showConfirmPassword: WritableSignal<boolean> = signal<boolean>(false);
 
   private readonly challengeId: WritableSignal<string | null> = signal<string | null>(null);
+
+  private readonly twoFactorMethod: WritableSignal<TwoFactorMethod> = signal<TwoFactorMethod>(
+    TwoFactorMethodEnum.EMAIL,
+  );
+
+  private readonly twoFactorDestination: WritableSignal<string> = signal<string>(
+    Constants.EMPTY_STRING,
+  );
 
   public readonly artistTypeTexts: Readonly<Record<ArtistType, IArtistTypeTexts>> =
     ARTIST_TYPE_TEXTS;
@@ -153,7 +163,11 @@ export class AuthFormComponent {
       TwoFactorModalComponent,
       {
         ...TWO_FACTOR_MODAL_OPTIONS,
-        data: { email: this.loginModel().email, challengeId: this.challengeId() },
+        data: {
+          email: this.twoFactorDestination(),
+          challengeId: this.challengeId(),
+          method: this.twoFactorMethod(),
+        },
       },
     );
   }
@@ -172,6 +186,8 @@ export class AuthFormComponent {
         this.authService.login(this.loginModel()),
       );
       this.challengeId.set(loginData.challengeId);
+      this.twoFactorMethod.set(loginData.twoFactorMethod ?? TwoFactorMethodEnum.EMAIL);
+      this.twoFactorDestination.set(loginData.destination ?? this.loginModel().email);
       await firstValueFrom(this.openTwoFactorModal().closed);
       await this.router.navigate([Links.DEFAULT_PATH]);
       return undefined;

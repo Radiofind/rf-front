@@ -13,6 +13,7 @@ export class EndpointConstants {
     forgotPassword: '/forgot-password',
     resetPassword: '/reset-password',
     validateResetToken: '/validate-reset-token',
+    verifyBackupCode: '/verify-backup-code',
   };
 
   public static readonly USER_ENDPOINTS: IUserEndpoints = {
@@ -28,6 +29,11 @@ export class EndpointConstants {
     readAll: '/read-all',
     tracks: '/tracks',
     library: '/library',
+    security: '/security',
+    twoFactor: '/two-factor',
+    backupCodes: '/backup-codes',
+    enrollment: '/enrollment',
+    confirm: '/confirm',
   };
 
   public static readonly TRACK_ENDPOINTS: ITrackEndpoints = {
