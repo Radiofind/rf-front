@@ -13,6 +13,22 @@ export const DATE_FORMAT_OPTIONS: Readonly<Record<DateFormatEnum, Intl.DateTimeF
     day: 'numeric',
     year: 'numeric',
   },
+  [DateFormatEnum.DAY_MONTH]: {
+    month: 'short',
+    day: 'numeric',
+  },
+  [DateFormatEnum.MONTH]: {
+    month: 'short',
+  },
+  [DateFormatEnum.WEEKDAY_DATE]: {
+    weekday: 'short',
+    month: 'long',
+    day: 'numeric',
+  },
+  [DateFormatEnum.LONG_MONTH_YEAR]: {
+    month: 'long',
+    year: 'numeric',
+  },
 };
 
 export const TIME_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {

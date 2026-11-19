@@ -9,6 +9,7 @@ import { MediaLibraryPageActions } from '../../../store/ui/media-library-page.ac
 import { TrackDetailsModalComponent } from '../../dialogs/track-details-modal/track-details-modal.component';
 import { ReportTrackModalComponent } from '../../dialogs/report-track-modal/report-track-modal.component';
 import { TRACK_ACTION_OPTIONS } from '../../constants/my-uploads.constant';
+import { TrackDownloadService } from '../track-download-service/track-download.service';
 
 import type { ITrack } from '../../../core/models/track.model';
 import type {
@@ -24,9 +25,14 @@ export class LibraryTrackActionsService {
 
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
+  private readonly trackDownload: TrackDownloadService = inject(TrackDownloadService);
+
   private readonly handlers: Readonly<Partial<Record<TrackActionEnum, (track: ITrack) => void>>> = {
     [TrackActionEnum.DETAILS]: (track: ITrack) => {
       this.openDetails(track);
+    },
+    [TrackActionEnum.DOWNLOAD]: (track: ITrack) => {
+      this.trackDownload.download(track);
     },
     [TrackActionEnum.REPORT]: (track: ITrack) => {
       this.openReport(track);

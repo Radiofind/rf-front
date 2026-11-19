@@ -1,9 +1,7 @@
-import { DestroyRef, DOCUMENT, inject, PLATFORM_ID, Service } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { DestroyRef, inject, Service } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
-import { Constants } from '../../../core/constants/constants';
 import { ModalSizeEnum } from '../../../core/enums/modal-size.enum';
 import { TrackActionEnum } from '../../../core/enums/track-action.enum';
 import { ModalService } from '../../../shared/services/modal-service/modal.service';
@@ -14,6 +12,7 @@ import { PlaybackScheduleModalComponent } from '../../dialogs/playback-schedule-
 import { ScheduleChangeModalComponent } from '../../dialogs/schedule-change-modal/schedule-change-modal.component';
 import { RejectionReasonModalComponent } from '../../dialogs/rejection-reason-modal/rejection-reason-modal.component';
 import { TRACK_ACTION_OPTIONS } from '../../constants/my-uploads.constant';
+import { TrackDownloadService } from '../track-download-service/track-download.service';
 
 import type { Action } from '@ngrx/store';
 import type { ComponentType } from '@angular/cdk/overlay';
@@ -27,11 +26,9 @@ export class TrackActionsService {
 
   private readonly modalService: ModalService = inject(ModalService);
 
-  private readonly document: Document = inject(DOCUMENT);
+  private readonly trackDownload: TrackDownloadService = inject(TrackDownloadService);
 
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
-
-  private readonly isBrowser: boolean = isPlatformBrowser(inject(PLATFORM_ID));
 
   private readonly handlers: Readonly<Partial<Record<TrackActionEnum, (track: ITrack) => void>>> = {
     [TrackActionEnum.DETAILS]: (track: ITrack) => {
@@ -90,7 +87,7 @@ export class TrackActionsService {
       );
     },
     [TrackActionEnum.DOWNLOAD]: (track: ITrack) => {
-      this.download(track);
+      this.trackDownload.download(track);
     },
     [TrackActionEnum.DELETE]: (track: ITrack) => {
       this.confirm(
@@ -169,16 +166,5 @@ export class TrackActionsService {
       .subscribe(() => {
         this.store.dispatch(onConfirm);
       });
-  }
-
-  private download(track: ITrack): void {
-    if (!this.isBrowser || !track.audioUrl) {
-      return;
-    }
-
-    const link: HTMLAnchorElement = this.document.createElement('a');
-    link.href = `${track.audioUrl}${Constants.DOWNLOAD_QUERY_SUFFIX}`;
-    link.rel = 'noopener';
-    link.click();
   }
 }

@@ -9,6 +9,7 @@ import { TrackStatusEnum } from '../../../core/enums/track-status.enum';
 import { MyUploadsPageActions } from '../../../store/ui/my-uploads-page.actions';
 import { TrackDetailsModalComponent } from '../../dialogs/track-details-modal/track-details-modal.component';
 import { TrackStatisticsModalComponent } from '../../dialogs/track-statistics-modal/track-statistics-modal.component';
+import { TrackDownloadService } from '../track-download-service/track-download.service';
 
 import type { ITrack } from '../../../core/models/track.model';
 
@@ -37,15 +38,18 @@ describe('TrackActionsService', () => {
   let confirm: ReturnType<typeof vi.fn>;
   let service: TrackActionsService;
   let dispatch: ReturnType<typeof vi.spyOn>;
+  let download: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     TestBed.resetTestingModule();
     open = vi.fn().mockReturnValue({ closed: of(true) });
     confirm = vi.fn().mockReturnValue(of(true));
+    download = vi.fn();
     TestBed.configureTestingModule({
       providers: [
         provideMockStore(),
         { provide: ModalService, useValue: { open: open, confirm: confirm } },
+        { provide: TrackDownloadService, useValue: { download: download } },
       ],
     });
     service = TestBed.inject(TrackActionsService);
@@ -137,15 +141,9 @@ describe('TrackActionsService', () => {
     );
   });
 
-  it('downloads the audio through its signed link', () => {
-    const click = vi
-      .spyOn(HTMLAnchorElement.prototype, 'click')
-      .mockImplementation(() => undefined);
-
+  it('downloads the own track', () => {
     service.run(track, TrackActionEnum.DOWNLOAD);
 
-    expect((click.mock.contexts[0] as HTMLAnchorElement).getAttribute('href')).toBe(
-      '/api/tracks/42/audio?token=signed&download=true',
-    );
+    expect(download).toHaveBeenCalledExactlyOnceWith(track);
   });
 });

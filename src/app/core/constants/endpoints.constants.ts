@@ -29,6 +29,7 @@ export class EndpointConstants {
     readAll: '/read-all',
     tracks: '/tracks',
     library: '/library',
+    statistics: '/statistics',
     security: '/security',
     twoFactor: '/two-factor',
     backupCodes: '/backup-codes',
@@ -39,6 +40,7 @@ export class EndpointConstants {
   public static readonly TRACK_ENDPOINTS: ITrackEndpoints = {
     tracks: '/tracks',
     plays: '/plays',
+    downloads: '/downloads',
     like: '/like',
     cancelSubmission: '/cancel-submission',
     submit: '/submit',

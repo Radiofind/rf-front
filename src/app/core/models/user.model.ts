@@ -13,6 +13,7 @@ export interface IUserEndpoints {
   readAll: string;
   tracks: string;
   library: string;
+  statistics: string;
   security: string;
   twoFactor: string;
   backupCodes: string;
