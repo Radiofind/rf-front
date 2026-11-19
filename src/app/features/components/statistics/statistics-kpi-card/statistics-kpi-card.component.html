@@ -1,0 +1,30 @@
+@let current = kpi();
+
+<article class="kpi">
+  <header class="kpi__header">
+    <h2 class="kpi__label">{{ current.label | translate }}</h2>
+    <span class="kpi__icon" aria-hidden="true"><i [class]="current.iconClass"></i></span>
+  </header>
+
+  <p class="kpi__value">{{ current.value | compactNumber }}</p>
+
+  <p class="kpi__comparison">
+    @if (current.change === null) {
+      <span class="kpi__no-comparison">{{ 'statistics.noComparison' | translate }}</span>
+    } @else {
+      <span
+        class="kpi__change"
+        [class.kpi__change--up]="current.change > 0"
+        [class.kpi__change--down]="current.change < 0"
+      >
+        @if (current.change > 0) {
+          <i class="bx bx-trending-up" aria-hidden="true"></i>
+        } @else if (current.change < 0) {
+          <i class="bx bx-trending-down" aria-hidden="true"></i>
+        }
+        {{ current.change | percentValue: true }}
+      </span>
+      <span class="kpi__previous">{{ 'statistics.vsPrevious' | translate }}</span>
+    }
+  </p>
+</article>

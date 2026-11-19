@@ -224,7 +224,7 @@ test.describe('my uploads', () => {
   });
 
   test.describe('plays', () => {
-    test('counts every listener once', async ({ request, user }) => {
+    test('counts every play of other listeners, repeats included', async ({ request, user }) => {
       const fan = await registerUser();
       const otherFan = await registerUser();
       await uploadTitled(request, user.token, 'Midnight Dreams');
@@ -235,7 +235,7 @@ test.describe('my uploads', () => {
       await request.post(playsUrl, { headers: bearer(fan.token) });
       await request.post(playsUrl, { headers: bearer(otherFan.token) });
 
-      expect((await ownTracks(request, user.token)).items[0]?.playsCount).toBe(2);
+      expect((await ownTracks(request, user.token)).items[0]?.playsCount).toBe(3);
     });
 
     test('does not count the owner listening to the own track', async ({ request, user }) => {

@@ -140,13 +140,14 @@ describe('MediaLibraryPageComponent', () => {
     );
   });
 
-  it('offers details, a report and the removal for a track of another artist', async () => {
+  it('offers details, the download, a report and the removal for a track of another artist', async () => {
     const fixture: ComponentFixture<MediaLibraryPageComponent> = await createFixture({
       tracks: [midnight],
     });
 
     expect(await menuItems(fixture, 'Midnight Dreams')).toEqual([
       'Track Details',
+      'Download Track',
       'Report Track',
       'Remove from Library',
     ]);
@@ -159,6 +160,7 @@ describe('MediaLibraryPageComponent', () => {
 
     expect(await menuItems(fixture, 'Lost in Space')).toEqual([
       'Track Details',
+      'Download Track',
       'Remove from Library',
     ]);
   });

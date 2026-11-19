@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { API_URL } from './api';
 import { melodyWav, randomSeed } from './audio';
+import { approveTrack } from './database';
 
 import type { APIRequestContext, APIResponse } from '@playwright/test';
 
@@ -43,6 +44,20 @@ export const uploadTitled = async (
   const response: APIResponse = await uploadTrack(request, token, { title: title, genres: genres });
 
   expect(response.status(), `upload of "${title}" failed`).toBe(201);
+};
+
+export const uploadApprovedTrack = async (
+  request: APIRequestContext,
+  token: string,
+  title: string,
+  genres: string = 'GRUNGE',
+): Promise<number> => {
+  const response: APIResponse = await uploadTrack(request, token, { title: title, genres: genres });
+  expect(response.status(), `upload of "${title}" failed`).toBe(201);
+  const { id } = (await response.json()) as { id: number };
+  approveTrack(id);
+
+  return id;
 };
 
 export const setRadioMode = async (

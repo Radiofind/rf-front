@@ -20,12 +20,14 @@ export const LIBRARY_FIRST_SORT_DIRECTION: Readonly<Record<LibrarySortEnum, Sort
 
 export const LIBRARY_TRACK_ACTIONS: readonly TrackActionEnum[] = [
   TrackActionEnum.DETAILS,
+  TrackActionEnum.DOWNLOAD,
   TrackActionEnum.REPORT,
   TrackActionEnum.REMOVE_FROM_LIBRARY,
 ];
 
 export const OWN_LIBRARY_TRACK_ACTIONS: readonly TrackActionEnum[] = [
   TrackActionEnum.DETAILS,
+  TrackActionEnum.DOWNLOAD,
   TrackActionEnum.REMOVE_FROM_LIBRARY,
 ];
 

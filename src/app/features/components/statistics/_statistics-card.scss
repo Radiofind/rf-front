@@ -1,0 +1,51 @@
+@mixin card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--header-element-border);
+  border-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--main-color) 8%, transparent),
+    color-mix(in srgb, var(--main-color) 2%, transparent)
+  );
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+
+@mixin heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@mixin title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+@mixin subtitle {
+  font-size: 14px;
+  color: var(--second-text-color);
+}
+
+@mixin empty-note {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 120px;
+  font-size: 15px;
+  color: var(--second-text-color);
+
+  i {
+    font-size: 20px;
+    color: var(--icon-color);
+  }
+}

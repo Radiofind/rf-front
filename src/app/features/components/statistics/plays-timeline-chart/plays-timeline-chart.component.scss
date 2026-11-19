@@ -1,0 +1,214 @@
+:host {
+  display: block;
+}
+
+.timeline {
+  --plays-color: var(--second-gradient-color);
+  --downloads-color: var(--soft-text-color);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &__legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 20px;
+    list-style: none;
+  }
+
+  &__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--soft-text-color);
+  }
+
+  &__swatch {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 18px;
+    height: 0;
+    border-top: 2px solid var(--plays-color);
+
+    &--downloads {
+      border-top: 2px dashed var(--downloads-color);
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-rows: 280px auto;
+    column-gap: 8px;
+  }
+
+  &__y-axis {
+    position: relative;
+  }
+
+  &__y-label {
+    position: absolute;
+    right: 0;
+    transform: translateY(50%);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--second-text-color);
+  }
+
+  &__plot {
+    position: relative;
+    border-radius: 4px;
+    outline: none;
+    touch-action: pan-y;
+
+    &:focus-visible {
+      box-shadow: 0 0 0 2px var(--first-gradient-color);
+    }
+  }
+
+  &__gridline {
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: color-mix(in srgb, var(--header-element-border) 55%, transparent);
+
+    &:first-child {
+      background: var(--header-element-border);
+    }
+  }
+
+  &__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  &__area {
+    fill: color-mix(in srgb, var(--main-color) 32%, transparent);
+  }
+
+  &__line {
+    fill: none;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+
+    &--plays {
+      stroke: var(--plays-color);
+    }
+
+    &--downloads {
+      stroke: var(--downloads-color);
+      stroke-dasharray: 6 5;
+    }
+  }
+
+  &__crosshair {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--soft-text-color);
+    pointer-events: none;
+  }
+
+  &__marker {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--bg-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+
+    &--plays {
+      background: var(--plays-color);
+    }
+
+    &--downloads {
+      background: var(--downloads-color);
+    }
+  }
+
+  &__tooltip {
+    position: absolute;
+    top: 8px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 180px;
+    margin-left: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--surface-color) 92%, transparent);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+
+    &--end {
+      margin-left: -14px;
+      transform: translateX(-100%);
+    }
+  }
+
+  &__tooltip-date {
+    font-size: 13px;
+    color: var(--second-text-color);
+  }
+
+  &__tooltip-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--soft-text-color);
+  }
+
+  &__tooltip-value {
+    margin-left: auto;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-color);
+  }
+
+  &__x-axis {
+    position: relative;
+    grid-column: 2;
+    height: 28px;
+  }
+
+  &__x-label {
+    position: absolute;
+    top: 10px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    white-space: nowrap;
+    color: var(--second-text-color);
+
+    &:first-child {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    &__grid {
+      grid-template-columns: 36px minmax(0, 1fr);
+      grid-template-rows: 200px auto;
+    }
+
+    &__legend {
+      justify-content: flex-start;
+    }
+
+    &__x-label:nth-child(even) {
+      display: none;
+    }
+  }
+}

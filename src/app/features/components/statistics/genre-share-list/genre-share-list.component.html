@@ -1,0 +1,29 @@
+<section class="genres" aria-labelledby="genres-title">
+  <header class="genres__heading">
+    <h2 class="genres__title" id="genres-title">{{ 'statistics.genres.title' | translate }}</h2>
+    <p class="genres__subtitle">{{ 'statistics.genres.subtitle' | translate }}</p>
+  </header>
+
+  @if (shares().length) {
+    <ul class="genres__list">
+      @for (share of shares(); track share.genre) {
+        <li
+          class="genres__row"
+          [class.genres__row--other]="share.genre === null"
+          [title]="(share.label | translate) + ': ' + (share.plays | compactNumber)"
+        >
+          <span class="genres__name">{{ share.label | translate }}</span>
+          <span class="genres__track" aria-hidden="true">
+            <span class="genres__bar" [style.width.%]="share.share * 100"></span>
+          </span>
+          <span class="genres__share">{{ share.share | percentValue }}</span>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="genres__empty">
+      <i class="bx bx-music" aria-hidden="true"></i>
+      {{ 'statistics.noPlays' | translate }}
+    </p>
+  }
+</section>

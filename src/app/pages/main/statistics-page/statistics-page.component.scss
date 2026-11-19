@@ -1,0 +1,115 @@
+@use '../track-list-page';
+@use '../../../shared/styles/segmented-tabs';
+@use '../../../features/components/statistics/statistics-card';
+
+:host {
+  display: block;
+}
+
+.statistics {
+  @include track-list-page.layout;
+
+  &__tabs {
+    @include segmented-tabs.group;
+
+    align-self: flex-start;
+  }
+
+  &__tab {
+    @include segmented-tabs.tab;
+
+    &--active {
+      @include segmented-tabs.active-tab;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    transition: opacity 200ms ease;
+
+    &--busy {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+  }
+
+  &__kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    list-style: none;
+  }
+
+  &__timeline {
+    @include statistics-card.card;
+  }
+
+  &__card-heading {
+    @include statistics-card.heading;
+  }
+
+  &__card-title {
+    @include statistics-card.title;
+  }
+
+  &__card-subtitle {
+    @include statistics-card.subtitle;
+  }
+
+  &__breakdown {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-areas:
+      'genres share'
+      'top-tracks share';
+    gap: 24px;
+  }
+
+  &__genres {
+    grid-area: genres;
+  }
+
+  &__top-tracks {
+    grid-area: top-tracks;
+  }
+
+  &__share {
+    grid-area: share;
+  }
+
+  &__failure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 48px 16px;
+  }
+
+  @media (max-width: 1200px) {
+    &__kpis {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    &__breakdown {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        'genres'
+        'top-tracks'
+        'share';
+    }
+  }
+
+  @media (max-width: 540px) {
+    &__kpis {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    &__content,
+    &__breakdown {
+      gap: 16px;
+    }
+  }
+}

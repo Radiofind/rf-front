@@ -195,6 +195,10 @@ export class Constants {
 
   public static readonly DIRECTION_QUERY_PARAM: string = 'direction';
 
+  public static readonly PERIOD_QUERY_PARAM: string = 'period';
+
+  public static readonly ZONE_QUERY_PARAM: string = 'zone';
+
   public static readonly LIKE_FAILED: TranslationKey = 'messages.likeFailed';
 
   public static readonly PROFILE_PHOTO: TranslationKey = 'avatar.title';
