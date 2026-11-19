@@ -1,0 +1,47 @@
+<section class="top-tracks" aria-labelledby="top-tracks-title">
+  <header class="top-tracks__heading">
+    <h2 class="top-tracks__title" id="top-tracks-title">
+      {{ 'statistics.topTracks.title' | translate }}
+    </h2>
+    <p class="top-tracks__subtitle">{{ 'statistics.topTracks.subtitle' | translate }}</p>
+  </header>
+
+  @if (tracks().length) {
+    <ol class="top-tracks__list">
+      @for (top of tracks(); track top.track.id; let rank = $index) {
+        <li class="top-tracks__row">
+          <span class="top-tracks__rank">{{ rank + 1 }}</span>
+
+          <span class="top-tracks__cover">
+            @if (top.track.coverUrl) {
+              <img class="top-tracks__image" [src]="top.track.coverUrl" alt="" loading="lazy" />
+            } @else {
+              <span class="top-tracks__image top-tracks__image--placeholder" aria-hidden="true">
+                <i class="bx bx-music"></i>
+              </span>
+            }
+          </span>
+
+          <span class="top-tracks__info">
+            <span class="top-tracks__name" [title]="top.track.title">{{ top.track.title }}</span>
+            <span class="top-tracks__artist" [title]="top.track.artistName">{{
+              top.track.artistName
+            }}</span>
+          </span>
+
+          <span class="top-tracks__plays">
+            <strong class="top-tracks__plays-value">{{ top.plays | compactNumber }}</strong>
+            <span class="top-tracks__plays-label">{{
+              'statistics.topTracks.plays' | translate
+            }}</span>
+          </span>
+        </li>
+      }
+    </ol>
+  } @else {
+    <p class="top-tracks__empty">
+      <i class="bx bx-headphone" aria-hidden="true"></i>
+      {{ 'statistics.noPlays' | translate }}
+    </p>
+  }
+</section>

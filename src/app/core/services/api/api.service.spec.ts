@@ -8,6 +8,7 @@ import { EndpointConstants } from '../../constants/endpoints.constants';
 import { SKIP_GLOBAL_LOADER } from '../../tokens/loader/loader.token';
 import { environment } from '../../../../environments/environment';
 import { Constants } from '../../constants/constants';
+import { StatisticsPeriodEnum } from '../../enums/statistics-period.enum';
 
 import type { TestRequest } from '@angular/common/http/testing';
 import type { IAuthResponse, ITwoFactorResponse } from '../../models/auth.model';
@@ -709,6 +710,31 @@ describe('ApiService', () => {
       service.markAllNotificationsAsRead().subscribe();
 
       const request: TestRequest = httpMock.expectOne('/api/users/me/notifications/read-all');
+
+      expect(request.request.method).toBe('POST');
+      expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(true);
+    });
+  });
+
+  describe('statistics', () => {
+    it('requests the statistics of a period in the time zone of the viewer', () => {
+      service
+        .getStatistics({ period: StatisticsPeriodEnum.LAST_7_DAYS, zone: 'Europe/Zurich' })
+        .subscribe();
+
+      const request: TestRequest = httpMock.expectOne(
+        (candidate) => candidate.url === '/api/users/me/statistics',
+      );
+
+      expect(request.request.params.get(Constants.PERIOD_QUERY_PARAM)).toBe('LAST_7_DAYS');
+      expect(request.request.params.get(Constants.ZONE_QUERY_PARAM)).toBe('Europe/Zurich');
+      expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(true);
+    });
+
+    it('records a track download in the background', () => {
+      service.recordTrackDownload(42).subscribe();
+
+      const request: TestRequest = httpMock.expectOne('/api/tracks/42/downloads');
 
       expect(request.request.method).toBe('POST');
       expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(true);

@@ -9,6 +9,7 @@ import { TrackStatusEnum } from '../../../core/enums/track-status.enum';
 import { MediaLibraryPageActions } from '../../../store/ui/media-library-page.actions';
 import { TrackDetailsModalComponent } from '../../dialogs/track-details-modal/track-details-modal.component';
 import { ReportTrackModalComponent } from '../../dialogs/report-track-modal/report-track-modal.component';
+import { TrackDownloadService } from '../track-download-service/track-download.service';
 
 import type { ITrack } from '../../../core/models/track.model';
 
@@ -37,15 +38,18 @@ describe('LibraryTrackActionsService', () => {
   let confirm: ReturnType<typeof vi.fn>;
   let service: LibraryTrackActionsService;
   let dispatch: ReturnType<typeof vi.spyOn>;
+  let download: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     TestBed.resetTestingModule();
     open = vi.fn().mockReturnValue({ closed: of(true) });
     confirm = vi.fn().mockReturnValue(of(true));
+    download = vi.fn();
     TestBed.configureTestingModule({
       providers: [
         provideMockStore(),
         { provide: ModalService, useValue: { open: open, confirm: confirm } },
+        { provide: TrackDownloadService, useValue: { download: download } },
       ],
     });
     service = TestBed.inject(LibraryTrackActionsService);
@@ -63,6 +67,12 @@ describe('LibraryTrackActionsService', () => {
       TrackDetailsModalComponent,
       expect.objectContaining({ data: { trackId: 42, isEditing: false, isLibrary: true } }),
     );
+  });
+
+  it('downloads the library track', () => {
+    service.run(track, TrackActionEnum.DOWNLOAD);
+
+    expect(download).toHaveBeenCalledExactlyOnceWith(track);
   });
 
   it('asks for a report about the named track and thanks once it was sent', () => {

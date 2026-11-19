@@ -1,1 +1,84 @@
-<p>statistics-page works!</p>
+<section class="statistics" aria-labelledby="statistics-title">
+  <header class="statistics__header">
+    <span class="statistics__header-icon" aria-hidden="true">
+      <i class="bx bx-bar-chart"></i>
+    </span>
+
+    <div class="statistics__heading">
+      <h1 class="statistics__title" id="statistics-title">{{ 'statistics.title' | translate }}</h1>
+      <p class="statistics__subtitle">{{ 'statistics.subtitle' | translate }}</p>
+    </div>
+  </header>
+
+  <div
+    class="statistics__tabs"
+    role="group"
+    [attr.aria-label]="'statistics.periods.label' | translate"
+  >
+    @for (tab of tabs; track tab.period) {
+      <button
+        type="button"
+        class="statistics__tab"
+        [class.statistics__tab--active]="tab.period === period()"
+        [attr.aria-pressed]="tab.period === period()"
+        (click)="onPeriodSelect(tab.period)"
+      >
+        {{ tab.label | translate }}
+      </button>
+    }
+  </div>
+
+  @if (hasLoadFailed()) {
+    <div class="statistics__failure" role="alert">
+      <app-empty-state
+        emptyIconClass="bx bx-alert-circle"
+        [emptyTitle]="'statistics.loadFailed' | translate"
+      />
+      <app-button
+        additionalClass="button--compact"
+        contentIconClass="bx bx-refresh-cw"
+        [contentText]="'statistics.retry' | translate"
+        (clickAction)="onRetry()"
+      />
+    </div>
+  } @else if (statistics()) {
+    <div
+      class="statistics__content"
+      [class.statistics__content--busy]="isLoading()"
+      [attr.aria-busy]="isLoading()"
+    >
+      <ul class="statistics__kpis">
+        @for (kpi of kpis(); track kpi.metric) {
+          <li><app-statistics-kpi-card [kpi]="kpi" /></li>
+        }
+      </ul>
+
+      <section class="statistics__timeline" aria-labelledby="timeline-title">
+        <header class="statistics__card-heading">
+          <h2 class="statistics__card-title" id="timeline-title">
+            {{ 'statistics.timeline.title' | translate }}
+          </h2>
+          <p class="statistics__card-subtitle">
+            {{
+              (isMonthly() ? 'statistics.timeline.perMonth' : 'statistics.timeline.perDay')
+                | translate
+            }}
+          </p>
+        </header>
+        <app-plays-timeline-chart [points]="timeline()" [isMonthly]="isMonthly()" />
+      </section>
+
+      <div class="statistics__breakdown">
+        <app-genre-share-list class="statistics__genres" [shares]="genreShares()" />
+        <app-top-tracks-list class="statistics__top-tracks" [tracks]="topTracks()" />
+        <app-track-share-donut
+          class="statistics__share"
+          [shares]="trackShares()"
+          [totalPlays]="totalPlays()"
+        />
+      </div>
+    </div>
+  } @else {
+    <app-statistics-skeleton />
+  }
+</section>

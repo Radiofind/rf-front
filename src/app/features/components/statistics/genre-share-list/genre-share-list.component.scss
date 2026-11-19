@@ -1,0 +1,88 @@
+@use '../statistics-card';
+
+:host {
+  display: block;
+}
+
+.genres {
+  @include statistics-card.card;
+
+  height: 100%;
+
+  &__heading {
+    @include statistics-card.heading;
+  }
+
+  &__title {
+    @include statistics-card.title;
+  }
+
+  &__subtitle {
+    @include statistics-card.subtitle;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    list-style: none;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: minmax(96px, 160px) minmax(0, 1fr) 52px;
+    align-items: center;
+    gap: 16px;
+
+    &--other .genres__bar {
+      background: var(--second-text-color);
+    }
+  }
+
+  &__name {
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--text-color);
+  }
+
+  &__track {
+    height: 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--main-color) 12%, transparent);
+    overflow: hidden;
+  }
+
+  &__bar {
+    display: block;
+    height: 100%;
+    min-width: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--main-color), var(--second-gradient-color));
+  }
+
+  &__share {
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--soft-text-color);
+  }
+
+  &__empty {
+    @include statistics-card.empty-note;
+  }
+
+  @media (max-width: 540px) {
+    &__row {
+      grid-template-columns: minmax(0, 1fr) 52px;
+      row-gap: 6px;
+    }
+
+    &__track {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+}

@@ -1,0 +1,98 @@
+@use '../statistics-card';
+
+:host {
+  display: block;
+}
+
+.kpi {
+  @include statistics-card.card;
+
+  gap: 8px;
+  height: 100%;
+  padding: 20px 24px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__label {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--soft-text-color);
+  }
+
+  &__icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--first-gradient-color), var(--main-color));
+    box-shadow: 0 0 18px color-mix(in srgb, var(--second-gradient-color) 40%, transparent);
+    font-size: 24px;
+    color: var(--text-color);
+  }
+
+  &__value {
+    font-size: 40px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    color: var(--text-color);
+  }
+
+  &__comparison {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    min-height: 30px;
+    font-size: 14px;
+    color: var(--second-text-color);
+  }
+
+  &__change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--second-text-color) 20%, transparent);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-color);
+
+    i {
+      font-size: 16px;
+    }
+
+    &--up {
+      background: color-mix(in srgb, var(--online-color) 22%, transparent);
+      color: color-mix(in srgb, var(--online-color) 55%, var(--text-color));
+    }
+
+    &--down {
+      background: color-mix(in srgb, var(--error-color) 22%, transparent);
+      color: color-mix(in srgb, var(--error-color) 55%, var(--text-color));
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px;
+
+    &__value {
+      font-size: 32px;
+    }
+
+    &__icon {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+    }
+  }
+}

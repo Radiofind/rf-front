@@ -55,6 +55,7 @@ import type {
 import type { IActivity } from '../../models/activity.model';
 import type { INotification, IUnreadNotifications } from '../../models/notification.model';
 import type { IPage } from '../../models/page.model';
+import type { IStatistics, IStatisticsQuery } from '../../models/statistics.model';
 
 @Service()
 export class ApiService {
@@ -87,6 +88,8 @@ export class ApiService {
   private readonly ownTracksApi: string = `${this.currentUserApi}${this.userEndpoints.tracks}`;
 
   private readonly libraryApi: string = `${this.currentUserApi}${this.userEndpoints.library}`;
+
+  private readonly statisticsApi: string = `${this.currentUserApi}${this.userEndpoints.statistics}`;
 
   private readonly http: HttpClient = inject(HttpClient);
 
@@ -326,6 +329,24 @@ export class ApiService {
         context: skipGlobalLoader(),
       },
     );
+  }
+
+  public recordTrackDownload(trackId: number): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.post<void>(
+      `${this.tracksApi}/${String(trackId)}${this.trackEndpoints.downloads}`,
+      null,
+      { context: skipGlobalLoader() },
+    );
+  }
+
+  public getStatistics(query: IStatisticsQuery): Observable<IStatistics> {
+    return this.http.get<IStatistics>(this.statisticsApi, {
+      params: new HttpParams()
+        .set(Constants.PERIOD_QUERY_PARAM, query.period)
+        .set(Constants.ZONE_QUERY_PARAM, query.zone),
+      context: skipGlobalLoader(),
+    });
   }
 
   public likeTrack(trackId: number): Observable<void> {

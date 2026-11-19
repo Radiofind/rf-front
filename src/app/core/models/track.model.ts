@@ -7,6 +7,7 @@ import type { TrackStatus } from '../types/track-status.type';
 export interface ITrackEndpoints {
   tracks: string;
   plays: string;
+  downloads: string;
   like: string;
   cancelSubmission: string;
   submit: string;

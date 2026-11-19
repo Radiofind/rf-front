@@ -1,0 +1,129 @@
+<div class="timeline">
+  <ul class="timeline__legend" [attr.aria-label]="'statistics.timeline.label' | translate">
+    <li class="timeline__legend-item">
+      <span class="timeline__swatch timeline__swatch--plays" aria-hidden="true"></span>
+      {{ 'statistics.timeline.plays' | translate }}
+    </li>
+    <li class="timeline__legend-item">
+      <span class="timeline__swatch timeline__swatch--downloads" aria-hidden="true"></span>
+      {{ 'statistics.timeline.downloads' | translate }}
+    </li>
+  </ul>
+
+  <div class="timeline__grid">
+    <div class="timeline__y-axis" aria-hidden="true">
+      @for (tick of ticks(); track tick) {
+        <span class="timeline__y-label" [style.bottom.%]="tickPosition(tick)">{{
+          tick | compactNumber
+        }}</span>
+      }
+    </div>
+
+    <div
+      class="timeline__plot"
+      tabindex="0"
+      role="group"
+      [attr.aria-label]="'statistics.timeline.label' | translate"
+      (pointermove)="onPointerMove($event)"
+      (pointerleave)="onLeave()"
+      (keydown)="onKeydown($event)"
+      (blur)="onLeave()"
+    >
+      @for (tick of ticks(); track tick) {
+        <span class="timeline__gridline" [style.bottom.%]="tickPosition(tick)"></span>
+      }
+
+      <svg
+        class="timeline__svg"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path class="timeline__area" [attr.d]="playsArea()" />
+        <path
+          class="timeline__line timeline__line--downloads"
+          vector-effect="non-scaling-stroke"
+          [attr.d]="downloadsLine()"
+        />
+        <path
+          class="timeline__line timeline__line--plays"
+          vector-effect="non-scaling-stroke"
+          [attr.d]="playsLine()"
+        />
+      </svg>
+
+      @if (hovered(); as active) {
+        <span class="timeline__crosshair" [style.left.%]="active.left" aria-hidden="true"></span>
+        <span
+          class="timeline__marker timeline__marker--downloads"
+          [style.left.%]="active.left"
+          [style.top.%]="active.downloadsTop"
+          aria-hidden="true"
+        ></span>
+        <span
+          class="timeline__marker timeline__marker--plays"
+          [style.left.%]="active.left"
+          [style.top.%]="active.playsTop"
+          aria-hidden="true"
+        ></span>
+
+        <div
+          class="timeline__tooltip"
+          role="status"
+          [class.timeline__tooltip--end]="active.alignsEnd"
+          [style.left.%]="active.left"
+        >
+          <p class="timeline__tooltip-date">
+            {{ active.point.start | stringDate: detailFormat() }}
+          </p>
+          <p class="timeline__tooltip-row">
+            <span class="timeline__swatch timeline__swatch--plays" aria-hidden="true"></span>
+            {{ 'statistics.timeline.plays' | translate }}
+            <strong class="timeline__tooltip-value">{{
+              active.point.plays | compactNumber
+            }}</strong>
+          </p>
+          <p class="timeline__tooltip-row">
+            <span class="timeline__swatch timeline__swatch--downloads" aria-hidden="true"></span>
+            {{ 'statistics.timeline.downloads' | translate }}
+            <strong class="timeline__tooltip-value">{{
+              active.point.downloads | compactNumber
+            }}</strong>
+          </p>
+        </div>
+      }
+    </div>
+
+    <div class="timeline__x-axis" aria-hidden="true">
+      @for (label of axisLabels(); track label.start) {
+        <span class="timeline__x-label" [style.left.%]="label.left">{{
+          label.start | stringDate: labelFormat()
+        }}</span>
+      }
+    </div>
+  </div>
+
+  <table class="cdk-visually-hidden">
+    <caption>
+      {{
+        'statistics.timeline.label' | translate
+      }}
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">{{ 'statistics.timeline.date' | translate }}</th>
+        <th scope="col">{{ 'statistics.timeline.plays' | translate }}</th>
+        <th scope="col">{{ 'statistics.timeline.downloads' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (point of points(); track point.start) {
+        <tr>
+          <th scope="row">{{ point.start | stringDate: detailFormat() }}</th>
+          <td>{{ point.plays }}</td>
+          <td>{{ point.downloads }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

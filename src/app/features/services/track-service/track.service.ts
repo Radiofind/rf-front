@@ -46,6 +46,10 @@ export class TrackService {
     return this.apiService.recordTrackPlay(trackId);
   }
 
+  public recordDownload(trackId: number): Observable<void> {
+    return this.apiService.recordTrackDownload(trackId);
+  }
+
   public setLiked(trackId: number, liked: boolean): Observable<void> {
     return liked ? this.apiService.likeTrack(trackId) : this.apiService.unlikeTrack(trackId);
   }
