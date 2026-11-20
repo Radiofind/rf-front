@@ -1,1 +1,98 @@
-<p>support-page works!</p>
+<section class="support" aria-labelledby="support-title">
+  <header class="support__hero">
+    <div class="support__visual" aria-hidden="true">
+      <span class="support__orb">
+        <i class="bx bx-headphone"></i>
+      </span>
+    </div>
+
+    <div class="support__heading">
+      <h1 class="support__title" id="support-title">
+        <i class="bx bx-headphone-mic" aria-hidden="true"></i>
+        {{ 'support.title' | translate }}
+      </h1>
+      <p class="support__subtitle">{{ 'support.subtitle' | translate }}</p>
+    </div>
+  </header>
+
+  <nav class="support__topics" [attr.aria-label]="'support.topicsLabel' | translate">
+    @for (topic of topics; track topic.id) {
+      <a class="support__topic" [routerLink]="faqLink" [queryParams]="topicQueryParams(topic)">
+        <i class="support__topic-icon" [class]="topic.iconClass" aria-hidden="true"></i>
+        <span class="support__topic-label">{{ topic.label | translate }}</span>
+        <i class="bx bx-chevron-right support__topic-arrow" aria-hidden="true"></i>
+      </a>
+    }
+  </nav>
+
+  <div class="support__body">
+    <section class="support__card support__faq" aria-labelledby="support-faq-title">
+      <header class="support__card-header">
+        <h2 class="support__card-title" id="support-faq-title">
+          {{ 'support.faq.title' | translate }}
+        </h2>
+        <a class="support__view-all" [routerLink]="faqLink">
+          {{ 'support.faq.viewAll' | translate }}
+          <i class="bx bx-arrow-right-stroke" aria-hidden="true"></i>
+        </a>
+      </header>
+      <app-faq-accordion [items]="featuredFaq" />
+    </section>
+
+    <section class="support__card support__contact" aria-labelledby="support-contact-title">
+      <header class="support__contact-header">
+        <i class="bx bx-envelope support__contact-icon" aria-hidden="true"></i>
+        <h2 class="support__card-title" id="support-contact-title">
+          {{ 'support.contact.title' | translate }}
+        </h2>
+      </header>
+      <p class="support__contact-text">{{ 'support.contact.subtitle' | translate }}</p>
+
+      <app-button
+        class="support__send"
+        contentIconClass="bx bx-send"
+        [contentText]="'support.contact.sendMessage' | translate"
+        (clickAction)="onSendMessage()"
+      />
+
+      <p class="support__divider">
+        <span>{{ 'support.contact.or' | translate }}</span>
+      </p>
+
+      <ul class="support__channels" [attr.aria-label]="'support.contact.otherChannels' | translate">
+        <li>
+          <button
+            type="button"
+            class="support__channel"
+            [attr.aria-expanded]="isChatOpen()"
+            (click)="onOpenChat()"
+          >
+            <span class="support__channel-icon" aria-hidden="true">
+              <i class="bx bx-message-circle-dots"></i>
+              <span class="support__channel-dot"></span>
+            </span>
+            <span class="support__channel-text">
+              {{ 'support.contact.liveChat' | translate }}
+              <small>{{ 'support.contact.liveChatStatus' | translate }}</small>
+            </span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="support__channel" disabled>
+            <span class="support__channel-icon" aria-hidden="true">
+              <i class="bxl bx-discord"></i>
+            </span>
+            <span class="support__channel-text">
+              {{ 'support.contact.discord' | translate }}
+              <small>{{ 'support.contact.comingSoon' | translate }}</small>
+            </span>
+          </button>
+        </li>
+      </ul>
+    </section>
+  </div>
+</section>
+
+@if (isChatOpen()) {
+  <app-live-chat (closed)="onCloseChat()" />
+}

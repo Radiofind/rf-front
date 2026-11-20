@@ -1,0 +1,79 @@
+<section class="faq-page" aria-labelledby="faq-page-title">
+  <a class="faq-page__back" [routerLink]="supportLink">
+    <i class="bx bx-chevron-left" aria-hidden="true"></i>
+    <span class="faq-page__back-text">{{ 'support.faq.back' | translate }}</span>
+  </a>
+
+  <header class="faq-page__header">
+    <span class="faq-page__header-icon" aria-hidden="true">
+      <i class="bx bx-book-open"></i>
+    </span>
+    <div class="faq-page__heading">
+      <h1 class="faq-page__title" id="faq-page-title">{{ 'support.faq.pageTitle' | translate }}</h1>
+      <p class="faq-page__subtitle">{{ 'support.faq.pageSubtitle' | translate }}</p>
+    </div>
+  </header>
+
+  <div class="faq-page__toolbar">
+    <div
+      class="faq-page__tabs"
+      role="group"
+      [attr.aria-label]="'support.faq.categoriesLabel' | translate"
+    >
+      @for (tab of tabs; track tab.label) {
+        <button
+          type="button"
+          class="faq-page__tab"
+          [class.faq-page__tab--active]="tab.category === category()"
+          [attr.aria-pressed]="tab.category === category()"
+          (click)="onCategorySelect(tab.category)"
+        >
+          {{ tab.label | translate }}
+        </button>
+      }
+    </div>
+    <app-tracks-search
+      label="support.faq.searchLabel"
+      [value]="search()"
+      [placeholder]="'support.faq.searchPlaceholder' | translate"
+      (searchChanged)="onSearch($event)"
+    />
+  </div>
+
+  @for (group of groups(); track group.tab.label) {
+    <section class="faq-page__group" [attr.aria-labelledby]="'faq-group-' + group.tab.category">
+      <h2 class="faq-page__group-title" [id]="'faq-group-' + group.tab.category">
+        {{ group.tab.label | translate }}
+      </h2>
+      <app-faq-accordion [items]="group.items" />
+    </section>
+  } @empty {
+    <div class="faq-page__empty">
+      <app-empty-state
+        emptyIconClass="bx bx-search-x"
+        [emptyTitle]="'support.faq.noResultsTitle' | translate: { query: search().trim() }"
+        [emptyDescription]="'support.faq.noResultsDescription' | translate"
+      />
+      <app-button
+        additionalClass="button--secondary button--compact"
+        contentIconClass="bx bx-x"
+        [contentText]="'support.faq.clearSearch' | translate"
+        (clickAction)="onSearch('')"
+      />
+    </div>
+  }
+
+  <aside class="faq-page__help">
+    <i class="bx bx-envelope faq-page__help-icon" aria-hidden="true"></i>
+    <div class="faq-page__help-text">
+      <h2 class="faq-page__help-title">{{ 'support.faq.stillNeedHelpTitle' | translate }}</h2>
+      <p>{{ 'support.faq.stillNeedHelpDescription' | translate }}</p>
+    </div>
+    <app-button
+      class="faq-page__help-action"
+      contentIconClass="bx bx-send"
+      [contentText]="'support.contact.sendMessage' | translate"
+      (clickAction)="onSendMessage()"
+    />
+  </aside>
+</section>

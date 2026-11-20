@@ -458,6 +458,183 @@ export const IT_TRANSLATIONS: Translations = {
     loadFailed: 'Impossibile caricare le tue statistiche',
     retry: 'Riprova',
   },
+  support: {
+    title: 'Assistenza',
+    subtitle:
+      'Siamo qui per aiutarti! Trova le risposte alle domande più comuni o contatta il nostro team.',
+    topicsLabel: 'Argomenti di aiuto',
+    topics: {
+      faq: 'FAQ',
+      playback: 'Problemi di riproduzione',
+      uploading: 'Caricamento musica',
+      premium: 'Account Premium',
+      other: 'Altri problemi',
+    },
+    categories: {
+      playback: 'Riproduzione',
+      uploading: 'Caricamento',
+      premium: 'Premium',
+      account: 'Account e altro',
+    },
+    faq: {
+      title: 'Domande frequenti',
+      viewAll: 'Vedi tutte',
+      pageTitle: 'Centro assistenza',
+      pageSubtitle: 'Tutte le risposte su RADIOFIND in un unico posto.',
+      back: 'Torna all’assistenza',
+      searchPlaceholder: 'Cerca tra le domande...',
+      searchLabel: 'Cerca tra le domande',
+      categoriesLabel: 'Filtra per argomento',
+      all: 'Tutte',
+      noResultsTitle: 'Nessuna risposta per «{query}»',
+      noResultsDescription: 'Prova con altre parole o chiedi direttamente al nostro team.',
+      clearSearch: 'Cancella ricerca',
+      stillNeedHelpTitle: 'Hai ancora bisogno di aiuto?',
+      stillNeedHelpDescription: 'Scrivi al nostro team. Rispondiamo a ogni messaggio via email.',
+    },
+    questions: {
+      uploadHow: {
+        question: 'Come carico la mia musica?',
+        answer:
+          'Apri «Carica brano» nella barra laterale e aggiungi il tuo file audio: MP3, WAV o FLAC, fino a 100 MB. Poi inserisci il titolo del brano, scegli fino a 3 generi e, se vuoi, aggiungi una copertina (JPG o PNG, fino a 10 MB, idealmente 1000 × 1000) e una descrizione.\nFai clic su «Carica brano». Il brano viene subito inviato alla revisione della qualità e puoi seguirlo in «I miei caricamenti».',
+      },
+      uploadAfter: {
+        question: 'Cosa succede dopo aver caricato un brano?',
+        answer:
+          'Ogni brano viene revisionato dal nostro team prima di andare in onda. Durante la revisione, il brano appare come «In elaborazione» in «I miei caricamenti».\nAl termine della revisione, il brano diventa «Pubblicato», e gli ascoltatori possono trovarlo e ascoltarlo, oppure «Rifiutato», insieme al motivo. Lo stato attuale è sempre visibile in «I miei caricamenti».',
+      },
+      uploadRejected: {
+        question: 'Perché il mio brano è stato rifiutato?',
+        answer:
+          'Apri «I miei caricamenti», fai clic sul menu delle azioni (⋯) del brano e scegli «Visualizza motivo del rifiuto». I motivi più comuni sono scarsa qualità audio, distorsione o clipping, brano incompleto, contenuti inappropriati e spam o caricamenti duplicati.\nRisolvi il problema, aggiorna i dettagli con «Modifica dettagli» se necessario e scegli «Invia di nuovo».',
+      },
+      uploadEdit: {
+        question: 'Posso modificare o eliminare un brano dopo averlo caricato?',
+        answer:
+          'Sì. In «I miei caricamenti», apri il menu delle azioni (⋯) del brano. «Modifica dettagli» è disponibile finché il brano è una bozza, in revisione o rifiutato. «Elimina brano» funziona con qualsiasi stato e rimuove il brano in modo definitivo.',
+      },
+      uploadDrafts: {
+        question: 'Cos’è una bozza?',
+        answer:
+          'Quando annulli l’invio di un brano in revisione, il brano diventa una bozza. Le bozze restano nella scheda «Bozze» di «I miei caricamenti», dove puoi modificarle e inviarle di nuovo alla revisione con «Invia per la revisione».',
+      },
+      uploadSchedule: {
+        question: 'Quando verrà trasmesso il mio brano in radio?',
+        answer:
+          'Quando un brano è pubblicato, apri il suo menu delle azioni (⋯) in «I miei caricamenti» e scegli «Programmazione» per vedere quando va in onda. Se l’orario non ti va bene, scegli «Richiedi cambio orario». Il nostro team valuterà la tua richiesta.',
+      },
+      uploadOwnership: {
+        question: 'Mantengo i diritti sulla mia musica?',
+        answer:
+          'Sì. La tua musica resta interamente tua. RADIOFIND trasmette in streaming solo i tuoi brani pubblicati sulla piattaforma. Diritti d’autore, di edizione e di distribuzione restano interamente tuoi.',
+      },
+      playbackNotPlaying: {
+        question: 'Perché la mia musica non viene riprodotta?',
+        answer:
+          'Controlla prima la «Modalità radio» in «Impostazioni → Generali». Finché è attiva, puoi solo ascoltare la radio e non puoi riprodurre brani dalla tua libreria o dai tuoi caricamenti.\nSe la modalità radio è disattivata, controlla la connessione a internet e il volume del dispositivo, poi ricarica la pagina. Se un brano continua a non essere riprodotto, mandaci un messaggio con il suo titolo.',
+      },
+      playbackRadioMode: {
+        question: 'Cos’è la modalità radio?',
+        answer:
+          'Con la modalità radio attiva, RADIOFIND funziona come una radio: ascolti solo stazioni selezionate. Disattivala in «Impostazioni → Generali» per riprodurre anche qualsiasi brano della tua «Libreria multimediale» o di «I miei caricamenti».',
+      },
+      playbackDownload: {
+        question: 'Posso scaricare musica per ascoltarla offline?',
+        answer:
+          'L’app non ha una modalità offline, ma puoi salvare i brani sul tuo dispositivo. Apri il menu delle azioni (⋯) di un brano nella tua «Libreria multimediale» o in «I miei caricamenti» e scegli «Scarica brano».',
+      },
+      playbackPlayCount: {
+        question: 'Quando un ascolto viene conteggiato?',
+        answer:
+          'Un ascolto viene conteggiato dopo 30 secondi di ascolto effettivo. Per i brani più brevi, conta quando è stato riprodotto il 90% del brano. Andare avanti non aggiunge tempo di ascolto. Puoi seguire ascolti, download, «Mi piace» e ascoltatori unici dei tuoi brani nella pagina «Statistiche».',
+      },
+      playbackReport: {
+        question: 'Come segnalo un brano?',
+        answer:
+          'Nella tua «Libreria multimediale», apri il menu delle azioni (⋯) del brano e scegli «Segnala brano». Scegli un motivo, aggiungi dettagli se necessario e invia la segnalazione. I nostri moderatori esaminano ogni segnalazione.',
+      },
+      premiumHow: {
+        question: 'Come ottengo Premium?',
+        answer:
+          'Premium non si può ancora acquistare nell’app. Ti avviseremo appena sarà possibile passare a Premium. Se vuoi essere tra i primi a saperlo, mandaci un messaggio.',
+      },
+      premiumIncludes: {
+        question: 'Cosa include Premium?',
+        answer:
+          'Premium dovrebbe includere caricamenti illimitati, un posto prioritario nella coda della radio, feedback dettagliati sui tuoi brani e statistiche avanzate. Le funzioni definitive saranno annunciate al lancio.',
+      },
+      accountContact: {
+        question: 'Come contatto l’assistenza?',
+        answer:
+          'Fai clic su «Invia un messaggio» nella pagina Assistenza, inserisci un oggetto e descrivi la tua domanda. Il messaggio arriva al nostro team insieme al nome e all’email del tuo account, e ti rispondiamo via email.\nPuoi inviare fino a 5 messaggi all’ora.',
+      },
+      accountTwoFactor: {
+        question: 'Come cambio dove vengono inviati i miei codici di accesso?',
+        answer:
+          'Vai su «Impostazioni → Account» e fai clic su «Gestisci» accanto ad «Autenticazione a due fattori». Scegli l’email del tuo account, l’email di recupero o un’app di autenticazione, poi conferma con la tua password. Un’app di autenticazione funziona anche offline.',
+      },
+      accountBackupCodes: {
+        question: 'Cosa sono i codici di backup?',
+        answer:
+          'I codici di backup ti permettono di accedere quando non puoi ricevere un codice di verifica. Generali in «Impostazioni → Account». Ogni codice funziona una sola volta e viene mostrato una sola volta, quindi salvali in un posto sicuro. Se generi nuovi codici, quelli vecchi smettono di funzionare.',
+      },
+      accountPassword: {
+        question: 'Ho dimenticato la password. Cosa faccio?',
+        answer:
+          'Fai clic su «Password dimenticata?» nella pagina di accesso e inserisci la tua email. Ti invieremo un link per impostare una nuova password. Il link è valido per 15 minuti.',
+      },
+      accountVisibility: {
+        question: 'Chi può vedere il mio profilo?',
+        answer:
+          'Decidi tu in «Impostazioni → Generali → Visibilità del profilo»: mostra le tue statistiche e le informazioni su di te a tutti, solo ai tuoi follower o a nessuno tranne te.',
+      },
+      accountAppearance: {
+        question: 'Come cambio la lingua o i colori?',
+        answer:
+          'Apri «Impostazioni → Generali». In «Lingua» scegli una delle sei lingue. In «Colore principale» scegli il tema di colore dell’interfaccia.',
+      },
+      accountDelete: {
+        question: 'Come elimino il mio account?',
+        answer:
+          'Vai su «Impostazioni → Account», scorri fino alla «Zona pericolosa» e fai clic su «Elimina account». Conferma con la tua password. Profilo, brani, «Mi piace» e notifiche vengono eliminati definitivamente. L’operazione è irreversibile.',
+      },
+    },
+    contact: {
+      title: 'Contattaci',
+      subtitle: 'Non trovi la risposta? Contatta il nostro team di assistenza.',
+      sendMessage: 'Invia un messaggio',
+      or: 'oppure',
+      otherChannels: 'Altri modi per contattarci',
+      liveChat: 'Chat dal vivo',
+      liveChatStatus: 'Offline',
+      discord: 'Unisciti a Discord',
+      comingSoon: 'Prossimamente',
+    },
+    message: {
+      title: 'Invia un messaggio',
+      intro: 'Il nostro team ti risponderà a {email}.',
+      subject: 'Oggetto',
+      subjectPlaceholder: 'Di cosa tratta la tua domanda?',
+      message: 'Messaggio',
+      messagePlaceholder:
+        'Descrivi la tua domanda o il problema nel modo più dettagliato possibile...',
+      send: 'Invia messaggio',
+    },
+    chat: {
+      title: 'Chat dal vivo',
+      status: 'Offline',
+      close: 'Chiudi chat',
+      messagesLabel: 'Messaggi della chat',
+      inputLabel: 'Il tuo messaggio',
+      placeholder: 'Scrivi un messaggio...',
+      send: 'Invia messaggio',
+      you: 'Tu',
+      team: 'Assistenza RADIOFIND',
+      greeting: 'Ciao! Questa è la chat di assistenza di RADIOFIND.',
+      offlineReply:
+        'Grazie per il tuo messaggio! La chat dal vivo non è ancora presidiata, quindi qui nessuno può risponderti. Usa invece «Invia un messaggio». Il nostro team risponde via email.',
+    },
+  },
   trackDialogs: {
     loadFailed: 'Impossibile caricare queste informazioni',
     uploadedBy: 'Caricato da',
@@ -1074,6 +1251,9 @@ export const IT_TRANSLATIONS: Translations = {
       'Formato di file non supportato. Usa audio MP3, WAV o FLAC e una copertina JPG o PNG.',
     trackAlreadyUploaded: 'Hai già caricato questo brano',
     playbackFailed: 'Impossibile riprodurre il brano. Riprova.',
+    supportMessageSent: 'Il tuo messaggio è stato inviato. Ti risponderemo via email.',
+    supportMessageTooMany: 'Hai inviato troppi messaggi. Riprova tra un’ora.',
+    supportMessageFailed: 'Impossibile inviare il messaggio. Riprova più tardi.',
   },
   validation: {
     invalidBackupCode: 'Questo codice di backup non è valido o è già stato usato',
@@ -1121,5 +1301,6 @@ export const IT_TRANSLATIONS: Translations = {
     genreRequired: 'Scegli almeno un genere',
     maxTrackGenres: 'Scegli fino a 3 generi',
     maxLengthTitle: 'Non deve superare 150 caratteri',
+    maxLengthSupportMessage: 'Non deve superare 2000 caratteri',
   },
 };

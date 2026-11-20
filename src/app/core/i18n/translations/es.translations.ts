@@ -459,6 +459,183 @@ export const ES_TRANSLATIONS: Translations = {
     loadFailed: 'No pudimos cargar tus estadísticas',
     retry: 'Reintentar',
   },
+  support: {
+    title: 'Soporte',
+    subtitle:
+      '¡Estamos aquí para ayudarte! Encuentra respuestas a las preguntas frecuentes o ponte en contacto con nuestro equipo.',
+    topicsLabel: 'Temas de ayuda',
+    topics: {
+      faq: 'Preguntas frecuentes',
+      playback: 'Problemas de reproducción',
+      uploading: 'Subir música',
+      premium: 'Cuenta Premium',
+      other: 'Otros problemas',
+    },
+    categories: {
+      playback: 'Reproducción',
+      uploading: 'Subidas',
+      premium: 'Premium',
+      account: 'Cuenta y otros',
+    },
+    faq: {
+      title: 'Preguntas frecuentes',
+      viewAll: 'Ver todas',
+      pageTitle: 'Centro de ayuda',
+      pageSubtitle: 'Todas las respuestas sobre RADIOFIND en un solo lugar.',
+      back: 'Volver a Soporte',
+      searchPlaceholder: 'Buscar preguntas...',
+      searchLabel: 'Buscar preguntas',
+      categoriesLabel: 'Filtrar por tema',
+      all: 'Todas',
+      noResultsTitle: 'No hay respuestas para «{query}»',
+      noResultsDescription: 'Prueba con otras palabras o pregunta directamente a nuestro equipo.',
+      clearSearch: 'Borrar búsqueda',
+      stillNeedHelpTitle: '¿Aún necesitas ayuda?',
+      stillNeedHelpDescription:
+        'Escribe a nuestro equipo. Respondemos a todos los mensajes por correo electrónico.',
+    },
+    questions: {
+      uploadHow: {
+        question: '¿Cómo subo mi música?',
+        answer:
+          'Abre «Subir tema» en la barra lateral y añade tu archivo de audio: MP3, WAV o FLAC, de hasta 100 MB. Después introduce el título de la pista, elige hasta 3 géneros y, si quieres, añade una portada (JPG o PNG, de hasta 10 MB, idealmente de 1000 × 1000) y una descripción.\nHaz clic en «Subir canción». La pista se envía de inmediato a la revisión de calidad y puedes seguirla en «Mis subidas».',
+      },
+      uploadAfter: {
+        question: '¿Qué pasa después de subir una pista?',
+        answer:
+          'Nuestro equipo revisa cada pista antes de que salga al aire. Mientras dura la revisión, la pista aparece como «En proceso» en «Mis subidas».\nCuando termina la revisión, la pista pasa a «Publicada», y los oyentes pueden encontrarla y reproducirla, o a «Rechazada», junto con el motivo. El estado actual siempre se muestra en «Mis subidas».',
+      },
+      uploadRejected: {
+        question: '¿Por qué se rechazó mi pista?',
+        answer:
+          'Abre «Mis subidas», haz clic en el menú de acciones (⋯) de la pista y elige «Ver motivo del rechazo». Los motivos más habituales son mala calidad de audio, distorsión o saturación, una pista incompleta, contenido inapropiado y spam o subidas duplicadas.\nCorrige el problema, actualiza los datos con «Editar detalles» si hace falta y elige «Reenviar a revisión».',
+      },
+      uploadEdit: {
+        question: '¿Puedo editar o eliminar una pista después de subirla?',
+        answer:
+          'Sí. En «Mis subidas», abre el menú de acciones (⋯) de la pista. «Editar detalles» está disponible mientras la pista es un borrador, está en revisión o ha sido rechazada. «Eliminar pista» funciona en cualquier estado y elimina la pista de forma permanente.',
+      },
+      uploadDrafts: {
+        question: '¿Qué es un borrador?',
+        answer:
+          'Cuando cancelas el envío de una pista que está en revisión, se convierte en borrador. Los borradores esperan en la pestaña «Borradores» de «Mis subidas», donde puedes editarlos y volver a enviarlos a revisión con «Enviar a revisión».',
+      },
+      uploadSchedule: {
+        question: '¿Cuándo sonará mi pista en la radio?',
+        answer:
+          'Cuando una pista esté publicada, abre su menú de acciones (⋯) en «Mis subidas» y elige «Programación» para ver cuándo sale al aire. Si el horario no te va bien, elige «Solicitar cambio de horario». Nuestro equipo revisará tu solicitud.',
+      },
+      uploadOwnership: {
+        question: '¿Conservo los derechos de mi música?',
+        answer:
+          'Sí. Tu música sigue siendo completamente tuya. RADIOFIND solo emite tus pistas publicadas en la plataforma. Tus derechos de autor, de edición y de distribución siguen siendo totalmente tuyos.',
+      },
+      playbackNotPlaying: {
+        question: '¿Por qué no se reproduce mi música?',
+        answer:
+          'Primero revisa el «Modo radio» en «Ajustes → General». Mientras está activado, solo puedes escuchar la radio y no puedes reproducir pistas de tu biblioteca ni de tus subidas.\nSi el modo radio está desactivado, revisa tu conexión a internet y el volumen de tu dispositivo, y vuelve a cargar la página. Si una pista sigue sin reproducirse, envíanos un mensaje con su título.',
+      },
+      playbackRadioMode: {
+        question: '¿Qué es el modo radio?',
+        answer:
+          'Con el modo radio activado, RADIOFIND funciona como una radio: solo escuchas emisoras seleccionadas. Desactívalo en «Ajustes → General» para reproducir también cualquier pista de tu «Biblioteca multimedia» o de «Mis subidas».',
+      },
+      playbackDownload: {
+        question: '¿Puedo descargar música para escucharla sin conexión?',
+        answer:
+          'La app no tiene modo sin conexión, pero puedes guardar pistas en tu dispositivo. Abre el menú de acciones (⋯) de una pista en tu «Biblioteca multimedia» o en «Mis subidas» y elige «Descargar pista».',
+      },
+      playbackPlayCount: {
+        question: '¿Cuándo cuenta una escucha como reproducción?',
+        answer:
+          'Una reproducción se cuenta tras 30 segundos de escucha real. En las pistas más cortas, cuenta cuando se ha reproducido el 90 % de la pista. Avanzar no suma tiempo de escucha. Puedes seguir las reproducciones, descargas, «Me gusta» y oyentes únicos de tus pistas en la página «Estadísticas».',
+      },
+      playbackReport: {
+        question: '¿Cómo denuncio una pista?',
+        answer:
+          'En tu «Biblioteca multimedia», abre el menú de acciones (⋯) de la pista y elige «Denunciar pista». Elige un motivo, añade detalles si hace falta y envía la denuncia. Nuestros moderadores revisan todas las denuncias.',
+      },
+      premiumHow: {
+        question: '¿Cómo consigo Premium?',
+        answer:
+          'Todavía no se puede comprar Premium en la app. Te avisaremos en cuanto puedas mejorar tu cuenta. Si quieres enterarte antes que nadie, envíanos un mensaje.',
+      },
+      premiumIncludes: {
+        question: '¿Qué incluye Premium?',
+        answer:
+          'Está previsto que Premium incluya subidas ilimitadas, un lugar prioritario en la cola de la radio, comentarios detallados sobre tus pistas y estadísticas avanzadas. Las funciones definitivas se anunciarán con el lanzamiento.',
+      },
+      accountContact: {
+        question: '¿Cómo contacto con soporte?',
+        answer:
+          'Haz clic en «Enviar un mensaje» en la página de Soporte, escribe un asunto y describe tu consulta. Tu mensaje llega a nuestro equipo junto con el nombre y el correo de tu cuenta, y te respondemos por correo electrónico.\nPuedes enviar hasta 5 mensajes por hora.',
+      },
+      accountTwoFactor: {
+        question: '¿Cómo cambio adónde se envían mis códigos de inicio de sesión?',
+        answer:
+          'Ve a «Ajustes → Cuenta» y haz clic en «Gestionar» junto a «Autenticación en dos pasos». Elige el correo de tu cuenta, tu correo de recuperación o una app de autenticación y confirma con tu contraseña. Una app de autenticación funciona incluso sin conexión.',
+      },
+      accountBackupCodes: {
+        question: '¿Qué son los códigos de respaldo?',
+        answer:
+          'Los códigos de respaldo te permiten iniciar sesión cuando no puedes recibir un código de verificación. Genéralos en «Ajustes → Cuenta». Cada código funciona una sola vez y solo se muestra una vez, así que guárdalos en un lugar seguro. Al generar códigos nuevos, los anteriores dejan de funcionar.',
+      },
+      accountPassword: {
+        question: 'He olvidado mi contraseña. ¿Qué hago?',
+        answer:
+          'Haz clic en «¿Has olvidado tu contraseña?» en la página de inicio de sesión e introduce tu correo electrónico. Te enviaremos un enlace para crear una contraseña nueva. El enlace es válido durante 15 minutos.',
+      },
+      accountVisibility: {
+        question: '¿Quién puede ver mi perfil?',
+        answer:
+          'Tú decides en «Ajustes → General → Visibilidad del perfil»: muestra tus estadísticas y tu información a todos, solo a tus seguidores o a nadie más que a ti.',
+      },
+      accountAppearance: {
+        question: '¿Cómo cambio el idioma o los colores?',
+        answer:
+          'Abre «Ajustes → General». En «Idioma», elige uno de los seis idiomas. En «Color de acento», elige el tema de color de la interfaz.',
+      },
+      accountDelete: {
+        question: '¿Cómo elimino mi cuenta?',
+        answer:
+          'Ve a «Ajustes → Cuenta», desplázate hasta la «Zona de peligro» y haz clic en «Eliminar cuenta». Confirma con tu contraseña. Tu perfil, tus pistas, tus «Me gusta» y tus notificaciones se eliminan de forma permanente. Esta acción no se puede deshacer.',
+      },
+    },
+    contact: {
+      title: 'Contacto',
+      subtitle: '¿No encuentras la respuesta? Ponte en contacto con nuestro equipo de soporte.',
+      sendMessage: 'Enviar un mensaje',
+      or: 'o',
+      otherChannels: 'Otras formas de contactarnos',
+      liveChat: 'Chat en vivo',
+      liveChatStatus: 'Sin conexión',
+      discord: 'Únete a Discord',
+      comingSoon: 'Próximamente',
+    },
+    message: {
+      title: 'Enviar un mensaje',
+      intro: 'Nuestro equipo te responderá a {email}.',
+      subject: 'Asunto',
+      subjectPlaceholder: '¿Sobre qué es tu consulta?',
+      message: 'Mensaje',
+      messagePlaceholder: 'Describe tu consulta o problema con el mayor detalle posible...',
+      send: 'Enviar mensaje',
+    },
+    chat: {
+      title: 'Chat en vivo',
+      status: 'Sin conexión',
+      close: 'Cerrar chat',
+      messagesLabel: 'Mensajes del chat',
+      inputLabel: 'Tu mensaje',
+      placeholder: 'Escribe un mensaje...',
+      send: 'Enviar mensaje',
+      you: 'Tú',
+      team: 'Soporte de RADIOFIND',
+      greeting: '¡Hola! Este es el chat de soporte de RADIOFIND.',
+      offlineReply:
+        '¡Gracias por tu mensaje! El chat en vivo aún no está atendido, así que aquí nadie puede responderte. Usa «Enviar un mensaje» en su lugar. Nuestro equipo responde por correo electrónico.',
+    },
+  },
   trackDialogs: {
     loadFailed: 'No pudimos cargar esta información',
     uploadedBy: 'Subida por',
@@ -1075,6 +1252,10 @@ export const ES_TRANSLATIONS: Translations = {
       'Formato de archivo no compatible. Usa audio MP3, WAV o FLAC y una portada JPG o PNG.',
     trackAlreadyUploaded: 'Ya has subido esta canción',
     playbackFailed: 'No se pudo reproducir la pista. Inténtalo de nuevo.',
+    supportMessageSent: 'Tu mensaje se ha enviado. Te responderemos por correo electrónico.',
+    supportMessageTooMany:
+      'Has enviado demasiados mensajes. Inténtalo de nuevo dentro de una hora.',
+    supportMessageFailed: 'No se pudo enviar tu mensaje. Inténtalo de nuevo más tarde.',
   },
   validation: {
     invalidBackupCode: 'Este código de respaldo no es válido o ya se ha usado',
@@ -1122,5 +1303,6 @@ export const ES_TRANSLATIONS: Translations = {
     genreRequired: 'Elige al menos un género',
     maxTrackGenres: 'Elige hasta 3 géneros',
     maxLengthTitle: 'No debe superar 150 caracteres',
+    maxLengthSupportMessage: 'No debe superar 2000 caracteres',
   },
 };

@@ -740,4 +740,18 @@ describe('ApiService', () => {
       expect(request.request.context.get(SKIP_GLOBAL_LOADER)).toBe(true);
     });
   });
+
+  it('sends a support message', () => {
+    service
+      .sendSupportMessage({ subject: 'Upload stuck', message: 'My track stays in review' })
+      .subscribe();
+
+    const request: TestRequest = httpMock.expectOne('/api/support/messages');
+
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual({
+      subject: 'Upload stuck',
+      message: 'My track stays in review',
+    });
+  });
 });

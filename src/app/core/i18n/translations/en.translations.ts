@@ -448,6 +448,181 @@ export const EN_TRANSLATIONS = {
     loadFailed: 'We could not load your statistics',
     retry: 'Try again',
   },
+  support: {
+    title: 'Support',
+    subtitle: "We're here to help! Find answers to common questions or get in touch with our team.",
+    topicsLabel: 'Help topics',
+    topics: {
+      faq: 'FAQ',
+      playback: 'Playback Issues',
+      uploading: 'Uploading Music',
+      premium: 'Premium Account',
+      other: 'Other Issues',
+    },
+    categories: {
+      playback: 'Playback',
+      uploading: 'Uploading',
+      premium: 'Premium',
+      account: 'Account & other',
+    },
+    faq: {
+      title: 'Frequently Asked Questions',
+      viewAll: 'View all',
+      pageTitle: 'Help Center',
+      pageSubtitle: 'All answers about RADIOFIND in one place.',
+      back: 'Back to Support',
+      searchPlaceholder: 'Search questions...',
+      searchLabel: 'Search questions',
+      categoriesLabel: 'Filter by topic',
+      all: 'All',
+      noResultsTitle: 'No answers for "{query}"',
+      noResultsDescription: 'Try other words or ask our team directly.',
+      clearSearch: 'Clear search',
+      stillNeedHelpTitle: 'Still need help?',
+      stillNeedHelpDescription: 'Write to our team. We answer every message by email.',
+    },
+    questions: {
+      uploadHow: {
+        question: 'How do I upload my music?',
+        answer:
+          'Open Upload Track in the sidebar and add your audio file: MP3, WAV or FLAC, up to 100 MB. Then enter the track title, choose up to 3 genres and, if you like, add cover art (JPG or PNG, up to 10 MB, ideally 1000 × 1000) and a description.\nClick Upload Track. The track is sent for quality review right away, and you can follow it in My Uploads.',
+      },
+      uploadAfter: {
+        question: 'What happens after I upload a track?',
+        answer:
+          'Every track is reviewed by our team before it goes on air. While the review runs, the track is shown as Processing in My Uploads.\nOnce the review is done, the track becomes Published, and listeners can find and play it, or Rejected, together with the reason. The current status is always shown in My Uploads.',
+      },
+      uploadRejected: {
+        question: 'Why was my track rejected?',
+        answer:
+          'Open My Uploads, click the actions menu (⋯) of the track and choose View Rejection Reason. Common reasons are poor audio quality, distortion or clipping, an incomplete track, inappropriate content, and spam or duplicate uploads.\nFix the issue, update the details with Edit Details if needed, and choose Resubmit for Review.',
+      },
+      uploadEdit: {
+        question: 'Can I edit or delete a track after uploading it?',
+        answer:
+          'Yes. In My Uploads, open the actions menu (⋯) of the track. Edit Details is available while the track is a draft, in review or rejected. Delete Track works in every status and removes the track permanently.',
+      },
+      uploadDrafts: {
+        question: 'What is a draft?',
+        answer:
+          'When you cancel the submission of a track that is in review, it becomes a draft. Drafts wait in the Drafts tab of My Uploads, where you can edit them and send them for review again with Submit for Review.',
+      },
+      uploadSchedule: {
+        question: 'When will my track be played on the radio?',
+        answer:
+          'Once a track is published, open its actions menu (⋯) in My Uploads and choose Playback Schedule to see when it is on air. If the time does not suit you, choose Request Schedule Change. Our team then reviews your request.',
+      },
+      uploadOwnership: {
+        question: 'Do I keep the rights to my music?',
+        answer:
+          'Yes. You keep full ownership of your music. RADIOFIND only streams your published tracks on the platform. Your copyrights, publishing rights and distribution rights remain entirely yours.',
+      },
+      playbackNotPlaying: {
+        question: 'Why is my music not playing?',
+        answer:
+          'First check Radio-mode in Settings → General. While it is on, you can only listen to the radio and cannot play tracks from your library or your uploads.\nIf Radio-mode is off, check your internet connection and the volume of your device, then reload the page. If a track still does not play, send us a message with its title.',
+      },
+      playbackRadioMode: {
+        question: 'What is Radio-mode?',
+        answer:
+          'With Radio-mode on, RADIOFIND works like a radio: you listen to curated stations only. Turn it off in Settings → General to also play any track from your Media Library or My Uploads.',
+      },
+      playbackDownload: {
+        question: 'Can I download music offline?',
+        answer:
+          'The app has no offline mode, but you can save tracks to your device. Open the actions menu (⋯) of a track in your Media Library or in My Uploads and choose Download Track.',
+      },
+      playbackPlayCount: {
+        question: 'When does a listen count as a play?',
+        answer:
+          'A play is counted after 30 seconds of actual listening. For tracks shorter than that, it counts once 90% of the track was played. Skipping forward does not add listening time. You can follow plays, downloads, likes and unique listeners of your tracks on the Statistics page.',
+      },
+      playbackReport: {
+        question: 'How do I report a track?',
+        answer:
+          'In your Media Library, open the actions menu (⋯) of the track and choose Report Track. Pick a reason, add details if needed and send the report. Our moderators review every report.',
+      },
+      premiumHow: {
+        question: 'How to get Premium?',
+        answer:
+          'Premium cannot be bought in the app yet. We will let you know as soon as upgrading is available. If you would like to hear from us first, send us a message.',
+      },
+      premiumIncludes: {
+        question: 'What does Premium include?',
+        answer:
+          'Premium is planned to include unlimited uploads, a priority place in the radio queue, detailed feedback on your tracks and advanced statistics. The final scope will be announced together with the launch.',
+      },
+      accountContact: {
+        question: 'How to contact support?',
+        answer:
+          'Click Send a Message on the Support page, enter a subject and describe your question. Your message reaches our team together with the name and email of your account, and we answer by email.\nYou can send up to 5 messages per hour.',
+      },
+      accountTwoFactor: {
+        question: 'How do I change where my sign-in codes are sent?',
+        answer:
+          'Go to Settings → Account and click Manage next to Two-Factor Authentication. Choose your account email, your recovery email or an authenticator app, then confirm with your password. An authenticator app works even when you are offline.',
+      },
+      accountBackupCodes: {
+        question: 'What are backup codes?',
+        answer:
+          'Backup codes let you sign in when you cannot receive a verification code. Generate them in Settings → Account. Each code works only once and is shown only once, so save them somewhere safe. Generating new codes makes the old ones stop working.',
+      },
+      accountPassword: {
+        question: 'I forgot my password. What should I do?',
+        answer:
+          'Click Forgot password? on the sign-in page and enter your email. We will send you a link to set a new password. The link is valid for 15 minutes.',
+      },
+      accountVisibility: {
+        question: 'Who can see my profile?',
+        answer:
+          'You decide in Settings → General → Profile Visibility: show your statistics and about information to everyone, to your followers only, or to nobody but you.',
+      },
+      accountAppearance: {
+        question: 'How do I change the language or the colors?',
+        answer:
+          'Open Settings → General. Under Language, choose one of six languages. Under Accent Color, pick the color theme of the interface.',
+      },
+      accountDelete: {
+        question: 'How do I delete my account?',
+        answer:
+          'Go to Settings → Account, scroll to the Danger Zone and click Delete Account. Confirm with your password. Your profile, tracks, likes and notifications are deleted permanently. This cannot be undone.',
+      },
+    },
+    contact: {
+      title: 'Contact Us',
+      subtitle: "Can't find the answer? Reach out to our support team.",
+      sendMessage: 'Send a Message',
+      or: 'or',
+      otherChannels: 'Other ways to reach us',
+      liveChat: 'Live Chat',
+      liveChatStatus: 'Offline',
+      discord: 'Join Discord',
+      comingSoon: 'Coming soon',
+    },
+    message: {
+      title: 'Send a Message',
+      intro: 'Our team will reply to {email}.',
+      subject: 'Subject',
+      subjectPlaceholder: 'What is your question about?',
+      message: 'Message',
+      messagePlaceholder: 'Describe your question or problem in as much detail as you can...',
+      send: 'Send Message',
+    },
+    chat: {
+      title: 'Live Chat',
+      status: 'Offline',
+      close: 'Close chat',
+      messagesLabel: 'Chat messages',
+      inputLabel: 'Your message',
+      placeholder: 'Type a message...',
+      send: 'Send message',
+      you: 'You',
+      team: 'RADIOFIND Support',
+      greeting: 'Hi! This is the RADIOFIND support chat.',
+      offlineReply:
+        'Thanks for your message! Live chat is not staffed yet, so nobody can answer here. Please use Send a Message instead. Our team answers by email.',
+    },
+  },
   trackDialogs: {
     loadFailed: 'We could not load this information',
     uploadedBy: 'Uploaded by',
@@ -1060,6 +1235,9 @@ export const EN_TRANSLATIONS = {
       'Unsupported file format. Use MP3, WAV or FLAC audio and a JPG or PNG cover.',
     trackAlreadyUploaded: 'You have already uploaded this track',
     playbackFailed: 'Could not play the track. Please try again.',
+    supportMessageSent: 'Your message has been sent. We will answer you by email.',
+    supportMessageTooMany: 'You have sent too many messages. Please try again in an hour.',
+    supportMessageFailed: 'Your message could not be sent. Please try again later.',
   },
   validation: {
     invalidBackupCode: 'This backup code is not valid or has already been used',
@@ -1107,5 +1285,6 @@ export const EN_TRANSLATIONS = {
     genreRequired: 'Choose at least one genre',
     maxTrackGenres: 'Choose up to 3 genres',
     maxLengthTitle: 'Must not exceed 150 characters',
+    maxLengthSupportMessage: 'Must not exceed 2000 characters',
   },
 };

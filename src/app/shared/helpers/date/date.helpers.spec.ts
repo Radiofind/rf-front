@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  formatClockTime,
   formatDateTime,
   formatStringDate,
   toRelativeTime,
@@ -81,6 +82,12 @@ describe('date.helpers', () => {
       expect(toRelativeTime('2026-11-05T12:00:05Z', now)).toEqual({ value: 0, unit: 'second' });
     });
   });
+  describe('formatClockTime', () => {
+    it('shows the local time of day on a 24-hour clock', () => {
+      expect(formatClockTime(new Date(2025, 3, 28, 9, 5), 'en-US')).toBe('09:05');
+    });
+  });
+
   describe('formatDateTime', () => {
     it('shows the upload moment as date and 24-hour local time', () => {
       const uploadedAt: string = new Date(2025, 3, 28, 14, 32).toISOString();
