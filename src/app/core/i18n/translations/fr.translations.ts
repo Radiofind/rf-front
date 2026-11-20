@@ -463,6 +463,185 @@ export const FR_TRANSLATIONS: Translations = {
     loadFailed: 'Impossible de charger vos statistiques',
     retry: 'Réessayer',
   },
+  support: {
+    title: 'Assistance',
+    subtitle:
+      'Nous sommes là pour vous aider ! Trouvez des réponses aux questions fréquentes ou contactez notre équipe.',
+    topicsLabel: 'Rubriques d’aide',
+    topics: {
+      faq: 'FAQ',
+      playback: 'Problèmes de lecture',
+      uploading: 'Téléversement de musique',
+      premium: 'Compte Premium',
+      other: 'Autres problèmes',
+    },
+    categories: {
+      playback: 'Lecture',
+      uploading: 'Téléversement',
+      premium: 'Premium',
+      account: 'Compte et autres',
+    },
+    faq: {
+      title: 'Questions fréquentes',
+      viewAll: 'Tout voir',
+      pageTitle: 'Centre d’aide',
+      pageSubtitle: 'Toutes les réponses sur RADIOFIND au même endroit.',
+      back: 'Retour à l’assistance',
+      searchPlaceholder: 'Rechercher une question...',
+      searchLabel: 'Rechercher une question',
+      categoriesLabel: 'Filtrer par thème',
+      all: 'Tout',
+      noResultsTitle: 'Aucune réponse pour « {query} »',
+      noResultsDescription:
+        'Essayez d’autres mots ou posez directement la question à notre équipe.',
+      clearSearch: 'Effacer la recherche',
+      stillNeedHelpTitle: 'Besoin d’aide supplémentaire ?',
+      stillNeedHelpDescription:
+        'Écrivez à notre équipe. Nous répondons à chaque message par e-mail.',
+    },
+    questions: {
+      uploadHow: {
+        question: 'Comment téléverser ma musique ?',
+        answer:
+          'Ouvrez « Téléverser un titre » dans la barre latérale et ajoutez votre fichier audio : MP3, WAV ou FLAC, jusqu’à 100 Mo. Saisissez ensuite le titre du morceau, choisissez jusqu’à 3 genres et, si vous le souhaitez, ajoutez une pochette (JPG ou PNG, jusqu’à 10 Mo, idéalement 1000 × 1000) et une description.\nCliquez sur « Importer le morceau ». Le morceau est aussitôt envoyé en vérification de qualité, et vous pouvez le suivre dans « Mes titres ».',
+      },
+      uploadAfter: {
+        question: 'Que se passe-t-il après le téléversement d’un morceau ?',
+        answer:
+          'Chaque morceau est vérifié par notre équipe avant sa diffusion. Pendant la vérification, le morceau apparaît comme « En traitement » dans « Mes titres ».\nUne fois la vérification terminée, le morceau est soit « Publié », et les auditeurs peuvent le trouver et l’écouter, soit « Refusé », avec le motif. Le statut actuel est toujours affiché dans « Mes titres ».',
+      },
+      uploadRejected: {
+        question: 'Pourquoi mon morceau a-t-il été refusé ?',
+        answer:
+          'Ouvrez « Mes titres », cliquez sur le menu d’actions (⋯) du morceau et choisissez « Voir le motif du refus ». Les motifs fréquents sont une mauvaise qualité audio, de la distorsion ou de la saturation, un morceau incomplet, un contenu inapproprié, ainsi que le spam ou les doublons.\nCorrigez le problème, mettez à jour les informations avec « Modifier les détails » si nécessaire, puis choisissez « Soumettre à nouveau ».',
+      },
+      uploadEdit: {
+        question: 'Puis-je modifier ou supprimer un morceau après l’avoir téléversé ?',
+        answer:
+          'Oui. Dans « Mes titres », ouvrez le menu d’actions (⋯) du morceau. « Modifier les détails » est disponible tant que le morceau est un brouillon, en vérification ou refusé. « Supprimer le morceau » fonctionne quel que soit le statut et supprime définitivement le morceau.',
+      },
+      uploadDrafts: {
+        question: 'Qu’est-ce qu’un brouillon ?',
+        answer:
+          'Lorsque vous annulez la soumission d’un morceau en cours de vérification, il devient un brouillon. Les brouillons attendent dans l’onglet « Brouillons » de « Mes titres », où vous pouvez les modifier et les renvoyer en vérification avec « Soumettre à la vérification ».',
+      },
+      uploadSchedule: {
+        question: 'Quand mon morceau passera-t-il à la radio ?',
+        answer:
+          'Une fois un morceau publié, ouvrez son menu d’actions (⋯) dans « Mes titres » et choisissez « Programme de diffusion » pour voir quand il est diffusé. Si l’horaire ne vous convient pas, choisissez « Demander un changement d’horaire ». Notre équipe examinera alors votre demande.',
+      },
+      uploadOwnership: {
+        question: 'Est-ce que je conserve les droits sur ma musique ?',
+        answer:
+          'Oui. Votre musique vous appartient entièrement. RADIOFIND diffuse uniquement vos morceaux publiés sur la plateforme. Vos droits d’auteur, droits d’édition et droits de distribution restent entièrement les vôtres.',
+      },
+      playbackNotPlaying: {
+        question: 'Pourquoi ma musique ne se lit-elle pas ?',
+        answer:
+          'Vérifiez d’abord le « Mode radio » dans « Paramètres → Général ». Tant qu’il est activé, vous pouvez uniquement écouter la radio et ne pouvez pas lire les morceaux de votre médiathèque ou de vos titres.\nSi le mode radio est désactivé, vérifiez votre connexion Internet et le volume de votre appareil, puis rechargez la page. Si un morceau ne se lit toujours pas, envoyez-nous un message avec son titre.',
+      },
+      playbackRadioMode: {
+        question: 'Qu’est-ce que le mode radio ?',
+        answer:
+          'Avec le mode radio activé, RADIOFIND fonctionne comme une radio : vous écoutez uniquement des stations sélectionnées. Désactivez-le dans « Paramètres → Général » pour lire aussi n’importe quel morceau de votre « Médiathèque » ou de « Mes titres ».',
+      },
+      playbackDownload: {
+        question: 'Puis-je télécharger de la musique hors ligne ?',
+        answer:
+          'L’application n’a pas de mode hors ligne, mais vous pouvez enregistrer des morceaux sur votre appareil. Ouvrez le menu d’actions (⋯) d’un morceau dans votre « Médiathèque » ou dans « Mes titres » et choisissez « Télécharger le morceau ».',
+      },
+      playbackPlayCount: {
+        question: 'Quand une écoute est-elle comptabilisée ?',
+        answer:
+          'Une écoute est comptabilisée après 30 secondes d’écoute réelle. Pour les morceaux plus courts, elle compte dès que 90 % du morceau a été lu. Avancer dans le morceau n’ajoute pas de temps d’écoute. Vous pouvez suivre les écoutes, téléchargements, J’aime et auditeurs uniques de vos morceaux sur la page « Statistiques ».',
+      },
+      playbackReport: {
+        question: 'Comment signaler un morceau ?',
+        answer:
+          'Dans votre « Médiathèque », ouvrez le menu d’actions (⋯) du morceau et choisissez « Signaler le morceau ». Choisissez un motif, ajoutez des détails si nécessaire et envoyez le signalement. Nos modérateurs examinent chaque signalement.',
+      },
+      premiumHow: {
+        question: 'Comment obtenir Premium ?',
+        answer:
+          'Premium ne peut pas encore être acheté dans l’application. Nous vous préviendrons dès que la mise à niveau sera disponible. Si vous souhaitez être informé en premier, envoyez-nous un message.',
+      },
+      premiumIncludes: {
+        question: 'Que comprend Premium ?',
+        answer:
+          'Premium devrait inclure des téléversements illimités, une place prioritaire dans la file d’attente de la radio, des retours détaillés sur vos morceaux et des statistiques avancées. Le contenu définitif sera annoncé au lancement.',
+      },
+      accountContact: {
+        question: 'Comment contacter l’assistance ?',
+        answer:
+          'Cliquez sur « Envoyer un message » sur la page Assistance, saisissez un objet et décrivez votre question. Votre message parvient à notre équipe avec le nom et l’e-mail de votre compte, et nous vous répondons par e-mail.\nVous pouvez envoyer jusqu’à 5 messages par heure.',
+      },
+      accountTwoFactor: {
+        question: 'Comment changer l’adresse à laquelle mes codes de connexion sont envoyés ?',
+        answer:
+          'Allez dans « Paramètres → Compte » et cliquez sur « Gérer » à côté de « Authentification à deux facteurs ». Choisissez l’e-mail de votre compte, votre e-mail de récupération ou une application d’authentification, puis confirmez avec votre mot de passe. Une application d’authentification fonctionne même hors ligne.',
+      },
+      accountBackupCodes: {
+        question: 'Que sont les codes de secours ?',
+        answer:
+          'Les codes de secours vous permettent de vous connecter lorsque vous ne pouvez pas recevoir de code de vérification. Générez-les dans « Paramètres → Compte ». Chaque code ne fonctionne qu’une seule fois et n’est affiché qu’une seule fois : conservez-les en lieu sûr. Si vous générez de nouveaux codes, les anciens cessent de fonctionner.',
+      },
+      accountPassword: {
+        question: 'J’ai oublié mon mot de passe. Que faire ?',
+        answer:
+          'Cliquez sur « Mot de passe oublié ? » sur la page de connexion et saisissez votre e-mail. Nous vous enverrons un lien pour définir un nouveau mot de passe. Le lien est valable 15 minutes.',
+      },
+      accountVisibility: {
+        question: 'Qui peut voir mon profil ?',
+        answer:
+          'C’est vous qui décidez dans « Paramètres → Général → Visibilité du profil » : affichez vos statistiques et vos informations à tout le monde, à vos abonnés uniquement ou à personne d’autre que vous.',
+      },
+      accountAppearance: {
+        question: 'Comment changer la langue ou les couleurs ?',
+        answer:
+          'Ouvrez « Paramètres → Général ». Sous « Langue », choisissez l’une des six langues. Sous « Couleur d’accent », choisissez le thème de couleur de l’interface.',
+      },
+      accountDelete: {
+        question: 'Comment supprimer mon compte ?',
+        answer:
+          'Allez dans « Paramètres → Compte », faites défiler jusqu’à la « Zone de danger » et cliquez sur « Supprimer le compte ». Confirmez avec votre mot de passe. Votre profil, vos morceaux, vos J’aime et vos notifications sont supprimés définitivement. Cette action est irréversible.',
+      },
+    },
+    contact: {
+      title: 'Nous contacter',
+      subtitle: 'Vous ne trouvez pas la réponse ? Contactez notre équipe d’assistance.',
+      sendMessage: 'Envoyer un message',
+      or: 'ou',
+      otherChannels: 'Autres moyens de nous joindre',
+      liveChat: 'Chat en direct',
+      liveChatStatus: 'Hors ligne',
+      discord: 'Rejoindre Discord',
+      comingSoon: 'Bientôt disponible',
+    },
+    message: {
+      title: 'Envoyer un message',
+      intro: 'Notre équipe vous répondra à {email}.',
+      subject: 'Objet',
+      subjectPlaceholder: 'Quel est le sujet de votre question ?',
+      message: 'Message',
+      messagePlaceholder:
+        'Décrivez votre question ou votre problème le plus précisément possible...',
+      send: 'Envoyer',
+    },
+    chat: {
+      title: 'Chat en direct',
+      status: 'Hors ligne',
+      close: 'Fermer le chat',
+      messagesLabel: 'Messages du chat',
+      inputLabel: 'Votre message',
+      placeholder: 'Écrivez un message...',
+      send: 'Envoyer le message',
+      you: 'Vous',
+      team: 'Assistance RADIOFIND',
+      greeting: 'Bonjour ! Ici le chat d’assistance RADIOFIND.',
+      offlineReply:
+        'Merci pour votre message ! Le chat en direct n’est pas encore assuré, personne ne peut donc vous répondre ici. Utilisez plutôt « Envoyer un message ». Notre équipe répond par e-mail.',
+    },
+  },
   trackDialogs: {
     loadFailed: 'Impossible de charger ces informations',
     uploadedBy: 'Mis en ligne par',
@@ -1088,6 +1267,9 @@ export const FR_TRANSLATIONS: Translations = {
       'Format de fichier non pris en charge. Utilisez un audio MP3, WAV ou FLAC et une pochette JPG ou PNG.',
     trackAlreadyUploaded: 'Vous avez déjà importé ce morceau',
     playbackFailed: 'Impossible de lire le titre. Veuillez réessayer.',
+    supportMessageSent: 'Votre message a été envoyé. Nous vous répondrons par e-mail.',
+    supportMessageTooMany: 'Vous avez envoyé trop de messages. Veuillez réessayer dans une heure.',
+    supportMessageFailed: 'Votre message n’a pas pu être envoyé. Veuillez réessayer plus tard.',
   },
   validation: {
     invalidBackupCode: "Ce code de secours n'est pas valide ou a déjà été utilisé",
@@ -1135,5 +1317,6 @@ export const FR_TRANSLATIONS: Translations = {
     genreRequired: 'Choisissez au moins un genre',
     maxTrackGenres: "Choisissez jusqu'à 3 genres",
     maxLengthTitle: 'Ne doit pas dépasser 150 caractères',
+    maxLengthSupportMessage: 'Ne doit pas dépasser 2000 caractères',
   },
 };

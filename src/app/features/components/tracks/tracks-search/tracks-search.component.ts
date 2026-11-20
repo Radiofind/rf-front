@@ -3,6 +3,7 @@ import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe
 import { MY_UPLOADS_SEARCH_MAX_LENGTH } from '../../../constants/my-uploads.constant';
 
 import type { InputSignal, OutputEmitterRef } from '@angular/core';
+import type { TranslationKey } from '../../../../core/types/translation.type';
 
 @Component({
   selector: 'app-tracks-search',
@@ -14,6 +15,9 @@ export class TracksSearchComponent {
   public readonly value: InputSignal<string> = input.required<string>();
 
   public readonly placeholder: InputSignal<string> = input.required<string>();
+
+  public readonly label: InputSignal<TranslationKey> =
+    input<TranslationKey>('myUploads.searchLabel');
 
   public readonly searchChanged: OutputEmitterRef<string> = output<string>();
 

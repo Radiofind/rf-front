@@ -56,6 +56,7 @@ import type { IActivity } from '../../models/activity.model';
 import type { INotification, IUnreadNotifications } from '../../models/notification.model';
 import type { IPage } from '../../models/page.model';
 import type { IStatistics, IStatisticsQuery } from '../../models/statistics.model';
+import type { ISupportEndpoints, ISupportMessage } from '../../models/support.model';
 
 @Service()
 export class ApiService {
@@ -90,6 +91,10 @@ export class ApiService {
   private readonly libraryApi: string = `${this.currentUserApi}${this.userEndpoints.library}`;
 
   private readonly statisticsApi: string = `${this.currentUserApi}${this.userEndpoints.statistics}`;
+
+  private readonly supportEndpoints: ISupportEndpoints = EndpointConstants.SUPPORT_ENDPOINTS;
+
+  private readonly supportMessagesApi: string = `${environment.apiUrl}${this.supportEndpoints.support}${this.supportEndpoints.messages}`;
 
   private readonly http: HttpClient = inject(HttpClient);
 
@@ -338,6 +343,11 @@ export class ApiService {
       null,
       { context: skipGlobalLoader() },
     );
+  }
+
+  public sendSupportMessage(data: ISupportMessage): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.post<void>(this.supportMessagesApi, data);
   }
 
   public getStatistics(query: IStatisticsQuery): Observable<IStatistics> {

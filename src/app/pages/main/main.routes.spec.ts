@@ -33,6 +33,7 @@ describe('MAIN_ROUTES', () => {
     Links.MY_UPLOADS_URL,
     Links.STATISTICS_URL,
     Links.SUPPORT_URL,
+    Links.SUPPORT_FAQ_URL,
     Links.PROFILE_URL,
     Links.EDIT_PROFILE_URL,
   ])('lazy loads the component for %s', async (path) => {

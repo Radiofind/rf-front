@@ -28,6 +28,8 @@ export class Links {
 
   public static readonly SUPPORT_URL: string = 'support';
 
+  public static readonly SUPPORT_FAQ_URL: string = `${this.SUPPORT_URL}/faq`;
+
   public static readonly PROFILE_URL: string = 'profile';
 
   public static readonly EDIT_PROFILE_URL: string = `${this.PROFILE_URL}/edit`;

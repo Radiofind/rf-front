@@ -59,3 +59,8 @@ backend stores hashed:
 
 Closing these gaps needs either a mailbox the tests can read (Mailpit/MailHog in place
 of Gmail SMTP) or a test-only endpoint that returns the current code.
+
+**Delivering a support message** posts to the team's real Telegram chat, so the UI specs in
+`support.spec.ts` answer `POST /api/support/messages` with `page.route` (204 and 429). The API
+specs still hit the real backend for authentication and validation; the delivery itself is covered
+by the backend unit tests.
