@@ -55,6 +55,10 @@ export const MAIN_ROUTES: Routes = [
       import('./support-page/support-page.component').then((c) => c.SupportPageComponent),
   },
   {
+    path: Links.SUPPORT_FAQ_URL,
+    loadComponent: () => import('./faq-page/faq-page.component').then((c) => c.FaqPageComponent),
+  },
+  {
     path: Links.SETTINGS_URL,
     loadComponent: () =>
       import('./settings-page/settings-page.component').then((c) => c.SettingsPageComponent),

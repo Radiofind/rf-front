@@ -1,0 +1,137 @@
+@use '../track-list-page';
+@use '../../../shared/styles/segmented-tabs';
+@use '../../../features/components/statistics/statistics-card';
+
+:host {
+  display: block;
+}
+
+.faq-page {
+  @include track-list-page.layout;
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 4px;
+    font-size: 15px;
+    color: var(--icon-color);
+    text-decoration: none;
+
+    i {
+      font-size: 20px;
+    }
+
+    &:hover .faq-page__back-text {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--first-gradient-color);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  }
+
+  &__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__tabs {
+    @include segmented-tabs.group;
+
+    max-width: 100%;
+  }
+
+  &__tab {
+    @include segmented-tabs.tab;
+
+    min-width: 90px;
+
+    &--active {
+      @include segmented-tabs.active-tab;
+    }
+  }
+
+  &__group {
+    @include statistics-card.card;
+
+    gap: 16px;
+  }
+
+  &__group-title {
+    @include statistics-card.title;
+
+    font-size: 20px;
+  }
+
+  &__empty {
+    @include statistics-card.card;
+
+    align-items: center;
+    padding-bottom: 32px;
+  }
+
+  &__help {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 20px;
+    padding: 20px 24px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 16px;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--first-gradient-color) 16%, transparent),
+      color-mix(in srgb, var(--main-color) 4%, transparent)
+    );
+  }
+
+  &__help-icon {
+    font-size: 40px;
+    color: var(--icon-color);
+  }
+
+  &__help-text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 200px;
+    font-size: 15px;
+    color: var(--soft-text-color);
+  }
+
+  &__help-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+
+  &__help-action {
+    display: block;
+    flex-shrink: 0;
+    min-width: 300px;
+  }
+
+  @media (max-width: 768px) {
+    &__toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__help {
+      padding: 16px;
+    }
+
+    &__help-action {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+}

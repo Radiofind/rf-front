@@ -199,6 +199,8 @@ export class Constants {
 
   public static readonly ZONE_QUERY_PARAM: string = 'zone';
 
+  public static readonly CATEGORY_QUERY_PARAM: string = 'category';
+
   public static readonly LIKE_FAILED: TranslationKey = 'messages.likeFailed';
 
   public static readonly PROFILE_PHOTO: TranslationKey = 'avatar.title';

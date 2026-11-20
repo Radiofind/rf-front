@@ -459,6 +459,182 @@ export const DE_TRANSLATIONS: Translations = {
     loadFailed: 'Deine Statistiken konnten nicht geladen werden',
     retry: 'Erneut versuchen',
   },
+  support: {
+    title: 'Support',
+    subtitle:
+      'Wir sind für dich da! Finde Antworten auf häufige Fragen oder kontaktiere unser Team.',
+    topicsLabel: 'Hilfethemen',
+    topics: {
+      faq: 'FAQ',
+      playback: 'Probleme bei der Wiedergabe',
+      uploading: 'Musik hochladen',
+      premium: 'Premium-Konto',
+      other: 'Sonstige Probleme',
+    },
+    categories: {
+      playback: 'Wiedergabe',
+      uploading: 'Hochladen',
+      premium: 'Premium',
+      account: 'Konto & Sonstiges',
+    },
+    faq: {
+      title: 'Häufig gestellte Fragen',
+      viewAll: 'Alle anzeigen',
+      pageTitle: 'Hilfe-Center',
+      pageSubtitle: 'Alle Antworten rund um RADIOFIND an einem Ort.',
+      back: 'Zurück zum Support',
+      searchPlaceholder: 'Fragen durchsuchen...',
+      searchLabel: 'Fragen durchsuchen',
+      categoriesLabel: 'Nach Thema filtern',
+      all: 'Alle',
+      noResultsTitle: 'Keine Antworten für «{query}»',
+      noResultsDescription: 'Versuche es mit anderen Wörtern oder frag direkt unser Team.',
+      clearSearch: 'Suche leeren',
+      stillNeedHelpTitle: 'Brauchst du noch Hilfe?',
+      stillNeedHelpDescription: 'Schreib unserem Team. Wir beantworten jede Nachricht per E-Mail.',
+    },
+    questions: {
+      uploadHow: {
+        question: 'Wie lade ich meine Musik hoch?',
+        answer:
+          'Öffne «Track hochladen» in der Seitenleiste und füge deine Audiodatei hinzu: MP3, WAV oder FLAC, bis 100 MB. Gib dann den Tracktitel ein, wähle bis zu 3 Genres und füge nach Wunsch ein Cover (JPG oder PNG, bis 10 MB, idealerweise 1000 × 1000) und eine Beschreibung hinzu.\nKlicke auf «Track hochladen». Der Track geht sofort in die Qualitätsprüfung, und du kannst ihn unter «Meine Uploads» verfolgen.',
+      },
+      uploadAfter: {
+        question: 'Was passiert, nachdem ich einen Track hochgeladen habe?',
+        answer:
+          'Jeder Track wird von unserem Team geprüft, bevor er auf Sendung geht. Während der Prüfung wird der Track unter «Meine Uploads» als «In Prüfung» angezeigt.\nNach der Prüfung ist der Track entweder «Veröffentlicht», und Hörer können ihn finden und abspielen, oder «Abgelehnt», zusammen mit dem Grund. Den aktuellen Status siehst du immer unter «Meine Uploads».',
+      },
+      uploadRejected: {
+        question: 'Warum wurde mein Track abgelehnt?',
+        answer:
+          'Öffne «Meine Uploads», klicke beim Track auf das Aktionsmenü (⋯) und wähle «Ablehnungsgrund anzeigen». Häufige Gründe sind schlechte Audioqualität, Verzerrungen oder Clipping, ein unvollständiger Track, unangemessene Inhalte sowie Spam oder doppelte Uploads.\nBehebe das Problem, passe bei Bedarf die Angaben mit «Details bearbeiten» an und wähle «Erneut einreichen».',
+      },
+      uploadEdit: {
+        question: 'Kann ich einen Track nach dem Hochladen bearbeiten oder löschen?',
+        answer:
+          'Ja. Öffne unter «Meine Uploads» das Aktionsmenü (⋯) des Tracks. «Details bearbeiten» ist verfügbar, solange der Track ein Entwurf, in Prüfung oder abgelehnt ist. «Track löschen» funktioniert in jedem Status und entfernt den Track endgültig.',
+      },
+      uploadDrafts: {
+        question: 'Was ist ein Entwurf?',
+        answer:
+          'Wenn du einen Track aus der Prüfung zurückziehst, wird er zum Entwurf. Entwürfe warten im Tab «Entwürfe» unter «Meine Uploads». Dort kannst du sie bearbeiten und mit «Zur Prüfung einreichen» erneut zur Prüfung senden.',
+      },
+      uploadSchedule: {
+        question: 'Wann wird mein Track im Radio gespielt?',
+        answer:
+          'Sobald ein Track veröffentlicht ist, öffne unter «Meine Uploads» sein Aktionsmenü (⋯) und wähle «Sendeplan», um zu sehen, wann er läuft. Passt dir die Zeit nicht, wähle «Sendezeit ändern lassen». Unser Team prüft dann deine Anfrage.',
+      },
+      uploadOwnership: {
+        question: 'Behalte ich die Rechte an meiner Musik?',
+        answer:
+          'Ja. Deine Musik gehört weiterhin vollständig dir. RADIOFIND streamt nur deine veröffentlichten Tracks auf der Plattform. Urheber-, Verlags- und Vertriebsrechte bleiben vollständig bei dir.',
+      },
+      playbackNotPlaying: {
+        question: 'Warum wird meine Musik nicht abgespielt?',
+        answer:
+          'Prüfe zuerst den «Radiomodus» unter «Einstellungen → Allgemein». Solange er aktiv ist, kannst du nur Radio hören und keine Tracks aus deiner Mediathek oder deinen Uploads abspielen.\nIst der Radiomodus aus, prüfe deine Internetverbindung und die Lautstärke deines Geräts und lade die Seite neu. Wird ein Track weiterhin nicht abgespielt, schick uns eine Nachricht mit seinem Titel.',
+      },
+      playbackRadioMode: {
+        question: 'Was ist der Radiomodus?',
+        answer:
+          'Mit aktivem Radiomodus funktioniert RADIOFIND wie ein Radio: Du hörst nur kuratierte Sender. Schalte ihn unter «Einstellungen → Allgemein» aus, um auch jeden Track aus der «Mediathek» oder unter «Meine Uploads» abzuspielen.',
+      },
+      playbackDownload: {
+        question: 'Kann ich Musik offline herunterladen?',
+        answer:
+          'Die App hat keinen Offlinemodus, aber du kannst Tracks auf deinem Gerät speichern. Öffne in der «Mediathek» oder unter «Meine Uploads» das Aktionsmenü (⋯) eines Tracks und wähle «Track herunterladen».',
+      },
+      playbackPlayCount: {
+        question: 'Wann zählt ein Anhören als Play?',
+        answer:
+          'Ein Play wird nach 30 Sekunden tatsächlichen Hörens gezählt. Bei kürzeren Tracks zählt er, sobald 90 % des Tracks abgespielt wurden. Vorspulen erhöht die Hörzeit nicht. Plays, Downloads, Likes und einzelne Hörer deiner Tracks findest du auf der Seite «Statistiken».',
+      },
+      playbackReport: {
+        question: 'Wie melde ich einen Track?',
+        answer:
+          'Öffne in der «Mediathek» das Aktionsmenü (⋯) des Tracks und wähle «Track melden». Wähle einen Grund, ergänze bei Bedarf Details und sende die Meldung ab. Unsere Moderatoren prüfen jede Meldung.',
+      },
+      premiumHow: {
+        question: 'Wie bekomme ich Premium?',
+        answer:
+          'Premium kann in der App noch nicht gekauft werden. Wir sagen dir Bescheid, sobald ein Upgrade möglich ist. Wenn du als Erstes davon erfahren möchtest, schick uns eine Nachricht.',
+      },
+      premiumIncludes: {
+        question: 'Was beinhaltet Premium?',
+        answer:
+          'Geplant sind für Premium unbegrenzte Uploads, ein bevorzugter Platz in der Radio-Warteschlange, ausführliches Feedback zu deinen Tracks und erweiterte Statistiken. Der endgültige Umfang wird zum Start bekannt gegeben.',
+      },
+      accountContact: {
+        question: 'Wie kontaktiere ich den Support?',
+        answer:
+          'Klicke auf der Support-Seite auf «Nachricht senden», gib einen Betreff ein und beschreibe dein Anliegen. Deine Nachricht erreicht unser Team zusammen mit dem Namen und der E-Mail-Adresse deines Kontos, und wir antworten per E-Mail.\nDu kannst bis zu 5 Nachrichten pro Stunde senden.',
+      },
+      accountTwoFactor: {
+        question: 'Wie ändere ich, wohin meine Anmeldecodes gesendet werden?',
+        answer:
+          'Öffne «Einstellungen → Konto» und klicke neben «Zwei-Faktor-Authentifizierung» auf «Verwalten». Wähle die E-Mail-Adresse deines Kontos, deine Wiederherstellungs-E-Mail oder eine Authenticator-App und bestätige mit deinem Passwort. Eine Authenticator-App funktioniert auch offline.',
+      },
+      accountBackupCodes: {
+        question: 'Was sind Backup-Codes?',
+        answer:
+          'Mit Backup-Codes kannst du dich anmelden, wenn du keinen Bestätigungscode erhalten kannst. Erstelle sie unter «Einstellungen → Konto». Jeder Code funktioniert nur einmal und wird nur einmal angezeigt, also bewahre sie sicher auf. Wenn du neue Codes erstellst, funktionieren die alten nicht mehr.',
+      },
+      accountPassword: {
+        question: 'Ich habe mein Passwort vergessen. Was nun?',
+        answer:
+          'Klicke auf der Anmeldeseite auf «Passwort vergessen?» und gib deine E-Mail-Adresse ein. Wir senden dir einen Link, mit dem du ein neues Passwort festlegen kannst. Der Link ist 15 Minuten gültig.',
+      },
+      accountVisibility: {
+        question: 'Wer kann mein Profil sehen?',
+        answer:
+          'Das legst du unter «Einstellungen → Allgemein → Profilsichtbarkeit» fest: Zeige deine Statistiken und Infos über dich allen, nur deinen Followern oder niemandem ausser dir.',
+      },
+      accountAppearance: {
+        question: 'Wie ändere ich die Sprache oder die Farben?',
+        answer:
+          'Öffne «Einstellungen → Allgemein». Unter «Sprache» wählst du eine von sechs Sprachen. Unter «Akzentfarbe» wählst du das Farbschema der Oberfläche.',
+      },
+      accountDelete: {
+        question: 'Wie lösche ich mein Konto?',
+        answer:
+          'Öffne «Einstellungen → Konto», scrolle zur «Gefahrenzone» und klicke auf «Konto löschen». Bestätige mit deinem Passwort. Dein Profil, deine Tracks, Likes und Benachrichtigungen werden endgültig gelöscht. Das lässt sich nicht rückgängig machen.',
+      },
+    },
+    contact: {
+      title: 'Kontakt',
+      subtitle: 'Keine Antwort gefunden? Wende dich an unser Support-Team.',
+      sendMessage: 'Nachricht senden',
+      or: 'oder',
+      otherChannels: 'Weitere Kontaktmöglichkeiten',
+      liveChat: 'Live-Chat',
+      liveChatStatus: 'Offline',
+      discord: 'Discord beitreten',
+      comingSoon: 'Demnächst',
+    },
+    message: {
+      title: 'Nachricht senden',
+      intro: 'Unser Team antwortet an {email}.',
+      subject: 'Betreff',
+      subjectPlaceholder: 'Worum geht es bei deiner Frage?',
+      message: 'Nachricht',
+      messagePlaceholder: 'Beschreibe deine Frage oder dein Problem so genau wie möglich...',
+      send: 'Senden',
+    },
+    chat: {
+      title: 'Live-Chat',
+      status: 'Offline',
+      close: 'Chat schliessen',
+      messagesLabel: 'Chatnachrichten',
+      inputLabel: 'Deine Nachricht',
+      placeholder: 'Nachricht eingeben...',
+      send: 'Nachricht senden',
+      you: 'Du',
+      team: 'RADIOFIND Support',
+      greeting: 'Hallo! Das ist der Support-Chat von RADIOFIND.',
+      offlineReply:
+        'Danke für deine Nachricht! Der Live-Chat ist noch nicht besetzt, daher kann hier niemand antworten. Nutze bitte stattdessen «Nachricht senden». Unser Team antwortet per E-Mail.',
+    },
+  },
   trackDialogs: {
     loadFailed: 'Diese Informationen konnten nicht geladen werden',
     uploadedBy: 'Hochgeladen von',
@@ -1081,6 +1257,11 @@ export const DE_TRANSLATIONS: Translations = {
       'Nicht unterstütztes Dateiformat. Verwende MP3, WAV oder FLAC als Audio und JPG oder PNG als Cover.',
     trackAlreadyUploaded: 'Du hast diesen Track bereits hochgeladen',
     playbackFailed: 'Der Track konnte nicht abgespielt werden. Bitte versuche es erneut.',
+    supportMessageSent: 'Deine Nachricht wurde gesendet. Wir antworten dir per E-Mail.',
+    supportMessageTooMany:
+      'Du hast zu viele Nachrichten gesendet. Bitte versuche es in einer Stunde erneut.',
+    supportMessageFailed:
+      'Deine Nachricht konnte nicht gesendet werden. Bitte versuche es später erneut.',
   },
   validation: {
     invalidBackupCode: 'Dieser Backup-Code ist ungültig oder wurde bereits verwendet',
@@ -1128,5 +1309,6 @@ export const DE_TRANSLATIONS: Translations = {
     genreRequired: 'Wähle mindestens ein Genre aus',
     maxTrackGenres: 'Wähle bis zu 3 Genres aus',
     maxLengthTitle: 'Darf 150 Zeichen nicht überschreiten',
+    maxLengthSupportMessage: 'Darf 2000 Zeichen nicht überschreiten',
   },
 };

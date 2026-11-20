@@ -1,0 +1,39 @@
+<form class="track-dialog support-message" [formRoot]="messageForm">
+  <p class="track-dialog__note">
+    <i class="bx bx-envelope" aria-hidden="true"></i>
+    {{ 'support.message.intro' | translate: { email: data.email } }}
+  </p>
+
+  <app-input-field
+    [fieldLabel]="('support.message.subject' | translate) + ' *'"
+    [inputPlaceholder]="'support.message.subjectPlaceholder' | translate"
+    [isCompact]="true"
+    [characterLimit]="subjectLimit"
+    [formField]="messageForm.subject"
+  />
+
+  <app-input-field
+    [fieldLabel]="('support.message.message' | translate) + ' *'"
+    [inputPlaceholder]="'support.message.messagePlaceholder' | translate"
+    [isCompact]="true"
+    [isTextareaField]="true"
+    [textareaRows]="messageRows"
+    [characterLimit]="messageLimit"
+    [formField]="messageForm.message"
+  />
+
+  <footer class="track-dialog__actions">
+    <app-button
+      additionalClass="button--secondary button--compact"
+      [contentText]="'common.cancel' | translate"
+      (clickAction)="onCancel()"
+    />
+    <app-button
+      additionalClass="button--compact"
+      buttonType="submit"
+      contentIconClass="bx bx-send"
+      [contentText]="'support.message.send' | translate"
+      [disabled]="isSendDisabled()"
+    />
+  </footer>
+</form>

@@ -70,3 +70,7 @@ export function formatDateTime(isoDate: string, locale: string): string {
 
   return `${datePart}${Constants.DATE_TIME_SEPARATOR}${timePart}`;
 }
+
+export function formatClockTime(date: Date, locale: string): string {
+  return new Intl.DateTimeFormat(locale, TIME_FORMAT_OPTIONS).format(date);
+}

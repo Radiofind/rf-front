@@ -1,4 +1,5 @@
 import type { IAuthEndpoints } from '../models/auth.model';
+import type { ISupportEndpoints } from '../models/support.model';
 import type { ITrackEndpoints } from '../models/track.model';
 import type { IUserEndpoints } from '../models/user.model';
 
@@ -49,5 +50,10 @@ export class EndpointConstants {
     scheduleChangeRequests: '/schedule-change-requests',
     rejection: '/rejection',
     reports: '/reports',
+  };
+
+  public static readonly SUPPORT_ENDPOINTS: ISupportEndpoints = {
+    support: '/support',
+    messages: '/messages',
   };
 }

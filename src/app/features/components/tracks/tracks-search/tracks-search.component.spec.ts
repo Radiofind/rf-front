@@ -49,4 +49,14 @@ describe('TracksSearchComponent', () => {
       (fixture.nativeElement as HTMLElement).querySelector('.tracks-search__clear'),
     ).toBeNull();
   });
+
+  it('describes the field with the given label', async () => {
+    const fixture: ComponentFixture<TracksSearchComponent> = await createFixture('');
+    fixture.componentRef.setInput('label', 'support.faq.searchLabel');
+    await fixture.whenStable();
+
+    expect(
+      (fixture.nativeElement as HTMLElement).querySelector('input')?.getAttribute('aria-label'),
+    ).toBe('Search questions');
+  });
 });

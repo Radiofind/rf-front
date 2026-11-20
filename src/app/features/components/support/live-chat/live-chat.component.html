@@ -1,0 +1,69 @@
+<section class="chat" role="dialog" aria-labelledby="live-chat-title" (keydown.escape)="onClose()">
+  <header class="chat__header">
+    <span class="chat__avatar" aria-hidden="true">
+      <i class="bx bx-headphone"></i>
+    </span>
+    <div class="chat__heading">
+      <h2 class="chat__title" id="live-chat-title">{{ 'support.chat.title' | translate }}</h2>
+      <span class="chat__status">
+        <span class="chat__status-dot" aria-hidden="true"></span>
+        {{ 'support.chat.status' | translate }}
+      </span>
+    </div>
+    <button
+      type="button"
+      class="chat__close"
+      [attr.aria-label]="'support.chat.close' | translate"
+      [title]="'support.chat.close' | translate"
+      (click)="onClose()"
+    >
+      <i class="bx bx-x" aria-hidden="true"></i>
+    </button>
+  </header>
+
+  <ol
+    #messageList
+    class="chat__messages"
+    aria-live="polite"
+    [attr.aria-label]="'support.chat.messagesLabel' | translate"
+  >
+    @for (message of messages(); track message.id) {
+      @if (message.author === teamAuthor) {
+        <li class="chat__message">
+          <span class="chat__author">{{ 'support.chat.team' | translate }}</span>
+          <p class="chat__bubble">{{ message.textKey | translate }}</p>
+          <time class="chat__time">{{ message.sentAt | clockTime }}</time>
+        </li>
+      } @else {
+        <li class="chat__message chat__message--own">
+          <span class="chat__author">{{ 'support.chat.you' | translate }}</span>
+          <p class="chat__bubble">{{ message.text }}</p>
+          <time class="chat__time">{{ message.sentAt | clockTime }}</time>
+        </li>
+      }
+    }
+  </ol>
+
+  <form class="chat__composer" (submit)="onSend($event)">
+    <input
+      #messageInput
+      class="chat__input"
+      type="text"
+      autocomplete="off"
+      [value]="draft()"
+      [maxLength]="maxLength"
+      [placeholder]="'support.chat.placeholder' | translate"
+      [attr.aria-label]="'support.chat.inputLabel' | translate"
+      (input)="onDraftInput($event)"
+    />
+    <button
+      type="submit"
+      class="chat__send"
+      [disabled]="isSendDisabled()"
+      [attr.aria-label]="'support.chat.send' | translate"
+      [title]="'support.chat.send' | translate"
+    >
+      <i class="bx bx-send" aria-hidden="true"></i>
+    </button>
+  </form>
+</section>

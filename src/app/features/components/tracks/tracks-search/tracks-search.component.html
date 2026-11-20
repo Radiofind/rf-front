@@ -5,7 +5,7 @@
   [value]="value()"
   [maxLength]="maxLength"
   [placeholder]="placeholder()"
-  [attr.aria-label]="'myUploads.searchLabel' | translate"
+  [attr.aria-label]="label() | translate"
   (input)="onInput($event)"
 />
 @if (value()) {
