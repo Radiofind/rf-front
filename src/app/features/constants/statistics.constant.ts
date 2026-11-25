@@ -1,21 +1,50 @@
+import { DateFormatEnum } from '../../core/enums/date-format.enum';
+import { StatisticsGranularityEnum } from '../../core/enums/statistics-granularity.enum';
 import { StatisticsPeriodEnum } from '../../core/enums/statistics-period.enum';
 
 import type {
   IStatisticsKpiDefinition,
   IStatisticsPeriodTab,
+  ITimelineFormat,
 } from '../models/statistics-view.model';
 
 export const DEFAULT_STATISTICS_PERIOD: StatisticsPeriodEnum = StatisticsPeriodEnum.LAST_30_DAYS;
 
-export const MONTHLY_STATISTICS_PERIODS: ReadonlySet<StatisticsPeriodEnum> = new Set([
-  StatisticsPeriodEnum.LAST_12_MONTHS,
-]);
-
 export const STATISTICS_PERIOD_TABS: readonly IStatisticsPeriodTab[] = [
-  { period: StatisticsPeriodEnum.LAST_7_DAYS, label: 'statistics.periods.last7Days' },
-  { period: StatisticsPeriodEnum.LAST_30_DAYS, label: 'statistics.periods.last30Days' },
-  { period: StatisticsPeriodEnum.LAST_12_MONTHS, label: 'statistics.periods.last12Months' },
+  { period: StatisticsPeriodEnum.LAST_24_HOURS, label: 'statistics.periods.oneDay' },
+  { period: StatisticsPeriodEnum.LAST_7_DAYS, label: 'statistics.periods.oneWeek' },
+  { period: StatisticsPeriodEnum.LAST_30_DAYS, label: 'statistics.periods.oneMonth' },
+  { period: StatisticsPeriodEnum.LAST_3_MONTHS, label: 'statistics.periods.threeMonths' },
+  { period: StatisticsPeriodEnum.LAST_6_MONTHS, label: 'statistics.periods.sixMonths' },
+  { period: StatisticsPeriodEnum.LAST_12_MONTHS, label: 'statistics.periods.oneYear' },
 ];
+
+export const TIMELINE_FORMATS: Readonly<Record<StatisticsGranularityEnum, ITimelineFormat>> = {
+  [StatisticsGranularityEnum.HOUR]: {
+    subtitle: 'statistics.timeline.perHour',
+    axisLabel: DateFormatEnum.HOUR,
+    detail: DateFormatEnum.WEEKDAY_DATE_HOUR,
+    detailLabel: null,
+  },
+  [StatisticsGranularityEnum.DAY]: {
+    subtitle: 'statistics.timeline.perDay',
+    axisLabel: DateFormatEnum.DAY_MONTH,
+    detail: DateFormatEnum.WEEKDAY_DATE,
+    detailLabel: null,
+  },
+  [StatisticsGranularityEnum.WEEK]: {
+    subtitle: 'statistics.timeline.perWeek',
+    axisLabel: DateFormatEnum.DAY_MONTH,
+    detail: DateFormatEnum.FULL_DATE,
+    detailLabel: 'statistics.timeline.weekOf',
+  },
+  [StatisticsGranularityEnum.MONTH]: {
+    subtitle: 'statistics.timeline.perMonth',
+    axisLabel: DateFormatEnum.MONTH,
+    detail: DateFormatEnum.LONG_MONTH_YEAR,
+    detailLabel: null,
+  },
+};
 
 export const STATISTICS_KPIS: readonly IStatisticsKpiDefinition[] = [
   { metric: 'plays', label: 'statistics.kpis.plays', iconClass: 'bx bx-play' },

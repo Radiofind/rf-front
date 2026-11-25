@@ -444,9 +444,12 @@ export const IT_TRANSLATIONS: Translations = {
     subtitle: 'Le prestazioni della tua musica a colpo d’occhio',
     periods: {
       label: 'Scegli un periodo',
-      last7Days: '7 giorni',
-      last30Days: '30 giorni',
-      last12Months: '12 mesi',
+      oneDay: '1 giorno',
+      oneWeek: '1 settimana',
+      oneMonth: '1 mese',
+      threeMonths: '3 mesi',
+      sixMonths: '6 mesi',
+      oneYear: '1 anno',
     },
     kpis: {
       plays: 'Ascolti totali',
@@ -458,12 +461,15 @@ export const IT_TRANSLATIONS: Translations = {
     noComparison: 'Nessun dato precedente',
     timeline: {
       title: 'Ascolti',
+      perHour: "Ascolti e download all'ora",
       perDay: 'Ascolti e download al giorno',
+      perWeek: 'Ascolti e download a settimana',
       perMonth: 'Ascolti e download al mese',
       plays: 'Ascolti',
       downloads: 'Download',
       label: 'Ascolti e download nel tempo',
       date: 'Data',
+      weekOf: 'Settimana dal {date}',
     },
     genres: {
       title: 'Genere',

@@ -60,6 +60,23 @@ export function formatStringDate(
   );
 }
 
+export function formatLocalDateTime(
+  localDateTime: string,
+  format: DateFormatEnum,
+  locale: string,
+): string {
+  const [datePart = localDateTime, timePart = Constants.EMPTY_STRING]: string[] =
+    localDateTime.split(Constants.SPLIT_DATE_BY_T);
+  const [hours = Constants.ZERO, minutes = Constants.ZERO]: number[] = timePart
+    .split(Constants.TIME_SEPARATOR)
+    .filter(Boolean)
+    .map(Number);
+  const date: Date = transformStringToDate(datePart);
+  date.setHours(hours, minutes);
+
+  return new Intl.DateTimeFormat(locale, DATE_FORMAT_OPTIONS[format]).format(date);
+}
+
 export function formatDateTime(isoDate: string, locale: string): string {
   const date: Date = parseIsoDate(isoDate);
   const datePart: string = new Intl.DateTimeFormat(
