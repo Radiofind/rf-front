@@ -104,6 +104,7 @@ describe('UserProfilePageComponent', () => {
     fixture.nativeElement as HTMLElement;
 
   afterEach(() => {
+    TestBed.inject(MockStore).resetSelectors();
     vi.restoreAllMocks();
   });
 
