@@ -29,6 +29,19 @@ export const DATE_FORMAT_OPTIONS: Readonly<Record<DateFormatEnum, Intl.DateTimeF
     month: 'long',
     year: 'numeric',
   },
+  [DateFormatEnum.HOUR]: {
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  },
+  [DateFormatEnum.WEEKDAY_DATE_HOUR]: {
+    weekday: 'short',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  },
 };
 
 export const TIME_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {

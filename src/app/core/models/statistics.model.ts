@@ -1,3 +1,4 @@
+import type { StatisticsGranularityEnum } from '../enums/statistics-granularity.enum';
 import type { StatisticsPeriodEnum } from '../enums/statistics-period.enum';
 import type { ITrackSummary } from './track.model';
 
@@ -31,6 +32,7 @@ export interface ITopTrack {
 
 export interface IStatistics {
   period: StatisticsPeriodEnum;
+  granularity: StatisticsGranularityEnum;
   current: IStatisticsTotals;
   previous: IStatisticsTotals;
   timeline: ITimelinePoint[];

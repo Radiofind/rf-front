@@ -1,3 +1,4 @@
+import type { DateFormatEnum } from '../../core/enums/date-format.enum';
 import type { StatisticsPeriodEnum } from '../../core/enums/statistics-period.enum';
 import type { IStatisticsTotals } from '../../core/models/statistics.model';
 import type { ITrackSummary } from '../../core/models/track.model';
@@ -6,6 +7,13 @@ import type { TranslationKey } from '../../core/types/translation.type';
 export interface IStatisticsPeriodTab {
   period: StatisticsPeriodEnum;
   label: TranslationKey;
+}
+
+export interface ITimelineFormat {
+  subtitle: TranslationKey;
+  axisLabel: DateFormatEnum;
+  detail: DateFormatEnum;
+  detailLabel: TranslationKey | null;
 }
 
 export interface IStatisticsKpiDefinition {

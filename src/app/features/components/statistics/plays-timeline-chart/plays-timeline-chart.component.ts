@@ -1,9 +1,9 @@
 import { Component, computed, input, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { Constants } from '../../../../core/constants/constants';
-import { DateFormatEnum } from '../../../../core/enums/date-format.enum';
 import { TranslatePipe } from '../../../../shared/pipes/translate/translate.pipe';
 import { CompactNumberPipe } from '../../../../shared/pipes/compact-number/compact-number.pipe';
-import { StringDatePipe } from '../../../../shared/pipes/string-date/string-date.pipe';
+import { LocalDateTimePipe } from '../../../../shared/pipes/local-date-time/local-date-time.pipe';
 import {
   areaPath,
   axisTicks,
@@ -14,11 +14,14 @@ import {
 } from '../../../../shared/helpers/chart/chart.helpers';
 import {
   TIMELINE_AXIS_INTERVALS,
+  TIMELINE_FORMATS,
   TIMELINE_LABEL_COUNT,
 } from '../../../constants/statistics.constant';
 
 import type { InputSignal, Signal, WritableSignal } from '@angular/core';
+import type { StatisticsGranularityEnum } from '../../../../core/enums/statistics-granularity.enum';
 import type { ITimelinePoint } from '../../../../core/models/statistics.model';
+import type { ITimelineFormat } from '../../../models/statistics-view.model';
 
 interface IAxisLabel {
   start: string;
@@ -39,7 +42,7 @@ const PERCENT: number = 100;
 
 @Component({
   selector: 'app-plays-timeline-chart',
-  imports: [TranslatePipe, CompactNumberPipe, StringDatePipe],
+  imports: [NgTemplateOutlet, TranslatePipe, CompactNumberPipe, LocalDateTimePipe],
   templateUrl: './plays-timeline-chart.component.html',
   styleUrl: './plays-timeline-chart.component.scss',
 })
@@ -47,7 +50,8 @@ export class PlaysTimelineChartComponent {
   public readonly points: InputSignal<readonly ITimelinePoint[]> =
     input.required<readonly ITimelinePoint[]>();
 
-  public readonly isMonthly: InputSignal<boolean> = input<boolean>(false);
+  public readonly granularity: InputSignal<StatisticsGranularityEnum> =
+    input.required<StatisticsGranularityEnum>();
 
   protected readonly hoveredIndex: WritableSignal<number | null> = signal<number | null>(null);
 
@@ -110,12 +114,8 @@ export class PlaysTimelineChartComponent {
     };
   });
 
-  protected readonly labelFormat: Signal<DateFormatEnum> = computed<DateFormatEnum>(() =>
-    this.isMonthly() ? DateFormatEnum.MONTH : DateFormatEnum.DAY_MONTH,
-  );
-
-  protected readonly detailFormat: Signal<DateFormatEnum> = computed<DateFormatEnum>(() =>
-    this.isMonthly() ? DateFormatEnum.LONG_MONTH_YEAR : DateFormatEnum.WEEKDAY_DATE,
+  protected readonly format: Signal<ITimelineFormat> = computed<ITimelineFormat>(
+    () => TIMELINE_FORMATS[this.granularity()],
   );
 
   private readonly plays: Signal<number[]> = computed<number[]>(() =>

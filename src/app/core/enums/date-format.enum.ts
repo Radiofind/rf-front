@@ -5,4 +5,6 @@ export enum DateFormatEnum {
   MONTH = 'month',
   WEEKDAY_DATE = 'weekdayDate',
   LONG_MONTH_YEAR = 'longMonthYear',
+  HOUR = 'hour',
+  WEEKDAY_DATE_HOUR = 'weekdayDateHour',
 }

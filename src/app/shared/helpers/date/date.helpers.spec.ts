@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   formatClockTime,
   formatDateTime,
+  formatLocalDateTime,
   formatStringDate,
   toRelativeTime,
   transformDateToString,
@@ -53,6 +54,20 @@ describe('date.helpers', () => {
       expect(
         formatStringDate('2025-01-01T00:00:00.000000', DateFormatEnum.MONTH_YEAR, 'en-US'),
       ).toBe('Jan 2025');
+    });
+  });
+
+  describe('formatLocalDateTime', () => {
+    it('shows the hour of a local date-time on a 24-hour clock', () => {
+      expect(formatLocalDateTime('2026-11-19T14:00:00', DateFormatEnum.HOUR, 'en-US')).toBe(
+        '14:00',
+      );
+    });
+
+    it('keeps the day of a local date-time late in the evening', () => {
+      expect(formatLocalDateTime('2026-11-19T23:00:00', DateFormatEnum.DAY_MONTH, 'en-US')).toBe(
+        'Nov 19',
+      );
     });
   });
 
