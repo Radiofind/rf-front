@@ -228,6 +228,10 @@ export const FR_TRANSLATIONS: Translations = {
     hiddenDescription: '{name} ne partage pas son profil.',
     notFoundTitle: 'Profil introuvable',
     notFoundDescription: "Le lien est peut-être erroné ou le compte n'existe plus.",
+    deletedTitle: 'Ce compte a été supprimé',
+    deletedDescription:
+      'Son propriétaire a fermé le compte. Ce profil et ses morceaux ne sont plus disponibles.',
+    toMediaLibrary: 'Aller à la médiathèque',
     loadFailedTitle: 'Impossible de charger ce profil',
     loadFailedDescription: 'Vérifiez votre connexion et réessayez.',
     retry: 'Réessayer',
@@ -400,6 +404,7 @@ export const FR_TRANSLATIONS: Translations = {
       added: 'Ajouté',
     },
     actions: {
+      goToArtistProfile: 'Aller au profil de l’artiste',
       report: 'Signaler le morceau',
       remove: 'Retirer de la médiathèque',
     },

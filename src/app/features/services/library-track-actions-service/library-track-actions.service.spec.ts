@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { LibraryTrackActionsService } from './library-track-actions.service';
@@ -67,6 +68,16 @@ describe('LibraryTrackActionsService', () => {
     expect(open).toHaveBeenCalledWith(
       TrackDetailsModalComponent,
       expect.objectContaining({ data: { trackId: 42, isEditing: false, isLibrary: true } }),
+    );
+  });
+
+  it('navigates to the profile of the artist who uploaded the track', () => {
+    const navigateByUrl = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+
+    service.run(track, TrackActionEnum.GO_TO_ARTIST_PROFILE);
+
+    expect(navigateByUrl).toHaveBeenCalledExactlyOnceWith(
+      '/users/6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f',
     );
   });
 

@@ -142,6 +142,19 @@ describe('UserProfilePageComponent', () => {
     );
   });
 
+  it('says the account was deleted and leads back to the media library', async () => {
+    const fixture: ComponentFixture<UserProfilePageComponent> = await createFixture({
+      status: PublicProfileStatusEnum.DELETED,
+    });
+
+    expect(element(fixture).querySelector('.empty__title')!.textContent.trim()).toBe(
+      'This account was deleted',
+    );
+    expect(element(fixture).querySelector('a.profile__action')!.getAttribute('href')).toBe(
+      '/media-library',
+    );
+  });
+
   it('retries a profile that failed to load', async () => {
     const fixture: ComponentFixture<UserProfilePageComponent> = await createFixture({
       status: PublicProfileStatusEnum.FAILED,

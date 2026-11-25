@@ -96,7 +96,7 @@ export class TracksTableComponent<TSort extends string> {
   }
 
   protected artistProfileLink(track: ITrack): string {
-    return `/${Links.USERS_URL}/${track.artistPublicId}`;
+    return Links.userProfileUrl(track.artistPublicId);
   }
 
   protected statusLabel(status: TrackStatus): TranslationKey {

@@ -1,9 +1,18 @@
 import { expect, test } from '../fixtures/test';
-import { API_URL, registerUser } from '../fixtures/api';
-import { bearer, OWN_TRACKS_URL, TRACKS_URL, uploadTitled } from '../fixtures/tracks';
+import { API_URL, deleteAccount, registerUser } from '../fixtures/api';
+import { publicIdOf } from '../fixtures/database';
+import {
+  bearer,
+  OWN_TRACKS_URL,
+  TRACKS_URL,
+  uploadApprovedTrack,
+  uploadTitled,
+} from '../fixtures/tracks';
 import { MediaLibraryPage } from '../pages/media-library.page';
+import { PublicProfilePage } from '../pages/public-profile.page';
 
-import type { APIRequestContext, APIResponse } from '@playwright/test';
+import type { APIRequestContext, APIResponse, Locator } from '@playwright/test';
+import type { ITestUser } from '../fixtures/api';
 
 const LIBRARY_URL: string = `${API_URL}/users/me/library`;
 
@@ -88,6 +97,58 @@ test.describe('media library', () => {
       await expect(library.emptyTitle).toHaveText('Your library is waiting for its first track');
       await expect(library.emptySteps).toHaveText(['Listen', 'Like', 'Collect']);
       await expect(library.search).toHaveCount(0);
+    });
+
+    test('opens the profile of the artist from the track actions', async ({
+      authenticatedPage,
+      request,
+      user,
+    }) => {
+      const artist: ITestUser = await registerUser({ name: 'Grace', surname: 'Hopper' });
+      const trackId: number = await uploadApprovedTrack(request, artist.token, 'Liked Song');
+      await request.put(`${TRACKS_URL}/${String(trackId)}/like`, { headers: bearer(user.token) });
+      const library: MediaLibraryPage = new MediaLibraryPage(authenticatedPage);
+      const profile: PublicProfilePage = new PublicProfilePage(authenticatedPage);
+      await authenticatedPage.goto('/media-library');
+
+      await library.chooseAction('Liked Song', 'Go to Artist Profile');
+
+      await expect(authenticatedPage).toHaveURL(new RegExp(`/users/${publicIdOf(artist.email)}$`));
+      await expect(profile.name).toHaveText('Grace H.');
+    });
+
+    test('offers no artist profile for an own track', async ({
+      authenticatedPage,
+      request,
+      user,
+    }) => {
+      const trackId: number = await uploadApprovedTrack(request, user.token, 'Own Song');
+      await request.put(`${TRACKS_URL}/${String(trackId)}/like`, { headers: bearer(user.token) });
+      const library: MediaLibraryPage = new MediaLibraryPage(authenticatedPage);
+      await authenticatedPage.goto('/media-library');
+
+      const actions: Locator = await library.openActions('Own Song');
+
+      await expect(actions).toHaveText(['Track Details', 'Download Track', 'Remove from Library']);
+    });
+
+    test('says the artist account was deleted while the library was open', async ({
+      authenticatedPage,
+      request,
+      user,
+    }) => {
+      const artist: ITestUser = await registerUser();
+      const trackId: number = await uploadApprovedTrack(request, artist.token, 'Orphaned Song');
+      await request.put(`${TRACKS_URL}/${String(trackId)}/like`, { headers: bearer(user.token) });
+      const library: MediaLibraryPage = new MediaLibraryPage(authenticatedPage);
+      const profile: PublicProfilePage = new PublicProfilePage(authenticatedPage);
+      await authenticatedPage.goto('/media-library');
+      await expect(library.rows).toHaveCount(1);
+      await deleteAccount(request, artist);
+
+      await library.chooseAction('Orphaned Song', 'Go to Artist Profile');
+
+      await expect(profile.emptyTitle).toHaveText('This account was deleted');
     });
   });
 });

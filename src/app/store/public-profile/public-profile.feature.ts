@@ -74,6 +74,13 @@ export const publicProfileFeature = createFeature({
       }),
     ),
     on(
+      PublicProfileApiActions.profileDeleted,
+      (state: IPublicProfileState): IPublicProfileState => ({
+        ...state,
+        status: PublicProfileStatusEnum.DELETED,
+      }),
+    ),
+    on(
       PublicProfileApiActions.profileLoadFailed,
       (state: IPublicProfileState): IPublicProfileState => ({
         ...state,

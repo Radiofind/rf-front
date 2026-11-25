@@ -121,6 +121,7 @@ describe('public profile state', () => {
   });
 
   it.each([
+    [410, PublicProfileStatusEnum.DELETED],
     [404, PublicProfileStatusEnum.NOT_FOUND],
     [400, PublicProfileStatusEnum.NOT_FOUND],
     [500, PublicProfileStatusEnum.FAILED],
