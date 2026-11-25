@@ -100,6 +100,12 @@ export const TRACK_ACTION_OPTIONS: Readonly<Record<TrackActionEnum, ITrackAction
     iconClass: 'bx bx-info-circle',
     isDanger: false,
   },
+  [TrackActionEnum.GO_TO_ARTIST_PROFILE]: {
+    action: TrackActionEnum.GO_TO_ARTIST_PROFILE,
+    label: 'mediaLibrary.actions.goToArtistProfile',
+    iconClass: 'bx bx-user',
+    isDanger: false,
+  },
   [TrackActionEnum.EDIT]: {
     action: TrackActionEnum.EDIT,
     label: 'myUploads.actions.edit',

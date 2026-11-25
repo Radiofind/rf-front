@@ -20,8 +20,14 @@ export class MediaLibraryPage {
     this.emptySteps = this.root.locator('.empty-library__step-title');
   }
 
-  public async chooseAction(title: string, action: string): Promise<void> {
+  public async openActions(title: string): Promise<Locator> {
     await this.root.getByRole('button', { name: `More actions for "${title}"` }).click();
+
+    return this.page.getByRole('menuitem');
+  }
+
+  public async chooseAction(title: string, action: string): Promise<void> {
+    await this.openActions(title);
     await this.page.getByRole('menuitem', { name: action }).click();
   }
 }

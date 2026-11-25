@@ -143,20 +143,21 @@ describe('MediaLibraryPageComponent', () => {
     );
   });
 
-  it('offers details, the download, a report and the removal for a track of another artist', async () => {
+  it('offers details, the artist profile, the download, a report and the removal for a track of another artist', async () => {
     const fixture: ComponentFixture<MediaLibraryPageComponent> = await createFixture({
       tracks: [midnight],
     });
 
     expect(await menuItems(fixture, 'Midnight Dreams')).toEqual([
       'Track Details',
+      'Go to Artist Profile',
       'Download Track',
       'Report Track',
       'Remove from Library',
     ]);
   });
 
-  it('offers no report for an own track', async () => {
+  it('offers neither the artist profile nor a report for an own track', async () => {
     const fixture: ComponentFixture<MediaLibraryPageComponent> = await createFixture({
       tracks: [space],
     });

@@ -1,7 +1,9 @@
 import { DestroyRef, inject, Service } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
+import { Links } from '../../../core/constants/links';
 import { ModalSizeEnum } from '../../../core/enums/modal-size.enum';
 import { TrackActionEnum } from '../../../core/enums/track-action.enum';
 import { ModalService } from '../../../shared/services/modal-service/modal.service';
@@ -27,9 +29,14 @@ export class LibraryTrackActionsService {
 
   private readonly trackDownload: TrackDownloadService = inject(TrackDownloadService);
 
+  private readonly router: Router = inject(Router);
+
   private readonly handlers: Readonly<Partial<Record<TrackActionEnum, (track: ITrack) => void>>> = {
     [TrackActionEnum.DETAILS]: (track: ITrack) => {
       this.openDetails(track);
+    },
+    [TrackActionEnum.GO_TO_ARTIST_PROFILE]: (track: ITrack) => {
+      void this.router.navigateByUrl(Links.userProfileUrl(track.artistPublicId));
     },
     [TrackActionEnum.DOWNLOAD]: (track: ITrack) => {
       this.trackDownload.download(track);

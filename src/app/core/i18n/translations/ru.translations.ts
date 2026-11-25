@@ -224,6 +224,9 @@ export const RU_TRANSLATIONS: Translations = {
     hiddenDescription: '{name} не показывает свой профиль.',
     notFoundTitle: 'Профиль не найден',
     notFoundDescription: 'Возможно, ссылка неверна или аккаунт удалён.',
+    deletedTitle: 'Этот аккаунт удалён',
+    deletedDescription: 'Владелец закрыл аккаунт, поэтому профиль и его треки больше недоступны.',
+    toMediaLibrary: 'Перейти в медиатеку',
     loadFailedTitle: 'Не удалось загрузить профиль',
     loadFailedDescription: 'Проверьте подключение и попробуйте снова.',
     retry: 'Повторить',
@@ -392,6 +395,7 @@ export const RU_TRANSLATIONS: Translations = {
       added: 'Добавлен',
     },
     actions: {
+      goToArtistProfile: 'Перейти в профиль артиста',
       report: 'Пожаловаться на трек',
       remove: 'Удалить из медиатеки',
     },

@@ -225,6 +225,10 @@ export const DE_TRANSLATIONS: Translations = {
     hiddenDescription: '{name} teilt das Profil nicht.',
     notFoundTitle: 'Profil nicht gefunden',
     notFoundDescription: 'Der Link ist möglicherweise falsch oder das Konto existiert nicht mehr.',
+    deletedTitle: 'Dieses Konto wurde gelöscht',
+    deletedDescription:
+      'Die Person hat ihr Konto geschlossen. Profil und Tracks sind nicht mehr verfügbar.',
+    toMediaLibrary: 'Zur Mediathek',
     loadFailedTitle: 'Wir konnten dieses Profil nicht laden',
     loadFailedDescription: 'Prüfe deine Verbindung und versuche es erneut.',
     retry: 'Erneut versuchen',
@@ -396,6 +400,7 @@ export const DE_TRANSLATIONS: Translations = {
       added: 'Hinzugefügt',
     },
     actions: {
+      goToArtistProfile: 'Zum Künstlerprofil',
       report: 'Track melden',
       remove: 'Aus Mediathek entfernen',
     },

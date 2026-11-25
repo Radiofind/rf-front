@@ -9,6 +9,18 @@
         />
       </div>
     }
+    @case (statuses.DELETED) {
+      <div class="profile__state" role="status">
+        <app-empty-state
+          emptyIconClass="bx bx-user-minus"
+          [emptyTitle]="'publicProfile.deletedTitle' | translate"
+          [emptyDescription]="'publicProfile.deletedDescription' | translate"
+        />
+        <a class="profile__action" [routerLink]="mediaLibraryLink">
+          {{ 'publicProfile.toMediaLibrary' | translate }}
+        </a>
+      </div>
+    }
     @case (statuses.FAILED) {
       <div class="profile__state" role="alert">
         <app-empty-state
@@ -16,7 +28,7 @@
           [emptyTitle]="'publicProfile.loadFailedTitle' | translate"
           [emptyDescription]="'publicProfile.loadFailedDescription' | translate"
         />
-        <button class="profile__retry" type="button" (click)="onRetry()">
+        <button class="profile__action profile__retry" type="button" (click)="onRetry()">
           {{ 'publicProfile.retry' | translate }}
         </button>
       </div>

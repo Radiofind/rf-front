@@ -1,6 +1,6 @@
 import { expect, test } from '../fixtures/test';
-import { API_URL, registerUser } from '../fixtures/api';
-import { publicIdOf } from '../fixtures/database';
+import { API_URL, deleteAccount, registerUser } from '../fixtures/api';
+import { backdateAccountDeletion, publicIdOf } from '../fixtures/database';
 import {
   bearer,
   GENERAL_SETTINGS_URL,
@@ -163,6 +163,36 @@ test.describe('public profile', () => {
 
     test('does not find an unknown profile', async ({ request, user }) => {
       const response: APIResponse = await request.get(profileUrl(UNKNOWN_PUBLIC_ID), {
+        headers: bearer(user.token),
+      });
+
+      expect(response.status()).toBe(404);
+    });
+
+    test('answers every request about a deleted account as gone', async ({ request, user }) => {
+      const artist: ITestUser = await registerUser();
+      const publicId: string = publicIdOf(artist.email);
+      await deleteAccount(request, artist);
+
+      const responses: APIResponse[] = [
+        await request.get(profileUrl(publicId), { headers: bearer(user.token) }),
+        await request.get(tracksUrl(publicId), { headers: bearer(user.token) }),
+        await request.get(avatarUrl(publicId), { headers: bearer(user.token) }),
+        await request.put(followUrl(publicId), { headers: bearer(user.token) }),
+      ];
+
+      expect(responses.map((response: APIResponse) => response.status())).toEqual([
+        410, 410, 410, 410,
+      ]);
+    });
+
+    test('forgets a deleted account after thirty days', async ({ request, user }) => {
+      const artist: ITestUser = await registerUser();
+      const publicId: string = publicIdOf(artist.email);
+      await deleteAccount(request, artist);
+      backdateAccountDeletion(publicId, 31);
+
+      const response: APIResponse = await request.get(profileUrl(publicId), {
         headers: bearer(user.token),
       });
 
@@ -439,6 +469,23 @@ test.describe('public profile', () => {
       await authenticatedPage.goto(`/users/${UNKNOWN_PUBLIC_ID}`);
 
       await expect(profile.emptyTitle).toHaveText('Profile not found');
+    });
+
+    test('says the account was deleted and leads to the media library', async ({
+      authenticatedPage,
+      request,
+    }) => {
+      const artist: ITestUser = await registerUser();
+      const publicId: string = publicIdOf(artist.email);
+      await deleteAccount(request, artist);
+      const profile: PublicProfilePage = new PublicProfilePage(authenticatedPage);
+      await authenticatedPage.goto(`/users/${publicId}`);
+
+      await expect(profile.emptyTitle).toHaveText('This account was deleted');
+
+      await profile.mediaLibraryLink.click();
+
+      await expect(authenticatedPage).toHaveURL(/\/media-library$/);
     });
 
     test('sends the user to their own profile page', async ({ authenticatedPage, user }) => {

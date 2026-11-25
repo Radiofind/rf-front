@@ -47,4 +47,8 @@ export class Links {
   public static readonly GENERAL_SETTINGS_URL: string = `${this.SETTINGS_URL}/${this.GENERAL_SETTINGS_PATH}`;
 
   public static readonly ACCOUNT_SETTINGS_URL: string = `${this.SETTINGS_URL}/${this.ACCOUNT_SETTINGS_PATH}`;
+
+  public static userProfileUrl(publicId: string): string {
+    return `/${this.USERS_URL}/${publicId}`;
+  }
 }

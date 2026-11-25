@@ -9,6 +9,7 @@ export class PublicProfilePage {
   public readonly restricted: Locator;
   public readonly emptyTitle: Locator;
   public readonly editButton: Locator;
+  public readonly mediaLibraryLink: Locator;
 
   public constructor(page: Page) {
     const root: Locator = page.locator('app-user-profile-page');
@@ -21,6 +22,7 @@ export class PublicProfilePage {
     this.restricted = root.locator('app-profile-restricted');
     this.emptyTitle = root.locator('.empty__title');
     this.editButton = root.getByRole('button', { name: 'Edit Profile' });
+    this.mediaLibraryLink = root.getByRole('link', { name: 'Go to Media Library' });
   }
 
   public stat(label: string): Locator {
