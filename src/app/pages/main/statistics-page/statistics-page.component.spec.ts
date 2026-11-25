@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
+import { RouterTestingHarness } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { StatisticsPageComponent } from './statistics-page.component';
 import { StatisticsPageActions } from '../../../store/ui/statistics-page.actions';
@@ -28,6 +30,7 @@ describe('StatisticsPageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [StatisticsPageComponent],
       providers: [
+        provideRouter([]),
         provideMockStore({ initialState: { statistics: { ...initialStatisticsState, ...state } } }),
       ],
     }).compileComponents();
@@ -59,7 +62,53 @@ describe('StatisticsPageComponent', () => {
 
     await createFixture({});
 
-    expect(dispatch).toHaveBeenCalledWith(StatisticsPageActions.opened());
+    expect(dispatch).toHaveBeenCalledWith(StatisticsPageActions.opened({ period: null }));
+  });
+
+  describe('period in the address', () => {
+    const openPage = async (url: string): Promise<RouterTestingHarness> => {
+      TestBed.configureTestingModule({
+        providers: [
+          provideRouter([{ path: 'statistics', component: StatisticsPageComponent }]),
+          provideMockStore({ initialState: { statistics: initialStatisticsState } }),
+        ],
+      });
+      const harness: RouterTestingHarness = await RouterTestingHarness.create();
+      await harness.navigateByUrl(url, StatisticsPageComponent);
+
+      return harness;
+    };
+
+    it('opens on the period requested in the address', async () => {
+      const dispatch = vi.spyOn(MockStore.prototype, 'dispatch');
+
+      await openPage('/statistics?period=LAST_7_DAYS');
+
+      expect(dispatch).toHaveBeenCalledWith(
+        StatisticsPageActions.opened({ period: StatisticsPeriodEnum.LAST_7_DAYS }),
+      );
+    });
+
+    it('ignores a period it does not know', async () => {
+      const dispatch = vi.spyOn(MockStore.prototype, 'dispatch');
+
+      await openPage('/statistics?period=FOREVER');
+
+      expect(dispatch).toHaveBeenCalledWith(StatisticsPageActions.opened({ period: null }));
+    });
+
+    it('keeps the chosen period in the address', async () => {
+      const harness: RouterTestingHarness = await openPage('/statistics?period=LAST_7_DAYS');
+
+      Array.from(
+        harness.routeNativeElement!.querySelectorAll<HTMLButtonElement>('.statistics__tab'),
+      )
+        .find((button: HTMLButtonElement) => button.textContent.trim() === '3 Months')
+        ?.click();
+      await harness.fixture.whenStable();
+
+      expect(TestBed.inject(Router).url).toBe('/statistics?period=LAST_3_MONTHS');
+    });
   });
 
   it('shows placeholders until the first statistics arrive', async () => {

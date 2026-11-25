@@ -3,13 +3,13 @@ import { Constants } from '../../core/constants/constants';
 import {
   DEFAULT_STATISTICS_PERIOD,
   STATISTICS_GENRE_LEADERS,
-  STATISTICS_KPIS,
   STATISTICS_TRACK_LEADERS,
 } from '../../features/constants/statistics.constant';
 import { GENRE_LABELS } from '../../features/constants/my-uploads.constant';
-import { relativeChange, topShares } from '../../shared/helpers/statistics/statistics.helpers';
+import { topShares } from '../../shared/helpers/statistics/statistics.helpers';
 import { MainLayoutActions } from '../ui/main-layout.actions';
 import { StatisticsPageActions } from '../ui/statistics-page.actions';
+import { statisticsKpis } from '../shared/statistics-kpis';
 import { StatisticsApiActions } from './statistics.actions';
 
 import type { StatisticsPeriodEnum } from '../../core/enums/statistics-period.enum';
@@ -19,12 +19,7 @@ import type {
   ITimelinePoint,
   ITopTrack,
 } from '../../core/models/statistics.model';
-import type {
-  IGenreShare,
-  IStatisticsKpi,
-  IStatisticsKpiDefinition,
-  ITrackShare,
-} from '../../features/models/statistics-view.model';
+import type { IGenreShare, ITrackShare } from '../../features/models/statistics-view.model';
 import type { IShare, ITopShare } from '../../shared/models/top-share.model';
 
 export interface IStatisticsState {
@@ -104,6 +99,12 @@ export const statisticsFeature = createFeature({
     initialStatisticsState,
     on(
       StatisticsPageActions.opened,
+      (
+        state: IStatisticsState,
+        { period }: { period: StatisticsPeriodEnum | null },
+      ): IStatisticsState => loading(state, period ? { period: period } : {}),
+    ),
+    on(
       StatisticsPageActions.retryClicked,
       (state: IStatisticsState): IStatisticsState => loading(state, {}),
     ),
@@ -132,22 +133,7 @@ export const statisticsFeature = createFeature({
     on(MainLayoutActions.closed, (): IStatisticsState => initialStatisticsState),
   ),
   extraSelectors: ({ selectStatistics }) => ({
-    selectKpis: createSelector(
-      selectStatistics,
-      (statistics: IStatistics | null): IStatisticsKpi[] =>
-        statistics
-          ? STATISTICS_KPIS.map(
-              (definition: IStatisticsKpiDefinition): IStatisticsKpi => ({
-                ...definition,
-                value: statistics.current[definition.metric],
-                change: relativeChange(
-                  statistics.current[definition.metric],
-                  statistics.previous[definition.metric],
-                ),
-              }),
-            )
-          : [],
-    ),
+    selectKpis: createSelector(selectStatistics, statisticsKpis),
     selectTimeline: createSelector(
       selectStatistics,
       (statistics: IStatistics | null): readonly ITimelinePoint[] => statistics?.timeline ?? [],

@@ -59,10 +59,21 @@ describe('statistics state', () => {
   it('loads the last 30 days when the page opens', () => {
     const store: Store = configure();
 
-    store.dispatch(StatisticsPageActions.opened());
+    store.dispatch(StatisticsPageActions.opened({ period: null }));
 
     expect(getStatistics).toHaveBeenCalledExactlyOnceWith(StatisticsPeriodEnum.LAST_30_DAYS);
     expect(store.selectSignal(statisticsFeature.selectStatistics)()).toEqual(statistics);
+  });
+
+  it('loads the period requested when the page opens', () => {
+    const store: Store = configure();
+
+    store.dispatch(StatisticsPageActions.opened({ period: StatisticsPeriodEnum.LAST_12_MONTHS }));
+
+    expect(getStatistics).toHaveBeenCalledExactlyOnceWith(StatisticsPeriodEnum.LAST_12_MONTHS);
+    expect(store.selectSignal(statisticsFeature.selectPeriod)()).toBe(
+      StatisticsPeriodEnum.LAST_12_MONTHS,
+    );
   });
 
   it('loads the selected period', () => {
@@ -78,7 +89,7 @@ describe('statistics state', () => {
   it('keeps the failure visible until the retry loads the statistics', () => {
     getStatistics.mockReturnValueOnce(throwError(() => new Error('offline')));
     const store: Store = configure();
-    store.dispatch(StatisticsPageActions.opened());
+    store.dispatch(StatisticsPageActions.opened({ period: null }));
     const failedBeforeRetry: boolean = store.selectSignal(statisticsFeature.selectHasLoadFailed)();
 
     store.dispatch(StatisticsPageActions.retryClicked());
@@ -91,7 +102,7 @@ describe('statistics state', () => {
   it('does not load during server rendering', () => {
     const store: Store = configure('server');
 
-    store.dispatch(StatisticsPageActions.opened());
+    store.dispatch(StatisticsPageActions.opened({ period: null }));
 
     expect(getStatistics).not.toHaveBeenCalled();
   });
@@ -113,7 +124,7 @@ describe('statistics state', () => {
   it('compares every figure with the previous period, unless there was nothing before', () => {
     const store: Store = configure();
 
-    store.dispatch(StatisticsPageActions.opened());
+    store.dispatch(StatisticsPageActions.opened({ period: null }));
 
     expect(
       store
@@ -143,7 +154,7 @@ describe('statistics state', () => {
     );
     const store: Store = configure();
 
-    store.dispatch(StatisticsPageActions.opened());
+    store.dispatch(StatisticsPageActions.opened({ period: null }));
 
     expect(
       store
@@ -173,7 +184,7 @@ describe('statistics state', () => {
     );
     const store: Store = configure();
 
-    store.dispatch(StatisticsPageActions.opened());
+    store.dispatch(StatisticsPageActions.opened({ period: null }));
 
     expect(
       store
@@ -198,7 +209,7 @@ describe('statistics state', () => {
     );
     const store: Store = configure();
 
-    store.dispatch(StatisticsPageActions.opened());
+    store.dispatch(StatisticsPageActions.opened({ period: null }));
 
     expect(store.selectSignal(statisticsFeature.selectTrackShares)()).toHaveLength(2);
   });

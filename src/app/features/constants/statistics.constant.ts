@@ -10,6 +10,9 @@ import type {
 
 export const DEFAULT_STATISTICS_PERIOD: StatisticsPeriodEnum = StatisticsPeriodEnum.LAST_30_DAYS;
 
+export const DEFAULT_PROFILE_STATISTICS_PERIOD: StatisticsPeriodEnum =
+  StatisticsPeriodEnum.LAST_7_DAYS;
+
 export const STATISTICS_PERIOD_TABS: readonly IStatisticsPeriodTab[] = [
   { period: StatisticsPeriodEnum.LAST_24_HOURS, label: 'statistics.periods.oneDay' },
   { period: StatisticsPeriodEnum.LAST_7_DAYS, label: 'statistics.periods.oneWeek' },
@@ -18,6 +21,16 @@ export const STATISTICS_PERIOD_TABS: readonly IStatisticsPeriodTab[] = [
   { period: StatisticsPeriodEnum.LAST_6_MONTHS, label: 'statistics.periods.sixMonths' },
   { period: StatisticsPeriodEnum.LAST_12_MONTHS, label: 'statistics.periods.oneYear' },
 ];
+
+export const PROFILE_STATISTICS_PERIOD_TABS: readonly IStatisticsPeriodTab[] = [
+  { period: StatisticsPeriodEnum.LAST_7_DAYS, label: 'statistics.periods.oneWeek' },
+  { period: StatisticsPeriodEnum.LAST_30_DAYS, label: 'statistics.periods.oneMonth' },
+  { period: StatisticsPeriodEnum.LAST_12_MONTHS, label: 'statistics.periods.oneYear' },
+];
+
+export const STATISTICS_PERIODS: ReadonlySet<string> = new Set<string>(
+  Object.values(StatisticsPeriodEnum),
+);
 
 export const TIMELINE_FORMATS: Readonly<Record<StatisticsGranularityEnum, ITimelineFormat>> = {
   [StatisticsGranularityEnum.HOUR]: {

@@ -27,7 +27,19 @@
       [artistName]="artistName()"
       [birthdayDate]="birthdayDate()"
       [additionalGenres]="additionalGenres()"
-    />
+      [statisticsVisible]="true"
+      (statisticsOpened)="onStatisticsOpen()"
+    >
+      <app-profile-statistics
+        profileStatistics
+        [period]="statisticsPeriod()"
+        [kpis]="statisticsKpis()"
+        [isLoading]="isStatisticsLoading()"
+        [hasLoadFailed]="hasStatisticsLoadFailed()"
+        (periodSelected)="onStatisticsPeriodSelect($event)"
+        (retryClicked)="onStatisticsRetry()"
+      />
+    </app-profile-details>
     <app-latest-activity class="profile__activity" [activities]="activities()" />
   </div>
 </div>

@@ -194,11 +194,9 @@ export const FR_TRANSLATIONS: Translations = {
     sections: 'Sections du profil',
     about: 'À propos',
     stats: 'Statistiques',
+    extendedStatistics: 'Voir les statistiques détaillées',
     dateOfBirth: 'Date de naissance',
     additionalGenres: 'Genres supplémentaires',
-    noStatsTitle: 'Pas encore de statistiques',
-    noStatsDescription:
-      "Les écoutes, auditeurs et sélections radio s'afficheront ici dès que vos titres seront en ligne.",
     latestActivity: 'Activité récente',
     uploaded: 'Mis en ligne',
     deleted: 'Supprimé',
