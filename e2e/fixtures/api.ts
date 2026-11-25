@@ -57,3 +57,15 @@ export const registerUser = async (
 
   return { ...user, token: body.token };
 };
+
+export const deleteAccount = async (
+  context: APIRequestContext,
+  user: Pick<ITestUser, 'password' | 'token'>,
+): Promise<void> => {
+  const response = await context.delete(`${API_URL}/users/me`, {
+    headers: { Authorization: `Bearer ${user.token}` },
+    data: { password: user.password },
+  });
+
+  expect(response.status(), 'account deletion failed').toBe(204);
+};

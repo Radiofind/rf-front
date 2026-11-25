@@ -30,10 +30,19 @@ const MISSING_PROFILE_STATUSES: readonly number[] = [
 const untilPageLeft = <T>(actions$: Actions) =>
   takeUntil<T>(actions$.pipe(ofType(PublicProfilePageActions.left, MainLayoutActions.closed)));
 
-const profileLoadFailure = (error: unknown): Action =>
-  error instanceof HttpErrorResponse && MISSING_PROFILE_STATUSES.includes(error.status)
+const profileLoadFailure = (error: unknown): Action => {
+  if (!(error instanceof HttpErrorResponse)) {
+    return PublicProfileApiActions.profileLoadFailed();
+  }
+
+  if (error.status === Constants.HTTP_GONE_STATUS) {
+    return PublicProfileApiActions.profileDeleted();
+  }
+
+  return MISSING_PROFILE_STATUSES.includes(error.status)
     ? PublicProfileApiActions.profileNotFound()
     : PublicProfileApiActions.profileLoadFailed();
+};
 
 export const loadPublicProfile = createEffect(
   (

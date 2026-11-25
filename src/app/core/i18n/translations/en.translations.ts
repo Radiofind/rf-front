@@ -221,6 +221,10 @@ export const EN_TRANSLATIONS = {
     hiddenDescription: '{name} does not share their profile.',
     notFoundTitle: 'Profile not found',
     notFoundDescription: 'The link may be wrong, or the account no longer exists.',
+    deletedTitle: 'This account was deleted',
+    deletedDescription:
+      'Its owner closed the account, so this profile and its tracks are no longer available.',
+    toMediaLibrary: 'Go to Media Library',
     loadFailedTitle: 'We could not load this profile',
     loadFailedDescription: 'Check your connection and try again.',
     retry: 'Try again',
@@ -386,6 +390,7 @@ export const EN_TRANSLATIONS = {
       added: 'Added',
     },
     actions: {
+      goToArtistProfile: 'Go to Artist Profile',
       report: 'Report Track',
       remove: 'Remove from Library',
     },

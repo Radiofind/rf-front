@@ -227,6 +227,10 @@ export const ES_TRANSLATIONS: Translations = {
     hiddenDescription: '{name} no comparte su perfil.',
     notFoundTitle: 'Perfil no encontrado',
     notFoundDescription: 'Puede que el enlace sea incorrecto o que la cuenta ya no exista.',
+    deletedTitle: 'Esta cuenta se ha eliminado',
+    deletedDescription:
+      'Su propietario cerró la cuenta, así que este perfil y sus pistas ya no están disponibles.',
+    toMediaLibrary: 'Ir a la biblioteca',
     loadFailedTitle: 'No pudimos cargar este perfil',
     loadFailedDescription: 'Comprueba tu conexión e inténtalo de nuevo.',
     retry: 'Reintentar',
@@ -396,6 +400,7 @@ export const ES_TRANSLATIONS: Translations = {
       added: 'Añadido',
     },
     actions: {
+      goToArtistProfile: 'Ir al perfil del artista',
       report: 'Denunciar pista',
       remove: 'Quitar de la biblioteca',
     },

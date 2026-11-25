@@ -9,6 +9,7 @@ export const PublicProfileApiActions = createActionGroup({
   events: {
     'Profile Loaded': props<{ profile: IPublicProfile }>(),
     'Profile Not Found': emptyProps(),
+    'Profile Deleted': emptyProps(),
     'Profile Load Failed': emptyProps(),
     'Avatar Loaded': props<{ url: string | null }>(),
     'Tracks Loaded': props<{ page: IPage<ITrack> }>(),

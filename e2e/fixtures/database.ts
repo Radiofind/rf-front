@@ -45,3 +45,23 @@ export const publicIdOf = (email: string): string => {
     { encoding: 'utf8' },
   ).trim();
 };
+
+const PUBLIC_ID: RegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+export const backdateAccountDeletion = (publicId: string, days: number): void => {
+  if (!PUBLIC_ID.test(publicId) || !Number.isInteger(days)) {
+    throw new Error(`invalid deleted account ${publicId} or age ${String(days)}`);
+  }
+
+  execFileSync('docker', [
+    'exec',
+    DB_CONTAINER,
+    'psql',
+    '-U',
+    'postgres',
+    '-d',
+    DB_NAME,
+    '-c',
+    `UPDATE deleted_accounts SET deleted_at = now() - interval '${String(days)} days' WHERE public_id = '${publicId}'`,
+  ]);
+};

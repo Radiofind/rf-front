@@ -20,6 +20,7 @@ export const LIBRARY_FIRST_SORT_DIRECTION: Readonly<Record<LibrarySortEnum, Sort
 
 export const LIBRARY_TRACK_ACTIONS: readonly TrackActionEnum[] = [
   TrackActionEnum.DETAILS,
+  TrackActionEnum.GO_TO_ARTIST_PROFILE,
   TrackActionEnum.DOWNLOAD,
   TrackActionEnum.REPORT,
   TrackActionEnum.REMOVE_FROM_LIBRARY,

@@ -1,6 +1,6 @@
 import { Component, computed, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ProfileHeroComponent } from '../../../features/components/profile/profile-hero/profile-hero.component';
 import { ProfileStatsComponent } from '../../../features/components/profile/profile-stats/profile-stats.component';
@@ -13,6 +13,7 @@ import { GenreLabelService } from '../../../features/services/genre-label-servic
 import { TranslationService } from '../../../shared/services/translation-service/translation.service';
 import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
 import { Constants } from '../../../core/constants/constants';
+import { Links } from '../../../core/constants/links';
 import { DateFormatEnum } from '../../../core/enums/date-format.enum';
 import { PublicProfileStatusEnum } from '../../../core/enums/public-profile-status.enum';
 import { formatStringDate } from '../../../shared/helpers/date/date.helpers';
@@ -45,6 +46,7 @@ const PUBLIC_ID_PARAM: string = 'publicId';
     ProfileRestrictedComponent,
     FollowButtonComponent,
     EmptyStateComponent,
+    RouterLink,
     TranslatePipe,
   ],
 })
@@ -72,6 +74,8 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
   );
 
   protected readonly statuses: typeof PublicProfileStatusEnum = PublicProfileStatusEnum;
+
+  protected readonly mediaLibraryLink: string = `/${Links.MEDIA_LIBRARY_URL}`;
 
   protected readonly status: Signal<PublicProfileStatusEnum> = this.store.selectSignal(
     publicProfileFeature.selectStatus,
