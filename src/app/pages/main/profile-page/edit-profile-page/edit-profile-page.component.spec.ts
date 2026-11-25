@@ -50,6 +50,8 @@ describe('EditProfilePageComponent', () => {
     additionalGenres: ['ACID_JAZZ'],
     registeredAt: '2026-01-15T10:00:00.000000',
     uploadsCount: 0,
+    followersCount: 0,
+    likesCount: 0,
     avatarUrl: null,
   };
 

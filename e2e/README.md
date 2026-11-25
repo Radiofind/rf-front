@@ -17,6 +17,18 @@ to nginx (`proxy.conf.json`).
 
 Override the endpoints with `E2E_BASE_URL` and `E2E_API_URL` if needed.
 
+Playwright reuses whatever already listens on the base URL. A global setup stops the run at once
+when that server is not Radiofind (for example another project's `ng serve` on port 4200).
+
+To run on another port, keep in mind that the backend accepts CORS requests from `:4200` only, so
+writes from the browser fail with `403 Invalid CORS request`. Serve the app with a proxy config of
+your own that sends `"headers": { "Origin": "http://localhost:4200" }` for `/api`:
+
+```bash
+ng serve --port 4300 --proxy-config <your-proxy.json>
+E2E_BASE_URL=http://localhost:4300 npm run e2e
+```
+
 ## Running
 
 ```bash

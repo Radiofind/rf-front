@@ -21,3 +21,27 @@ export const approveTrack = (trackId: number): void => {
     `UPDATE tracks SET status = 'APPROVED' WHERE id = ${String(trackId)}`,
   ]);
 };
+
+const TEST_EMAIL: RegExp = /^e2e-[a-z0-9-]+@example\.com$/;
+
+export const publicIdOf = (email: string): string => {
+  if (!TEST_EMAIL.test(email)) {
+    throw new Error(`not a test account: ${email}`);
+  }
+
+  return execFileSync(
+    'docker',
+    [
+      'exec',
+      DB_CONTAINER,
+      'psql',
+      '-U',
+      'postgres',
+      '-d',
+      DB_NAME,
+      '-tAc',
+      `SELECT public_id FROM users WHERE email = '${email}'`,
+    ],
+    { encoding: 'utf8' },
+  ).trim();
+};

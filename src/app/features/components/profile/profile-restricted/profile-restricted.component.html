@@ -1,0 +1,7 @@
+<section class="restricted" role="status">
+  <app-empty-state
+    [emptyIconClass]="texts().iconClass"
+    [emptyTitle]="texts().title | translate"
+    [emptyDescription]="texts().description | translate: { name: name() }"
+  />
+</section>

@@ -140,7 +140,6 @@ test.describe('edit profile', () => {
         profileUpdate(user, {
           recoveryEmail: null,
           artistType: 'ARTIST',
-          artistName: null,
           description: null,
           mainGenres: [],
           additionalGenres: [],
@@ -150,7 +149,6 @@ test.describe('edit profile', () => {
       expect(response.status()).toBe(200);
       expect(await readProfile(request, user.token)).toMatchObject({
         recoveryEmail: null,
-        artistName: null,
         description: null,
         mainGenres: [],
         additionalGenres: [],
@@ -218,6 +216,8 @@ test.describe('edit profile', () => {
     const invalidUpdates: readonly { title: string; overrides: Partial<IProfileUpdate> }[] = [
       { title: 'a blank name', overrides: { name: '' } },
       { title: 'a blank surname', overrides: { surname: '' } },
+      { title: 'a missing artist name', overrides: { artistName: null } },
+      { title: 'a blank artist name', overrides: { artistName: '   ' } },
       { title: 'a malformed email', overrides: { email: 'not-an-email' } },
       { title: 'a malformed recovery email', overrides: { recoveryEmail: 'not-an-email' } },
       { title: 'an unknown artist type', overrides: { artistType: 'DJ' } },

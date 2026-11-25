@@ -20,9 +20,8 @@ import type { ISocialLinkConfig, ISocialLinkItem } from '../../../models/edit-pr
 export class ProfileHeroComponent {
   public readonly userFullName: InputSignal<string> = input<string>(Constants.DASH);
 
-  public readonly artistType: InputSignal<ArtistTypeRequest> = input<ArtistTypeRequest>(
-    ArtistTypeRequestEnum.ARTIST,
-  );
+  public readonly artistType: InputSignal<ArtistTypeRequest | null> =
+    input<ArtistTypeRequest | null>(ArtistTypeRequestEnum.ARTIST);
 
   public readonly bio: InputSignal<string> = input<string>(Constants.DASH);
 
@@ -33,13 +32,19 @@ export class ProfileHeroComponent {
   public readonly socialLinks: InputSignal<ISocialLinksData | null> =
     input<ISocialLinksData | null>(null);
 
+  public readonly editable: InputSignal<boolean> = input<boolean>(false);
+
+  public readonly verified: InputSignal<boolean> = input<boolean>(false);
+
   public readonly avatarEdit: OutputEmitterRef<void> = output();
 
   public readonly profileEdit: OutputEmitterRef<void> = output();
 
-  protected readonly artistRoleLabel: Signal<TranslationKey> = computed<TranslationKey>(
-    () => ARTIST_TYPE_TEXTS[ARTIST_TYPE_LABELS[this.artistType()]].role,
-  );
+  protected readonly artistRoleLabel: Signal<TranslationKey | null> =
+    computed<TranslationKey | null>(() => {
+      const artistType: ArtistTypeRequest | null = this.artistType();
+      return artistType ? ARTIST_TYPE_TEXTS[ARTIST_TYPE_LABELS[artistType]].role : null;
+    });
 
   protected readonly visibleSocialLinks: Signal<readonly ISocialLinkItem[]> = computed<
     readonly ISocialLinkItem[]

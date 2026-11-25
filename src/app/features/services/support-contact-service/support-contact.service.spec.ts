@@ -1,7 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { HttpErrorResponse } from '@angular/common/http';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of, throwError } from 'rxjs';
 import { SupportContactService } from './support-contact.service';
 import { SupportService } from '../support-service/support.service';
@@ -34,6 +34,10 @@ describe('SupportContactService', () => {
 
     return TestBed.inject(SupportContactService);
   };
+
+  afterEach(() => {
+    TestBed.inject(MockStore).resetSelectors();
+  });
 
   it('opens an empty form addressed to the account email', () => {
     const open = vi.fn().mockReturnValue({ closed: of(undefined) });

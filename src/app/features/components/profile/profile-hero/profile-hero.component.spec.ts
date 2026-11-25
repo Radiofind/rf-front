@@ -91,6 +91,7 @@ describe('ProfileHeroComponent', () => {
   it('gives every icon-only control an accessible name', async () => {
     const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
 
+    fixture.componentRef.setInput('editable', true);
     fixture.componentRef.setInput('socialLinks', { ...noSocialLinks, spotify: spotifyUrl });
     await fixture.whenStable();
 
@@ -171,6 +172,7 @@ describe('ProfileHeroComponent', () => {
 
   it('asks to edit the avatar when the avatar button is clicked', async () => {
     const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+    fixture.componentRef.setInput('editable', true);
     await fixture.whenStable();
 
     const avatarEdit: Mock<() => void> = vi.fn<() => void>();
@@ -183,6 +185,7 @@ describe('ProfileHeroComponent', () => {
 
   it('asks to edit the profile when the edit button is clicked', async () => {
     const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+    fixture.componentRef.setInput('editable', true);
     await fixture.whenStable();
 
     const profileEdit: Mock<() => void> = vi.fn<() => void>();
@@ -191,5 +194,31 @@ describe('ProfileHeroComponent', () => {
     fixture.nativeElement.querySelector('.hero__edit').click();
 
     expect(profileEdit).toHaveBeenCalledTimes(1);
+  });
+
+  it('offers no editing of a profile that is not editable', async () => {
+    const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.hero__edit')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.hero__avatar-edit')).toBeNull();
+  });
+
+  it('claims verification only when the profile is verified', async () => {
+    const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.hero__verified')).toBeNull();
+  });
+
+  it('shows neither role nor bio when they are not shared', async () => {
+    const fixture: ComponentFixture<ProfileHeroComponent> = await createFixture();
+
+    fixture.componentRef.setInput('artistType', null);
+    fixture.componentRef.setInput('bio', '');
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.hero__meta')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.hero__bio')).toBeNull();
   });
 });

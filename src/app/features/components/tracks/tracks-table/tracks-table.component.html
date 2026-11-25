@@ -122,9 +122,18 @@
 
             <div class="tracks-table__info">
               <span class="tracks-table__title" [title]="track.title">{{ track.title }}</span>
-              <span class="tracks-table__artist" [title]="track.artistName">{{
-                track.artistName
-              }}</span>
+              @if (track.own) {
+                <span class="tracks-table__artist" [title]="track.artistName">{{
+                  track.artistName
+                }}</span>
+              } @else {
+                <a
+                  class="tracks-table__artist tracks-table__artist--link"
+                  [routerLink]="artistProfileLink(track)"
+                  [title]="'profile.openArtistProfile' | translate: { name: track.artistName }"
+                  >{{ track.artistName }}</a
+                >
+              }
               @if (date) {
                 <span class="tracks-table__date tracks-table__date--inline">{{
                   date | dateTime

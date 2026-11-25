@@ -19,14 +19,14 @@ describe('ProfileStatsComponent', () => {
       ],
     );
 
-  it('renders every stat with placeholder uploads and join date by default', async () => {
+  it('renders every stat with a placeholder by default', async () => {
     const fixture: ComponentFixture<ProfileStatsComponent> = await createFixture();
     await fixture.whenStable();
 
     expect(stats(fixture)).toEqual([
-      ['0', 'Followers'],
+      [Constants.DASH, 'Followers'],
       [Constants.DASH, 'Uploads'],
-      ['0', 'Likes'],
+      [Constants.DASH, 'Likes'],
       [Constants.DASH, 'Joined'],
     ]);
   });
@@ -47,5 +47,25 @@ describe('ProfileStatsComponent', () => {
     await fixture.whenStable();
 
     expect(stats(fixture)[1]).toEqual(['3', 'Uploads']);
+  });
+
+  it('shows the number of followers and likes', async () => {
+    const fixture: ComponentFixture<ProfileStatsComponent> = await createFixture();
+
+    fixture.componentRef.setInput('followersCount', '12');
+    fixture.componentRef.setInput('likesCount', '40');
+    await fixture.whenStable();
+
+    expect(stats(fixture)[0]).toEqual(['12', 'Followers']);
+    expect(stats(fixture)[2]).toEqual(['40', 'Likes']);
+  });
+
+  it('names the uploads with the bound label', async () => {
+    const fixture: ComponentFixture<ProfileStatsComponent> = await createFixture();
+
+    fixture.componentRef.setInput('uploadsLabel', 'profile.tracks');
+    await fixture.whenStable();
+
+    expect(stats(fixture)[1]).toEqual([Constants.DASH, 'Tracks']);
   });
 });
