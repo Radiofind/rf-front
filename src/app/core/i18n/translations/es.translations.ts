@@ -193,11 +193,9 @@ export const ES_TRANSLATIONS: Translations = {
     sections: 'Secciones del perfil',
     about: 'Acerca de',
     stats: 'Estadísticas',
+    extendedStatistics: 'Ir a las estadísticas detalladas',
     dateOfBirth: 'Fecha de nacimiento',
     additionalGenres: 'Géneros adicionales',
-    noStatsTitle: 'Aún no hay estadísticas',
-    noStatsDescription:
-      'Las reproducciones, los oyentes y las selecciones de radio aparecerán aquí cuando tus temas estén publicados.',
     latestActivity: 'Última actividad',
     uploaded: 'Subido',
     deleted: 'Eliminada',

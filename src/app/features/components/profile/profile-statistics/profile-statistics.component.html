@@ -1,0 +1,66 @@
+<div class="profile-statistics">
+  <header class="profile-statistics__header">
+    <p class="profile-statistics__subtitle">{{ 'statistics.subtitle' | translate }}</p>
+
+    <div class="profile-statistics__actions">
+      <div
+        class="profile-statistics__periods"
+        role="group"
+        [attr.aria-label]="'statistics.periods.label' | translate"
+      >
+        @for (tab of tabs; track tab.period) {
+          <button
+            type="button"
+            class="profile-statistics__period"
+            [class.profile-statistics__period--active]="tab.period === period()"
+            [attr.aria-pressed]="tab.period === period()"
+            (click)="onPeriodSelect(tab.period)"
+          >
+            {{ tab.label | translate }}
+          </button>
+        }
+      </div>
+
+      <a
+        class="profile-statistics__link"
+        [routerLink]="statisticsLink"
+        [queryParams]="statisticsQueryParams()"
+      >
+        <i class="bx bx-bar-chart" aria-hidden="true"></i>
+        <span>{{ 'profile.extendedStatistics' | translate }}</span>
+        <i class="bx bx-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </header>
+
+  @if (hasLoadFailed()) {
+    <div class="profile-statistics__failure" role="alert">
+      <app-empty-state
+        emptyIconClass="bx bx-alert-circle"
+        [emptyTitle]="'statistics.loadFailed' | translate"
+      />
+      <app-button
+        additionalClass="button--compact"
+        contentIconClass="bx bx-refresh-cw"
+        [contentText]="'statistics.retry' | translate"
+        (clickAction)="onRetry()"
+      />
+    </div>
+  } @else if (kpis().length) {
+    <ul
+      class="profile-statistics__kpis"
+      [class.profile-statistics__kpis--busy]="isLoading()"
+      [attr.aria-busy]="isLoading()"
+    >
+      @for (kpi of kpis(); track kpi.metric) {
+        <li><app-statistics-kpi-card [kpi]="kpi" /></li>
+      }
+    </ul>
+  } @else {
+    <div class="profile-statistics__kpis" aria-hidden="true">
+      @for (placeholder of placeholders; track placeholder.metric) {
+        <span class="profile-statistics__skeleton"></span>
+      }
+    </div>
+  }
+</div>

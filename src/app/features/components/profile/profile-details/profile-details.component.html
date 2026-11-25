@@ -1,32 +1,30 @@
 <section class="details">
   <div class="details__tabs" role="tablist" [attr.aria-label]="'profile.sections' | translate">
-    <button
-      class="details__tab details__tab--active"
-      id="profile-tab-about"
-      type="button"
-      role="tab"
-      aria-selected="true"
-      aria-controls="profile-panel-about"
-    >
-      {{ 'profile.about' | translate }}
-    </button>
-    <button
-      class="details__tab"
-      id="profile-tab-stats"
-      type="button"
-      role="tab"
-      aria-selected="false"
-      aria-controls="profile-panel-stats"
-    >
-      {{ 'profile.stats' | translate }}
-    </button>
+    @for (tab of tabs(); track tab) {
+      <button
+        #tabButton
+        class="details__tab"
+        type="button"
+        role="tab"
+        [id]="'profile-tab-' + tab"
+        [class.details__tab--active]="tab === activeTab()"
+        [attr.aria-selected]="tab === activeTab()"
+        [attr.aria-controls]="'profile-panel-' + tab"
+        [attr.tabindex]="tab === activeTab() ? 0 : -1"
+        (click)="onTabSelect(tab)"
+        (keydown)="onTabKeydown($event)"
+      >
+        {{ tabLabels[tab] | translate }}
+      </button>
+    }
   </div>
 
   <div
     class="details__panel"
-    id="profile-panel-about"
     role="tabpanel"
-    aria-labelledby="profile-tab-about"
+    [id]="'profile-panel-' + tabIds.ABOUT"
+    [attr.aria-labelledby]="'profile-tab-' + tabIds.ABOUT"
+    [hidden]="activeTab() !== tabIds.ABOUT"
   >
     <div class="details__section">
       <h2 class="details__title">{{ artistTypeTexts().about | translate }}</h2>
@@ -64,17 +62,15 @@
     </dl>
   </div>
 
-  <div
-    class="details__panel"
-    id="profile-panel-stats"
-    role="tabpanel"
-    aria-labelledby="profile-tab-stats"
-    hidden
-  >
-    <app-empty-state
-      emptyIconClass="bx bx-bar-chart"
-      [emptyTitle]="'profile.noStatsTitle' | translate"
-      [emptyDescription]="'profile.noStatsDescription' | translate"
-    />
-  </div>
+  @if (statisticsVisible()) {
+    <div
+      class="details__panel"
+      role="tabpanel"
+      [id]="'profile-panel-' + tabIds.STATISTICS"
+      [attr.aria-labelledby]="'profile-tab-' + tabIds.STATISTICS"
+      [hidden]="activeTab() !== tabIds.STATISTICS"
+    >
+      <ng-content select="[profileStatistics]" />
+    </div>
+  }
 </section>
