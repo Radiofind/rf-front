@@ -434,9 +434,12 @@ export const EN_TRANSLATIONS = {
     subtitle: 'Your music performance at a glance',
     periods: {
       label: 'Choose a period',
-      last7Days: '7 days',
-      last30Days: '30 days',
-      last12Months: '12 months',
+      oneDay: '1 Day',
+      oneWeek: '1 Week',
+      oneMonth: '1 Month',
+      threeMonths: '3 Months',
+      sixMonths: '6 Months',
+      oneYear: '1 Year',
     },
     kpis: {
       plays: 'Total plays',
@@ -448,12 +451,15 @@ export const EN_TRANSLATIONS = {
     noComparison: 'No earlier data',
     timeline: {
       title: 'Plays',
+      perHour: 'Plays and downloads per hour',
       perDay: 'Plays and downloads per day',
+      perWeek: 'Plays and downloads per week',
       perMonth: 'Plays and downloads per month',
       plays: 'Plays',
       downloads: 'Downloads',
       label: 'Plays and downloads over time',
       date: 'Date',
+      weekOf: 'Week of {date}',
     },
     genres: {
       title: 'Genre',

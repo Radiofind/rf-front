@@ -2,7 +2,6 @@ import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { Constants } from '../../core/constants/constants';
 import {
   DEFAULT_STATISTICS_PERIOD,
-  MONTHLY_STATISTICS_PERIODS,
   STATISTICS_GENRE_LEADERS,
   STATISTICS_KPIS,
   STATISTICS_TRACK_LEADERS,
@@ -132,10 +131,7 @@ export const statisticsFeature = createFeature({
     ),
     on(MainLayoutActions.closed, (): IStatisticsState => initialStatisticsState),
   ),
-  extraSelectors: ({ selectPeriod, selectStatistics }) => ({
-    selectIsMonthly: createSelector(selectPeriod, (period: StatisticsPeriodEnum): boolean =>
-      MONTHLY_STATISTICS_PERIODS.has(period),
-    ),
+  extraSelectors: ({ selectStatistics }) => ({
     selectKpis: createSelector(
       selectStatistics,
       (statistics: IStatistics | null): IStatisticsKpi[] =>

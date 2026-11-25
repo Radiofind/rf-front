@@ -10,6 +10,7 @@ import type { ITestUser } from '../fixtures/api';
 const STATISTICS_URL: string = `${API_URL}/users/me/statistics`;
 
 interface IStatisticsBody {
+  granularity: string;
   current: { plays: number; downloads: number; likes: number; uniqueListeners: number };
   previous: { plays: number; downloads: number; likes: number; uniqueListeners: number };
   timeline: { start: string; plays: number; downloads: number }[];
@@ -88,12 +89,44 @@ test.describe('statistics', () => {
       ]);
     });
 
+    test('puts the activity of this hour on the last hour of the last 24 hours', async ({
+      request,
+      user,
+    }) => {
+      const fan = await registerUser();
+      const trackId: number = await uploadApprovedTrack(request, user.token, 'Midnight Dreams');
+      await engage(request, trackId, fan, 'plays');
+
+      const statistics: IStatisticsBody = await statisticsOf(request, user.token, 'LAST_24_HOURS');
+
+      expect(statistics.granularity).toBe('HOUR');
+      expect(statistics.timeline).toHaveLength(24);
+      expect(statistics.timeline.at(-1)).toMatchObject({ plays: 1 });
+      expect(statistics.current.plays).toBe(1);
+    });
+
+    for (const [period, weeks] of [
+      ['LAST_3_MONTHS', 13],
+      ['LAST_6_MONTHS', 26],
+    ] as const) {
+      test(`lays out ${period} week by week from Monday`, async ({ request, user }) => {
+        const statistics: IStatisticsBody = await statisticsOf(request, user.token, period);
+
+        expect(statistics.granularity).toBe('WEEK');
+        expect(statistics.timeline).toHaveLength(weeks);
+        expect(new Set(statistics.timeline.map((point) => new Date(point.start).getDay()))).toEqual(
+          new Set([1]),
+        );
+      });
+    }
+
     test('lays out the last 12 months month by month', async ({ request, user }) => {
       const statistics: IStatisticsBody = await statisticsOf(request, user.token, 'LAST_12_MONTHS');
 
+      expect(statistics.granularity).toBe('MONTH');
       expect(statistics.timeline).toHaveLength(12);
-      expect(new Set(statistics.timeline.map((point) => point.start.slice(-3)))).toEqual(
-        new Set(['-01']),
+      expect(new Set(statistics.timeline.map((point) => point.start.slice(8)))).toEqual(
+        new Set(['01T00:00:00']),
       );
     });
 
@@ -189,7 +222,7 @@ test.describe('statistics', () => {
       await authenticatedPage.goto('/statistics');
 
       await expect(statistics.title).toHaveText('Statistics');
-      await expect(statistics.period('30 days')).toHaveAttribute('aria-pressed', 'true');
+      await expect(statistics.period('1 Month')).toHaveAttribute('aria-pressed', 'true');
       await expect(statistics.kpiLabels).toHaveText([
         'Total plays',
         'Downloads',
@@ -224,17 +257,58 @@ test.describe('statistics', () => {
       await expect(statistics.tooltipValues).toHaveText(['1', '0']);
     });
 
-    test('switches the timeline to months for the last 12 months', async ({
+    test('offers every period from one day to one year', async ({ authenticatedPage }) => {
+      const statistics: StatisticsPage = new StatisticsPage(authenticatedPage);
+
+      await authenticatedPage.goto('/statistics');
+
+      await expect(statistics.periods).toHaveText([
+        '1 Day',
+        '1 Week',
+        '1 Month',
+        '3 Months',
+        '6 Months',
+        '1 Year',
+      ]);
+    });
+
+    for (const { label, subtitle } of [
+      { label: '1 Day', subtitle: 'Plays and downloads per hour' },
+      { label: '1 Week', subtitle: 'Plays and downloads per day' },
+      { label: '3 Months', subtitle: 'Plays and downloads per week' },
+      { label: '6 Months', subtitle: 'Plays and downloads per week' },
+      { label: '1 Year', subtitle: 'Plays and downloads per month' },
+    ]) {
+      test(`describes the timeline of ${label}`, async ({ authenticatedPage }) => {
+        const statistics: StatisticsPage = new StatisticsPage(authenticatedPage);
+        await authenticatedPage.goto('/statistics');
+        await expect(statistics.timelineSubtitle).toHaveText('Plays and downloads per day');
+
+        await statistics.period(label).click();
+
+        await expect(statistics.period(label)).toHaveAttribute('aria-pressed', 'true');
+        await expect(statistics.timelineSubtitle).toHaveText(subtitle);
+      });
+    }
+
+    test('counts the plays of this hour when one day is chosen', async ({
       authenticatedPage,
+      request,
+      user,
     }) => {
       const statistics: StatisticsPage = new StatisticsPage(authenticatedPage);
+      const fan = await registerUser();
+      const trackId: number = await uploadApprovedTrack(request, user.token, 'Midnight Dreams');
+      await engage(request, trackId, fan, 'plays');
       await authenticatedPage.goto('/statistics');
-      await expect(statistics.timelineSubtitle).toHaveText('Plays and downloads per day');
 
-      await statistics.period('12 months').click();
+      await statistics.period('1 Day').click();
+      await expect(statistics.timelineSubtitle).toHaveText('Plays and downloads per hour');
+      await statistics.timelinePlot.focus();
+      await authenticatedPage.keyboard.press('ArrowLeft');
 
-      await expect(statistics.period('12 months')).toHaveAttribute('aria-pressed', 'true');
-      await expect(statistics.timelineSubtitle).toHaveText('Plays and downloads per month');
+      await expect(statistics.kpiValues.first()).toHaveText('1');
+      await expect(statistics.tooltipValues).toHaveText(['1', '0']);
       await expect(statistics.timelineLabels).toHaveCount(6);
     });
 

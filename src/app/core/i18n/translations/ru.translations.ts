@@ -439,9 +439,12 @@ export const RU_TRANSLATIONS: Translations = {
     subtitle: 'Ваша музыка в цифрах',
     periods: {
       label: 'Выберите период',
-      last7Days: '7 дней',
-      last30Days: '30 дней',
-      last12Months: '12 месяцев',
+      oneDay: '1 день',
+      oneWeek: '1 неделя',
+      oneMonth: '1 месяц',
+      threeMonths: '3 месяца',
+      sixMonths: '6 месяцев',
+      oneYear: '1 год',
     },
     kpis: {
       plays: 'Всего прослушиваний',
@@ -453,12 +456,15 @@ export const RU_TRANSLATIONS: Translations = {
     noComparison: 'Нет данных за прошлый период',
     timeline: {
       title: 'Прослушивания',
+      perHour: 'Прослушивания и скачивания по часам',
       perDay: 'Прослушивания и скачивания по дням',
+      perWeek: 'Прослушивания и скачивания по неделям',
       perMonth: 'Прослушивания и скачивания по месяцам',
       plays: 'Прослушивания',
       downloads: 'Скачивания',
       label: 'Прослушивания и скачивания во времени',
       date: 'Дата',
+      weekOf: 'Неделя с {date}',
     },
     genres: {
       title: 'Жанры',

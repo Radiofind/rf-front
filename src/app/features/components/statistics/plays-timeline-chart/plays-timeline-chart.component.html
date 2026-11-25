@@ -74,7 +74,10 @@
           [style.left.%]="active.left"
         >
           <p class="timeline__tooltip-date">
-            {{ active.point.start | stringDate: detailFormat() }}
+            <ng-container
+              [ngTemplateOutlet]="detail"
+              [ngTemplateOutletContext]="{ $implicit: active.point.start }"
+            />
           </p>
           <p class="timeline__tooltip-row">
             <span class="timeline__swatch timeline__swatch--plays" aria-hidden="true"></span>
@@ -97,7 +100,7 @@
     <div class="timeline__x-axis" aria-hidden="true">
       @for (label of axisLabels(); track label.start) {
         <span class="timeline__x-label" [style.left.%]="label.left">{{
-          label.start | stringDate: labelFormat()
+          label.start | localDateTime: format().axisLabel
         }}</span>
       }
     </div>
@@ -119,7 +122,12 @@
     <tbody>
       @for (point of points(); track point.start) {
         <tr>
-          <th scope="row">{{ point.start | stringDate: detailFormat() }}</th>
+          <th scope="row">
+            <ng-container
+              [ngTemplateOutlet]="detail"
+              [ngTemplateOutletContext]="{ $implicit: point.start }"
+            />
+          </th>
           <td>{{ point.plays }}</td>
           <td>{{ point.downloads }}</td>
         </tr>
@@ -127,3 +135,12 @@
     </tbody>
   </table>
 </div>
+
+<ng-template #detail let-start>
+  @let date = start | localDateTime: format().detail;
+  @if (format().detailLabel; as detailLabel) {
+    {{ detailLabel | translate: { date: date } }}
+  } @else {
+    {{ date }}
+  }
+</ng-template>

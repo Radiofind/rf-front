@@ -449,9 +449,12 @@ export const FR_TRANSLATIONS: Translations = {
     subtitle: 'Les performances de votre musique en un coup d’œil',
     periods: {
       label: 'Choisir une période',
-      last7Days: '7 jours',
-      last30Days: '30 jours',
-      last12Months: '12 mois',
+      oneDay: '1 jour',
+      oneWeek: '1 semaine',
+      oneMonth: '1 mois',
+      threeMonths: '3 mois',
+      sixMonths: '6 mois',
+      oneYear: '1 an',
     },
     kpis: {
       plays: 'Écoutes totales',
@@ -463,12 +466,15 @@ export const FR_TRANSLATIONS: Translations = {
     noComparison: 'Aucune donnée antérieure',
     timeline: {
       title: 'Écoutes',
+      perHour: 'Écoutes et téléchargements par heure',
       perDay: 'Écoutes et téléchargements par jour',
+      perWeek: 'Écoutes et téléchargements par semaine',
       perMonth: 'Écoutes et téléchargements par mois',
       plays: 'Écoutes',
       downloads: 'Téléchargements',
       label: 'Écoutes et téléchargements dans le temps',
       date: 'Date',
+      weekOf: 'Semaine du {date}',
     },
     genres: {
       title: 'Genre',

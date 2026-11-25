@@ -5,6 +5,7 @@ import { StatisticsPageComponent } from './statistics-page.component';
 import { StatisticsPageActions } from '../../../store/ui/statistics-page.actions';
 import { initialStatisticsState } from '../../../store/statistics/statistics.feature';
 import { StatisticsPeriodEnum } from '../../../core/enums/statistics-period.enum';
+import { StatisticsGranularityEnum } from '../../../core/enums/statistics-granularity.enum';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IStatistics } from '../../../core/models/statistics.model';
@@ -13,9 +14,10 @@ import type { IStatisticsState } from '../../../store/statistics/statistics.feat
 describe('StatisticsPageComponent', () => {
   const statistics: IStatistics = {
     period: StatisticsPeriodEnum.LAST_30_DAYS,
+    granularity: StatisticsGranularityEnum.DAY,
     current: { plays: 48200, downloads: 6900, likes: 3000, uniqueListeners: 19800 },
     previous: { plays: 40000, downloads: 0, likes: 3000, uniqueListeners: 20000 },
-    timeline: [{ start: '2026-11-19', plays: 120, downloads: 4 }],
+    timeline: [{ start: '2026-11-19T00:00:00', plays: 120, downloads: 4 }],
     genres: [{ genre: 'CHILLWAVE', plays: 48200 }],
     topTracks: [],
   };
@@ -94,10 +96,10 @@ describe('StatisticsPageComponent', () => {
     });
     const dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
 
-    tab(fixture, '12 months')?.click();
+    tab(fixture, '3 Months')?.click();
 
     expect(dispatch).toHaveBeenCalledExactlyOnceWith(
-      StatisticsPageActions.periodSelected({ period: StatisticsPeriodEnum.LAST_12_MONTHS }),
+      StatisticsPageActions.periodSelected({ period: StatisticsPeriodEnum.LAST_3_MONTHS }),
     );
   });
 
@@ -107,7 +109,7 @@ describe('StatisticsPageComponent', () => {
     });
     const dispatch = vi.spyOn(TestBed.inject(MockStore), 'dispatch');
 
-    tab(fixture, '30 days')?.click();
+    tab(fixture, '1 Month')?.click();
 
     expect(dispatch).not.toHaveBeenCalled();
   });
@@ -126,14 +128,28 @@ describe('StatisticsPageComponent', () => {
     expect(dispatch).toHaveBeenCalledExactlyOnceWith(StatisticsPageActions.retryClicked());
   });
 
-  it('describes the timeline per month for the last 12 months', async () => {
+  it('offers every period from one day to one year', async () => {
+    const fixture: ComponentFixture<StatisticsPageComponent> = await createFixture({});
+
+    expect(
+      Array.from(element(fixture).querySelectorAll('.statistics__tab'), (button: Element) =>
+        button.textContent.trim(),
+      ),
+    ).toEqual(['1 Day', '1 Week', '1 Month', '3 Months', '6 Months', '1 Year']);
+  });
+
+  it.each([
+    [StatisticsGranularityEnum.HOUR, 'Plays and downloads per hour'],
+    [StatisticsGranularityEnum.DAY, 'Plays and downloads per day'],
+    [StatisticsGranularityEnum.WEEK, 'Plays and downloads per week'],
+    [StatisticsGranularityEnum.MONTH, 'Plays and downloads per month'],
+  ])('describes a timeline split by %s', async (granularity, subtitle) => {
     const fixture: ComponentFixture<StatisticsPageComponent> = await createFixture({
-      period: StatisticsPeriodEnum.LAST_12_MONTHS,
-      statistics: statistics,
+      statistics: { ...statistics, granularity: granularity },
     });
 
     expect(element(fixture).querySelector('.statistics__card-subtitle')?.textContent.trim()).toBe(
-      'Plays and downloads per month',
+      subtitle,
     );
   });
 });

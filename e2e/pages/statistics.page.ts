@@ -3,6 +3,7 @@ import type { Locator, Page } from '@playwright/test';
 export class StatisticsPage {
   public readonly root: Locator;
   public readonly title: Locator;
+  public readonly periods: Locator;
   public readonly skeleton: Locator;
   public readonly kpiLabels: Locator;
   public readonly kpiValues: Locator;
@@ -22,6 +23,7 @@ export class StatisticsPage {
   public constructor(page: Page) {
     this.root = page.locator('app-statistics-page');
     this.title = this.root.getByRole('heading', { level: 1 });
+    this.periods = this.root.locator('.statistics__tab');
     this.skeleton = this.root.locator('app-statistics-skeleton');
     this.kpiLabels = this.root.locator('.kpi__label');
     this.kpiValues = this.root.locator('.kpi__value');

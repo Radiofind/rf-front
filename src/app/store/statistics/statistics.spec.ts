@@ -10,12 +10,14 @@ import { StatisticsPageActions } from '../ui/statistics-page.actions';
 import { MainLayoutActions } from '../ui/main-layout.actions';
 import { StatisticsService } from '../../features/services/statistics-service/statistics.service';
 import { StatisticsPeriodEnum } from '../../core/enums/statistics-period.enum';
+import { StatisticsGranularityEnum } from '../../core/enums/statistics-granularity.enum';
 
 import type { IStatistics, ITopTrack } from '../../core/models/statistics.model';
 
 describe('statistics state', () => {
   const statistics: IStatistics = {
     period: StatisticsPeriodEnum.LAST_30_DAYS,
+    granularity: StatisticsGranularityEnum.DAY,
     current: { plays: 200, downloads: 12, likes: 30, uniqueListeners: 80 },
     previous: { plays: 160, downloads: 0, likes: 40, uniqueListeners: 80 },
     timeline: [],
@@ -67,11 +69,10 @@ describe('statistics state', () => {
     const store: Store = configure();
 
     store.dispatch(
-      StatisticsPageActions.periodSelected({ period: StatisticsPeriodEnum.LAST_12_MONTHS }),
+      StatisticsPageActions.periodSelected({ period: StatisticsPeriodEnum.LAST_24_HOURS }),
     );
 
-    expect(getStatistics).toHaveBeenCalledExactlyOnceWith(StatisticsPeriodEnum.LAST_12_MONTHS);
-    expect(store.selectSignal(statisticsFeature.selectIsMonthly)()).toBe(true);
+    expect(getStatistics).toHaveBeenCalledExactlyOnceWith(StatisticsPeriodEnum.LAST_24_HOURS);
   });
 
   it('keeps the failure visible until the retry loads the statistics', () => {

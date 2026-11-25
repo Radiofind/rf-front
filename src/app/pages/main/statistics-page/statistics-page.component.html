@@ -41,7 +41,7 @@
         (clickAction)="onRetry()"
       />
     </div>
-  } @else if (statistics()) {
+  } @else if (statistics(); as loaded) {
     <div
       class="statistics__content"
       [class.statistics__content--busy]="isLoading()"
@@ -59,13 +59,10 @@
             {{ 'statistics.timeline.title' | translate }}
           </h2>
           <p class="statistics__card-subtitle">
-            {{
-              (isMonthly() ? 'statistics.timeline.perMonth' : 'statistics.timeline.perDay')
-                | translate
-            }}
+            {{ timelineFormats[loaded.granularity].subtitle | translate }}
           </p>
         </header>
-        <app-plays-timeline-chart [points]="timeline()" [isMonthly]="isMonthly()" />
+        <app-plays-timeline-chart [points]="timeline()" [granularity]="loaded.granularity" />
       </section>
 
       <div class="statistics__breakdown">

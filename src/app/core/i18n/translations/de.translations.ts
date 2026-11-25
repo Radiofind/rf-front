@@ -445,9 +445,12 @@ export const DE_TRANSLATIONS: Translations = {
     subtitle: 'Deine Musik-Performance auf einen Blick',
     periods: {
       label: 'Zeitraum wählen',
-      last7Days: '7 Tage',
-      last30Days: '30 Tage',
-      last12Months: '12 Monate',
+      oneDay: '1 Tag',
+      oneWeek: '1 Woche',
+      oneMonth: '1 Monat',
+      threeMonths: '3 Monate',
+      sixMonths: '6 Monate',
+      oneYear: '1 Jahr',
     },
     kpis: {
       plays: 'Plays gesamt',
@@ -459,12 +462,15 @@ export const DE_TRANSLATIONS: Translations = {
     noComparison: 'Keine früheren Daten',
     timeline: {
       title: 'Plays',
+      perHour: 'Plays und Downloads pro Stunde',
       perDay: 'Plays und Downloads pro Tag',
+      perWeek: 'Plays und Downloads pro Woche',
       perMonth: 'Plays und Downloads pro Monat',
       plays: 'Plays',
       downloads: 'Downloads',
       label: 'Plays und Downloads im Zeitverlauf',
       date: 'Datum',
+      weekOf: 'Woche ab {date}',
     },
     genres: {
       title: 'Genre',
