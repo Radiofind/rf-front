@@ -1,0 +1,153 @@
+@use '../../../../shared/styles/segmented-tabs';
+
+:host {
+  display: block;
+  container-type: inline-size;
+}
+
+.profile-statistics {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__subtitle {
+    font-size: 16px;
+    color: var(--muted-text-color);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__periods {
+    @include segmented-tabs.group;
+  }
+
+  &__period {
+    @include segmented-tabs.tab;
+
+    min-width: 96px;
+
+    &--active {
+      @include segmented-tabs.active-tab;
+    }
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 48px;
+    padding: 0 18px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--main-color) 6%, transparent);
+    font-size: 15px;
+    white-space: nowrap;
+    color: var(--text-color);
+    transition: all 250ms ease;
+
+    i {
+      font-size: 20px;
+      color: var(--icon-color);
+    }
+
+    &:hover {
+      border-color: var(--first-gradient-color);
+      background: color-mix(in srgb, var(--main-color) 18%, transparent);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--first-gradient-color);
+      outline-offset: 2px;
+    }
+  }
+
+  &__kpis {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    list-style: none;
+    transition: opacity 200ms ease;
+
+    &--busy {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+  }
+
+  &__skeleton {
+    display: block;
+    height: 150px;
+    border: 1px solid var(--header-element-border);
+    border-radius: 16px;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--main-color) 6%, transparent) 0%,
+      color-mix(in srgb, var(--main-color) 16%, transparent) 50%,
+      color-mix(in srgb, var(--main-color) 6%, transparent) 100%
+    );
+    background-size: 200% 100%;
+    animation: profile-statistics-shimmer 1.4s ease-in-out infinite;
+  }
+
+  &__failure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 16px;
+  }
+
+  @container (max-width: 640px) {
+    &__actions,
+    &__periods,
+    &__link {
+      width: 100%;
+    }
+
+    &__link {
+      justify-content: center;
+    }
+  }
+
+  @container (max-width: 520px) {
+    gap: 16px;
+
+    &__subtitle {
+      font-size: 15px;
+    }
+
+    &__kpis {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+  }
+}
+
+@keyframes profile-statistics-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-statistics__skeleton {
+    animation: none;
+  }
+}

@@ -191,11 +191,9 @@ export const DE_TRANSLATIONS: Translations = {
     sections: 'Profilbereiche',
     about: 'Info',
     stats: 'Statistiken',
+    extendedStatistics: 'Zur detaillierten Statistik',
     dateOfBirth: 'Geburtsdatum',
     additionalGenres: 'Weitere Genres',
-    noStatsTitle: 'Noch keine Statistiken',
-    noStatsDescription:
-      'Plays, Hörer und Radio-Auswahl erscheinen hier, sobald deine Tracks live sind.',
     latestActivity: 'Letzte Aktivität',
     uploaded: 'Hochgeladen',
     deleted: 'Gelöscht',

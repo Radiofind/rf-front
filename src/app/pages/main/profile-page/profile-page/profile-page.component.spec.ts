@@ -11,6 +11,8 @@ import { Links } from '../../../../core/constants/links';
 import { ProfilePageActions } from '../../../../store/ui/profile-page.actions';
 import { profileFeature } from '../../../../store/profile/profile.feature';
 import { avatarFeature } from '../../../../store/avatar/avatar.feature';
+import { profileStatisticsFeature } from '../../../../store/profile-statistics/profile-statistics.feature';
+import { StatisticsPeriodEnum } from '../../../../core/enums/statistics-period.enum';
 
 import type { ComponentFixture } from '@angular/core/testing';
 import type { IUserProfileData } from '../../../../core/models/user.model';
@@ -67,6 +69,13 @@ describe('ProfilePageComponent', () => {
             { selector: profileFeature.selectProfile, value: profile },
             { selector: profileFeature.selectActivities, value: activities },
             { selector: avatarFeature.selectUrl, value: avatarUrl },
+            {
+              selector: profileStatisticsFeature.selectPeriod,
+              value: StatisticsPeriodEnum.LAST_7_DAYS,
+            },
+            { selector: profileStatisticsFeature.selectKpis, value: [] },
+            { selector: profileStatisticsFeature.selectIsLoading, value: false },
+            { selector: profileStatisticsFeature.selectHasLoadFailed, value: false },
           ],
         }),
       ],
@@ -344,6 +353,37 @@ describe('ProfilePageComponent', () => {
 
       expect(dispatch).not.toHaveBeenCalledWith(
         expect.objectContaining({ type: ProfilePageActions.avatarChanged.type }),
+      );
+    });
+  });
+
+  describe('statistics', () => {
+    const button = (
+      fixture: ComponentFixture<ProfilePageComponent>,
+      selector: string,
+      label: string,
+    ): HTMLButtonElement =>
+      Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll(selector)).find(
+        (candidate: HTMLButtonElement) => candidate.textContent.trim() === label,
+      )!;
+
+    it('loads the statistics once their tab is opened', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+      dispatch.mockClear();
+
+      button(fixture, '[role="tab"]', 'Statistics').click();
+
+      expect(dispatch).toHaveBeenCalledExactlyOnceWith(ProfilePageActions.statisticsOpened());
+    });
+
+    it('loads the period chosen on the statistics tab', async () => {
+      const fixture: ComponentFixture<ProfilePageComponent> = await createFixture();
+      dispatch.mockClear();
+
+      button(fixture, '.profile-statistics__period', '1 Month').click();
+
+      expect(dispatch).toHaveBeenCalledExactlyOnceWith(
+        ProfilePageActions.statisticsPeriodSelected({ period: StatisticsPeriodEnum.LAST_30_DAYS }),
       );
     });
   });

@@ -192,11 +192,9 @@ export const IT_TRANSLATIONS: Translations = {
     sections: 'Sezioni del profilo',
     about: 'Info',
     stats: 'Statistiche',
+    extendedStatistics: 'Vai alle statistiche dettagliate',
     dateOfBirth: 'Data di nascita',
     additionalGenres: 'Generi aggiuntivi',
-    noStatsTitle: 'Ancora nessuna statistica',
-    noStatsDescription:
-      'Ascolti, ascoltatori e selezioni radio appariranno qui quando i tuoi brani saranno online.',
     latestActivity: 'Ultima attività',
     uploaded: 'Caricato',
     deleted: 'Eliminato',

@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { StatisticsKpiCardComponent } from '../../../features/components/statistics/statistics-kpi-card/statistics-kpi-card.component';
 import { PlaysTimelineChartComponent } from '../../../features/components/statistics/plays-timeline-chart/plays-timeline-chart.component';
@@ -8,8 +9,10 @@ import { TrackShareDonutComponent } from '../../../features/components/statistic
 import { StatisticsSkeletonComponent } from '../../../features/components/statistics/statistics-skeleton/statistics-skeleton.component';
 import {
   STATISTICS_PERIOD_TABS,
+  STATISTICS_PERIODS,
   TIMELINE_FORMATS,
 } from '../../../features/constants/statistics.constant';
+import { Constants } from '../../../core/constants/constants';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { TranslatePipe } from '../../../shared/pipes/translate/translate.pipe';
@@ -46,6 +49,10 @@ import type {
 })
 export class StatisticsPageComponent implements OnInit {
   private readonly store: Store = inject(Store);
+
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
+
+  private readonly router: Router = inject(Router);
 
   protected readonly tabs: readonly IStatisticsPeriodTab[] = STATISTICS_PERIOD_TABS;
 
@@ -93,16 +100,29 @@ export class StatisticsPageComponent implements OnInit {
   );
 
   public ngOnInit(): void {
-    this.store.dispatch(StatisticsPageActions.opened());
+    this.store.dispatch(StatisticsPageActions.opened({ period: this.requestedPeriod() }));
   }
 
   public onPeriodSelect(period: StatisticsPeriodEnum): void {
     if (period !== this.period()) {
       this.store.dispatch(StatisticsPageActions.periodSelected({ period: period }));
+      void this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { [Constants.PERIOD_QUERY_PARAM]: period },
+        replaceUrl: true,
+      });
     }
   }
 
   public onRetry(): void {
     this.store.dispatch(StatisticsPageActions.retryClicked());
+  }
+
+  private requestedPeriod(): StatisticsPeriodEnum | null {
+    const period: string | null = this.route.snapshot.queryParamMap.get(
+      Constants.PERIOD_QUERY_PARAM,
+    );
+
+    return period && STATISTICS_PERIODS.has(period) ? (period as StatisticsPeriodEnum) : null;
   }
 }

@@ -179,6 +179,19 @@ describe('UserProfilePageComponent', () => {
     expect(element(fixture).textContent).not.toContain('Date of Birth');
   });
 
+  it('offers no statistics on the profile of another user', async () => {
+    const fixture: ComponentFixture<UserProfilePageComponent> = await createFixture({
+      profile: visible,
+    });
+
+    expect(
+      Array.from(element(fixture).querySelectorAll('[role="tab"]'), (tab: Element) =>
+        tab.textContent.trim(),
+      ),
+    ).toEqual(['About']);
+    expect(element(fixture).querySelector('app-profile-statistics')).toBeNull();
+  });
+
   it('shows only the name and an explanation of a restricted profile', async () => {
     const fixture: ComponentFixture<UserProfilePageComponent> = await createFixture({
       profile: { ...visible, access: 'RESTRICTED', details: null },

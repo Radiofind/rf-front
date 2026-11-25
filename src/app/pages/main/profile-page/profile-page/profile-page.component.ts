@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { ProfileHeroComponent } from '../../../../features/components/profile/profile-hero/profile-hero.component';
 import { ProfileStatsComponent } from '../../../../features/components/profile/profile-stats/profile-stats.component';
 import { ProfileDetailsComponent } from '../../../../features/components/profile/profile-details/profile-details.component';
+import { ProfileStatisticsComponent } from '../../../../features/components/profile/profile-statistics/profile-statistics.component';
 import { LatestActivityComponent } from '../../../../features/components/profile/latest-activity/latest-activity.component';
 import { AvatarModalComponent } from '../../../../features/dialogs/avatar-modal/avatar-modal.component';
 import { ModalService } from '../../../../shared/services/modal-service/modal.service';
@@ -19,11 +20,14 @@ import { GenreLabelService } from '../../../../features/services/genre-label-ser
 import { ProfilePageActions } from '../../../../store/ui/profile-page.actions';
 import { profileFeature } from '../../../../store/profile/profile.feature';
 import { avatarFeature } from '../../../../store/avatar/avatar.feature';
+import { profileStatisticsFeature } from '../../../../store/profile-statistics/profile-statistics.feature';
 
 import type { OnInit, Signal } from '@angular/core';
 import type { ISocialLinksData, IUserProfileData } from '../../../../core/models/user.model';
 import type { IActivity } from '../../../../core/models/activity.model';
 import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';
+import type { StatisticsPeriodEnum } from '../../../../core/enums/statistics-period.enum';
+import type { IStatisticsKpi } from '../../../../features/models/statistics-view.model';
 import type {
   IAvatarModalData,
   IAvatarModalResult,
@@ -37,6 +41,7 @@ import type {
     ProfileHeroComponent,
     ProfileStatsComponent,
     ProfileDetailsComponent,
+    ProfileStatisticsComponent,
     LatestActivityComponent,
   ],
 })
@@ -63,6 +68,22 @@ export class ProfilePageComponent implements OnInit {
 
   protected readonly avatarUrl: Signal<string | null> = this.store.selectSignal(
     avatarFeature.selectUrl,
+  );
+
+  protected readonly statisticsPeriod: Signal<StatisticsPeriodEnum> = this.store.selectSignal(
+    profileStatisticsFeature.selectPeriod,
+  );
+
+  protected readonly statisticsKpis: Signal<IStatisticsKpi[]> = this.store.selectSignal(
+    profileStatisticsFeature.selectKpis,
+  );
+
+  protected readonly isStatisticsLoading: Signal<boolean> = this.store.selectSignal(
+    profileStatisticsFeature.selectIsLoading,
+  );
+
+  protected readonly hasStatisticsLoadFailed: Signal<boolean> = this.store.selectSignal(
+    profileStatisticsFeature.selectHasLoadFailed,
   );
 
   protected readonly fullName: Signal<string> = computed<string>(() => {
@@ -143,6 +164,18 @@ export class ProfilePageComponent implements OnInit {
 
   public onProfileEdit(): void {
     void this.router.navigate([Links.EDIT_PROFILE_URL]);
+  }
+
+  public onStatisticsOpen(): void {
+    this.store.dispatch(ProfilePageActions.statisticsOpened());
+  }
+
+  public onStatisticsPeriodSelect(period: StatisticsPeriodEnum): void {
+    this.store.dispatch(ProfilePageActions.statisticsPeriodSelected({ period: period }));
+  }
+
+  public onStatisticsRetry(): void {
+    this.store.dispatch(ProfilePageActions.statisticsRetryClicked());
   }
 
   private formatProfileDate(date: string | undefined, format: DateFormatEnum): string {

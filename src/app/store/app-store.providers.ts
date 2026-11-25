@@ -14,6 +14,7 @@ import { mediaLibraryFeature } from './media-library/media-library.feature';
 import { accountSettingsFeature } from './account-settings/account-settings.feature';
 import { statisticsFeature } from './statistics/statistics.feature';
 import { publicProfileFeature } from './public-profile/public-profile.feature';
+import { profileStatisticsFeature } from './profile-statistics/profile-statistics.feature';
 import * as userEffects from './user/user.effects';
 import * as avatarEffects from './avatar/avatar.effects';
 import * as profileEffects from './profile/profile.effects';
@@ -25,6 +26,7 @@ import * as mediaLibraryEffects from './media-library/media-library.effects';
 import * as accountSettingsEffects from './account-settings/account-settings.effects';
 import * as statisticsEffects from './statistics/statistics.effects';
 import * as publicProfileEffects from './public-profile/public-profile.effects';
+import * as profileStatisticsEffects from './profile-statistics/profile-statistics.effects';
 
 import type { EnvironmentProviders } from '@angular/core';
 
@@ -58,6 +60,7 @@ export function provideMainLayoutStore(): EnvironmentProviders[] {
     provideState(accountSettingsFeature),
     provideState(statisticsFeature),
     provideState(publicProfileFeature),
+    provideState(profileStatisticsFeature),
     provideEffects(
       userEffects,
       avatarEffects,
@@ -70,6 +73,7 @@ export function provideMainLayoutStore(): EnvironmentProviders[] {
       accountSettingsEffects,
       statisticsEffects,
       publicProfileEffects,
+      profileStatisticsEffects,
     ),
   ];
 }

@@ -5,7 +5,7 @@ import type { StatisticsPeriodEnum } from '../../core/enums/statistics-period.en
 export const StatisticsPageActions = createActionGroup({
   source: 'Statistics Page',
   events: {
-    Opened: emptyProps(),
+    Opened: props<{ period: StatisticsPeriodEnum | null }>(),
     'Period Selected': props<{ period: StatisticsPeriodEnum }>(),
     'Retry Clicked': emptyProps(),
   },

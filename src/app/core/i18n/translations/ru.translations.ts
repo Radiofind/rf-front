@@ -190,11 +190,9 @@ export const RU_TRANSLATIONS: Translations = {
     sections: 'Разделы профиля',
     about: 'О себе',
     stats: 'Статистика',
+    extendedStatistics: 'Перейти к подробной статистике',
     dateOfBirth: 'Дата рождения',
     additionalGenres: 'Дополнительные жанры',
-    noStatsTitle: 'Статистики пока нет',
-    noStatsDescription:
-      'Прослушивания, слушатели и выбор радиостанций появятся здесь, как только ваши треки выйдут в эфир.',
     latestActivity: 'Последняя активность',
     uploaded: 'Загружено',
     deleted: 'Удалён',
