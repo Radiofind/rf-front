@@ -111,4 +111,13 @@ describe('ProfileDetailsComponent', () => {
       expect(genresValue(fixture).querySelector('select')).toBeNull();
     });
   });
+
+  it('leaves out the date of birth when it is not shared', async () => {
+    const fixture: ComponentFixture<ProfileDetailsComponent> = await createFixture();
+
+    fixture.componentRef.setInput('birthdayDate', null);
+    await fixture.whenStable();
+
+    expect(labels(fixture)).toEqual(['Artist Name', 'Additional Genres']);
+  });
 });

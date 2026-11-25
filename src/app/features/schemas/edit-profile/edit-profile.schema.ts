@@ -44,6 +44,7 @@ export const editProfileFormSchema: Schema<IEditProfileForm> = schema<IEditProfi
       : undefined;
   });
 
+  required(form.artistName, { message: AuthValidationMessages.REQUIRED });
   maxLength(form.artistName, Constants.MAX_LENGTH_FORM_ARTIST_OR_BAND_NAME, {
     message: AuthValidationMessages.MAX_LENGTH,
   });

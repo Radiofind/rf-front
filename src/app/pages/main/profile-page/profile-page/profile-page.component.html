@@ -6,11 +6,18 @@
     [mainGenres]="mainGenres()"
     [bio]="shortDescription()"
     [socialLinks]="socialLinks()"
+    [editable]="true"
+    [verified]="true"
     (avatarEdit)="onAvatarEdit()"
     (profileEdit)="onProfileEdit()"
   />
 
-  <app-profile-stats [registeredAt]="registeredAt()" [uploadsCount]="uploadsCount()" />
+  <app-profile-stats
+    [registeredAt]="registeredAt()"
+    [uploadsCount]="uploadsCount()"
+    [followersCount]="followersCount()"
+    [likesCount]="likesCount()"
+  />
 
   <div class="profile__grid">
     <app-profile-details

@@ -25,6 +25,13 @@ export const MAIN_ROUTES: Routes = [
     canDeactivate: [unsavedChangesGuard],
   },
   {
+    path: Links.USER_PROFILE_PATH,
+    loadComponent: () =>
+      import('./user-profile-page/user-profile-page.component').then(
+        (c) => c.UserProfilePageComponent,
+      ),
+  },
+  {
     path: Links.MEDIA_LIBRARY_URL,
     loadComponent: () =>
       import('./media-library-page/media-library-page.component').then(

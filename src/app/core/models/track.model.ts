@@ -88,6 +88,7 @@ export interface ITrack {
   id: number;
   title: string;
   artistName: string;
+  artistPublicId: string;
   genres: string[];
   description: string | null;
   status: TrackStatus;

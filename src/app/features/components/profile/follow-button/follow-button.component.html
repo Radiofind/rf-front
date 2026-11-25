@@ -1,0 +1,15 @@
+<button
+  class="follow"
+  type="button"
+  [class.follow--active]="following()"
+  [disabled]="pending()"
+  [attr.aria-pressed]="following()"
+  [attr.aria-label]="
+    (following() ? 'publicProfile.unfollowHint' : 'publicProfile.followHint')
+      | translate: { name: name() }
+  "
+  (click)="onClick()"
+>
+  <i [class]="following() ? 'bx bx-user-check' : 'bx bx-user-plus'" aria-hidden="true"></i>
+  <span>{{ (following() ? 'publicProfile.unfollow' : 'publicProfile.follow') | translate }}</span>
+</button>

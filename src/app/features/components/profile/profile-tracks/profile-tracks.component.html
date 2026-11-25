@@ -1,0 +1,72 @@
+<section class="tracks" aria-labelledby="profile-tracks-title" [attr.aria-busy]="isLoading()">
+  <h2 class="tracks__title" id="profile-tracks-title">
+    {{ 'publicProfile.tracksTitle' | translate }}
+  </h2>
+
+  @if (tracks(); as tracks) {
+    @if (tracks.length) {
+      <ul class="tracks__list">
+        @for (track of tracks; track track.id) {
+          @let isActive = track.id === currentTrackId() && isPlaying();
+
+          <li class="tracks__item" [class.tracks__item--current]="track.id === currentTrackId()">
+            @if (canPlay() && track.audioUrl) {
+              <button
+                class="tracks__play"
+                type="button"
+                [attr.aria-label]="
+                  (isActive ? 'publicProfile.pauseTrack' : 'publicProfile.playTrack')
+                    | translate: { title: track.title }
+                "
+                (click)="playToggled.emit(track)"
+              >
+                <i [class]="isActive ? pauseIconClass : playIconClass" aria-hidden="true"></i>
+              </button>
+            }
+
+            @let coverUrl = track.coverUrl;
+            @if (coverUrl && !brokenCovers().has(coverUrl)) {
+              <img class="tracks__thumb" [src]="coverUrl" alt="" (error)="onCoverError(coverUrl)" />
+            } @else {
+              <div class="tracks__thumb tracks__thumb--placeholder" aria-hidden="true">
+                <i class="bx bx-music"></i>
+              </div>
+            }
+
+            <div class="tracks__info">
+              <span class="tracks__name" [title]="track.title">{{ track.title }}</span>
+              <span class="tracks__meta">
+                <span class="tracks__duration">{{ durationLabel(track.durationSeconds) }}</span>
+                <span class="tracks__stat">
+                  <i class="bx bx-play" aria-hidden="true"></i>
+                  {{ track.playsCount | compactNumber }}
+                </span>
+                <span class="tracks__stat" [class.tracks__stat--liked]="track.liked">
+                  <i [class]="track.liked ? likedIconClass : likeIconClass" aria-hidden="true"></i>
+                  {{ track.likesCount | compactNumber }}
+                </span>
+              </span>
+            </div>
+          </li>
+        }
+      </ul>
+
+      @if (hasMore()) {
+        <button
+          class="tracks__more"
+          type="button"
+          [disabled]="isLoading()"
+          (click)="moreClicked.emit()"
+        >
+          {{ 'publicProfile.showMore' | translate }}
+        </button>
+      }
+    } @else {
+      <app-empty-state
+        emptyIconClass="bx bx-music"
+        [emptyTitle]="'publicProfile.noTracksTitle' | translate"
+        [emptyDescription]="'publicProfile.noTracksDescription' | translate"
+      />
+    }
+  }
+</section>

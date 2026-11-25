@@ -30,7 +30,7 @@ export class ProfileDetailsComponent {
 
   public readonly artistName: InputSignal<string> = input<string>(Constants.DASH);
 
-  public readonly birthdayDate: InputSignal<string> = input<string>(Constants.DASH);
+  public readonly birthdayDate: InputSignal<string | null> = input<string | null>(Constants.DASH);
 
   public readonly additionalGenres: InputSignal<string[]> = input<string[]>([]);
 

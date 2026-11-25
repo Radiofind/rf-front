@@ -1,5 +1,7 @@
 import { Component, input, output, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { Links } from '../../../../core/constants/links';
 import { Constants } from '../../../../core/constants/constants';
 import { SortDirectionEnum } from '../../../../core/enums/sort-direction.enum';
 import {
@@ -27,6 +29,7 @@ import type { TranslationKey } from '../../../../core/types/translation.type';
   styleUrl: './tracks-table.component.scss',
   imports: [
     NgTemplateOutlet,
+    RouterLink,
     TranslatePipe,
     DateTimePipe,
     CompactNumberPipe,
@@ -90,6 +93,10 @@ export class TracksTableComponent<TSort extends string> {
 
   protected durationLabel(seconds: number | null): string {
     return seconds === null ? Constants.EMPTY_VALUE_DASH : formatPlaybackTime(seconds);
+  }
+
+  protected artistProfileLink(track: ITrack): string {
+    return `/${Links.USERS_URL}/${track.artistPublicId}`;
   }
 
   protected statusLabel(status: TrackStatus): TranslationKey {

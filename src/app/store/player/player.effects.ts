@@ -23,6 +23,7 @@ import { Constants } from '../../core/constants/constants';
 import { AudioPlayerActions } from '../ui/audio-player.actions';
 import { MyUploadsPageActions } from '../ui/my-uploads-page.actions';
 import { MediaLibraryPageActions } from '../ui/media-library-page.actions';
+import { PublicProfilePageActions } from '../ui/public-profile-page.actions';
 import { settingsFeature } from '../settings/settings.feature';
 import { PlayerActions, PlayerApiActions } from './player.actions';
 import { playerFeature } from './player.feature';
@@ -43,6 +44,7 @@ export const shufflePlaybackOrder = createEffect(
         PlayerActions.queueStarted,
         MyUploadsPageActions.trackPlayed,
         MediaLibraryPageActions.trackPlayed,
+        PublicProfilePageActions.trackPlayed,
         AudioPlayerActions.shuffleToggled,
       ),
       concatLatestFrom(() => [

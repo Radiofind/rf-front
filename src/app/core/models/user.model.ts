@@ -19,6 +19,7 @@ export interface IUserEndpoints {
   backupCodes: string;
   enrollment: string;
   confirm: string;
+  follow: string;
 }
 
 export interface ICurrentUser {
@@ -44,6 +45,8 @@ export interface IUserProfileData {
   registeredAt: string;
   avatarUrl: string | null;
   uploadsCount: number;
+  followersCount: number;
+  likesCount: number;
 }
 
 export interface IUpdateProfileData {

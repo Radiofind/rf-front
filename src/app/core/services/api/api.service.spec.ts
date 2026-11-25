@@ -74,6 +74,8 @@ describe('ApiService', () => {
     additionalGenres: [],
     registeredAt: '2026-01-15T10:00:00Z',
     uploadsCount: 0,
+    followersCount: 0,
+    likesCount: 0,
     avatarUrl: '/api/users/me/avatar',
   };
 
@@ -752,6 +754,65 @@ describe('ApiService', () => {
     expect(request.request.body).toEqual({
       subject: 'Upload stuck',
       message: 'My track stays in review',
+    });
+  });
+
+  describe('public profiles', () => {
+    const userUrl: string = `${environment.apiUrl}/users/6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f`;
+
+    it('reads the profile of another user by their public id', () => {
+      service.getPublicProfile('6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f').subscribe();
+
+      const request: TestRequest = httpMock.expectOne(`${userUrl}/profile`);
+
+      expect(request.request.method).toBe('GET');
+
+      request.flush({});
+    });
+
+    it('reads a page of published tracks', () => {
+      service.getPublicTracks('6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f', 2, 10).subscribe();
+
+      const request: TestRequest = httpMock.expectOne(
+        (candidate) => candidate.url === `${userUrl}/tracks`,
+      );
+
+      expect(request.request.params.get('page')).toBe('2');
+      expect(request.request.params.get('size')).toBe('10');
+
+      request.flush({ items: [], page: 2, size: 10, totalElements: 0, hasNext: false });
+    });
+
+    it('reads the avatar as a blob', () => {
+      service.getPublicAvatar('6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f').subscribe();
+
+      const request: TestRequest = httpMock.expectOne(`${userUrl}/avatar`);
+
+      expect(request.request.responseType).toBe('blob');
+
+      request.flush(new Blob());
+    });
+
+    it('follows with PUT and unfollows with DELETE', () => {
+      service.followUser('6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f').subscribe();
+      service.unfollowUser('6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f').subscribe();
+
+      const requests: TestRequest[] = httpMock.match(`${userUrl}/follow`);
+
+      expect(requests.map((request: TestRequest) => request.request.method)).toEqual([
+        'PUT',
+        'DELETE',
+      ]);
+
+      requests.forEach((request: TestRequest) => {
+        request.flush(null);
+      });
+    });
+
+    it('keeps a crafted id inside its path segment', () => {
+      service.getPublicProfile('../me').subscribe();
+
+      httpMock.expectOne(`${environment.apiUrl}/users/..%2Fme/profile`).flush({});
     });
   });
 });

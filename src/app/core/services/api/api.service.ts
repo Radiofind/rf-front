@@ -55,6 +55,7 @@ import type {
 import type { IActivity } from '../../models/activity.model';
 import type { INotification, IUnreadNotifications } from '../../models/notification.model';
 import type { IPage } from '../../models/page.model';
+import type { IPublicProfile } from '../../models/public-profile.model';
 import type { IStatistics, IStatisticsQuery } from '../../models/statistics.model';
 import type { ISupportEndpoints, ISupportMessage } from '../../models/support.model';
 
@@ -450,6 +451,48 @@ export class ApiService {
       `${this.ownTrackApi(trackId)}${this.trackEndpoints.rejection}`,
       { context: skipGlobalLoader() },
     );
+  }
+
+  public getPublicProfile(publicId: string): Observable<IPublicProfile> {
+    return this.http.get<IPublicProfile>(
+      `${this.publicUserApi(publicId)}${this.userEndpoints.profile}`,
+    );
+  }
+
+  public getPublicAvatar(publicId: string): Observable<Blob> {
+    return this.http.get(`${this.publicUserApi(publicId)}${this.userEndpoints.avatar}`, {
+      responseType: 'blob',
+      context: skipGlobalLoader(),
+    });
+  }
+
+  public getPublicTracks(publicId: string, page: number, size: number): Observable<IPage<ITrack>> {
+    return this.http.get<IPage<ITrack>>(
+      `${this.publicUserApi(publicId)}${this.userEndpoints.tracks}`,
+      { params: this.pageParams(page, size), context: skipGlobalLoader() },
+    );
+  }
+
+  public followUser(publicId: string): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.put<void>(
+      `${this.publicUserApi(publicId)}${this.userEndpoints.follow}`,
+      null,
+      {
+        context: skipGlobalLoader(),
+      },
+    );
+  }
+
+  public unfollowUser(publicId: string): Observable<void> {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return this.http.delete<void>(`${this.publicUserApi(publicId)}${this.userEndpoints.follow}`, {
+      context: skipGlobalLoader(),
+    });
+  }
+
+  private publicUserApi(publicId: string): string {
+    return `${this.userApi}/${encodeURIComponent(publicId)}`;
   }
 
   private ownTrackApi(trackId: number): string {
