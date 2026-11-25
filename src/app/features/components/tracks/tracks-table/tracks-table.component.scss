@@ -278,6 +278,17 @@
   &__artist {
     font-size: 14px;
     color: var(--second-text-color);
+
+    &--link {
+      text-decoration: none;
+      transition: color 200ms ease;
+
+      &:hover,
+      &:focus-visible {
+        color: var(--text-color);
+        text-decoration: underline;
+      }
+    }
   }
 
   &__genres {

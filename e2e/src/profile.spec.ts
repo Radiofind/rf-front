@@ -82,6 +82,8 @@ test.describe('profile', () => {
           'registeredAt',
           'avatarUrl',
           'uploadsCount',
+          'followersCount',
+          'likesCount',
         ].sort(),
       );
     });

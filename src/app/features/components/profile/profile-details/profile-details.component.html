@@ -39,10 +39,12 @@
         <dd class="details__value">{{ artistName() }}</dd>
       </div>
 
-      <div class="details__field">
-        <dt class="details__label">{{ 'profile.dateOfBirth' | translate }}</dt>
-        <dd class="details__value">{{ birthdayDate() }}</dd>
-      </div>
+      @if (birthdayDate(); as birthdayDate) {
+        <div class="details__field">
+          <dt class="details__label">{{ 'profile.dateOfBirth' | translate }}</dt>
+          <dd class="details__value">{{ birthdayDate }}</dd>
+        </div>
+      }
 
       <div class="details__field details__field--full">
         <dt class="details__label">{{ 'profile.additionalGenres' | translate }}</dt>

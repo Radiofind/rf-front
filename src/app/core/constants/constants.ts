@@ -257,6 +257,8 @@ export class Constants {
 
   public static readonly PROFILE_LOAD_FAILED: TranslationKey = 'messages.profileLoadFailed';
 
+  public static readonly FOLLOW_FAILED: TranslationKey = 'messages.followFailed';
+
   public static readonly EMAIL_CHANGED_SIGN_IN_AGAIN: TranslationKey =
     'messages.emailChangedSignInAgain';
 
@@ -293,6 +295,8 @@ export class Constants {
   public static readonly TOOLTIP_ID_PREFIX: string = 'app-tooltip-';
 
   public static readonly VISUALLY_HIDDEN_CLASS: string = 'cdk-visually-hidden';
+
+  public static readonly FIRST_DAY_OF_MONTH: string = '01';
 
   // magic numbers
 
@@ -331,6 +335,8 @@ export class Constants {
   public static readonly HTTP_UNAUTHORIZED_STATUS: number = 401;
 
   public static readonly HTTP_FORBIDDEN_STATUS: number = 403;
+
+  public static readonly HTTP_NOT_FOUND_STATUS: number = 404;
 
   public static readonly BACKUP_CODE_LENGTH: number = 10;
 

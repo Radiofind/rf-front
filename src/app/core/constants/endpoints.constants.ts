@@ -36,6 +36,7 @@ export class EndpointConstants {
     backupCodes: '/backup-codes',
     enrollment: '/enrollment',
     confirm: '/confirm',
+    follow: '/follow',
   };
 
   public static readonly TRACK_ENDPOINTS: ITrackEndpoints = {

@@ -1,0 +1,86 @@
+<div class="profile">
+  @switch (status()) {
+    @case (statuses.NOT_FOUND) {
+      <div class="profile__state" role="status">
+        <app-empty-state
+          emptyIconClass="bx bx-user-x"
+          [emptyTitle]="'publicProfile.notFoundTitle' | translate"
+          [emptyDescription]="'publicProfile.notFoundDescription' | translate"
+        />
+      </div>
+    }
+    @case (statuses.FAILED) {
+      <div class="profile__state" role="alert">
+        <app-empty-state
+          emptyIconClass="bx bx-error-circle"
+          [emptyTitle]="'publicProfile.loadFailedTitle' | translate"
+          [emptyDescription]="'publicProfile.loadFailedDescription' | translate"
+        />
+        <button class="profile__retry" type="button" (click)="onRetry()">
+          {{ 'publicProfile.retry' | translate }}
+        </button>
+      </div>
+    }
+    @case (statuses.LOADED) {
+      @if (profile(); as profile) {
+        @let details = profile.details;
+
+        <app-profile-hero
+          [userFullName]="profile.displayName"
+          [artistType]="details?.artistType ?? null"
+          [avatarUrl]="avatarUrl()"
+          [mainGenres]="mainGenres()"
+          [bio]="details?.shortDescription ?? ''"
+          [socialLinks]="details?.socialLinks ?? null"
+        >
+          @if (profile.canFollow) {
+            <app-follow-button
+              heroActions
+              [name]="profile.displayName"
+              [following]="profile.following"
+              [pending]="isFollowPending()"
+              (followClicked)="onFollow()"
+              (unfollowClicked)="onUnfollow()"
+            />
+          }
+        </app-profile-hero>
+
+        @if (details) {
+          <app-profile-stats
+            uploadsLabel="profile.tracks"
+            [followersCount]="countOf(details.followersCount)"
+            [uploadsCount]="countOf(details.tracksCount)"
+            [likesCount]="countOf(details.likesCount)"
+            [registeredAt]="joinedAt()"
+          />
+
+          <div class="profile__grid">
+            <app-profile-details
+              class="profile__details"
+              [artistType]="details.artistType"
+              [description]="description()"
+              [artistName]="profile.displayName"
+              [birthdayDate]="null"
+              [additionalGenres]="details.additionalGenres"
+            />
+            <app-profile-tracks
+              [tracks]="tracks()"
+              [hasMore]="hasMoreTracks()"
+              [isLoading]="isLoadingTracks()"
+              [canPlay]="canPlay()"
+              [currentTrackId]="currentTrackId()"
+              [isPlaying]="isPlaying()"
+              (playToggled)="onPlayToggle($event)"
+              (moreClicked)="onMoreTracks()"
+            />
+          </div>
+        } @else {
+          <app-profile-restricted
+            [followersOnly]="profile.canFollow"
+            [name]="profile.displayName"
+          />
+        }
+      }
+    }
+  }
+</div>

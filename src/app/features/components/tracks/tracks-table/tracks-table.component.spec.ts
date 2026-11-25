@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { TracksTableComponent } from './tracks-table.component';
 import { MY_UPLOADS_TABLE_CONFIG } from '../../../constants/my-uploads.constant';
 import { TrackStatusEnum } from '../../../../core/enums/track-status.enum';
@@ -15,6 +16,7 @@ describe('TracksTableComponent', () => {
     id: 1,
     title: 'Midnight Dreams',
     artistName: 'Neon Lights',
+    artistPublicId: '6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f',
     genres: ['AMBIENT'],
     description: null,
     status: TrackStatusEnum.PENDING_REVIEW,
@@ -40,7 +42,10 @@ describe('TracksTableComponent', () => {
     activeSort?: OwnTracksSortEnum;
     direction?: SortDirectionEnum;
   }): Promise<ComponentFixture<TracksTableComponent<OwnTracksSortEnum>>> => {
-    await TestBed.configureTestingModule({ imports: [TracksTableComponent] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [TracksTableComponent],
+      providers: [provideRouter([])],
+    }).compileComponents();
 
     const fixture: ComponentFixture<TracksTableComponent<OwnTracksSortEnum>> =
       TestBed.createComponent<TracksTableComponent<OwnTracksSortEnum>>(TracksTableComponent);
@@ -205,5 +210,24 @@ describe('TracksTableComponent', () => {
     expect(element(fixture).querySelector('.tracks-table__cell--date')?.textContent.trim()).toBe(
       '—',
     );
+  });
+
+  it("links the artist of someone else's track to their profile", async () => {
+    const fixture: ComponentFixture<TracksTableComponent<OwnTracksSortEnum>> = await createFixture({
+      tracks: [{ ...midnight, own: false }],
+    });
+
+    const artist: HTMLAnchorElement = fixture.nativeElement.querySelector('a.tracks-table__artist');
+
+    expect(artist.getAttribute('href')).toBe('/users/6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f');
+    expect(artist.textContent.trim()).toBe('Neon Lights');
+  });
+
+  it('shows the artist of an own track without a link', async () => {
+    const fixture: ComponentFixture<TracksTableComponent<OwnTracksSortEnum>> = await createFixture({
+      tracks: [midnight],
+    });
+
+    expect(fixture.nativeElement.querySelector('a.tracks-table__artist')).toBeNull();
   });
 });

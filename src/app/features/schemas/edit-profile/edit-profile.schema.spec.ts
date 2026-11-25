@@ -18,7 +18,7 @@ describe('editProfileFormSchema', () => {
     email: 'ada@example.com',
     recoveryEmail: '',
     artistType: 'Artist',
-    artistName: '',
+    artistName: 'Nova',
     shortDescription: '',
     description: '',
     mainGenres: [],
@@ -39,16 +39,22 @@ describe('editProfileFormSchema', () => {
       .errors()
       .map((error) => error.message ?? '');
 
-  it('accepts a profile where only name, surname and email are filled', () => {
+  it('accepts a profile where only name, surname, email and artist name are filled', () => {
     expect(buildForm()().valid()).toBe(true);
   });
 
-  it('requires name, surname and email', () => {
-    const tree: FieldTree<IEditProfileForm> = buildForm({ name: '', surname: '', email: '' });
+  it('requires name, surname, email and artist name', () => {
+    const tree: FieldTree<IEditProfileForm> = buildForm({
+      name: '',
+      surname: '',
+      email: '',
+      artistName: '',
+    });
 
     expect(messagesOf(tree.name)).toContain(AuthValidationMessages.REQUIRED);
     expect(messagesOf(tree.surname)).toContain(AuthValidationMessages.REQUIRED);
     expect(messagesOf(tree.email)).toContain(AuthValidationMessages.REQUIRED);
+    expect(messagesOf(tree.artistName)).toContain(AuthValidationMessages.REQUIRED);
   });
 
   it('rejects malformed email and recovery email', () => {

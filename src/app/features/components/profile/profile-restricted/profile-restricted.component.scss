@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.restricted {
+  display: flex;
+  justify-content: center;
+  padding: 48px 24px;
+  border: 1px solid var(--header-element-border);
+  border-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--main-color) 6%, transparent),
+    color-mix(in srgb, var(--main-color) 1%, transparent)
+  );
+}

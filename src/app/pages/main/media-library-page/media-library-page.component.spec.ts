@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MediaLibraryPageComponent } from './media-library-page.component';
 import { UploadsPreferencesService } from '../../../features/services/uploads-preferences-service/uploads-preferences.service';
@@ -22,6 +23,7 @@ describe('MediaLibraryPageComponent', () => {
     id: 1,
     title: 'Midnight Dreams',
     artistName: 'Neon Lights',
+    artistPublicId: '6f1c2b4e-3d5a-4c8e-9b7f-1a2b3c4d5e6f',
     genres: ['AMBIENT'],
     description: null,
     status: TrackStatusEnum.APPROVED,
@@ -75,6 +77,7 @@ describe('MediaLibraryPageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MediaLibraryPageComponent],
       providers: [
+        provideRouter([]),
         { provide: UploadsPreferencesService, useValue: { readPageSize: () => 20 } },
         { provide: LibraryTrackActionsService, useValue: { run: run } },
         provideMockStore({

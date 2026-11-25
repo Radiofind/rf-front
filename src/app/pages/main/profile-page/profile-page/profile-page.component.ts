@@ -14,9 +14,8 @@ import { ArtistTypeRequestEnum } from '../../../../core/enums/artist-type.enum';
 import { DateFormatEnum } from '../../../../core/enums/date-format.enum';
 import { ModalSizeEnum } from '../../../../core/enums/modal-size.enum';
 import { formatStringDate } from '../../../../shared/helpers/date/date.helpers';
-import { findSelectOption } from '../../../../shared/helpers/select-option/select-option.helpers';
 import { TranslationService } from '../../../../shared/services/translation-service/translation.service';
-import { GENRE_OPTIONS } from '../../../../features/constants/genre.constant';
+import { GenreLabelService } from '../../../../features/services/genre-label-service/genre-label.service';
 import { ProfilePageActions } from '../../../../store/ui/profile-page.actions';
 import { profileFeature } from '../../../../store/profile/profile.feature';
 import { avatarFeature } from '../../../../store/avatar/avatar.feature';
@@ -25,8 +24,6 @@ import type { OnInit, Signal } from '@angular/core';
 import type { ISocialLinksData, IUserProfileData } from '../../../../core/models/user.model';
 import type { IActivity } from '../../../../core/models/activity.model';
 import type { ArtistTypeRequest } from '../../../../core/types/artist-type-request.type';
-import type { TranslationKey } from '../../../../core/types/translation.type';
-import type { ISelectOption } from '../../../../shared/models/select-option.model';
 import type {
   IAvatarModalData,
   IAvatarModalResult,
@@ -54,6 +51,8 @@ export class ProfilePageComponent implements OnInit {
 
   private readonly translationService: TranslationService = inject(TranslationService);
 
+  private readonly genreLabels: GenreLabelService = inject(GenreLabelService);
+
   private readonly profile: Signal<IUserProfileData | null> = this.store.selectSignal(
     profileFeature.selectProfile,
   );
@@ -71,15 +70,9 @@ export class ProfilePageComponent implements OnInit {
     return profile ? profile.name + Constants.EMPTY_SPACE_STRING + profile.surname : Constants.DASH;
   });
 
-  protected readonly mainGenres: Signal<string | null> = computed<string | null>(() => {
-    const mainGenres: string[] | undefined = this.profile()?.mainGenres;
-    if (!mainGenres?.length) {
-      return null;
-    }
-    return mainGenres
-      .map((genre: string) => this.formatGenre(genre))
-      .join(Constants.SLASH_WITH_SPACES);
-  });
+  protected readonly mainGenres: Signal<string | null> = computed<string | null>(() =>
+    this.genreLabels.join(this.profile()?.mainGenres),
+  );
 
   protected readonly socialLinks: Signal<ISocialLinksData | null> =
     computed<ISocialLinksData | null>(() => this.profile()?.socialLinks ?? null);
@@ -113,6 +106,16 @@ export class ProfilePageComponent implements OnInit {
     return profile ? String(profile.uploadsCount) : Constants.DASH;
   });
 
+  protected readonly followersCount: Signal<string> = computed<string>(() => {
+    const profile: IUserProfileData | null = this.profile();
+    return profile ? String(profile.followersCount) : Constants.DASH;
+  });
+
+  protected readonly likesCount: Signal<string> = computed<string>(() => {
+    const profile: IUserProfileData | null = this.profile();
+    return profile ? String(profile.likesCount) : Constants.DASH;
+  });
+
   protected readonly registeredAt: Signal<string> = computed<string>(() =>
     this.formatProfileDate(this.profile()?.registeredAt, DateFormatEnum.MONTH_YEAR),
   );
@@ -140,25 +143,6 @@ export class ProfilePageComponent implements OnInit {
 
   public onProfileEdit(): void {
     void this.router.navigate([Links.EDIT_PROFILE_URL]);
-  }
-
-  private formatGenre(genre: string): string {
-    const option: ISelectOption<string, TranslationKey> | undefined = findSelectOption(
-      GENRE_OPTIONS,
-      genre,
-    );
-
-    if (option) {
-      return this.translationService.translate(option.label);
-    }
-
-    return genre
-      .split(Constants.UNDERSCORE)
-      .map(
-        (word: string) =>
-          word.charAt(Constants.ZERO).toUpperCase() + word.slice(Constants.ONE).toLowerCase(),
-      )
-      .join(Constants.EMPTY_SPACE_STRING);
   }
 
   private formatProfileDate(date: string | undefined, format: DateFormatEnum): string {

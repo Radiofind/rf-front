@@ -1,9 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
-
-const BASE_URL: string = process.env['E2E_BASE_URL'] ?? 'http://localhost:4200';
+import { BASE_URL } from './e2e/fixtures/base-url';
 
 export default defineConfig({
   testDir: './e2e/src',
+  globalSetup: './e2e/global-setup.ts',
   outputDir: './e2e/.results',
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
